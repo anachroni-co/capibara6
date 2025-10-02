@@ -14,7 +14,8 @@ ENV/
 # Datos de usuarios
 user_data/
 *.json
-*.txt
+user_*.txt
+capibara6_*.txt
 
 # IDE
 .vscode/
