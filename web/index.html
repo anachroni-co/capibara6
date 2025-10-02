@@ -1,30 +1,40 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Capibara6 - Sistema avanzado de IA conversacional con Mixture of Experts, optimizaciones TPU v4/v6 y ARM Axion, razonamiento Chain-of-Thought y capacidades multimodales">
-    <title>Capibara6 - IA Conversacional de Nueva Generación</title>
+    <meta name="description" content="Capibara6 - Sistema avanzado de IA conversacional con arquitectura híbrida Transformer-Mamba, optimizaciones TPU v5e/v6e y Google ARM Axion. Mayor ventana de contexto del mercado. Compliance total para empresas y administraciones públicas.">
+    <title>Capibara6 - IA Conversacional de Nueva Generación | Anachroni</title>
     <link rel="canonical" href="https://capibara6.com">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <!-- Navegación -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <span class="logo">🦫</span>
-                <h1>capibara6</h1>
+                <a href="#" class="logo-link">
+                    <h1 class="logo-gradient">capibara6</h1>
+                </a>
             </div>
             <ul class="nav-menu">
-                <li><a href="#features">Características</a></li>
-                <li><a href="#quickstart">Inicio Rápido</a></li>
-                <li><a href="#architecture">Arquitectura</a></li>
-                <li><a href="#docs">Documentación</a></li>
-                <li><a href="#github" class="btn-primary">GitHub</a></li>
+                <li><a href="#features" data-i18n="nav.features">Características</a></li>
+                <li><a href="#architecture" data-i18n="nav.architecture">Arquitectura</a></li>
+                <li><a href="#datasets" data-i18n="nav.datasets">Datasets</a></li>
+                <li class="lang-switcher">
+                    <button class="lang-btn active" data-lang="es" onclick="capibaraLanguage.switch('es')" title="Español">
+                        🇪🇸 ES
+                    </button>
+                    <button class="lang-btn" data-lang="en" onclick="capibaraLanguage.switch('en')" title="English">
+                        🇬🇧 EN
+                    </button>
+                </li>
+                <li><a href="https://github.com/anachroni-co/capibara6" class="btn-primary" target="_blank">GitHub</a></li>
             </ul>
             <button class="mobile-menu-toggle">☰</button>
         </div>
@@ -32,48 +42,49 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <canvas id="neuralNetwork"></canvas>
         <div class="hero-background"></div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">
                     <span class="badge-dot"></span>
-                    Sistema de IA Conversacional Avanzado
+                    <span data-i18n="hero.badge">Sistema de IA Conversacional Avanzado</span>
                 </div>
                 <h2 class="hero-title">
-                    capibara6
-                    <span class="gradient-text">Mixture of Experts + Chain-of-Thought</span>
+                    <span class="logo-gradient-hero">capibara6</span>
+                    <span class="gradient-text" data-i18n="hero.subtitle">Arquitectura Híbrida Transformer-Mamba</span>
                 </h2>
-                <p class="hero-subtitle">
-                    Sistema avanzado de IA conversacional con arquitectura Mixture of Experts (32 expertos), 
-                    optimizaciones TPU v4/v6 y ARM Axion v3.2, razonamiento Chain-of-Thought y capacidades multimodales.
+                <p class="hero-subtitle" data-i18n="hero.description">
+                    Sistema avanzado de IA conversacional con arquitectura híbrida (70% Transformer + 30% Mamba), 
+                    optimizaciones Google TPU v5e/v6e-64 y Google ARM Axion. La mayor ventana de contexto del mercado. 
+                    Compliance total para empresas y administraciones públicas.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#quickstart" class="btn btn-large btn-primary">
-                        <span>Comenzar Ahora</span>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
+                    <a href="#docs" class="btn btn-large btn-primary">
+                        <span data-i18n="hero.cta.start">Comenzar Ahora</span>
+                        <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
                     </a>
                     <a href="#docs" class="btn btn-large btn-secondary">
-                        <span>Ver Documentación</span>
+                        <i data-lucide="book-open" style="width: 20px; height: 20px; margin-right: 0.5rem;"></i>
+                        <span data-i18n="hero.cta.docs">Ver Documentación</span>
                     </a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
-                        <div class="stat-value">32</div>
-                        <div class="stat-label">Expertos MoE</div>
+                        <div class="stat-value">70%/30%</div>
+                        <div class="stat-label" data-i18n="hero.stats.hybrid">Transformer/Mamba</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">TPU v4/v6</div>
-                        <div class="stat-label">Optimizado</div>
+                        <div class="stat-value">TPU v5e/v6e</div>
+                        <div class="stat-label" data-i18n="hero.stats.tpu">Google TPU</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">1M Tokens</div>
-                        <div class="stat-label">Contexto RAG</div>
+                        <div class="stat-value">10M+ Tokens</div>
+                        <div class="stat-label" data-i18n="hero.stats.context">Contexto Líder</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">Multimodal</div>
-                        <div class="stat-label">Capacidades</div>
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label" data-i18n="hero.stats.compliance">Compliance EU</div>
                     </div>
                 </div>
             </div>
@@ -84,98 +95,98 @@
     <section id="features" class="features">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Características Principales</h2>
-                <p class="section-subtitle">Tecnología de vanguardia con arquitectura enterprise-grade</p>
+                <h2 class="section-title" data-i18n="features.title">Características Principales</h2>
+                <p class="section-subtitle" data-i18n="features.subtitle">Tecnología de vanguardia con arquitectura enterprise-grade</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🧠</div>
-                    <h3>Mixture of Experts (MoE)</h3>
-                    <p>32 expertos especializados con enrutamiento dinámico para dominios como matemáticas, ciencias, código y creatividad.</p>
+                    <div class="feature-icon"><i data-lucide="brain" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.moe.title">Mixture of Experts (MoE)</h3>
+                    <p data-i18n="feature.moe.desc">32 expertos especializados con enrutamiento dinámico para dominios como matemáticas, ciencias, código y creatividad.</p>
                     <ul class="feature-list">
-                        <li>Especialización automática por dominio</li>
-                        <li>Balanceamiento de carga inteligente</li>
-                        <li>Expert routing adaptativo (96.3% precisión)</li>
+                        <li data-i18n="feature.moe.item1">Especialización automática por dominio</li>
+                        <li data-i18n="feature.moe.item2">Balanceamiento de carga inteligente</li>
+                        <li data-i18n="feature.moe.item3">Expert routing adaptativo (96.3% precisión)</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🔗</div>
-                    <h3>Chain-of-Thought Reasoning</h3>
-                    <p>Razonamiento paso a paso con hasta 12 pasos, meta-cognición avanzada y auto-reflexión para máxima calidad.</p>
+                    <div class="feature-icon"><i data-lucide="git-branch" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.cot.title">Chain-of-Thought Reasoning</h3>
+                    <p data-i18n="feature.cot.desc">Razonamiento paso a paso con hasta 12 pasos, meta-cognición avanzada y auto-reflexión para máxima calidad.</p>
                     <ul class="feature-list">
-                        <li>Razonamiento estructurado verificable</li>
-                        <li>Ajuste de confianza automático</li>
-                        <li>Process reward models integrados</li>
+                        <li data-i18n="feature.cot.item1">Razonamiento estructurado verificable</li>
+                        <li data-i18n="feature.cot.item2">Ajuste de confianza automático</li>
+                        <li data-i18n="feature.cot.item3">Process reward models integrados</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🌐</div>
-                    <h3>Capacidades Multimodales</h3>
-                    <p>Procesamiento de texto, imágenes y video con encoders especializados y fusión por atención multimodal.</p>
+                    <div class="feature-icon"><i data-lucide="layers" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.multimodal.title">Capacidades Multimodales</h3>
+                    <p data-i18n="feature.multimodal.desc">Procesamiento de texto, imágenes y video con encoders especializados y fusión por atención multimodal.</p>
                     <ul class="feature-list">
-                        <li>Vision encoder (224x224, patches 16x16)</li>
-                        <li>Video encoder (64 frames, 30 FPS)</li>
-                        <li>Text-to-Speech con contexto emocional</li>
+                        <li data-i18n="feature.multimodal.item1">Vision encoder (224x224, patches 16x16)</li>
+                        <li data-i18n="feature.multimodal.item2">Video encoder (64 frames, 30 FPS)</li>
+                        <li data-i18n="feature.multimodal.item3">Text-to-Speech con contexto emocional</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Optimizaciones TPU v4/v6</h3>
-                    <p>Kernels optimizados para TPU v4-32 (8x4 topology) y TPU v6e-64 con XLA compilation y mixed precision.</p>
+                    <div class="feature-icon"><i data-lucide="zap" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.tpu.title">Google TPU v5e/v6e-64</h3>
+                    <p data-i18n="feature.tpu.desc">Kernels optimizados para Google TPU v5e-64 y v6e-64 de última generación con XLA compilation y mixed precision.</p>
                     <ul class="feature-list">
-                        <li>2,847 tokens/sec en TPU v4-32</li>
-                        <li>Flash attention y kernel fusion</li>
-                        <li>BFloat16 para máxima eficiencia</li>
+                        <li data-i18n="feature.tpu.item1">4,500+ tokens/sec en TPU v6e-64</li>
+                        <li data-i18n="feature.tpu.item2">Flash attention y kernel fusion</li>
+                        <li data-i18n="feature.tpu.item3">Eficiencia energética superior</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>ARM Axion v3.2 Support</h3>
-                    <p>Optimizaciones avanzadas para ARM Axion con NEON, SVE2 vectorization y Kleidi AI integration.</p>
+                    <div class="feature-icon"><i data-lucide="rocket" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.arm.title">Google ARM Axion</h3>
+                    <p data-i18n="feature.arm.desc">Inferencia optimizada para procesadores Google ARM Axion con NEON, SVE2 vectorization y cuantización avanzada.</p>
                     <ul class="feature-list">
-                        <li>1,234 tokens/sec (cuantizado 8-bit)</li>
-                        <li>Cuantización 4-bit/8-bit calibrada</li>
-                        <li>Memory pool optimization avanzado</li>
+                        <li data-i18n="feature.arm.item1">2,100+ tokens/sec (cuantizado 8-bit)</li>
+                        <li data-i18n="feature.arm.item2">Arquitectura ARM de Google Cloud</li>
+                        <li data-i18n="feature.arm.item3">Eficiencia energética excepcional</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>RAG 2.0 Avanzado</h3>
-                    <p>Sistema de recuperación aumentada con contexto de 1M tokens, semantic chunking y hybrid search.</p>
+                    <div class="feature-icon"><i data-lucide="maximize-2" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.context.title">Ventana de Contexto Líder</h3>
+                    <p data-i18n="feature.context.desc">Mayor capacidad de contexto del mercado con más de 10M tokens, superando a cualquier competidor actual.</p>
                     <ul class="feature-list">
-                        <li>Memoria episódica de 1M tokens</li>
-                        <li>Hypothetical question generation</li>
-                        <li>Hybrid search con reranking</li>
+                        <li data-i18n="feature.context.item1">10M+ tokens de contexto real</li>
+                        <li data-i18n="feature.context.item2">Arquitectura híbrida optimizada</li>
+                        <li data-i18n="feature.context.item3">Gestión eficiente de memoria</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">👶</div>
-                    <h3>Adaptación por Edad</h3>
-                    <p>Sistema inteligente que adapta contenido, complejidad y tono según la edad del usuario (3-18 años).</p>
+                    <div class="feature-icon"><i data-lucide="users" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.age.title">Adaptación por Edad</h3>
+                    <p data-i18n="feature.age.desc">Sistema inteligente que adapta contenido, complejidad y tono según la edad del usuario (3-18 años).</p>
                     <ul class="feature-list">
-                        <li>Ajuste automático de vocabulario</li>
-                        <li>Filtrado de contenido por edad</li>
-                        <li>Estándares educativos integrados</li>
+                        <li data-i18n="feature.age.item1">Ajuste automático de vocabulario</li>
+                        <li data-i18n="feature.age.item2">Filtrado de contenido por edad</li>
+                        <li data-i18n="feature.age.item3">Estándares educativos integrados</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Constitutional AI</h3>
-                    <p>Sistemas de seguridad avanzados con bias detection, harm prevention y self-correction automática.</p>
+                    <div class="feature-icon"><i data-lucide="shield-check" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.compliance.title">Compliance Total UE</h3>
+                    <p data-i18n="feature.compliance.desc">Cumplimiento exhaustivo de normativas europeas de privacidad, seguridad, ética y uso legal para sector público y privado.</p>
                     <ul class="feature-list">
-                        <li>Detección de sesgos en tiempo real</li>
-                        <li>Prevención de daños automática</li>
-                        <li>GDPR/CCPA compliance integrado</li>
+                        <li data-i18n="feature.compliance.item1">GDPR, CCPA, AI Act compliance</li>
+                        <li data-i18n="feature.compliance.item2">Certificado para administraciones públicas</li>
+                        <li data-i18n="feature.compliance.item3">Auditorías de seguridad y ética</li>
                     </ul>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Monitorización Enterprise</h3>
-                    <p>Dashboard completo con métricas TPU, análisis predictivo y alertas automáticas con escalación.</p>
+                    <div class="feature-icon"><i data-lucide="activity" style="width: 48px; height: 48px;"></i></div>
+                    <h3 data-i18n="feature.monitoring.title">Monitorización Enterprise</h3>
+                    <p data-i18n="feature.monitoring.desc">Dashboard completo con métricas TPU, análisis predictivo y alertas automáticas con escalación.</p>
                     <ul class="feature-list">
-                        <li>Métricas en tiempo real (TFLOPS, memoria)</li>
-                        <li>Exportación Grafana/Prometheus</li>
-                        <li>Auto-optimización basada en métricas</li>
+                        <li data-i18n="feature.monitoring.item1">Métricas en tiempo real (TFLOPS, memoria)</li>
+                        <li data-i18n="feature.monitoring.item2">Exportación Grafana/Prometheus</li>
+                        <li data-i18n="feature.monitoring.item3">Auto-optimización basada en métricas</li>
                     </ul>
                 </div>
             </div>
@@ -186,14 +197,14 @@
     <section id="architecture" class="architecture">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Arquitectura del Sistema</h2>
-                <p class="section-subtitle">Diseño modular enterprise-grade</p>
+                <h2 class="section-title" data-i18n="arch.title">Arquitectura del Sistema</h2>
+                <p class="section-subtitle" data-i18n="arch.subtitle">Diseño modular enterprise-grade</p>
             </div>
             <div class="architecture-diagram">
                 <div class="arch-layer">
                     <div class="arch-box">
-                        <h4>🌐 Capa de Entrada Multimodal</h4>
-                        <p>Encoders especializados para texto, imagen y video</p>
+                        <h4 data-i18n="arch.layer1.title">🌐 Capa de Entrada Multimodal</h4>
+                        <p data-i18n="arch.layer1.desc">Encoders especializados para texto, imagen y video</p>
                         <div class="tech-tags">
                             <span class="tech-tag">Vision Encoder</span>
                             <span class="tech-tag">Video Encoder</span>
@@ -204,8 +215,8 @@
                 <div class="arch-arrow">↓</div>
                 <div class="arch-layer">
                     <div class="arch-box">
-                        <h4>🔍 Capa de Recuperación (RAG 2.0)</h4>
-                        <p>Contexto de 1M tokens con hybrid search</p>
+                        <h4 data-i18n="arch.layer2.title">🔍 Capa de Recuperación (RAG 2.0)</h4>
+                        <p data-i18n="arch.layer2.desc">Contexto de 1M tokens con hybrid search</p>
                         <div class="tech-tags">
                             <span class="tech-tag">Semantic Chunking</span>
                             <span class="tech-tag">Hybrid Search</span>
@@ -216,20 +227,20 @@
                 <div class="arch-arrow">↓</div>
                 <div class="arch-layer">
                     <div class="arch-box">
-                        <h4>🧠 Capa de Expertos (MoE)</h4>
-                        <p>32 expertos especializados con routing dinámico</p>
+                        <h4 data-i18n="arch.layer3.title">🧠 Arquitectura Híbrida</h4>
+                        <p data-i18n="arch.layer3.desc">70% Transformer + 30% Mamba SSM optimizado</p>
                         <div class="tech-tags">
-                            <span class="tech-tag">Dynamic Routing</span>
-                            <span class="tech-tag">Load Balancing</span>
-                            <span class="tech-tag">Expert Specialization</span>
+                            <span class="tech-tag">Transformer (70%)</span>
+                            <span class="tech-tag">Mamba SSM (30%)</span>
+                            <span class="tech-tag">Routing Inteligente</span>
                         </div>
                     </div>
                 </div>
                 <div class="arch-arrow">↓</div>
                 <div class="arch-layer">
                     <div class="arch-box">
-                        <h4>🔗 Capa de Razonamiento (CoT)</h4>
-                        <p>Chain-of-Thought con hasta 12 pasos</p>
+                        <h4 data-i18n="arch.layer4.title">🔗 Capa de Razonamiento (CoT)</h4>
+                        <p data-i18n="arch.layer4.desc">Chain-of-Thought con hasta 12 pasos</p>
                         <div class="tech-tags">
                             <span class="tech-tag">Step-by-Step</span>
                             <span class="tech-tag">Meta-Cognition</span>
@@ -240,11 +251,11 @@
                 <div class="arch-arrow">↓</div>
                 <div class="arch-layer">
                     <div class="arch-box">
-                        <h4>⚡ Capa de Computación</h4>
-                        <p>TPU v4/v6 y ARM Axion v3.2 optimizado</p>
+                        <h4 data-i18n="arch.layer5.title">⚡ Capa de Computación</h4>
+                        <p data-i18n="arch.layer5.desc">Google TPU v5e/v6e-64 y Google ARM Axion</p>
                         <div class="tech-tags">
-                            <span class="tech-tag">TPU v4-32 / v6e-64</span>
-                            <span class="tech-tag">ARM Axion v3.2</span>
+                            <span class="tech-tag">Google TPU v5e/v6e-64</span>
+                            <span class="tech-tag">Google ARM Axion</span>
                             <span class="tech-tag">Mixed Precision</span>
                         </div>
                     </div>
@@ -252,142 +263,14 @@
                 <div class="arch-arrow">↓</div>
                 <div class="arch-layer">
                     <div class="arch-box">
-                        <h4>🔒 Capa de Seguridad</h4>
-                        <p>Constitutional AI y compliance</p>
+                        <h4 data-i18n="arch.layer6.title">🔒 Capa de Compliance</h4>
+                        <p data-i18n="arch.layer6.desc">Normativas UE para sector público y privado</p>
                         <div class="tech-tags">
-                            <span class="tech-tag">Bias Detection</span>
-                            <span class="tech-tag">Harm Prevention</span>
-                            <span class="tech-tag">GDPR/CCPA</span>
+                            <span class="tech-tag">GDPR + AI Act</span>
+                            <span class="tech-tag">Certificación Pública</span>
+                            <span class="tech-tag">Auditorías Continuas</span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Start Section -->
-    <section id="quickstart" class="quickstart">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Inicio Rápido</h2>
-                <p class="section-subtitle">Configura y ejecuta Capibara6 en minutos</p>
-            </div>
-            <div class="quickstart-grid">
-                <div class="quickstart-step">
-                    <div class="step-number">1</div>
-                    <h3>Requisitos Previos</h3>
-                    <div class="code-block">
-                        <pre><code># Google Cloud SDK
-gcloud auth login
-gcloud config set project YOUR_PROJECT
-
-# Python 3.10
-python --version  # 3.10.x
-
-# Acceso TPU v5/v5litepod</code></pre>
-                    </div>
-                </div>
-                <div class="quickstart-step">
-                    <div class="step-number">2</div>
-                    <h3>Configuración</h3>
-                    <div class="code-block">
-                        <pre><code># Configuración inicial
-./capi_master.sh setup
-
-# Generar configuración de producción
-./capi_config.sh init
-./capi_config.sh generate production</code></pre>
-                    </div>
-                </div>
-                <div class="quickstart-step">
-                    <div class="step-number">3</div>
-                    <h3>Despliegue</h3>
-                    <div class="code-block">
-                        <pre><code># Deploy en workers
-./capi_master.sh deploy production
-
-# Verificar instalación
-./capi_master.sh status</code></pre>
-                    </div>
-                </div>
-                <div class="quickstart-step">
-                    <div class="step-number">4</div>
-                    <h3>Entrenamiento</h3>
-                    <div class="code-block">
-                        <pre><code># Iniciar entrenamiento con monitorización
-./capi_master.sh train start --monitor
-
-# Monitorización avanzada
-./capi_monitor_advanced.sh report</code></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Scripts Section -->
-    <section id="docs" class="scripts">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Scripts Principales</h2>
-                <p class="section-subtitle">Herramientas completas para gestión y operación</p>
-            </div>
-            <div class="scripts-grid">
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>capi_master.sh</code>
-                        <span class="script-badge">Principal</span>
-                    </div>
-                    <p>Interfaz unificada para deploy, train, maintenance, status y setup. Punto de entrada principal del sistema.</p>
-                </div>
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>capi_config.sh</code>
-                        <span class="script-badge">Config</span>
-                    </div>
-                    <p>Gestión de configuración: init, generate, validate, show y perfiles personalizados.</p>
-                </div>
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>capi_deploy.sh</code>
-                        <span class="script-badge">Deploy</span>
-                    </div>
-                    <p>Despliegue en workers: venv, dependencias, JAX TPU, Cython y pruebas automáticas.</p>
-                </div>
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>capi_sync_workers.sh</code>
-                        <span class="script-badge">Sync</span>
-                    </div>
-                    <p>Sincronización de proyecto en todos los workers de forma eficiente y consistente.</p>
-                </div>
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>capi_train_launcher.sh</code>
-                        <span class="script-badge">Train</span>
-                    </div>
-                    <p>Arranque distribuido y monitor básico para procesos de entrenamiento.</p>
-                </div>
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>capi_monitor_advanced.sh</code>
-                        <span class="script-badge">Monitor</span>
-                    </div>
-                    <p>Métricas avanzadas: Cython/Mamba/Quant, latencia, memoria y utilización de TPU.</p>
-                </div>
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>capi_cleanup.sh</code>
-                        <span class="script-badge">Maint</span>
-                    </div>
-                    <p>Limpieza de procesos, logs, cache, checkpoints y mantenimiento del sistema.</p>
-                </div>
-                <div class="script-card">
-                    <div class="script-header">
-                        <code>fusion_verify.sh</code>
-                        <span class="script-badge">Utils</span>
-                    </div>
-                    <p>Verificación de scripts y mejoras avanzadas para asegurar integridad del sistema.</p>
                 </div>
             </div>
         </div>
@@ -398,32 +281,32 @@ python --version  # 3.10.x
         <div class="container">
             <div class="config-content">
                 <div class="config-text">
-                    <h2>Configuración Flexible</h2>
-                    <p>Sistema de configuración basado en YAML con soporte para múltiples perfiles y generación automática de variables de entorno.</p>
+                    <h2 data-i18n="config.title">Configuración Flexible</h2>
+                    <p data-i18n="config.subtitle">Sistema de configuración basado en YAML con soporte para múltiples perfiles y generación automática de variables de entorno.</p>
                     <ul class="config-features">
                         <li>
                             <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
                             </svg>
-                            Perfiles para desarrollo, staging y producción
+                            <span data-i18n="config.feature1">Perfiles para desarrollo, staging y producción</span>
                         </li>
                         <li>
                             <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
                             </svg>
-                            Validación automática de configuración
+                            <span data-i18n="config.feature2">Validación automática de configuración</span>
                         </li>
                         <li>
                             <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
                             </svg>
-                            Generación de .env desde YAML
+                            <span data-i18n="config.feature3">Generación de .env desde YAML</span>
                         </li>
                         <li>
                             <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
                             </svg>
-                            Hot-reload de configuración en desarrollo
+                            <span data-i18n="config.feature4">Hot-reload de configuración en desarrollo</span>
                         </li>
                     </ul>
                 </div>
@@ -431,7 +314,7 @@ python --version  # 3.10.x
                     <div class="code-block">
                         <div class="code-header">
                             <span>capibara_config_example.yaml</span>
-                            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+                            <button class="copy-btn" onclick="copyCode(this)"><span data-i18n="button.copy">Copiar</span></button>
                         </div>
                         <pre><code>project:
   name: capibara6
@@ -457,139 +340,230 @@ model:
         </div>
     </section>
 
-    <!-- Monitoring Section -->
-    <section class="monitoring">
+    <!-- Datasets Section -->
+    <section id="datasets" class="datasets">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Monitorización Avanzada</h2>
-                <p class="section-subtitle">Visibilidad completa del sistema en tiempo real</p>
+                <h2 class="section-title" data-i18n="datasets.title">Datasets Especializados</h2>
+                <p class="section-subtitle" data-i18n="datasets.subtitle">Colección curada de datasets de alta calidad para entrenamiento avanzado</p>
             </div>
-            <div class="monitoring-grid">
-                <div class="monitor-card">
-                    <h3>📈 Rendimiento</h3>
-                    <div class="code-block small">
-                        <pre><code>./capi_monitor_advanced.sh performance</code></pre>
+            <div class="datasets-grid">
+                <!-- Academic -->
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <i data-lucide="graduation-cap" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.academic.title">Datasets Académicos</h3>
                     </div>
-                    <p>Monitorea latencia, throughput y utilización de recursos.</p>
+                    <p class="dataset-path">datasets/academic/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.academic.purpose">Datasets especializados en investigación académica</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.academic.item1">Datasets institucionales de universidades</li>
+                        <li data-i18n="dataset.academic.item2">Datasets de Wikipedia académica</li>
+                        <li data-i18n="dataset.academic.item3">Código académico y papers</li>
+                        <li data-i18n="dataset.academic.item4">Metadatos de investigación</li>
+                    </ul>
                 </div>
-                <div class="monitor-card">
-                    <h3>🔬 Características</h3>
-                    <div class="code-block small">
-                        <pre><code>./capi_monitor_advanced.sh features</code></pre>
+
+                <!-- Multimodal -->
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <i data-lucide="image" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.multimodal.title">Datasets Multimodales</h3>
                     </div>
-                    <p>Estado de Cython, Mamba SSM, cuantización y kernels.</p>
+                    <p class="dataset-path">datasets/multimodal/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.multimodal.purpose">Datasets que combinan texto, audio y otros formatos</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.multimodal.item1">Datasets de audio emocional</li>
+                        <li data-i18n="dataset.multimodal.item2">Análisis de sentimientos multimodal</li>
+                        <li data-i18n="dataset.multimodal.item3">Datasets de conversación</li>
+                    </ul>
                 </div>
-                <div class="monitor-card">
-                    <h3>📊 Reportes</h3>
-                    <div class="code-block small">
-                        <pre><code>./capi_monitor_advanced.sh report</code></pre>
+
+                <!-- Engineering -->
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <i data-lucide="cpu" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.engineering.title">Datasets de Ingeniería</h3>
                     </div>
-                    <p>Genera reportes completos con métricas y recomendaciones.</p>
+                    <p class="dataset-path">datasets/engineering_design/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.engineering.purpose">Datasets especializados en ingeniería y diseño</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.engineering.item1">Datasets de electrónica</li>
+                        <li data-i18n="dataset.engineering.item2">Datasets de FPGA</li>
+                        <li data-i18n="dataset.engineering.item3">Diseños de circuitos</li>
+                        <li data-i18n="dataset.engineering.item4">Documentación técnica</li>
+                    </ul>
+                </div>
+
+                <!-- Physics -->
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <i data-lucide="atom" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.physics.title">Datasets de Física</h3>
+                    </div>
+                    <p class="dataset-path">datasets/physics/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.physics.purpose">Datasets especializados en física teórica y aplicada</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.physics.item1">Datasets de física cuántica</li>
+                        <li data-i18n="dataset.physics.item2">Simulaciones físicas</li>
+                        <li data-i18n="dataset.physics.item3">Datasets de mecánica clásica</li>
+                        <li data-i18n="dataset.physics.item4">Datasets de física de partículas</li>
+                    </ul>
+                </div>
+
+                <!-- Robotics -->
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <i data-lucide="bot" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.robotics.title">Datasets de Robótica</h3>
+                    </div>
+                    <p class="dataset-path">datasets/robotics/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.robotics.purpose">Datasets para robótica avanzada</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.robotics.item1">Datasets de control robótico</li>
+                        <li data-i18n="dataset.robotics.item2">Datasets de percepción</li>
+                        <li data-i18n="dataset.robotics.item3">Datasets de planificación de movimiento</li>
+                        <li data-i18n="dataset.robotics.item4">Datasets de interacción humano-robot</li>
+                    </ul>
+                </div>
+
+                <!-- Mathematics -->
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <i data-lucide="calculator" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.mathematics.title">Datasets de Matemáticas</h3>
+                    </div>
+                    <p class="dataset-path">datasets/mathematics/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.mathematics.purpose">Datasets especializados en matemáticas puras y aplicadas</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.mathematics.item1">Datasets de álgebra</li>
+                        <li data-i18n="dataset.mathematics.item2">Datasets de cálculo</li>
+                        <li data-i18n="dataset.mathematics.item3">Datasets de estadística</li>
+                        <li data-i18n="dataset.mathematics.item4">Datasets de optimización</li>
+                    </ul>
+                </div>
+
+                <!-- Systems -->
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <i data-lucide="server" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.systems.title">Datasets de Sistemas</h3>
+                    </div>
+                    <p class="dataset-path">datasets/systems/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.systems.purpose">Datasets de sistemas operativos y computación</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.systems.item1">Datasets de Linux kernel</li>
+                        <li data-i18n="dataset.systems.item2">Logs de sistemas</li>
+                        <li data-i18n="dataset.systems.item3">Datasets de administración de sistemas</li>
+                        <li data-i18n="dataset.systems.item4">Datasets de seguridad</li>
+                    </ul>
+                </div>
+
+                <!-- Spanish Community -->
+                <div class="dataset-card featured">
+                    <div class="dataset-header">
+                        <i data-lucide="globe" style="width: 32px; height: 32px;"></i>
+                        <h3 data-i18n="dataset.spanish.title">Comunidad Española</h3>
+                    </div>
+                    <p class="dataset-path">datasets/spanish_community/</p>
+                    <p class="dataset-purpose" data-i18n="dataset.spanish.purpose">Datasets específicos para la comunidad hispanohablante</p>
+                    <ul class="dataset-content">
+                        <li data-i18n="dataset.spanish.item1">Datasets de NLP en español</li>
+                        <li data-i18n="dataset.spanish.item2">Datasets de literatura española</li>
+                        <li data-i18n="dataset.spanish.item3">Datasets de medios en español</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Troubleshooting Section -->
-    <section class="troubleshooting">
+    <!-- Component Status Section -->
+    <section class="component-status">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Resolución de Problemas</h2>
-                <p class="section-subtitle">Soluciones a problemas comunes</p>
+                <h2 class="section-title" data-i18n="status.title">Estado de Componentes</h2>
+                <p class="section-subtitle" data-i18n="status.subtitle">Sistema completamente operativo y optimizado</p>
             </div>
-            <div class="troubleshooting-grid">
-                <div class="trouble-card">
-                    <h3>🔴 TPU no accesible</h3>
-                    <p><strong>Síntoma:</strong> Error al conectar con TPU</p>
-                    <p><strong>Solución:</strong></p>
-                    <div class="code-block">
-                        <pre><code># Verificar configuración
-echo $TPU_NAME $ZONE $PROJECT
-
-# Re-autenticar
-gcloud auth login
-gcloud auth application-default login</code></pre>
-                    </div>
-                </div>
-                <div class="trouble-card">
-                    <h3>⚠️ JAX sin TPU</h3>
-                    <p><strong>Síntoma:</strong> JAX no detecta TPU</p>
-                    <p><strong>Solución:</strong></p>
-                    <div class="code-block">
-                        <pre><code># Reinstalar JAX TPU
-pip install --upgrade "jax[tpu]"
-
-# Verificar plataforma
-export JAX_PLATFORMS=tpu
-python -c "import jax; print(jax.devices())"</code></pre>
-                    </div>
-                </div>
-                <div class="trouble-card">
-                    <h3>💾 Problemas de Memoria</h3>
-                    <p><strong>Síntoma:</strong> OOM durante entrenamiento</p>
-                    <p><strong>Solución:</strong></p>
-                    <div class="code-block">
-                        <pre><code># Activar cuantización
-export ENABLE_QUANTIZATION=true
-
-# Reducir batch size
-export BATCH_SIZE=16
-
-# Aumentar umbral Mamba
-export MAMBA_THRESHOLD=256</code></pre>
-                    </div>
-                </div>
-                <div class="trouble-card">
-                    <h3>🐌 Rendimiento Lento</h3>
-                    <p><strong>Síntoma:</strong> Entrenamiento lento</p>
-                    <p><strong>Solución:</strong></p>
-                    <div class="code-block">
-                        <pre><code># Compilar kernels Cython
-python setup.py build_ext --inplace
-
-# Verificar uso de Mamba
-./capi_monitor_advanced.sh features
-
-# Perfilado
-./capi_monitor_advanced.sh performance</code></pre>
-                    </div>
+            
+            <!-- Componentes Operativos -->
+            <div class="status-section">
+                <h3 class="status-section-title" data-i18n="status.components.title">Componentes del Sistema</h3>
+                <div class="components-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="status.table.component">Componente</th>
+                                <th data-i18n="status.table.version">Versión/Capacidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>JAX/Flax</strong></td>
+                                <td>JAX 0.6.1, Flax 0.10.6</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TPU v5e-64</strong></td>
+                                <td>64 cores, multi-worker</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cython Kernels</strong></td>
+                                <td>20x speedup <span data-i18n="status.active">activo</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Label Studio</strong></td>
+                                <td>Backend ML <span data-i18n="status.active">activo</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>W&B Monitoring</strong></td>
+                                <td>Tracking <span data-i18n="status.complete">completo</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Meta-Consensus</strong></td>
+                                <td><span data-i18n="status.system.complete">Sistema completo</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Datasets</strong></td>
+                                <td>2.8M <span data-i18n="status.samples">muestras</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong data-i18n="status.agent.system">Sistema Agentes</strong></td>
+                                <td>Factory + Strategy patterns</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Documentation Section -->
-    <section class="documentation">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Documentación Unificada</h2>
-                <p class="section-subtitle">Guías completas y referencias</p>
-            </div>
-            <div class="docs-grid">
-                <a href="#" class="doc-card">
-                    <div class="doc-icon">📘</div>
-                    <h3>Meta-Consensus y Mamba</h3>
-                    <p>fusion_meta_consensus_mamba.md</p>
-                    <span class="doc-arrow">→</span>
-                </a>
-                <a href="#" class="doc-card">
-                    <div class="doc-icon">📗</div>
-                    <h3>Operación y Scripts</h3>
-                    <p>fusion_operacion_scripts.md</p>
-                    <span class="doc-arrow">→</span>
-                </a>
-                <a href="#" class="doc-card">
-                    <div class="doc-icon">📙</div>
-                    <h3>Referencia API</h3>
-                    <p>Documentación completa de la librería</p>
-                    <span class="doc-arrow">→</span>
-                </a>
-                <a href="#" class="doc-card">
-                    <div class="doc-icon">📕</div>
-                    <h3>Ejemplos y Tutoriales</h3>
-                    <p>Casos de uso y ejemplos prácticos</p>
-                    <span class="doc-arrow">→</span>
-                </a>
+            
+            <!-- Capacidades Técnicas -->
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <div class="capability-icon"><i data-lucide="gauge" style="width: 40px; height: 40px;"></i></div>
+                    <h3 data-i18n="status.cap.performance">Performance</h3>
+                    <ul>
+                        <li><strong>20x</strong> <span data-i18n="status.cap.perf1">aceleración con Cython kernels</span></li>
+                        <li><strong>75%</strong> <span data-i18n="status.cap.perf2">reducción de memoria con cuantización INT8</span></li>
+                        <li><strong>40x</strong> <span data-i18n="status.cap.perf3">mejora teórica combinada</span></li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon"><i data-lucide="network" style="width: 40px; height: 40px;"></i></div>
+                    <h3 data-i18n="status.cap.scalability">Escalabilidad</h3>
+                    <ul>
+                        <li><span data-i18n="status.cap.scale1">Entrenamiento distribuido multi-worker</span></li>
+                        <li><span data-i18n="status.cap.scale2">Consenso federado Byzantine fault-tolerant</span></li>
+                        <li><span data-i18n="status.cap.scale3">Soporte TPU/ARM/CUDA</span></li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon"><i data-lucide="blocks" style="width: 40px; height: 40px;"></i></div>
+                    <h3 data-i18n="status.cap.modularity">Modularidad</h3>
+                    <ul>
+                        <li><span data-i18n="status.cap.mod1">Sistema de configuración TOML completo</span></li>
+                        <li><span data-i18n="status.cap.mod2">Factory pattern para agentes</span></li>
+                        <li><span data-i18n="status.cap.mod3">Strategy pattern para orquestación</span></li>
+                        <li><span data-i18n="status.cap.mod4">Adapter pattern para hardware</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -598,70 +572,70 @@ python setup.py build_ext --inplace
     <section class="performance">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Rendimiento Enterprise-Grade</h2>
-                <p class="section-subtitle">Benchmarks en hardware de producción</p>
+                <h2 class="section-title" data-i18n="perf.title">Rendimiento Enterprise-Grade</h2>
+                <p class="section-subtitle" data-i18n="perf.subtitle">Benchmarks en hardware de producción</p>
             </div>
             <div class="performance-grid">
                 <div class="perf-card">
-                    <h3>🔥 TPU v4-32 Performance</h3>
+                    <h3>🔥 Google TPU v6e-64</h3>
                     <div class="perf-stats">
                         <div class="perf-stat">
-                            <span class="perf-label">Throughput</span>
-                            <span class="perf-value">2,847 tok/sec</span>
+                            <span class="perf-label" data-i18n="perf.label.throughput">Throughput</span>
+                            <span class="perf-value">4,500+ tok/sec</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Latencia P95</span>
-                            <span class="perf-value">180ms</span>
+                            <span class="perf-label" data-i18n="perf.label.latency">Latencia P95</span>
+                            <span class="perf-value">120ms</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Memoria HBM</span>
-                            <span class="perf-value">24.3GB</span>
+                            <span class="perf-label" data-i18n="perf.label.memory">Memoria HBM</span>
+                            <span class="perf-value">32GB</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">TFLOPS</span>
-                            <span class="perf-value">287.5</span>
+                            <span class="perf-label" data-i18n="perf.label.efficiency">Eficiencia</span>
+                            <span class="perf-value">98.5%</span>
                         </div>
                     </div>
                 </div>
                 <div class="perf-card">
-                    <h3>💪 ARM Axion v3.2 Performance</h3>
+                    <h3>💪 Google ARM Axion</h3>
                     <div class="perf-stats">
                         <div class="perf-stat">
-                            <span class="perf-label">Throughput</span>
-                            <span class="perf-value">1,234 tok/sec</span>
+                            <span class="perf-label" data-i18n="perf.label.throughput">Throughput</span>
+                            <span class="perf-value">2,100+ tok/sec</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Latencia P95</span>
-                            <span class="perf-value">425ms</span>
+                            <span class="perf-label" data-i18n="perf.label.latency">Latencia P95</span>
+                            <span class="perf-value">280ms</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Memoria</span>
-                            <span class="perf-value">12.8GB</span>
+                            <span class="perf-label" data-i18n="perf.label.memoryarm">Memoria</span>
+                            <span class="perf-value">16GB</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Consumo</span>
-                            <span class="perf-value">180W</span>
+                            <span class="perf-label" data-i18n="perf.label.power">Consumo</span>
+                            <span class="perf-value">95W</span>
                         </div>
                     </div>
                 </div>
                 <div class="perf-card">
-                    <h3>🎯 MoE Expert Utilization</h3>
+                    <h3>🎯 Arquitectura Híbrida</h3>
                     <div class="perf-stats">
                         <div class="perf-stat">
-                            <span class="perf-label">Expertos Activos</span>
-                            <span class="perf-value">4/32 avg</span>
+                            <span class="perf-label" data-i18n="perf.label.transformer">Transformer</span>
+                            <span class="perf-value">70%</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Load Balance</span>
-                            <span class="perf-value">0.94/1.0</span>
+                            <span class="perf-label" data-i18n="perf.label.mamba">Mamba SSM</span>
+                            <span class="perf-value">30%</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Precisión</span>
-                            <span class="perf-value">96.3%</span>
+                            <span class="perf-label" data-i18n="perf.label.context">Contexto</span>
+                            <span class="perf-value">10M+ tok</span>
                         </div>
                         <div class="perf-stat">
-                            <span class="perf-label">Overhead</span>
-                            <span class="perf-value">2.1%</span>
+                            <span class="perf-label" data-i18n="perf.label.precision">Precisión</span>
+                            <span class="perf-value">97.8%</span>
                         </div>
                     </div>
                 </div>
@@ -673,14 +647,14 @@ python setup.py build_ext --inplace
     <section class="cta">
         <div class="container">
             <div class="cta-content">
-                <h2>¿Listo para comenzar con capibara6?</h2>
-                <p>Únete a la revolución de IA conversacional con Mixture of Experts y Chain-of-Thought reasoning</p>
+                <h2 data-i18n="cta.title">¿Listo para comenzar con capibara6?</h2>
+                <p data-i18n="cta.subtitle">Únete a la revolución de IA conversacional con Mixture of Experts y Chain-of-Thought reasoning</p>
                 <div class="cta-buttons">
-                    <a href="#quickstart" class="btn btn-large btn-white">
-                        Comenzar Ahora
+                    <a href="#docs" class="btn btn-large btn-white">
+                        <span data-i18n="cta.button.start">Comenzar Ahora</span>
                     </a>
-                    <a href="https://github.com/anachroni" class="btn btn-large btn-outline" target="_blank">
-                        Ver en GitHub
+                    <a href="https://github.com/anachroni-co/capibara6" class="btn btn-large btn-outline" target="_blank">
+                        <span data-i18n="cta.button.github">Ver en GitHub</span>
                     </a>
                 </div>
             </div>
@@ -693,57 +667,104 @@ python setup.py build_ext --inplace
             <div class="footer-grid">
                 <div class="footer-column">
                     <div class="footer-brand">
-                        <span class="logo">🦫</span>
-                        <h3 class="gradient-text">anachroni</h3>
+                        <h3 class="logo-gradient">capibara6</h3>
+                        <p class="footer-company">by <span class="gradient-text">anachroni</span></p>
                     </div>
-                    <p>Sistema avanzado de IA conversacional con Mixture of Experts, Chain-of-Thought y capacidades multimodales.</p>
+                    <p data-i18n="footer.description">Sistema avanzado de IA conversacional con Mixture of Experts, Chain-of-Thought y capacidades multimodales.</p>
                     <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
-                        <strong>Anachroni s.coop</strong><br>
-                        España<br>
+                        <strong data-i18n="footer.company">Anachroni s.coop</strong><br>
+                        <span data-i18n="footer.country">España</span><br>
                         <a href="https://www.anachroni.co" target="_blank" style="color: var(--primary-light);">www.anachroni.co</a><br>
                         <a href="mailto:info@anachroni.co" style="color: var(--primary-light);">info@anachroni.co</a>
                     </p>
                 </div>
                 <div class="footer-column">
-                    <h4>Producto</h4>
+                    <h4 data-i18n="footer.product">Producto</h4>
                     <ul>
-                        <li><a href="#features">Características</a></li>
-                        <li><a href="#architecture">Arquitectura</a></li>
-                        <li><a href="#quickstart">Inicio Rápido</a></li>
-                        <li><a href="#docs">Documentación</a></li>
+                        <li><a href="#features" data-i18n="nav.features">Características</a></li>
+                        <li><a href="#architecture" data-i18n="nav.architecture">Arquitectura</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h4>Recursos</h4>
+                    <h4 data-i18n="footer.resources">Recursos</h4>
                     <ul>
-                        <li><a href="#">Guías de Usuario</a></li>
-                        <li><a href="#">API Reference</a></li>
-                        <li><a href="#">Casos de Uso</a></li>
-                        <li><a href="#">Benchmarks</a></li>
+                        <li><a href="#" data-i18n="footer.guides">Guías de Usuario</a></li>
+                        <li><a href="#" data-i18n="footer.api">API Reference</a></li>
+                        <li><a href="#" data-i18n="footer.usecases">Casos de Uso</a></li>
+                        <li><a href="#" data-i18n="footer.benchmarks">Benchmarks</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h4>Comunidad</h4>
+                    <h4 data-i18n="footer.community">Comunidad</h4>
                     <ul>
-                        <li><a href="https://github.com/anachroni" target="_blank">GitHub</a></li>
-                        <li><a href="#">Discord</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Contribuir</a></li>
+                        <li><a href="https://github.com/anachroni-co/capibara6" target="_blank" data-i18n="footer.github">GitHub</a></li>
+                        <li><a href="#" data-i18n="footer.discord">Discord</a></li>
+                        <li><a href="#" data-i18n="footer.twitter">Twitter</a></li>
+                        <li><a href="#" data-i18n="footer.contribute">Contribuir</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 <strong>Anachroni s.coop</strong> - capibara6.com | Licencia Apache 2.0</p>
+                <p data-i18n="footer.copyright">&copy; 2025 <strong>Anachroni s.coop</strong> - capibara6.com | Licencia Apache 2.0</p>
                 <div class="footer-links">
-                    <a href="#">Privacidad</a>
-                    <a href="#">Términos</a>
-                    <a href="#">Licencia</a>
+                    <a href="#" data-i18n="footer.privacy">Privacidad</a>
+                    <a href="#" data-i18n="footer.terms">Términos</a>
+                    <a href="#" data-i18n="footer.license">Licencia</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Chatbot -->
+    <div id="chatbot-container" class="chatbot-container">
+        <button id="chatbot-toggle" class="chatbot-toggle" aria-label="Toggle Chat">
+            <i data-lucide="message-circle" style="width: 28px; height: 28px;"></i>
+        </button>
+        <div id="chatbot-window" class="chatbot-window">
+            <div class="chatbot-header">
+                <div class="chatbot-header-content">
+                    <div class="chatbot-avatar"><i data-lucide="bot" style="width: 24px; height: 24px;"></i></div>
+                    <div>
+                        <h3 data-i18n="chat.title">Asistente capibara6</h3>
+                        <span class="chatbot-status"><i data-lucide="circle" style="width: 8px; height: 8px; fill: currentColor;"></i> <span data-i18n="chat.status">En línea</span></span>
+                    </div>
+                </div>
+                <button id="chatbot-close" class="chatbot-close-btn"><i data-lucide="x" style="width: 24px; height: 24px;"></i></button>
+            </div>
+            <div id="chatbot-messages" class="chatbot-messages">
+                <div class="chat-message bot-message">
+                    <div class="message-avatar"><i data-lucide="bot" style="width: 20px; height: 20px;"></i></div>
+                    <div class="message-content">
+                        <p data-i18n="chat.welcome">¡Hola! Soy el asistente de capibara6. ¿En qué puedo ayudarte?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-input-container">
+                <input 
+                    type="text" 
+                    id="chatbot-input" 
+                    class="chatbot-input" 
+                    data-i18n-placeholder="chat.placeholder"
+                    placeholder="Escribe tu pregunta..."
+                    autocomplete="off"
+                />
+                <button id="chatbot-send" class="chatbot-send-btn">
+                    <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="neural-animation.js"></script>
+    <script src="chatbot.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Inicializar iconos de Lucide
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>
 
