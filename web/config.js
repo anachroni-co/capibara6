@@ -6,7 +6,7 @@ const CHATBOT_CONFIG = {
     // En producción: URL de Railway
     BACKEND_URL: window.location.hostname === 'localhost' 
         ? 'http://localhost:5000'
-        : 'https://capibara6.com',
+        : 'https://www.capibara6.com',
     
     // Endpoints
     ENDPOINTS: {
