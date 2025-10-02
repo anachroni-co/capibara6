@@ -401,9 +401,11 @@ class Capibara6Chat {
         
         // Intentar enviar al backend en segundo plano
         try {
-            const backendUrl = window.location.hostname === 'localhost' 
-                ? 'http://localhost:5000/api/save-conversation'
-                : '/api/save-conversation';
+            const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
+                ? CHATBOT_CONFIG.BACKEND_URL + CHATBOT_CONFIG.ENDPOINTS.SAVE_CONVERSATION
+                : (window.location.hostname === 'localhost' 
+                    ? 'http://localhost:5000/api/save-conversation'
+                    : '/api/save-conversation');
             
             console.log('Enviando email al backend:', email);
             console.log('URL del backend:', backendUrl);
