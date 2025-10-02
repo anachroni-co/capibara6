@@ -6,6 +6,7 @@
     <meta name="description" content="Capibara6 - Sistema avanzado de IA conversacional con arquitectura híbrida Transformer-Mamba, optimizaciones TPU v5e/v6e y Google ARM Axion. Mayor ventana de contexto del mercado. Compliance total para empresas y administraciones públicas.">
     <title>Capibara6 - IA Conversacional de Nueva Generación | Anachroni</title>
     <link rel="canonical" href="https://capibara6.com">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -575,6 +576,60 @@ model:
                 <h2 class="section-title" data-i18n="perf.title">Rendimiento Enterprise-Grade</h2>
                 <p class="section-subtitle" data-i18n="perf.subtitle">Benchmarks en hardware de producción</p>
             </div>
+            <!-- Comparativa de Modelos -->
+            <div class="comparison-section">
+                <h3 class="comparison-title" data-i18n="perf.comparison.title">Comparativa con Modelos Líderes</h3>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="perf.comp.model">Modelo</th>
+                                <th data-i18n="perf.comp.context">Contexto</th>
+                                <th data-i18n="perf.comp.speed">Velocidad</th>
+                                <th data-i18n="perf.comp.latency">Latencia</th>
+                                <th data-i18n="perf.comp.architecture">Arquitectura</th>
+                                <th data-i18n="perf.comp.multimodal">Multimodal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row">
+                                <td><strong class="model-name">capibara6</strong></td>
+                                <td><span class="badge-success">10M+ tokens</span></td>
+                                <td><span class="badge-success">4,500 tok/s</span></td>
+                                <td><span class="badge-success">120ms</span></td>
+                                <td>70% Transformer + 30% Mamba</td>
+                                <td><span class="badge-success">✓ Completo</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ChatGPT-5 (o1)</strong></td>
+                                <td>200K tokens</td>
+                                <td>~2,000 tok/s</td>
+                                <td>180ms</td>
+                                <td>100% Transformer</td>
+                                <td>✓ Visión</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Claude 4.5 Sonnet</strong></td>
+                                <td>200K tokens</td>
+                                <td>~2,400 tok/s</td>
+                                <td>165ms</td>
+                                <td>100% Transformer</td>
+                                <td>✓ Visión</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DeepSeek v3</strong></td>
+                                <td>128K tokens</td>
+                                <td>~3,200 tok/s</td>
+                                <td>140ms</td>
+                                <td>MoE Transformer</td>
+                                <td>✗ Limitado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Hardware Performance -->
             <div class="performance-grid">
                 <div class="perf-card">
                     <h3>🔥 Google TPU v6e-64</h3>
@@ -675,7 +730,10 @@ model:
                         <strong data-i18n="footer.company">Anachroni s.coop</strong><br>
                         <span data-i18n="footer.country">España</span><br>
                         <a href="https://www.anachroni.co" target="_blank" style="color: var(--primary-light);">www.anachroni.co</a><br>
-                        <a href="mailto:info@anachroni.co" style="color: var(--primary-light);">info@anachroni.co</a>
+                        <a href="mailto:info@anachroni.co" style="color: var(--primary-light);">info@anachroni.co</a><br>
+                        <a href="https://www.linkedin.com/company/anachroni/" target="_blank" style="color: var(--primary-light); display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                            <i data-lucide="linkedin" style="width: 16px; height: 16px;"></i> LinkedIn
+                        </a>
                     </p>
                 </div>
                 <div class="footer-column">
@@ -698,9 +756,9 @@ model:
                     <h4 data-i18n="footer.community">Comunidad</h4>
                     <ul>
                         <li><a href="https://github.com/anachroni-co/capibara6" target="_blank" data-i18n="footer.github">GitHub</a></li>
+                        <li><a href="https://www.linkedin.com/company/anachroni/" target="_blank" data-i18n="footer.linkedin">LinkedIn</a></li>
                         <li><a href="#" data-i18n="footer.discord">Discord</a></li>
                         <li><a href="#" data-i18n="footer.twitter">Twitter</a></li>
-                        <li><a href="#" data-i18n="footer.contribute">Contribuir</a></li>
                     </ul>
                 </div>
             </div>

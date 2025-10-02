@@ -107,6 +107,13 @@ const translations = {
         // Performance
         'perf.title': 'Rendimiento Enterprise-Grade',
         'perf.subtitle': 'Benchmarks en hardware de producción',
+        'perf.comparison.title': 'Comparativa con Modelos Líderes',
+        'perf.comp.model': 'Modelo',
+        'perf.comp.context': 'Contexto',
+        'perf.comp.speed': 'Velocidad',
+        'perf.comp.latency': 'Latencia',
+        'perf.comp.architecture': 'Arquitectura',
+        'perf.comp.multimodal': 'Multimodal',
         
         // CTA
         'cta.title': '¿Listo para comenzar con capibara6?',
@@ -316,9 +323,9 @@ const translations = {
         'footer.usecases': 'Casos de Uso',
         'footer.benchmarks': 'Benchmarks',
         'footer.github': 'GitHub',
+        'footer.linkedin': 'LinkedIn',
         'footer.discord': 'Discord',
         'footer.twitter': 'Twitter',
-        'footer.contribute': 'Contribuir',
         'footer.privacy': 'Privacidad',
         'footer.terms': 'Términos',
         'footer.license': 'Licencia'
@@ -430,6 +437,13 @@ const translations = {
         // Performance
         'perf.title': 'Enterprise-Grade Performance',
         'perf.subtitle': 'Benchmarks on production hardware',
+        'perf.comparison.title': 'Comparison with Leading Models',
+        'perf.comp.model': 'Model',
+        'perf.comp.context': 'Context',
+        'perf.comp.speed': 'Speed',
+        'perf.comp.latency': 'Latency',
+        'perf.comp.architecture': 'Architecture',
+        'perf.comp.multimodal': 'Multimodal',
         
         // CTA
         'cta.title': 'Ready to start with capibara6?',
@@ -639,9 +653,9 @@ const translations = {
         'footer.usecases': 'Use Cases',
         'footer.benchmarks': 'Benchmarks',
         'footer.github': 'GitHub',
+        'footer.linkedin': 'LinkedIn',
         'footer.discord': 'Discord',
         'footer.twitter': 'Twitter',
-        'footer.contribute': 'Contribute',
         'footer.privacy': 'Privacy',
         'footer.terms': 'Terms',
         'footer.license': 'License'

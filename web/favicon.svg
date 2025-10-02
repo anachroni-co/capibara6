@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#059669;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Fondo oscuro -->
+  <rect width="64" height="64" fill="#0f172a" rx="12"/>
+  
+  <!-- Ojo (círculo verde con brillo) -->
+  <circle cx="32" cy="32" r="18" fill="url(#eyeGlow)">
+    <animate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Núcleo brillante -->
+  <circle cx="32" cy="32" r="12" fill="#10b981">
+    <animate attributeName="r" values="12;10;12" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.5;1" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Punto de luz central -->
+  <circle cx="32" cy="32" r="6" fill="#d1fae5">
+    <animate attributeName="opacity" values="1;0.4;1" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Reflejo -->
+  <circle cx="28" cy="28" r="3" fill="#ffffff" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite"/>
+  </circle>
+</svg>
+
