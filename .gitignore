@@ -208,6 +208,5 @@ __marimo__/
 
 # capibara6 específico
 backend/user_data/
-*.txt
 !backend/README.md
 backend/.env
