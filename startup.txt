@@ -1,0 +1,6 @@
+gcloud compute tpus tpu-vm create t1v-n-preempt-w-0 \
+  --zone=us-central1-a \
+  --accelerator-type=v5litepod-64 \
+  --version=tpu-vm-base \
+  --preemptible \
+  --metadata-from-file=startup-script=startup.sh
