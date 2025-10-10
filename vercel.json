@@ -3,12 +3,6 @@
   "buildCommand": null,
   "outputDirectory": "web",
   "public": true,
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",

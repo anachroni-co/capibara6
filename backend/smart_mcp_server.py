@@ -14,7 +14,11 @@ CORS(app, origins=[
     'http://172.22.128.1:5500',  # IP de red local (Live Server)
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'http://172.22.128.1:8000'   # IP de red local (Python server)
+    'http://172.22.128.1:8000',   # IP de red local (Python server)
+    'https://capibara6.vercel.app',  # Vercel production
+    'https://*.vercel.app',  # Vercel previews
+    'http://34.175.104.187:8080',  # VM IP (si se accede directamente)
+    '*'  # Permitir todos los orígenes (ajustar en producción)
 ])
 
 # Base de conocimiento verificada
