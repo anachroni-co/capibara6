@@ -7,7 +7,7 @@
     <title>Capibara6 Chat | Anachroni</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="chat.css?v=5.0">
+    <link rel="stylesheet" href="chat.css?v=6.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -242,6 +242,15 @@
                         <i data-lucide="sliders-horizontal" style="width: 20px; height: 20px;"></i>
                     </button>
                 </div>
+            </div>
+
+            <!-- Banner Beta Experimental -->
+            <div class="beta-banner">
+                <i data-lucide="flask-conical" style="width: 16px; height: 16px;"></i>
+                <span><strong>Versión Beta Experimental</strong> - Esta aplicación está en desarrollo activo. Pueden ocurrir errores o cambios inesperados.</span>
+                <button class="beta-banner-close" onclick="this.parentElement.style.display='none'" title="Cerrar">
+                    <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                </button>
             </div>
 
             <div id="messages-container" class="messages-container">
