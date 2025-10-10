@@ -13,7 +13,10 @@ const CONSENSUS_CONFIG = {
 
 // Configuración del modelo original
 const MODEL_CONFIG = {
-    serverUrl: 'http://34.175.104.187:8080/completion',  // IP actualizada
+    // Usar proxy de Vercel en producción (HTTPS), directo en desarrollo
+    serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://34.175.104.187:8080/completion'  // Desarrollo: directo a la VM
+        : '/api/completion',  // Producción: proxy HTTPS de Vercel
     systemPrompt: 'Eres un asistente útil.',  // Mínimo necesario para Gemma
     defaultParams: {
         n_predict: 200,  // Reducido para respuestas más concisas

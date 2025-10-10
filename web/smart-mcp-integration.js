@@ -5,10 +5,10 @@
  */
 
 const SMART_MCP_CONFIG = {
-    // Detectar automáticamente el entorno
-    serverUrl: window.location.hostname === 'localhost' 
-        ? 'http://localhost:5003/analyze'  // Desarrollo local
-        : 'http://34.175.104.187:5003/analyze',  // Producción (VM)
+    // Usar proxy de Vercel en producción (HTTPS), directo en desarrollo
+    serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5003/analyze'  // Desarrollo: MCP local
+        : '/api/mcp-analyze',  // Producción: proxy HTTPS de Vercel
     enabled: false,  // ⚠️ DESHABILITADO - Habilitar cuando Smart MCP esté corriendo
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true
