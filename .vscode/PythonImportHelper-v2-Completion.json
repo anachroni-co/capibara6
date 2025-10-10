@@ -1,0 +1,1261 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "secrets",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "secrets",
+        "description": "secrets",
+        "detail": "secrets",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "urlencode",
+        "importPath": "urllib.parse",
+        "description": "urllib.parse",
+        "isExtraImport": true,
+        "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "parse_qs",
+        "importPath": "urllib.parse",
+        "description": "urllib.parse",
+        "isExtraImport": true,
+        "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "redirect",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "session",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "jwt",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "jwt",
+        "description": "jwt",
+        "detail": "jwt",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "datetime",
+        "description": "datetime",
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "aiohttp",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "aiohttp",
+        "description": "aiohttp",
+        "detail": "aiohttp",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "MODELS_CONFIG",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "CONSENSUS_CONFIG",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "PROMPT_TEMPLATES",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_active_models",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_model_config",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "format_prompt",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_system_info",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "smtplib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "smtplib",
+        "description": "smtplib",
+        "detail": "smtplib",
+        "documentation": {}
+    },
+    {
+        "label": "MIMEText",
+        "importPath": "email.mime.text",
+        "description": "email.mime.text",
+        "isExtraImport": true,
+        "detail": "email.mime.text",
+        "documentation": {}
+    },
+    {
+        "label": "MIMEText",
+        "importPath": "email.mime.text",
+        "description": "email.mime.text",
+        "isExtraImport": true,
+        "detail": "email.mime.text",
+        "documentation": {}
+    },
+    {
+        "label": "MIMEText",
+        "importPath": "email.mime.text",
+        "description": "email.mime.text",
+        "isExtraImport": true,
+        "detail": "email.mime.text",
+        "documentation": {}
+    },
+    {
+        "label": "MIMEMultipart",
+        "importPath": "email.mime.multipart",
+        "description": "email.mime.multipart",
+        "isExtraImport": true,
+        "detail": "email.mime.multipart",
+        "documentation": {}
+    },
+    {
+        "label": "MIMEMultipart",
+        "importPath": "email.mime.multipart",
+        "description": "email.mime.multipart",
+        "isExtraImport": true,
+        "detail": "email.mime.multipart",
+        "documentation": {}
+    },
+    {
+        "label": "MIMEMultipart",
+        "importPath": "email.mime.multipart",
+        "description": "email.mime.multipart",
+        "isExtraImport": true,
+        "detail": "email.mime.multipart",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "generate_jwt_token",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def generate_jwt_token(user_data):\n    \"\"\"Genera un token JWT para el usuario\"\"\"\n    payload = {\n        'user_id': user_data['id'],\n        'email': user_data['email'],\n        'name': user_data['name'],\n        'provider': user_data['provider'],\n        'exp': datetime.utcnow() + timedelta(days=7),\n        'iat': datetime.utcnow()\n    }",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "verify_jwt_token",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def verify_jwt_token(token):\n    \"\"\"Verifica y decodifica un token JWT\"\"\"\n    try:\n        payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])\n        return payload\n    except jwt.ExpiredSignatureError:\n        return None\n    except jwt.InvalidTokenError:\n        return None\ndef get_user_from_github(token):",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_from_github",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def get_user_from_github(token):\n    \"\"\"Obtiene información del usuario desde GitHub\"\"\"\n    headers = {'Authorization': f'token {token}'}\n    response = requests.get(OAUTH_CONFIG['github']['user_url'], headers=headers)\n    if response.status_code == 200:\n        user_data = response.json()\n        return {\n            'id': f\"github_{user_data['id']}\",\n            'name': user_data['name'] or user_data['login'],\n            'email': user_data.get('email', ''),",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_from_google",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def get_user_from_google(token):\n    \"\"\"Obtiene información del usuario desde Google\"\"\"\n    headers = {'Authorization': f'Bearer {token}'}\n    response = requests.get(OAUTH_CONFIG['google']['user_url'], headers=headers)\n    if response.status_code == 200:\n        user_data = response.json()\n        return {\n            'id': f\"google_{user_data['id']}\",\n            'name': user_data['name'],\n            'email': user_data['email'],",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "github_auth",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def github_auth():\n    \"\"\"Inicia el flujo de autenticación con GitHub\"\"\"\n    state = secrets.token_urlsafe(32)\n    session['oauth_state'] = state\n    params = {\n        'client_id': OAUTH_CONFIG['github']['client_id'],\n        'redirect_uri': f\"{request.host_url}auth/callback/github\",\n        'scope': 'user:email',\n        'state': state\n    }",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "google_auth",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def google_auth():\n    \"\"\"Inicia el flujo de autenticación con Google\"\"\"\n    state = secrets.token_urlsafe(32)\n    session['oauth_state'] = state\n    params = {\n        'client_id': OAUTH_CONFIG['google']['client_id'],\n        'redirect_uri': f\"{request.host_url}auth/callback/google\",\n        'response_type': 'code',\n        'scope': 'openid email profile',\n        'state': state",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "github_callback",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def github_callback():\n    \"\"\"Maneja el callback de GitHub\"\"\"\n    code = request.args.get('code')\n    state = request.args.get('state')\n    # Verificar state\n    if state != session.get('oauth_state'):\n        return jsonify({'error': 'Invalid state parameter'}), 400\n    # Intercambiar código por token\n    token_data = {\n        'client_id': OAUTH_CONFIG['github']['client_id'],",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "google_callback",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def google_callback():\n    \"\"\"Maneja el callback de Google\"\"\"\n    code = request.args.get('code')\n    state = request.args.get('state')\n    # Verificar state\n    if state != session.get('oauth_state'):\n        return jsonify({'error': 'Invalid state parameter'}), 400\n    # Intercambiar código por token\n    token_data = {\n        'client_id': OAUTH_CONFIG['google']['client_id'],",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "verify_token",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def verify_token():\n    \"\"\"Verifica un token JWT\"\"\"\n    data = request.get_json()\n    token = data.get('token')\n    if not token:\n        return jsonify({'error': 'No token provided'}), 400\n    payload = verify_jwt_token(token)\n    if payload:\n        return jsonify({\n            'valid': True,",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "logout",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def logout():\n    \"\"\"Cierra la sesión del usuario\"\"\"\n    # En un sistema real, aquí invalidarías el token\n    return jsonify({'message': 'Logged out successfully'})\n@app.route('/health')\ndef health_check():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'capibara6-auth',",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "health_check",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def health_check():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'capibara6-auth',\n        'timestamp': datetime.utcnow().isoformat()\n    })\n# ============================================\n# Error Handlers\n# ============================================",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "not_found",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def not_found(error):\n    return jsonify({'error': 'Endpoint not found'}), 404\n@app.errorhandler(500)\ndef internal_error(error):\n    return jsonify({'error': 'Internal server error'}), 500\n# ============================================\n# Main\n# ============================================\nif __name__ == '__main__':\n    print(\"🚀 Iniciando servidor de autenticación Capibara6...\")",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "internal_error",
+        "kind": 2,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "def internal_error(error):\n    return jsonify({'error': 'Internal server error'}), 500\n# ============================================\n# Main\n# ============================================\nif __name__ == '__main__':\n    print(\"🚀 Iniciando servidor de autenticación Capibara6...\")\n    print(\"📋 Configuración:\")\n    print(f\"   - GitHub Client ID: {'✅ Configurado' if OAUTH_CONFIG['github']['client_id'] != 'your_github_client_id' else '❌ No configurado'}\")\n    print(f\"   - Google Client ID: {'✅ Configurado' if OAUTH_CONFIG['google']['client_id'] != 'your_google_client_id' else '❌ No configurado'}\")",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "app = Flask(__name__)\napp.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))\n# Configuración CORS - Desarrollo (localhost)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# Configuración CORS - Producción (comentado para activar más tarde)\n# CORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'https://capibara6.com', 'http://capibara6.com'])\n# Configuración OAuth\nOAUTH_CONFIG = {\n    'github': {\n        'client_id': os.environ.get('GITHUB_CLIENT_ID', 'your_github_client_id'),",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "app.secret_key",
+        "kind": 5,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))\n# Configuración CORS - Desarrollo (localhost)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# Configuración CORS - Producción (comentado para activar más tarde)\n# CORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'https://capibara6.com', 'http://capibara6.com'])\n# Configuración OAuth\nOAUTH_CONFIG = {\n    'github': {\n        'client_id': os.environ.get('GITHUB_CLIENT_ID', 'your_github_client_id'),\n        'client_secret': os.environ.get('GITHUB_CLIENT_SECRET', 'your_github_client_secret'),",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "OAUTH_CONFIG",
+        "kind": 5,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "OAUTH_CONFIG = {\n    'github': {\n        'client_id': os.environ.get('GITHUB_CLIENT_ID', 'your_github_client_id'),\n        'client_secret': os.environ.get('GITHUB_CLIENT_SECRET', 'your_github_client_secret'),\n        'authorize_url': 'https://github.com/login/oauth/authorize',\n        'token_url': 'https://github.com/login/oauth/access_token',\n        'user_url': 'https://api.github.com/user'\n    },\n    'google': {\n        'client_id': os.environ.get('GOOGLE_CLIENT_ID', 'your_google_client_id'),",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "JWT_SECRET",
+        "kind": 5,
+        "importPath": "backend.auth_server",
+        "description": "backend.auth_server",
+        "peekOfCode": "JWT_SECRET = os.environ.get('JWT_SECRET', secrets.token_hex(32))\n# ============================================\n# Utility Functions\n# ============================================\ndef generate_jwt_token(user_data):\n    \"\"\"Genera un token JWT para el usuario\"\"\"\n    payload = {\n        'user_id': user_data['id'],\n        'email': user_data['email'],\n        'name': user_data['name'],",
+        "detail": "backend.auth_server",
+        "documentation": {}
+    },
+    {
+        "label": "ModelConsensus",
+        "kind": 6,
+        "importPath": "backend.consensus_server",
+        "description": "backend.consensus_server",
+        "peekOfCode": "class ModelConsensus:\n    def __init__(self):\n        self.active_models = get_active_models()\n        self.consensus_config = CONSENSUS_CONFIG\n    async def query_model(self, session: aiohttp.ClientSession, model_id: str, \n                         prompt: str, template_id: str = 'general') -> Dict[str, Any]:\n        \"\"\"Consulta un modelo específico\"\"\"\n        model_config = get_model_config(model_id)\n        if not model_config:\n            return {'error': f'Modelo {model_id} no encontrado'}",
+        "detail": "backend.consensus_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_models",
+        "kind": 2,
+        "importPath": "backend.consensus_server",
+        "description": "backend.consensus_server",
+        "peekOfCode": "def get_models():\n    \"\"\"Obtiene información de los modelos disponibles\"\"\"\n    try:\n        info = get_system_info()\n        return jsonify(info)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/consensus/templates', methods=['GET'])\ndef get_templates():\n    \"\"\"Obtiene las plantillas de prompts disponibles\"\"\"",
+        "detail": "backend.consensus_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_templates",
+        "kind": 2,
+        "importPath": "backend.consensus_server",
+        "description": "backend.consensus_server",
+        "peekOfCode": "def get_templates():\n    \"\"\"Obtiene las plantillas de prompts disponibles\"\"\"\n    try:\n        return jsonify(PROMPT_TEMPLATES)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/consensus/config', methods=['GET'])\ndef get_config():\n    \"\"\"Obtiene la configuración del consenso\"\"\"\n    try:",
+        "detail": "backend.consensus_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_config",
+        "kind": 2,
+        "importPath": "backend.consensus_server",
+        "description": "backend.consensus_server",
+        "peekOfCode": "def get_config():\n    \"\"\"Obtiene la configuración del consenso\"\"\"\n    try:\n        return jsonify(CONSENSUS_CONFIG)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/consensus/health', methods=['GET'])\nasync def health_check():\n    \"\"\"Health check del sistema de consenso\"\"\"\n    try:",
+        "detail": "backend.consensus_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.consensus_server",
+        "description": "backend.consensus_server",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# ============================================\n# CLASE DE CONSENSO\n# ============================================\nclass ModelConsensus:\n    def __init__(self):\n        self.active_models = get_active_models()\n        self.consensus_config = CONSENSUS_CONFIG\n    async def query_model(self, session: aiohttp.ClientSession, model_id: str, ",
+        "detail": "backend.consensus_server",
+        "documentation": {}
+    },
+    {
+        "label": "consensus",
+        "kind": 5,
+        "importPath": "backend.consensus_server",
+        "description": "backend.consensus_server",
+        "peekOfCode": "consensus = ModelConsensus()\n# ============================================\n# RUTAS API\n# ============================================\n@app.route('/api/consensus/query', methods=['POST'])\nasync def query_consensus():\n    \"\"\"Endpoint principal para consultas con consenso\"\"\"\n    try:\n        data = request.get_json()\n        prompt = data.get('prompt', '')",
+        "detail": "backend.consensus_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_context",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def get_context(context_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene contexto específico\"\"\"\n    source = CONTEXT_SOURCES.get(context_id)\n    if not source:\n        return {'error': f'Contexto {context_id} no encontrado'}\n    data = source['data']\n    # Si es función, ejecutarla\n    if callable(data):\n        data = data()\n    return {",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_all_contexts",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def get_all_contexts() -> Dict[str, Any]:\n    \"\"\"Obtiene todos los contextos disponibles\"\"\"\n    contexts = {}\n    for context_id, source in CONTEXT_SOURCES.items():\n        data = source['data']\n        if callable(data):\n            data = data()\n        contexts[context_id] = data\n    return contexts\ndef calculate(expression: str) -> Dict[str, Any]:",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "calculate",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def calculate(expression: str) -> Dict[str, Any]:\n    \"\"\"Calcula una expresión matemática de forma segura\"\"\"\n    try:\n        # Evaluar de forma segura (sin exec/eval de Python directo)\n        # Solo permitir operaciones matemáticas básicas\n        allowed_chars = set('0123456789+-*/().% ')\n        if not all(c in allowed_chars for c in expression):\n            return {'error': 'Expresión contiene caracteres no permitidos'}\n        result = eval(expression, {\"__builtins__\": {}}, {})\n        return {",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "verify_fact",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def verify_fact(claim: str, category: str = 'general') -> Dict[str, Any]:\n    \"\"\"Verifica un hecho contra los contextos disponibles\"\"\"\n    # Por ahora, solo verifica contra los contextos locales\n    all_contexts = get_all_contexts()\n    # Buscar en los contextos si hay información relacionada\n    relevant_info = []\n    claim_lower = claim.lower()\n    for context_id, data in all_contexts.items():\n        data_str = json.dumps(data).lower()\n        if any(word in data_str for word in claim_lower.split()):",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "augment_prompt_with_context",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def augment_prompt_with_context(prompt: str, contexts: List[str] = None) -> str:\n    \"\"\"Aumenta el prompt con contexto relevante de forma concisa\"\"\"\n    if contexts is None:\n        contexts = ['company_info', 'current_date']\n    # Construir contexto conciso\n    facts = []\n    for context_id in contexts:\n        ctx = get_context(context_id)\n        if 'error' not in ctx:\n            data = ctx['data']",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "list_contexts",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def list_contexts():\n    \"\"\"Lista todos los contextos disponibles\"\"\"\n    try:\n        contexts_list = []\n        for context_id, source in CONTEXT_SOURCES.items():\n            contexts_list.append({\n                'id': context_id,\n                'name': source['name'],\n                'description': source['description']\n            })",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_context_endpoint",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def get_context_endpoint(context_id):\n    \"\"\"Obtiene un contexto específico\"\"\"\n    try:\n        context = get_context(context_id)\n        return jsonify(context)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/mcp/augment', methods=['POST'])\ndef augment_prompt():\n    \"\"\"Aumenta un prompt con contexto relevante\"\"\"",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "augment_prompt",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def augment_prompt():\n    \"\"\"Aumenta un prompt con contexto relevante\"\"\"\n    try:\n        data = request.get_json()\n        prompt = data.get('prompt', '')\n        contexts = data.get('contexts')  # Lista opcional de contextos\n        if not prompt:\n            return jsonify({'error': 'Prompt requerido'}), 400\n        augmented = augment_prompt_with_context(prompt, contexts)\n        return jsonify({",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "list_tools",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def list_tools():\n    \"\"\"Lista herramientas MCP disponibles\"\"\"\n    try:\n        tools_list = []\n        for tool_id, tool_info in TOOLS.items():\n            tools_list.append({\n                'id': tool_id,\n                'name': tool_info['name'],\n                'description': tool_info['description'],\n                'enabled': tool_info['enabled']",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_endpoint",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def calculate_endpoint():\n    \"\"\"Realiza un cálculo matemático\"\"\"\n    try:\n        data = request.get_json()\n        expression = data.get('expression', '')\n        if not expression:\n            return jsonify({'error': 'Expresión requerida'}), 400\n        result = calculate(expression)\n        return jsonify(result)\n    except Exception as e:",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "verify_fact_endpoint",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def verify_fact_endpoint():\n    \"\"\"Verifica un hecho\"\"\"\n    try:\n        data = request.get_json()\n        claim = data.get('claim', '')\n        category = data.get('category', 'general')\n        if not claim:\n            return jsonify({'error': 'Claim requerido'}), 400\n        result = verify_fact(claim, category)\n        return jsonify(result)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "health_check",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def health_check():\n    \"\"\"Health check del servidor MCP\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'capibara6-mcp',\n        'contexts_available': len(CONTEXT_SOURCES),\n        'tools_available': len([t for t in TOOLS.values() if t['enabled']]),\n        'timestamp': datetime.datetime.now().isoformat()\n    })\n# ============================================",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# ============================================\n# CONTEXTOS DISPONIBLES\n# ============================================\nCONTEXT_SOURCES = {\n    'company_info': {\n        'name': 'Información de la Empresa',\n        'description': 'Datos sobre Anachroni s.coop y Capibara6',\n        'data': {",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "CONTEXT_SOURCES",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "CONTEXT_SOURCES = {\n    'company_info': {\n        'name': 'Información de la Empresa',\n        'description': 'Datos sobre Anachroni s.coop y Capibara6',\n        'data': {\n            'company_name': 'Anachroni s.coop',\n            'product_name': 'Capibara6',\n            'product_type': 'Sistema de consenso de IA',\n            'status': 'Beta',\n            'models': ['Capibara6 (Gemma3-12B)', 'OSS-120B (TPU-v5e-64)'],",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "TOOLS",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "TOOLS = {\n    'search_web': {\n        'name': 'Buscar en Web',\n        'description': 'Busca información actualizada en internet',\n        'enabled': False  # Requiere API key\n    },\n    'calculate': {\n        'name': 'Calculadora',\n        'description': 'Realiza cálculos matemáticos precisos',\n        'enabled': True",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_active_models",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_active_models() -> List[str]:\n    \"\"\"Obtiene la lista de modelos activos\"\"\"\n    return [model_id for model_id, config in MODELS_CONFIG.items() \n            if config['status'] == 'active']\ndef get_model_config(model_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene la configuración de un modelo específico\"\"\"\n    return MODELS_CONFIG.get(model_id, {})\ndef get_prompt_template(template_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene una plantilla de prompt específica\"\"\"\n    return PROMPT_TEMPLATES.get(template_id, {})",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_model_config",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_model_config(model_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene la configuración de un modelo específico\"\"\"\n    return MODELS_CONFIG.get(model_id, {})\ndef get_prompt_template(template_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene una plantilla de prompt específica\"\"\"\n    return PROMPT_TEMPLATES.get(template_id, {})\ndef get_available_templates() -> List[str]:\n    \"\"\"Obtiene la lista de plantillas disponibles\"\"\"\n    return list(PROMPT_TEMPLATES.keys())\ndef get_models_for_template(template_id: str) -> List[str]:",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_prompt_template",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_prompt_template(template_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene una plantilla de prompt específica\"\"\"\n    return PROMPT_TEMPLATES.get(template_id, {})\ndef get_available_templates() -> List[str]:\n    \"\"\"Obtiene la lista de plantillas disponibles\"\"\"\n    return list(PROMPT_TEMPLATES.keys())\ndef get_models_for_template(template_id: str) -> List[str]:\n    \"\"\"Obtiene los modelos recomendados para una plantilla\"\"\"\n    template = get_prompt_template(template_id)\n    return template.get('models', [])",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_available_templates",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_available_templates() -> List[str]:\n    \"\"\"Obtiene la lista de plantillas disponibles\"\"\"\n    return list(PROMPT_TEMPLATES.keys())\ndef get_models_for_template(template_id: str) -> List[str]:\n    \"\"\"Obtiene los modelos recomendados para una plantilla\"\"\"\n    template = get_prompt_template(template_id)\n    return template.get('models', [])\ndef format_prompt(model_id: str, template_id: str, user_prompt: str) -> str:\n    \"\"\"Formatea un prompt usando la plantilla y configuración del modelo\"\"\"\n    model_config = get_model_config(model_id)",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_models_for_template",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_models_for_template(template_id: str) -> List[str]:\n    \"\"\"Obtiene los modelos recomendados para una plantilla\"\"\"\n    template = get_prompt_template(template_id)\n    return template.get('models', [])\ndef format_prompt(model_id: str, template_id: str, user_prompt: str) -> str:\n    \"\"\"Formatea un prompt usando la plantilla y configuración del modelo\"\"\"\n    model_config = get_model_config(model_id)\n    template = get_prompt_template(template_id)\n    if not model_config or not template:\n        return user_prompt",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "format_prompt",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def format_prompt(model_id: str, template_id: str, user_prompt: str) -> str:\n    \"\"\"Formatea un prompt usando la plantilla y configuración del modelo\"\"\"\n    model_config = get_model_config(model_id)\n    template = get_prompt_template(template_id)\n    if not model_config or not template:\n        return user_prompt\n    # Obtener el template del modelo\n    model_template = model_config.get('prompt_template', {})\n    system_prompt = template.get('system_prompt', model_template.get('system', ''))\n    # Formatear según el tipo de modelo",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_development_config",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_development_config():\n    \"\"\"Configuración para desarrollo local\"\"\"\n    return {\n        'models': {\n            'capibara6': {\n                **MODELS_CONFIG['capibara6'],\n                'server_url': 'http://localhost:8080/completion'\n            },\n            'oss-120b': {\n                **MODELS_CONFIG['oss-120b'],",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_production_config",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_production_config():\n    \"\"\"Configuración para producción\"\"\"\n    return {\n        'models': MODELS_CONFIG,\n        'consensus': CONSENSUS_CONFIG\n    }\n# ============================================\n# INFORMACIÓN DEL SISTEMA\n# ============================================\ndef get_system_info():",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_system_info",
+        "kind": 2,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "def get_system_info():\n    \"\"\"Obtiene información del sistema de modelos\"\"\"\n    active_models = get_active_models()\n    return {\n        'total_models': len(MODELS_CONFIG),\n        'active_models': len(active_models),\n        'models_list': active_models,\n        'consensus_enabled': CONSENSUS_CONFIG['enabled'],\n        'available_templates': get_available_templates(),\n        'hardware_info': {",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "MODELS_CONFIG",
+        "kind": 5,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "MODELS_CONFIG = {\n    'capibara6': {\n        'name': 'Capibara6',\n        'base_model': 'Gemma3-12B',\n        'server_url': 'http://34.175.104.187:8080/completion',  # IP actualizada\n        'type': 'llama_cpp',\n        'hardware': 'GPU',\n        'status': 'active',\n        'priority': 1,\n        'prompt_template': {",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "PROMPT_TEMPLATES",
+        "kind": 5,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "PROMPT_TEMPLATES = {\n    'general': {\n        'name': 'General',\n        'description': 'Conversación general y preguntas abiertas',\n        'system_prompt': 'Eres un asistente útil y preciso. Responde de manera clara y concisa.',\n        'models': ['capibara6', 'oss-120b']\n    },\n    'coding': {\n        'name': 'Programación',\n        'description': 'Ayuda con código, debugging y desarrollo',",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "CONSENSUS_CONFIG",
+        "kind": 5,
+        "importPath": "backend.models_config",
+        "description": "backend.models_config",
+        "peekOfCode": "CONSENSUS_CONFIG = {\n    'enabled': True,\n    'min_models': 2,\n    'max_models': 3,\n    'voting_method': 'weighted',  # 'simple', 'weighted', 'confidence'\n    'model_weights': {\n        'capibara6': 0.6,  # Peso mayor para respuestas rápidas\n        'oss-120b': 0.4    # Peso menor pero mayor calidad\n    },\n    'fallback_model': 'capibara6',  # Modelo de respaldo si falla el consenso",
+        "detail": "backend.models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_frontend_url",
+        "kind": 2,
+        "importPath": "backend.production_config",
+        "description": "backend.production_config",
+        "peekOfCode": "def get_frontend_url():\n    \"\"\"Obtiene la URL del frontend según el entorno\"\"\"\n    return os.environ.get('FRONTEND_URL', PRODUCTION_CONFIG['frontend_url'])\ndef get_auth_server_url():\n    \"\"\"Obtiene la URL del servidor de auth según el entorno\"\"\"\n    return os.environ.get('AUTH_SERVER_URL', PRODUCTION_CONFIG['auth_server_url'])\ndef get_allowed_origins():\n    \"\"\"Obtiene los orígenes permitidos según el entorno\"\"\"\n    return os.environ.get('ALLOWED_ORIGINS', PRODUCTION_CONFIG['allowed_origins'])\nif __name__ == '__main__':",
+        "detail": "backend.production_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_auth_server_url",
+        "kind": 2,
+        "importPath": "backend.production_config",
+        "description": "backend.production_config",
+        "peekOfCode": "def get_auth_server_url():\n    \"\"\"Obtiene la URL del servidor de auth según el entorno\"\"\"\n    return os.environ.get('AUTH_SERVER_URL', PRODUCTION_CONFIG['auth_server_url'])\ndef get_allowed_origins():\n    \"\"\"Obtiene los orígenes permitidos según el entorno\"\"\"\n    return os.environ.get('ALLOWED_ORIGINS', PRODUCTION_CONFIG['allowed_origins'])\nif __name__ == '__main__':\n    print(\"🌐 Configuración de Producción:\")\n    print(f\"   Frontend URL: {get_frontend_url()}\")\n    print(f\"   Auth Server URL: {get_auth_server_url()}\")",
+        "detail": "backend.production_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_allowed_origins",
+        "kind": 2,
+        "importPath": "backend.production_config",
+        "description": "backend.production_config",
+        "peekOfCode": "def get_allowed_origins():\n    \"\"\"Obtiene los orígenes permitidos según el entorno\"\"\"\n    return os.environ.get('ALLOWED_ORIGINS', PRODUCTION_CONFIG['allowed_origins'])\nif __name__ == '__main__':\n    print(\"🌐 Configuración de Producción:\")\n    print(f\"   Frontend URL: {get_frontend_url()}\")\n    print(f\"   Auth Server URL: {get_auth_server_url()}\")\n    print(f\"   GitHub Callback: {OAUTH_CALLBACKS['github']}\")\n    print(f\"   Google Callback: {OAUTH_CALLBACKS['google']}\")\n    print(f\"   Allowed Origins: {get_allowed_origins()}\")",
+        "detail": "backend.production_config",
+        "documentation": {}
+    },
+    {
+        "label": "PRODUCTION_CONFIG",
+        "kind": 5,
+        "importPath": "backend.production_config",
+        "description": "backend.production_config",
+        "peekOfCode": "PRODUCTION_CONFIG = {\n    'frontend_url': 'https://capibara6.com',\n    'auth_server_url': 'https://api.capibara6.com',  # Cambiar por tu dominio del servidor de auth\n    'allowed_origins': [\n        'https://capibara6.com',\n        'http://capibara6.com',  # Para desarrollo\n        'http://localhost:8000',  # Para desarrollo local\n        'http://127.0.0.1:8000'   # Para desarrollo local\n    ]\n}",
+        "detail": "backend.production_config",
+        "documentation": {}
+    },
+    {
+        "label": "OAUTH_CALLBACKS",
+        "kind": 5,
+        "importPath": "backend.production_config",
+        "description": "backend.production_config",
+        "peekOfCode": "OAUTH_CALLBACKS = {\n    'github': f\"{PRODUCTION_CONFIG['auth_server_url']}/auth/callback/github\",\n    'google': f\"{PRODUCTION_CONFIG['auth_server_url']}/auth/callback/google\"\n}\ndef get_frontend_url():\n    \"\"\"Obtiene la URL del frontend según el entorno\"\"\"\n    return os.environ.get('FRONTEND_URL', PRODUCTION_CONFIG['frontend_url'])\ndef get_auth_server_url():\n    \"\"\"Obtiene la URL del servidor de auth según el entorno\"\"\"\n    return os.environ.get('AUTH_SERVER_URL', PRODUCTION_CONFIG['auth_server_url'])",
+        "detail": "backend.production_config",
+        "documentation": {}
+    },
+    {
+        "label": "send_test",
+        "kind": 2,
+        "importPath": "backend.send_test",
+        "description": "backend.send_test",
+        "peekOfCode": "def send_test():\n    print(\"Enviando email de prueba desde capibara6...\\n\")\n    SMTP_SERVER = os.getenv('SMTP_SERVER')\n    SMTP_PORT = int(os.getenv('SMTP_PORT'))\n    SMTP_USER = os.getenv('SMTP_USER')\n    SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')\n    FROM_EMAIL = os.getenv('FROM_EMAIL')\n    print(f\"Servidor: {SMTP_SERVER}:{SMTP_PORT}\")\n    print(f\"Usuario: {SMTP_USER}\")\n    print(f\"Destino: electrohipy@gmail.com\\n\")",
+        "detail": "backend.send_test",
+        "documentation": {}
+    },
+    {
+        "label": "ensure_data_dir",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):\n        try:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "save_to_file",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):\n        try:\n            with open(DATA_FILE, 'r', encoding='utf-8') as f:\n                existing_data = json.load(f)\n        except:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "send_email",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def send_email(to_email, conversations):\n    \"\"\"Enviar email de confirmación al usuario\"\"\"\n    try:\n        # Crear mensaje\n        msg = MIMEMultipart('alternative')\n        msg['Subject'] = '¡Gracias por tu interés en capibara6! 🦫'\n        msg['From'] = FROM_EMAIL\n        msg['To'] = to_email\n        # Contenido del email\n        text_content = f\"\"\"",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "send_notification_to_admin",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def send_notification_to_admin(user_email, conversations):\n    \"\"\"Enviar notificación al admin con los datos del usuario\"\"\"\n    try:\n        msg = MIMEMultipart('alternative')\n        msg['Subject'] = f'Nuevo contacto desde capibara6: {user_email}'\n        msg['From'] = FROM_EMAIL\n        msg['To'] = FROM_EMAIL\n        # Preparar conversaciones\n        conv_text = '\\n'.join([f\"[{c.get('timestamp')}] {c.get('message')}\" for c in conversations])\n        text_content = f\"\"\"",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "save_conversation",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def save_conversation():\n    \"\"\"Endpoint para guardar conversación y enviar email\"\"\"\n    try:\n        data = request.get_json()\n        email = data.get('email')\n        conversations = data.get('conversations', [])\n        if not email:\n            return jsonify({'success': False, 'error': 'Email requerido'}), 400\n        # Guardar en archivo\n        save_to_file(data)",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "health",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def health():\n    \"\"\"Endpoint de health check\"\"\"\n    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})\n@app.route('/', methods=['GET'])\ndef index():\n    \"\"\"Página principal\"\"\"\n    return '''\n    <html>\n        <head>\n            <title>capibara6 Backend</title>",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "index",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def index():\n    \"\"\"Página principal\"\"\"\n    return '''\n    <html>\n        <head>\n            <title>capibara6 Backend</title>\n            <style>\n                body { font-family: monospace; background: #0a0a0a; color: #00ff00; padding: 40px; }\n                h1 { color: #00ffff; }\n                .status { color: #00ff00; }",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Habilitar CORS para permitir peticiones desde el frontend\n# Configuración SMTP\nSMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')\nSMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\nSMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "SMTP_SERVER",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')\nSMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\nSMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "SMTP_PORT",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\nSMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "SMTP_USER",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "SMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "SMTP_PASSWORD",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "SMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "FROM_EMAIL",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "FROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "DATA_FILE",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "DATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_if_possible",
+        "kind": 2,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "def calculate_if_possible(query):\n    \"\"\"Intenta resolver cálculos matemáticos básicos\"\"\"\n    # Buscar operaciones matemáticas\n    math_pattern = r'(\\d+(?:\\.\\d+)?)\\s*([\\+\\-\\*×÷/])\\s*(\\d+(?:\\.\\d+)?)'\n    match = re.search(math_pattern, query)\n    if match:\n        num1, op, num2 = match.groups()\n        num1, num2 = float(num1), float(num2)\n        operations = {\n            '+': num1 + num2,",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "detect_context_needs",
+        "kind": 2,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "def detect_context_needs(query):\n    \"\"\"Detecta qué contextos son relevantes para la consulta\"\"\"\n    query_lower = query.lower()\n    contexts = []\n    for context_type, config in CONTEXT_TRIGGERS.items():\n        for pattern in config['patterns']:\n            if re.search(pattern, query_lower):\n                context_func = config['context']\n                if context_type == 'calculation':\n                    context_result = context_func(query_lower)",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "health",
+        "kind": 2,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "def health():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'smart-mcp-capibara6',\n        'version': '2.0',\n        'approach': 'selective-rag',\n        'timestamp': datetime.now().isoformat()\n    })\n@app.route('/analyze', methods=['POST'])",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "analyze_query",
+        "kind": 2,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "def analyze_query():\n    \"\"\"Analiza si la consulta necesita contexto adicional\"\"\"\n    try:\n        data = request.json\n        user_query = data.get('query', '')\n        if not user_query:\n            return jsonify({'error': 'Query is required'}), 400\n        # Detectar contextos relevantes\n        relevant_contexts = detect_context_needs(user_query)\n        # Solo agregar contexto si es realmente relevante",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "update_date",
+        "kind": 2,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "def update_date():\n    \"\"\"Actualiza la fecha actual (para mantenimiento)\"\"\"\n    try:\n        data = request.json\n        KNOWLEDGE_BASE['current_info']['date'] = data.get('date', KNOWLEDGE_BASE['current_info']['date'])\n        KNOWLEDGE_BASE['current_info']['day'] = data.get('day', KNOWLEDGE_BASE['current_info']['day'])\n        return jsonify({\n            'success': True,\n            'current_info': KNOWLEDGE_BASE['current_info']\n        })",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=[\n    'http://localhost:5500',\n    'http://127.0.0.1:5500',\n    'http://172.22.128.1:5500',  # IP de red local (Live Server)\n    'http://localhost:8000',\n    'http://127.0.0.1:8000',\n    'http://172.22.128.1:8000'   # IP de red local (Python server)\n])\n# Base de conocimiento verificada",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "KNOWLEDGE_BASE",
+        "kind": 5,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "KNOWLEDGE_BASE = {\n    \"identity\": {\n        \"name\": \"Capibara6 Consensus\",\n        \"creator\": \"Anachroni s.coop\",\n        \"status\": \"Beta (en pruebas)\",\n        \"type\": \"Modelo de lenguaje basado en Gemma 3-12B\",\n        \"hardware\": \"Google Cloud TPU v5e-64 en europe-southwest1-b\",\n        \"website\": \"http://www.anachroni.co\",\n        \"email\": \"info@anachroni.co\"\n    },",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "CONTEXT_TRIGGERS",
+        "kind": 5,
+        "importPath": "backend.smart_mcp_server",
+        "description": "backend.smart_mcp_server",
+        "peekOfCode": "CONTEXT_TRIGGERS = {\n    \"identity\": {\n        \"patterns\": [\n            r'\\b(quién|quien|que)\\s+(eres|soy|es)\\b',\n            r'\\b(cómo|como)\\s+(te\\s+llamas|se\\s+llama)\\b',\n            r'\\b(tu|tú)\\s+(nombre|identidad)\\b',\n            r'\\bcapibara\\b',\n            r'\\bcreo|creador|desarrollador\\b',\n            r'\\bquién\\s+te\\s+(creó|creo)\\b'\n        ],",
+        "detail": "backend.smart_mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "test_smtp_connection",
+        "kind": 2,
+        "importPath": "backend.test_email",
+        "description": "backend.test_email",
+        "peekOfCode": "def test_smtp_connection():\n    \"\"\"Probar conexión SMTP\"\"\"\n    print(\"🔍 Verificando configuración SMTP...\\n\")\n    SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')\n    SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\n    SMTP_USER = os.getenv('SMTP_USER')\n    SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')\n    FROM_EMAIL = os.getenv('FROM_EMAIL')\n    print(f\"📧 Servidor: {SMTP_SERVER}:{SMTP_PORT}\")\n    print(f\"👤 Usuario: {SMTP_USER}\")",
+        "detail": "backend.test_email",
+        "documentation": {}
+    },
+    {
+        "label": "send_test_email",
+        "kind": 2,
+        "importPath": "backend.test_email",
+        "description": "backend.test_email",
+        "peekOfCode": "def send_test_email():\n    \"\"\"Enviar email de prueba\"\"\"\n    print(\"📧 ¿Quieres enviar un email de prueba? (s/n): \", end=\"\")\n    response = input().strip().lower()\n    if response != 's':\n        print(\"👋 Test cancelado\")\n        return\n    print(\"\\n📝 Ingresa el email de destino: \", end=\"\")\n    to_email = input().strip()\n    if not to_email or '@' not in to_email:",
+        "detail": "backend.test_email",
+        "documentation": {}
+    }
+]

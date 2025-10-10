@@ -136,6 +136,32 @@ const translations = {
         'chat.welcome': '¡Hola! Soy el asistente de capibara6. ¿En qué puedo ayudarte?',
         'chat.placeholder': 'Escribe tu pregunta...',
         
+        // Chat Page
+        'chat.new': 'Nueva Conversación',
+        'chat.today': 'Hoy',
+        'chat.previous': 'Anteriores',
+        'chat.empty.title': '¿En qué puedo ayudarte hoy?',
+        'chat.empty.subtitle': 'Soy capibara6, tu asistente de IA avanzado con arquitectura híbrida Transformer-Mamba',
+        'chat.suggestion1.title': 'Arquitectura Híbrida',
+        'chat.suggestion1.text': 'Explícame cómo funciona',
+        'chat.suggestion2.title': 'Google TPU',
+        'chat.suggestion2.text': 'Ventajas para entrenamiento',
+        'chat.suggestion3.title': 'Programación',
+        'chat.suggestion3.text': 'Ayuda con código Python',
+        'chat.suggestion4.title': 'Optimización',
+        'chat.suggestion4.text': 'Mejorar rendimiento web',
+        'chat.share': 'Compartir',
+        'chat.settings': 'Configuración',
+        'chat.attach': 'Adjuntar archivo',
+        'chat.input.placeholder': 'Escribe tu mensaje aquí...',
+        'chat.input.hint': 'Capibara6 puede cometer errores. Considera verificar información importante.',
+        
+        // Settings
+        'settings.title': 'Configuración',
+        'settings.model': 'Modelo',
+        'settings.temperature': 'Temperatura (Creatividad)',
+        'settings.language': 'Idioma',
+        
         // Quick Start Steps
         'step.1.title': 'Requisitos Previos',
         'step.2.title': 'Configuración',
@@ -465,6 +491,32 @@ const translations = {
         'chat.status': 'Online',
         'chat.welcome': 'Hello! I\'m the capibara6 assistant. How can I help you?',
         'chat.placeholder': 'Type your question...',
+        
+        // Chat Page
+        'chat.new': 'New Conversation',
+        'chat.today': 'Today',
+        'chat.previous': 'Previous',
+        'chat.empty.title': 'How can I help you today?',
+        'chat.empty.subtitle': 'I\'m capibara6, your advanced AI assistant with hybrid Transformer-Mamba architecture',
+        'chat.suggestion1.title': 'Hybrid Architecture',
+        'chat.suggestion1.text': 'Explain how it works',
+        'chat.suggestion2.title': 'Google TPU',
+        'chat.suggestion2.text': 'Training advantages',
+        'chat.suggestion3.title': 'Programming',
+        'chat.suggestion3.text': 'Help with Python code',
+        'chat.suggestion4.title': 'Optimization',
+        'chat.suggestion4.text': 'Improve web performance',
+        'chat.share': 'Share',
+        'chat.settings': 'Settings',
+        'chat.attach': 'Attach file',
+        'chat.input.placeholder': 'Type your message here...',
+        'chat.input.hint': 'Capibara6 can make mistakes. Consider verifying important information.',
+        
+        // Settings
+        'settings.title': 'Settings',
+        'settings.model': 'Model',
+        'settings.temperature': 'Temperature (Creativity)',
+        'settings.language': 'Language',
         
         // Quick Start Steps
         'step.1.title': 'Prerequisites',
