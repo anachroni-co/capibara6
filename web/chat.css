@@ -1798,6 +1798,9 @@
     padding: 1rem 1.5rem;
     background: #212121;
     border-top: none;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
 }
 
 /* Previsualización de archivos adjuntos */
