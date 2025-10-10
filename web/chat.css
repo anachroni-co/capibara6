@@ -2473,5 +2473,94 @@
     .sidebar-overlay.active {
         background: rgba(0, 0, 0, 0.6);
     }
+    
+    /* ============================================
+       Adaptaciones Móviles para Plantillas
+       ============================================ */
+    
+    /* Ocultar sidebar de plantillas en móvil */
+    .templates-sidebar {
+        position: fixed;
+        left: -240px;
+        top: 0;
+        height: 100vh;
+        z-index: 250;
+        transition: transform 0.3s ease;
+    }
+    
+    .templates-sidebar.show {
+        transform: translateX(240px);
+    }
+    
+    /* Ajustar chat-content-wrapper cuando sidebar está oculto */
+    .chat-content-wrapper {
+        width: 100%;
+    }
+    
+    /* Banner beta más compacto */
+    .beta-banner {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+        flex-wrap: wrap;
+    }
+    
+    .beta-banner span {
+        font-size: 0.75rem;
+    }
+    
+    /* Botones más grandes para touch */
+    .btn-message-action {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.75rem;
+    }
+    
+    .template-item {
+        padding: 1rem;
+        min-height: 48px;
+    }
+    
+    /* Input más accesible */
+    .message-input {
+        font-size: 16px; /* Evita zoom automático en iOS */
+    }
+    
+    .btn-send {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* Chat header más compacto */
+    .chat-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Mensajes con menos padding */
+    .message {
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Template selector items más grandes */
+    .template-select {
+        font-size: 16px;
+        padding: 0.75rem;
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .beta-banner strong {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+    
+    .suggestion-card {
+        padding: 0.75rem;
+    }
+    
+    .message-content {
+        font-size: 0.875rem;
+    }
 }
 
