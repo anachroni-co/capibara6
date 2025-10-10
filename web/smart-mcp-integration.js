@@ -5,8 +5,11 @@
  */
 
 const SMART_MCP_CONFIG = {
-    serverUrl: 'http://localhost:5003/analyze',
-    enabled: true,
+    // Detectar automáticamente el entorno
+    serverUrl: window.location.hostname === 'localhost' 
+        ? 'http://localhost:5003/analyze'  // Desarrollo local
+        : 'http://34.175.104.187:5003/analyze',  // Producción (VM)
+    enabled: false,  // ⚠️ DESHABILITADO - Habilitar cuando Smart MCP esté corriendo
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true
 };
