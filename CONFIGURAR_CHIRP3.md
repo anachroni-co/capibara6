@@ -28,30 +28,33 @@ Clic en **"Habilitar"**
 
 ---
 
-## 🔑 Paso 2: Crear API Key
+## 🔑 Paso 2: Crear Cuenta de Servicio
 
 ### **2.1 Ir a Credenciales:**
 ```
 https://console.cloud.google.com/apis/credentials
 ```
 
-### **2.2 Crear credencial:**
+### **2.2 Crear cuenta de servicio:**
 - Clic en **"Crear credenciales"**
-- Seleccionar **"Clave de API"**
-- Se creará una API key como: `AIzaSyD...`
+- Seleccionar **"Cuenta de servicio"**
+- Nombre: `capibara6-tts`
+- Rol: **"Cloud Text-to-Speech User"**
+- Clic en **"Crear"**
 
-### **2.3 Restringir la API key (Recomendado):**
-- Clic en la API key creada
-- **Restricciones de aplicación:**
-  - Seleccionar "Referentes HTTP (sitios web)"
-  - Agregar: `https://www.capibara6.com/*`
-  - Agregar: `https://*.vercel.app/*`
-  
-- **Restricciones de API:**
-  - Seleccionar "Restringir clave"
-  - Marcar: "Cloud Text-to-Speech API"
-  
-- Clic en **"Guardar"**
+### **2.3 Crear clave JSON:**
+- En la lista de cuentas de servicio, clic en `capibara6-tts`
+- Pestaña **"Claves"**
+- **"Agregar clave"** → **"Crear clave nueva"**
+- Tipo: **JSON**
+- Clic en **"Crear"**
+
+Se descargará un archivo JSON como:
+```
+capibara6-tts-abc123.json
+```
+
+**⚠️ IMPORTANTE: Guarda este archivo de forma segura, no lo compartas públicamente.**
 
 ---
 
@@ -66,12 +69,34 @@ https://vercel.com/dashboard
 
 ### **3.3 Ir a Settings → Environment Variables**
 
-### **3.4 Agregar variable:**
-- **Key:** `GOOGLE_CLOUD_API_KEY`
-- **Value:** Tu API key (ej: `AIzaSyD...`)
-- **Environments:** Marcar todas (Production, Preview, Development)
+### **3.4 Agregar credenciales de Google Cloud:**
+
+#### **Opción A: Usar el archivo JSON completo (Recomendado)**
+
+1. Abre el archivo JSON descargado con un editor de texto
+2. Copia **TODO** el contenido JSON
+3. En Vercel, agregar variable:
+   - **Key:** `GOOGLE_APPLICATION_CREDENTIALS_JSON`
+   - **Value:** Pega todo el JSON (será algo como `{"type":"service_account","project_id":...}`)
+   - **Environments:** Marcar todas (Production, Preview, Development)
+
+#### **Opción B: Usar variables individuales**
+
+Extraer del JSON y agregar cada una:
+- `GOOGLE_CLOUD_PROJECT` = `project_id` del JSON
+- `GOOGLE_CLOUD_PRIVATE_KEY` = `private_key` del JSON
+- `GOOGLE_CLOUD_CLIENT_EMAIL` = `client_email` del JSON
 
 ### **3.5 Guardar** y hacer **Redeploy**
+
+### **3.6 Verificar en los logs**
+
+En el deploy verás:
+```
+✓ Building...
+✓ Installing dependencies
+✓ google-cloud-texttospeech installed
+```
 
 ---
 
@@ -165,7 +190,22 @@ En Vercel Settings → Environment Variables:
 
 | Variable | Valor | Descripción |
 |----------|-------|-------------|
-| `GOOGLE_CLOUD_API_KEY` | `AIzaSy...` | API key de Google Cloud |
+| `GOOGLE_APPLICATION_CREDENTIALS_JSON` | `{"type":"service_account",...}` | Contenido completo del archivo JSON de credenciales |
+
+**Formato del JSON:**
+```json
+{
+  "type": "service_account",
+  "project_id": "tu-proyecto",
+  "private_key_id": "...",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n...",
+  "client_email": "capibara6-tts@...iam.gserviceaccount.com",
+  "client_id": "...",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  ...
+}
+```
 
 ---
 
