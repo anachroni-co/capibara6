@@ -194,5 +194,5 @@ if __name__ == '__main__':
     print("📊 Enfoque: Selective RAG (Retrieval-Augmented Generation)")
     print("✅ Contexto SOLO cuando es necesario")
     print("🎯 Ligero y efectivo para Capibara6")
-    app.run(host='0.0.0.0', port=5003, debug=True)
+    app.run(host='0.0.0.0', port=5010, debug=True)
 

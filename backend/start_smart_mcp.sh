@@ -41,7 +41,7 @@ fi
 
 echo ""
 echo "✅ Dependencias listas"
-echo "🚀 Iniciando servidor en puerto 5003..."
+echo "🚀 Iniciando servidor en puerto 5010..."
 echo ""
 
 # Ejecutar servidor
