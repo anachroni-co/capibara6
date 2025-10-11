@@ -2380,6 +2380,16 @@
     .chat-main {
         width: 100%;
         margin-left: 0 !important;
+        overflow-x: hidden;
+    }
+    
+    .chat-area {
+        width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .chat-content-wrapper {
+        overflow-x: hidden;
     }
     
     .suggestion-cards {
@@ -2508,11 +2518,41 @@
         font-size: 0.75rem;
     }
     
-    /* Botones más grandes para touch */
+    /* Botones adaptados para touch pero sin overflow */
+    .message-actions {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        margin-top: 0.5rem;
+    }
+    
     .btn-message-action {
-        min-width: 44px;
-        min-height: 44px;
-        padding: 0.75rem;
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    .btn-message-action i {
+        width: 12px !important;
+        height: 12px !important;
+    }
+    
+    /* Chat actions más compactas */
+    .chat-actions {
+        gap: 0.35rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    
+    .chat-actions .btn-icon {
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0.5rem;
+    }
+    
+    .chat-actions i {
+        width: 16px !important;
+        height: 16px !important;
     }
     
     .template-item {
@@ -2530,9 +2570,18 @@
         min-height: 44px;
     }
     
-    /* Chat header más compacto */
+    /* Chat header más compacto y sin overflow */
     .chat-header {
-        padding: 0.75rem 1rem;
+        padding: 0.75rem 0.75rem;
+        gap: 0.5rem;
+        overflow-x: hidden;
+    }
+    
+    .chat-title {
+        font-size: 0.8rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     
     /* Mensajes con menos padding */
