@@ -11,6 +11,10 @@
     {
       "source": "/api/mcp-analyze",
       "destination": "/api/mcp-analyze.js"
+    },
+    {
+      "source": "/api/tts",
+      "destination": "/api/tts.js"
     }
   ],
   "headers": [
