@@ -48,9 +48,14 @@ fi
 
 echo ""
 echo "✅ Dependencias listas"
+echo ""
+echo "⚠️  NOTA: Usando servidor fallback (Kyutai TTS API en investigación)"
+echo "💡 El frontend usará Web Speech API del navegador"
+echo "🔗 Ver: KYUTAI_TTS_PENDIENTE.md para más info"
+echo ""
 echo "🚀 Iniciando servidor en puerto 5001..."
 echo ""
 
-# Ejecutar servidor
-python kyutai_tts_server.py
+# Ejecutar servidor simple (fallback)
+python kyutai_tts_server_simple.py
 
