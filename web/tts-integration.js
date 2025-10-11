@@ -1,13 +1,13 @@
 /**
  * TTS Integration for Capibara6
- * Prioridad 1: Kyutai TTS (Delayed Streams Modeling)
+ * Prioridad 1: Coqui TTS (VITS neural, alta calidad español)
  * Fallback: Web Speech API del navegador
  */
 
 const TTS_CONFIG = {
     enabled: true,
-    // Usar Kyutai en producción, Web Speech API en desarrollo
-    useKyutai: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
+    // Usar Coqui TTS en producción, Web Speech API en desarrollo
+    useCoquiTTS: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
     apiEndpoint: '/api/tts',
     language: 'es',
     rate: 1.0,      // Velocidad (0.5 - 2.0)
@@ -62,7 +62,7 @@ function getBestSpanishVoice() {
 }
 
 /**
- * Lee el texto usando Chirp 3 (si está disponible) o Web Speech API
+ * Lee el texto usando Coqui TTS (si está disponible) o Web Speech API
  */
 async function speakText(text, button) {
     // Si ya está hablando, detener
@@ -103,13 +103,13 @@ async function speakText(text, button) {
     
     console.log(`🎙️ Texto limpio para TTS (${cleanText.length} chars): "${cleanText.substring(0, 100)}..."`);
     
-    // Intentar usar Kyutai primero
-    if (TTS_CONFIG.useKyutai) {
+    // Intentar usar Coqui TTS primero (en producción)
+    if (TTS_CONFIG.useCoquiTTS) {
         try {
-            await speakWithKyutai(cleanText, button);
+            await speakWithCoquiTTS(cleanText, button);
             return;
         } catch (error) {
-            console.warn('⚠️ Kyutai no disponible, usando Web Speech API:', error);
+            console.warn('⚠️ Coqui TTS no disponible, usando Web Speech API:', error);
             // Continuar con fallback
         }
     }
@@ -119,9 +119,9 @@ async function speakText(text, button) {
 }
 
 /**
- * Síntesis con Kyutai TTS (Delayed Streams Modeling)
+ * Síntesis con Coqui TTS (VITS neural)
  */
-async function speakWithKyutai(text, button) {
+async function speakWithCoquiTTS(text, button) {
     isSpeaking = true;
     currentSpeakingButton = button;
     updateButtonState(button, 'speaking');
@@ -139,7 +139,7 @@ async function speakWithKyutai(text, button) {
         });
         
         if (!response.ok) {
-            throw new Error('Kyutai API error');
+            throw new Error('Coqui TTS API error');
         }
         
         const data = await response.json();
@@ -148,20 +148,20 @@ async function speakWithKyutai(text, button) {
             throw new Error('API fallback activado');
         }
         
-        // Kyutai devuelve WAV en base64
+        // Coqui TTS devuelve WAV en base64
         const audioFormat = data.format || 'wav';
         const audioData = `data:audio/${audioFormat};base64,${data.audioContent}`;
         const audio = new Audio(audioData);
         
         audio.onplay = () => {
-            console.log(`🔊 Kyutai DSM TTS reproduciendo... (${data.model || 'modelo desconocido'})`);
+            console.log(`🔊 Coqui TTS reproduciendo... (${data.model || 'modelo desconocido'})`);
         };
         
         audio.onended = () => {
             isSpeaking = false;
             updateButtonState(button, 'idle');
             currentSpeakingButton = null;
-            console.log('✅ Kyutai TTS completado');
+            console.log('✅ Coqui TTS completado');
         };
         
         audio.onerror = (error) => {
