@@ -1,16 +1,16 @@
 #!/bin/bash
-# Script para iniciar Kyutai TTS Server con virtualenv
-# Uso: ./start_kyutai_tts.sh
+# Script para iniciar Smart MCP Server con virtualenv
+# Uso: ./start_smart_mcp.sh
 
 echo "========================================="
-echo "  Iniciando Kyutai TTS Server"
+echo "  Iniciando Smart MCP Server"
 echo "========================================="
 
 cd ~/capibara6/backend
 
 # Verificar que el archivo existe
-if [ ! -f "kyutai_tts_server.py" ]; then
-    echo "❌ Error: kyutai_tts_server.py no encontrado"
+if [ ! -f "smart_mcp_server.py" ]; then
+    echo "❌ Error: smart_mcp_server.py no encontrado"
     echo "💡 Ejecutar primero: deploy_services_to_vm.sh"
     exit 1
 fi
@@ -39,18 +39,11 @@ if [ $? -ne 0 ]; then
     pip install flask flask-cors
 fi
 
-python -c "import moshi" 2>/dev/null
-if [ $? -ne 0 ]; then
-    echo "⚙️  Instalando Moshi y dependencias (esto puede tardar varios minutos)..."
-    pip install moshi>=0.2.6
-    pip install torch torchaudio soundfile numpy transformers huggingface-hub
-fi
-
 echo ""
 echo "✅ Dependencias listas"
-echo "🚀 Iniciando servidor en puerto 5001..."
+echo "🚀 Iniciando servidor en puerto 5003..."
 echo ""
 
 # Ejecutar servidor
-python kyutai_tts_server.py
+python smart_mcp_server.py
 
