@@ -59,20 +59,26 @@ async function speakText(text, button) {
     
     // Limpiar texto antes de leer
     const cleanText = text
-        .replace(/```[\s\S]*?```/g, '') // Eliminar bloques de código
-        .replace(/`[^`]+`/g, '')        // Eliminar código inline
-        .replace(/\*\*/g, '')            // Eliminar negritas markdown
-        .replace(/__/g, '')              // Eliminar cursivas
-        .replace(/[#\-\*]/g, '')         // Eliminar markdown
-        .replace(/\n{3,}/g, '\n\n')      // Normalizar saltos
-        .replace(/[^\w\s.,;:!?¿¡áéíóúñÁÉÍÓÚÑüÜ\-]/g, '') // Solo caracteres válidos
+        .replace(/```[\s\S]*?```/g, '')           // Eliminar bloques de código
+        .replace(/`[^`]+`/g, '')                  // Eliminar código inline
+        .replace(/In \[\d*\]:/g, '')              // Eliminar prompts de notebook
+        .replace(/Out\[\d*\]:/g, '')              // Eliminar outputs de notebook
+        .replace(/\*\*/g, '')                     // Eliminar negritas markdown
+        .replace(/__/g, '')                       // Eliminar cursivas
+        .replace(/[#\-\*\[\]]/g, '')              // Eliminar markdown y corchetes
+        .replace(/https?:\/\/[^\s]+/g, '')       // Eliminar URLs
+        .replace(/\n{3,}/g, '\n\n')               // Normalizar saltos
+        .replace(/[^\w\s.,;:!?¿¡áéíóúñÁÉÍÓÚÑüÜ()\-]/g, ' ') // Solo caracteres válidos
+        .replace(/\s+/g, ' ')                     // Normalizar espacios
         .trim()
-        .substring(0, 1000);             // Limitar a 1000 caracteres para evitar errores
+        .substring(0, 500);                       // ✅ Limitar a 500 caracteres (más corto = más estable)
     
     if (!cleanText) {
         console.warn('⚠️ No hay texto para leer');
         return;
     }
+    
+    console.log(`🎙️ Texto limpio para TTS (${cleanText.length} chars): "${cleanText.substring(0, 100)}..."`);
     
     // Intentar usar Kyutai primero
     if (TTS_CONFIG.useKyutai) {
@@ -155,7 +161,13 @@ async function speakWithKyutai(text, button) {
 /**
  * Síntesis con Web Speech API (fallback)
  */
-function speakWithWebAPI(text, button) {
+function speakWithWebAPI(text, button, retryCount = 0) {
+    // Si el texto es muy largo y es un retry, acortar más
+    if (retryCount > 0 && text.length > 200) {
+        text = text.substring(0, 200);
+        console.log(`🔄 Retry ${retryCount}: texto acortado a 200 chars`);
+    }
+    
     // Crear utterance
     currentUtterance = new SpeechSynthesisUtterance(text);
     
@@ -202,9 +214,21 @@ function speakWithWebAPI(text, button) {
         currentSpeakingButton = null;
         currentUtterance = null;
         
-        // Mostrar mensaje al usuario
-        if (event.error === 'synthesis-failed') {
-            console.warn('⚠️ Síntesis fallida. Intenta con un texto más corto o recarga la página.');
+        // Manejo específico de errores
+        if (event.error === 'synthesis-failed' && retryCount < 2) {
+            console.warn('⚠️ Síntesis fallida. Reintentando con texto más corto...');
+            
+            // Reintentar con texto más corto (solo 2 veces máximo)
+            setTimeout(() => {
+                speakWithWebAPI(text, button, retryCount + 1);
+            }, 500);
+        } else if (event.error === 'synthesis-failed') {
+            console.warn('⚠️ No se pudo sintetizar el texto después de varios intentos.');
+            console.log('💡 Consejo: El texto puede tener caracteres especiales o ser muy complejo.');
+        } else if (event.error === 'network') {
+            console.warn('⚠️ Error de red. Verifica tu conexión.');
+        } else {
+            console.warn(`⚠️ Error TTS: ${event.error}`);
         }
     };
     
