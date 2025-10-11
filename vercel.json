@@ -14,7 +14,7 @@
     },
     {
       "source": "/api/tts",
-      "destination": "/api/tts.py"
+      "destination": "/api/tts.js"
     }
   ],
   "headers": [
