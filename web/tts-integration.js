@@ -1,15 +1,15 @@
 /**
  * TTS Integration for Capibara6
- * Prioridad 1: Google Chirp 3 HD (API)
+ * Prioridad 1: Kyutai TTS (Delayed Streams Modeling)
  * Fallback: Web Speech API del navegador
  */
 
 const TTS_CONFIG = {
     enabled: true,
-    // Usar Chirp 3 en producción, Web Speech API en desarrollo
-    useChirp3: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
+    // Usar Kyutai en producción, Web Speech API en desarrollo
+    useKyutai: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
     apiEndpoint: '/api/tts',
-    language: 'es-ES',
+    language: 'es',
     rate: 1.0,      // Velocidad (0.5 - 2.0)
     pitch: 1.0,     // Tono (0 - 2)
     volume: 1.0,    // Volumen (0 - 1)
@@ -72,13 +72,13 @@ async function speakText(text, button) {
         return;
     }
     
-    // Intentar usar Chirp 3 primero
-    if (TTS_CONFIG.useChirp3) {
+    // Intentar usar Kyutai primero
+    if (TTS_CONFIG.useKyutai) {
         try {
-            await speakWithChirp3(cleanText, button);
+            await speakWithKyutai(cleanText, button);
             return;
         } catch (error) {
-            console.warn('⚠️ Chirp 3 no disponible, usando Web Speech API:', error);
+            console.warn('⚠️ Kyutai no disponible, usando Web Speech API:', error);
             // Continuar con fallback
         }
     }
@@ -88,9 +88,9 @@ async function speakText(text, button) {
 }
 
 /**
- * Síntesis con Google Chirp 3 HD
+ * Síntesis con Kyutai TTS (Delayed Streams Modeling)
  */
-async function speakWithChirp3(text, button) {
+async function speakWithKyutai(text, button) {
     isSpeaking = true;
     currentSpeakingButton = button;
     updateButtonState(button, 'speaking');
@@ -101,11 +101,14 @@ async function speakWithChirp3(text, button) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text })
+            body: JSON.stringify({ 
+                text,
+                language: TTS_CONFIG.language 
+            })
         });
         
         if (!response.ok) {
-            throw new Error('Chirp 3 API error');
+            throw new Error('Kyutai API error');
         }
         
         const data = await response.json();
@@ -114,19 +117,20 @@ async function speakWithChirp3(text, button) {
             throw new Error('API fallback activado');
         }
         
-        // Convertir base64 a audio
-        const audioData = `data:audio/mp3;base64,${data.audioContent}`;
+        // Kyutai devuelve WAV en base64
+        const audioFormat = data.format || 'wav';
+        const audioData = `data:audio/${audioFormat};base64,${data.audioContent}`;
         const audio = new Audio(audioData);
         
         audio.onplay = () => {
-            console.log('🔊 Chirp 3 HD reproduciendo...');
+            console.log(`🔊 Kyutai DSM TTS reproduciendo... (${data.model || 'modelo desconocido'})`);
         };
         
         audio.onended = () => {
             isSpeaking = false;
             updateButtonState(button, 'idle');
             currentSpeakingButton = null;
-            console.log('✅ Chirp 3 completado');
+            console.log('✅ Kyutai TTS completado');
         };
         
         audio.onerror = (error) => {
