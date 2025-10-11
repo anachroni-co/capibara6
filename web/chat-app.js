@@ -642,6 +642,15 @@ function appendMessage(role, content, save = true, stats = null) {
             const btnText = btn.textContent.trim();
             if (btnText.includes('Copiar')) {
                 copyMessageContent(content);
+            } else if (btnText.includes('Escuchar')) {
+                // Leer el mensaje en voz alta
+                if (window.speakText) {
+                    const textDiv = messageDiv.querySelector('.message-text');
+                    const textContent = textDiv ? textDiv.textContent : content;
+                    window.speakText(textContent, btn);
+                } else {
+                    console.error('❌ TTS no está cargado');
+                }
             } else if (btnText.includes('Regenerar')) {
                 regenerateResponse();
             } else if (btnText.includes('Evaluar')) {
@@ -754,6 +763,10 @@ function addStatsToMessage(messageDiv, stats) {
                 <i data-lucide="clipboard" style="width: 14px; height: 14px;"></i>
                 Copiar
             </button>
+            <button class="btn-message-action btn-speak">
+                <i data-lucide="volume" style="width: 14px; height: 14px;"></i>
+                <span class="btn-text">Escuchar</span>
+            </button>
             <button class="btn-message-action">
                 <i data-lucide="star" style="width: 14px; height: 14px;"></i>
                 Evaluar
@@ -781,6 +794,15 @@ function addStatsToMessage(messageDiv, stats) {
             
             if (btnText.includes('Copiar')) {
                 copyMessageContent(content);
+            } else if (btnText.includes('Escuchar')) {
+                // Leer el mensaje en voz alta
+                if (window.speakText) {
+                    const textDiv = messageDiv.querySelector('.message-text');
+                    const textContent = textDiv ? textDiv.textContent : content;
+                    window.speakText(textContent, btn);
+                } else {
+                    console.error('❌ TTS no está cargado');
+                }
             } else if (btnText.includes('Regenerar')) {
                 regenerateResponse();
             } else if (btnText.includes('Evaluar')) {
