@@ -72,7 +72,7 @@ async function speakText(text, button) {
     }
     
     // Limpiar texto antes de leer
-    const cleanText = text
+    let cleanText = text
         .replace(/```[\s\S]*?```/g, '')           // Eliminar bloques de código
         .replace(/`[^`]+`/g, '')                  // Eliminar código inline
         .replace(/In \[\d*\]:/g, '')              // Eliminar prompts de notebook
@@ -84,8 +84,17 @@ async function speakText(text, button) {
         .replace(/\n{3,}/g, '\n\n')               // Normalizar saltos
         .replace(/[^\w\s.,;:!?¿¡áéíóúñÁÉÍÓÚÑüÜ()\-]/g, ' ') // Solo caracteres válidos
         .replace(/\s+/g, ' ')                     // Normalizar espacios
-        .trim()
-        .substring(0, 500);                       // ✅ Limitar a 500 caracteres (más corto = más estable)
+        .trim();
+    
+    // Dividir en oraciones y tomar solo las primeras 2-3
+    const sentences = cleanText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    if (sentences.length > 0) {
+        // Tomar máximo 2 oraciones completas
+        cleanText = sentences.slice(0, 2).join('. ') + '.';
+    }
+    
+    // Límite estricto de caracteres
+    cleanText = cleanText.substring(0, 300);  // ✅ Solo 300 caracteres (Web Speech API es limitado)
     
     if (!cleanText) {
         console.warn('⚠️ No hay texto para leer');
@@ -230,7 +239,8 @@ function speakWithWebAPI(text, button, retryCount = 0) {
     };
     
     currentUtterance.onerror = (event) => {
-        console.error('❌ Error TTS:', event.error);
+        const errorType = event.error || 'unknown';
+        console.error('❌ Error TTS:', errorType);
         
         // Intentar detener cualquier speech en curso
         if (window.speechSynthesis.speaking) {
@@ -242,21 +252,30 @@ function speakWithWebAPI(text, button, retryCount = 0) {
         currentSpeakingButton = null;
         currentUtterance = null;
         
-        // Manejo específico de errores
-        if (event.error === 'synthesis-failed' && retryCount < 2) {
-            console.warn('⚠️ Síntesis fallida. Reintentando con texto más corto...');
+        // Si el error es 'undefined' o desconocido, es probable que el texto sea muy largo
+        // Reintentar con texto MUY corto
+        if ((errorType === 'unknown' || errorType === 'undefined' || errorType === 'synthesis-failed') && retryCount === 0) {
+            console.warn('⚠️ Error de síntesis. Intentando solo la primera oración...');
             
-            // Reintentar con texto más corto (solo 2 veces máximo)
+            // Extraer solo la primera oración (hasta el primer punto)
+            const firstSentence = text.split(/[.!?]/)[0] + '.';
+            
             setTimeout(() => {
-                speakWithWebAPI(text, button, retryCount + 1);
+                speakWithWebAPI(firstSentence, button, retryCount + 1);
             }, 500);
-        } else if (event.error === 'synthesis-failed') {
-            console.warn('⚠️ No se pudo sintetizar el texto después de varios intentos.');
-            console.log('💡 Consejo: El texto puede tener caracteres especiales o ser muy complejo.');
-        } else if (event.error === 'network') {
-            console.warn('⚠️ Error de red. Verifica tu conexión.');
+        } else if (retryCount < 2 && text.length > 100) {
+            console.warn(`⚠️ Retry ${retryCount + 1}: probando con texto aún más corto...`);
+            
+            // Acortar drásticamente
+            const shortText = text.substring(0, 100);
+            
+            setTimeout(() => {
+                speakWithWebAPI(shortText, button, retryCount + 1);
+            }, 500);
         } else {
-            console.warn(`⚠️ Error TTS: ${event.error}`);
+            console.warn('⚠️ No se pudo sintetizar el texto después de varios intentos.');
+            console.log('💡 Web Speech API tiene limitaciones con textos largos o complejos.');
+            console.log('💡 Solución: Deployar Coqui TTS en la VM para mejor compatibilidad.');
         }
     };
     
@@ -268,11 +287,19 @@ function speakWithWebAPI(text, button, retryCount = 0) {
     
     // Pequeño delay para asegurar que todo esté listo
     setTimeout(() => {
-        if (currentUtterance) {
-            console.log(`🔊 Iniciando síntesis: "${text.substring(0, 50)}..."`);
+        if (!currentUtterance) return;
+        
+        try {
+            console.log(`🔊 Iniciando síntesis: "${text.substring(0, 50)}..." (${text.length} chars)`);
             window.speechSynthesis.speak(currentUtterance);
+        } catch (error) {
+            console.error('❌ Error al llamar speak():', error);
+            isSpeaking = false;
+            updateButtonState(button, 'idle');
+            currentSpeakingButton = null;
+            currentUtterance = null;
         }
-    }, 100);
+    }, 150);  // Aumentado a 150ms para mejor compatibilidad
 }
 
 /**
