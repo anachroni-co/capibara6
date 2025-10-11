@@ -47,7 +47,10 @@ echo "[4/7] Copiando requirements..."
 gcloud compute scp backend/requirements.txt $VM_NAME:~/capibara6/backend/ --zone=$ZONE
 
 echo ""
-echo "[5/7] Copiando scripts de inicio..."
+echo "[5/7] Copiando servidores y scripts TTS..."
+gcloud compute scp backend/coqui_tts_server.py $VM_NAME:~/capibara6/backend/ --zone=$ZONE
+gcloud compute scp backend/kyutai_tts_server_simple.py $VM_NAME:~/capibara6/backend/ --zone=$ZONE
+gcloud compute scp backend/start_coqui_tts.sh $VM_NAME:~/capibara6/backend/ --zone=$ZONE
 gcloud compute scp backend/start_kyutai_tts.sh $VM_NAME:~/capibara6/backend/ --zone=$ZONE
 gcloud compute scp backend/start_smart_mcp.sh $VM_NAME:~/capibara6/backend/ --zone=$ZONE
 
@@ -126,12 +129,18 @@ echo ""
 echo "1. ${YELLOW}Conectar a la VM:${NC}"
 echo "   gcloud compute ssh $VM_NAME --zone=$ZONE"
 echo ""
-echo "2. ${YELLOW}Iniciar Kyutai TTS (en screen):${NC}"
-echo "   screen -S kyutai-tts"
-echo "   cd ~/capibara6/backend"
-echo "   ./start_kyutai_tts.sh"
-echo "   ${GREEN}[Ctrl+A, D para salir]${NC}"
-echo "   ${YELLOW}(La primera vez instalará dependencias en virtualenv - tardará ~5 min)${NC}"
+echo "2a. ${YELLOW}Opción A - Coqui TTS (RECOMENDADO - Alta calidad):${NC}"
+echo "    screen -S coqui-tts"
+echo "    cd ~/capibara6/backend"
+echo "    ./start_coqui_tts.sh"
+echo "    ${GREEN}[Ctrl+A, D para salir]${NC}"
+echo "    ${YELLOW}(Primera vez: ~5-10 min - descarga modelo español)${NC}"
+echo ""
+echo "2b. ${YELLOW}Opción B - Kyutai Fallback (Web Speech API):${NC}"
+echo "    screen -S kyutai-tts"
+echo "    cd ~/capibara6/backend"
+echo "    ./start_kyutai_tts.sh"
+echo "    ${GREEN}[Ctrl+A, D para salir]${NC}"
 echo ""
 echo "3. ${YELLOW}Iniciar Smart MCP (en otro screen):${NC}"
 echo "   screen -S smart-mcp"
