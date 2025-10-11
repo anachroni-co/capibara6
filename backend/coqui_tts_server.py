@@ -208,12 +208,12 @@ if __name__ == '__main__':
         print(f"⚠️ No se pudo pre-cargar el modelo: {str(e)}")
         print("💡 Se cargará en el primer request\n")
     
-    print("🌐 Iniciando servidor Flask en puerto 5001...")
+    print("🌐 Iniciando servidor Flask en puerto 5002...")
     print("=" * 60)
     
     app.run(
         host='0.0.0.0',
-        port=5001,
+        port=5002,
         debug=False,
         threaded=True
     )

@@ -61,12 +61,12 @@ if __name__ == '__main__':
     print("🔗 Ver: KYUTAI_TTS_PENDIENTE.md para más información")
     print("=" * 60)
     print("")
-    print("🌐 Iniciando servidor Flask en puerto 5001...")
+    print("🌐 Iniciando servidor Flask en puerto 5002...")
     print("=" * 60)
     
     app.run(
         host='0.0.0.0',
-        port=5001,
+        port=5002,
         debug=False,
         threaded=True
     )
