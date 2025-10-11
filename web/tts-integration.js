@@ -35,16 +35,30 @@ let currentSpeakingButton = null;
 function getBestSpanishVoice() {
     const voices = window.speechSynthesis.getVoices();
     
-    // Intentar encontrar voces en orden de preferencia
-    for (const preferred of TTS_CONFIG.preferredVoices) {
-        const voice = voices.find(v => 
-            v.name.includes(preferred) || v.lang.startsWith('es')
-        );
-        if (voice) return voice;
+    if (voices.length === 0) {
+        console.warn('⚠️ No hay voces disponibles aún');
+        return null;
     }
     
-    // Fallback: cualquier voz en español
-    return voices.find(v => v.lang.startsWith('es')) || voices[0];
+    // 1. Buscar voces específicas preferidas
+    for (const preferred of TTS_CONFIG.preferredVoices) {
+        const voice = voices.find(v => v.name.includes(preferred));
+        if (voice) {
+            console.log(`✓ Voz encontrada: ${voice.name} (${voice.lang})`);
+            return voice;
+        }
+    }
+    
+    // 2. Buscar cualquier voz en español
+    const spanishVoice = voices.find(v => v.lang.startsWith('es'));
+    if (spanishVoice) {
+        console.log(`✓ Voz español encontrada: ${spanishVoice.name} (${spanishVoice.lang})`);
+        return spanishVoice;
+    }
+    
+    // 3. Último recurso: primera voz disponible
+    console.warn(`⚠️ No se encontró voz en español. Usando: ${voices[0]?.name}`);
+    return voices[0];
 }
 
 /**
@@ -168,6 +182,18 @@ function speakWithWebAPI(text, button, retryCount = 0) {
         console.log(`🔄 Retry ${retryCount}: texto acortado a 200 chars`);
     }
     
+    // Asegurar que las voces estén cargadas
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) {
+        console.warn('⚠️ Voces aún no cargadas. Esperando...');
+        
+        // Esperar a que las voces se carguen
+        setTimeout(() => {
+            speakWithWebAPI(text, button, retryCount);
+        }, 100);
+        return;
+    }
+    
     // Crear utterance
     currentUtterance = new SpeechSynthesisUtterance(text);
     
@@ -176,8 +202,10 @@ function speakWithWebAPI(text, button, retryCount = 0) {
     if (voice) {
         currentUtterance.voice = voice;
         currentUtterance.lang = voice.lang;
+        console.log(`🎤 Usando voz: ${voice.name}`);
     } else {
-        currentUtterance.lang = TTS_CONFIG.language;
+        currentUtterance.lang = 'es-ES';
+        console.warn('⚠️ No se encontró voz en español, usando por defecto');
     }
     
     // Configurar parámetros
@@ -232,8 +260,19 @@ function speakWithWebAPI(text, button, retryCount = 0) {
         }
     };
     
-    // Iniciar lectura
-    window.speechSynthesis.speak(currentUtterance);
+    // Cancelar cualquier speech anterior (importante!)
+    if (window.speechSynthesis.speaking) {
+        console.log('🛑 Cancelando speech anterior...');
+        window.speechSynthesis.cancel();
+    }
+    
+    // Pequeño delay para asegurar que todo esté listo
+    setTimeout(() => {
+        if (currentUtterance) {
+            console.log(`🔊 Iniciando síntesis: "${text.substring(0, 50)}..."`);
+            window.speechSynthesis.speak(currentUtterance);
+        }
+    }, 100);
 }
 
 /**
@@ -288,19 +327,50 @@ function updateButtonState(button, state) {
  */
 function initTTS() {
     // Cargar voces (pueden tardar en cargar)
-    if (window.speechSynthesis) {
-        window.speechSynthesis.getVoices();
-        
-        // Evento cuando las voces estén listas
-        window.speechSynthesis.onvoiceschanged = () => {
-            const voices = window.speechSynthesis.getVoices();
-            const spanishVoices = voices.filter(v => v.lang.startsWith('es'));
-            console.log('🔊 Voces en español disponibles:', spanishVoices.length);
-            console.log('🎯 Voz seleccionada:', getBestSpanishVoice()?.name);
-        };
-    } else {
+    if (!window.speechSynthesis) {
         console.warn('⚠️ Web Speech API no disponible en este navegador');
+        return;
     }
+    
+    // Forzar carga de voces
+    let voicesLoaded = false;
+    
+    function loadVoices() {
+        const voices = window.speechSynthesis.getVoices();
+        
+        if (voices.length > 0 && !voicesLoaded) {
+            voicesLoaded = true;
+            
+            const spanishVoices = voices.filter(v => v.lang.startsWith('es'));
+            console.log('🔊 Voces disponibles:', voices.length);
+            console.log('🇪🇸 Voces en español:', spanishVoices.length);
+            
+            if (spanishVoices.length > 0) {
+                spanishVoices.forEach(v => {
+                    console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Local]' : '[Remote]'}`);
+                });
+            }
+            
+            const selectedVoice = getBestSpanishVoice();
+            if (selectedVoice) {
+                console.log(`🎯 Voz seleccionada: ${selectedVoice.name} (${selectedVoice.lang})`);
+            } else {
+                console.warn('⚠️ No se pudo seleccionar voz');
+            }
+        }
+    }
+    
+    // Cargar voces inmediatamente
+    loadVoices();
+    
+    // También escuchar el evento por si las voces cargan después
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    
+    // Forzar carga en algunos navegadores (Chrome)
+    setTimeout(loadVoices, 100);
+    setTimeout(loadVoices, 500);
 }
 
 // Exportar funciones globalmente
