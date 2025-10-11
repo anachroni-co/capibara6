@@ -2360,6 +2360,17 @@
    Responsive Design
    ============================================ */
 @media (max-width: 768px) {
+    /* Prevenir overflow horizontal en toda la app */
+    body, html {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+    
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
     .sidebar {
         position: fixed;
         left: 0;
@@ -2397,7 +2408,20 @@
     }
     
     .messages-container {
-        padding: 1rem;
+        padding: 0.75rem 0.5rem;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+    
+    .chat-input-container {
+        padding: 0.75rem 0.5rem;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+    
+    .chat-input-wrapper {
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .message {
@@ -2518,41 +2542,54 @@
         font-size: 0.75rem;
     }
     
-    /* Botones adaptados para touch pero sin overflow */
+    /* Botones mucho más compactos para móvil */
     .message-actions {
         flex-wrap: wrap;
-        gap: 0.25rem;
-        margin-top: 0.5rem;
+        gap: 0.15rem;
+        margin-top: 0.4rem;
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     .btn-message-action {
-        min-width: 36px;
-        min-height: 36px;
-        padding: 0.5rem 0.75rem;
-        font-size: 0.75rem;
+        min-width: 32px;
+        min-height: 32px;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.7rem;
+        flex-shrink: 1;
     }
     
     .btn-message-action i {
-        width: 12px !important;
-        height: 12px !important;
+        width: 10px !important;
+        height: 10px !important;
     }
     
-    /* Chat actions más compactas */
+    /* Chat actions ultra compactas */
     .chat-actions {
-        gap: 0.35rem;
-        flex-wrap: nowrap;
-        overflow-x: auto;
+        gap: 0.15rem;
+        flex-wrap: wrap;
+        max-width: 40%;
+        justify-content: flex-end;
     }
     
     .chat-actions .btn-icon {
-        min-width: 36px;
-        min-height: 36px;
-        padding: 0.5rem;
+        min-width: 32px;
+        min-height: 32px;
+        padding: 0.4rem;
+        flex-shrink: 0;
     }
     
     .chat-actions i {
-        width: 16px !important;
-        height: 16px !important;
+        width: 14px !important;
+        height: 14px !important;
+    }
+    
+    .server-status {
+        display: none !important; /* Ocultar en móvil */
+    }
+    
+    .consensus-indicator {
+        display: none !important; /* Ocultar en móvil */
     }
     
     .template-item {
@@ -2584,9 +2621,27 @@
         white-space: nowrap;
     }
     
-    /* Mensajes con menos padding */
+    /* Mensajes con menos padding y sin overflow */
     .message {
-        padding: 0.75rem 1rem;
+        padding: 0.5rem 0.75rem;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .message-content {
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    
+    .message-content pre {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    
+    .message-content code {
+        word-break: break-all;
     }
     
     /* Template selector items más grandes */
