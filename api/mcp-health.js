@@ -14,8 +14,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    // URL del Smart MCP en la VM
-    const MCP_URL = process.env.SMART_MCP_URL || 'http://34.175.104.187:5010/health';
+    // URL del Smart MCP en la VM (endpoint de health)
+    const SMART_MCP_BASE = process.env.SMART_MCP_URL || 'http://34.175.104.187:5010/analyze';
+    // Reemplazar /analyze por /health
+    const MCP_URL = SMART_MCP_BASE.replace('/analyze', '/health');
 
     console.log(`🔍 Health check MCP: ${MCP_URL}`);
 
