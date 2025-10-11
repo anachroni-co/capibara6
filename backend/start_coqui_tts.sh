@@ -53,7 +53,7 @@ echo "🎙️  Coqui TTS - Alta calidad en español"
 echo "📦 Modelo: tts_models/es/css10/vits"
 echo "🔊 Calidad: Excelente (VITS neural)"
 echo ""
-echo "🚀 Iniciando servidor en puerto 5001..."
+echo "🚀 Iniciando servidor en puerto 5002..."
 echo "⏳ Primera ejecución: ~30-60 seg (descarga modelo)"
 echo ""
 

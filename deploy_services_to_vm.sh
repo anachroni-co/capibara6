@@ -57,17 +57,17 @@ gcloud compute scp backend/start_smart_mcp.sh $VM_NAME:~/capibara6/backend/ --zo
 echo ""
 echo "[6/7] Configurando firewall GCP (si no existe)..."
 
-# Verificar y crear regla para TTS (puerto 5001)
-gcloud compute firewall-rules describe allow-kyutai-tts &>/dev/null
+# Verificar y crear regla para TTS (puerto 5002)
+gcloud compute firewall-rules describe allow-coqui-tts &>/dev/null
 if [ $? -ne 0 ]; then
-    echo -e "${YELLOW}Creando regla de firewall para puerto 5001...${NC}"
-    gcloud compute firewall-rules create allow-kyutai-tts \
-        --allow=tcp:5001 \
+    echo -e "${YELLOW}Creando regla de firewall para puerto 5002...${NC}"
+    gcloud compute firewall-rules create allow-coqui-tts \
+        --allow=tcp:5002 \
         --source-ranges=0.0.0.0/0 \
-        --description="Kyutai TTS Server"
+        --description="Coqui TTS Server"
     
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓ Regla de firewall para TTS creada${NC}"
+        echo -e "${GREEN}✓ Regla de firewall para TTS creada (puerto 5002)${NC}"
     fi
 else
     echo -e "${GREEN}✓ Regla de firewall para TTS ya existe${NC}"
@@ -151,21 +151,21 @@ echo ""
 echo "4. ${YELLOW}Verificar servicios:${NC}"
 
 if [ ! -z "$VM_IP" ]; then
-    echo "   curl http://$VM_IP:5001/health  # TTS"
+    echo "   curl http://$VM_IP:5002/health  # TTS"
     echo "   curl http://$VM_IP:5003/health  # MCP"
     echo ""
     echo "   ${YELLOW}IP de tu VM:${NC} ${GREEN}$VM_IP${NC}"
     echo ""
     echo "5. ${YELLOW}Configurar en Vercel:${NC}"
     echo "   Variable: KYUTAI_TTS_URL"
-    echo "   Valor:    http://$VM_IP:5001/tts"
+    echo "   Valor:    http://$VM_IP:5002/tts"
 else
-    echo "   curl http://VM_IP:5001/health  # TTS"
+    echo "   curl http://VM_IP:5002/health  # TTS"
     echo "   curl http://VM_IP:5003/health  # MCP"
     echo ""
     echo "5. ${YELLOW}Configurar en Vercel:${NC}"
     echo "   Variable: KYUTAI_TTS_URL"
-    echo "   Valor:    http://TU_IP_VM:5001/tts"
+    echo "   Valor:    http://TU_IP_VM:5002/tts"
 fi
 
 echo ""
@@ -173,7 +173,7 @@ echo "========================================"
 echo "  Servicios disponibles"
 echo "========================================"
 echo "  - Gemma Model:  Puerto 8080"
-echo "  - Kyutai TTS:   Puerto 5001 ${GREEN}(nuevo)${NC}"
+echo "  - Coqui TTS:    Puerto 5002 ${GREEN}(nuevo)${NC}"
 echo "  - Smart MCP:    Puerto 5003 ${GREEN}(nuevo)${NC}"
 echo "========================================"
 echo ""

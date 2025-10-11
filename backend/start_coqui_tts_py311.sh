@@ -24,14 +24,14 @@ fi
 PYTHON_VERSION=$(python3.11 --version)
 echo "🐍 Usando Python: $PYTHON_VERSION"
 
-# Matar proceso en puerto 5001 si existe
-PORT_PID=$(lsof -ti:5001 2>/dev/null)
+# Matar proceso en puerto 5002 si existe
+PORT_PID=$(lsof -ti:5002 2>/dev/null)
 if [ ! -z "$PORT_PID" ]; then
-    echo "⚠️  Proceso encontrado en puerto 5001 (PID: $PORT_PID)"
+    echo "⚠️  Proceso encontrado en puerto 5002 (PID: $PORT_PID)"
     echo "🛑 Terminando proceso anterior..."
     kill -9 $PORT_PID 2>/dev/null
     sleep 1
-    echo "✅ Puerto 5001 liberado"
+    echo "✅ Puerto 5002 liberado"
 fi
 
 # Verificar que el archivo existe
@@ -95,7 +95,7 @@ echo "📦 Modelo: tts_models/es/css10/vits"
 echo "🔊 Calidad: ⭐⭐⭐⭐⭐ (VITS neural)"
 echo "🐍 Python: 3.11 (compatible)"
 echo ""
-echo "🚀 Iniciando servidor en puerto 5001..."
+echo "🚀 Iniciando servidor en puerto 5002..."
 echo "⏳ Primera ejecución: modelo se descargará automáticamente"
 echo ""
 
