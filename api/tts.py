@@ -2,12 +2,12 @@
 Vercel Serverless Function (Python)
 Proxy ligero a Kyutai TTS en VM
 NO intenta cargar el modelo aquí (muy grande para Vercel)
+SOLO usa librería estándar de Python
 """
-from flask import Flask, request, jsonify
 import json
 import os
-
-app = Flask(__name__)
+import urllib.request
+import urllib.error
 
 # URL del servidor Kyutai TTS en la VM
 # Configurar esta variable de entorno en Vercel
@@ -48,9 +48,6 @@ def handler(request):
         print(f"📝 Proxy TTS: {len(text)} chars -> {KYUTAI_TTS_URL}")
         
         # Reenviar request a la VM
-        import urllib.request
-        import urllib.parse
-        
         req_data = json.dumps({'text': text, 'language': language}).encode('utf-8')
         req = urllib.request.Request(
             KYUTAI_TTS_URL,
@@ -76,8 +73,6 @@ def handler(request):
         
     except Exception as e:
         print(f'❌ Error en proxy: {str(e)}')
-        import traceback
-        traceback.print_exc()
         
         # Devolver fallback
         result = {
