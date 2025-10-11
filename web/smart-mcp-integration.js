@@ -7,9 +7,9 @@
 const SMART_MCP_CONFIG = {
     // Usar proxy de Vercel en producción (HTTPS), directo en desarrollo
     serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5003/analyze'  // Desarrollo: MCP local
+        ? 'http://localhost:5010/analyze'  // Desarrollo: MCP local (puerto 5010)
         : '/api/mcp-analyze',  // Producción: proxy HTTPS de Vercel
-    enabled: false,  // ⚠️ DESHABILITADO - Habilitar cuando Smart MCP esté corriendo
+    enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true
 };
@@ -90,7 +90,7 @@ async function smartMCPAnalyze(userQuery) {
  */
 async function checkSmartMCPHealth() {
     try {
-        const response = await fetch('http://localhost:5003/health', {
+        const response = await fetch('http://localhost:5010/health', {
             method: 'GET',
             signal: AbortSignal.timeout(1000)
         });
