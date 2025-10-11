@@ -532,12 +532,14 @@ async function sendMessage() {
     console.log('📨 Agregando mensaje del usuario:', messageContent);
     appendMessage('user', messageContent);
     
-    // Limpiar input y archivos
-    messageInput.value = '';
-    messageInput.style.height = 'auto';
-    attachedFiles = [];
-    updateAttachmentsPreview();
-    updateSendButtonState();
+    // Limpiar input y archivos (con pequeño delay para evitar flash visual)
+    setTimeout(() => {
+        messageInput.value = '';
+        messageInput.style.height = 'auto';
+        attachedFiles = [];
+        updateAttachmentsPreview();
+        updateSendButtonState();
+    }, 50);
     
     // Guardar mensaje
     saveMessage('user', messageContent);
