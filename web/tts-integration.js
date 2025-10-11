@@ -65,7 +65,9 @@ async function speakText(text, button) {
         .replace(/__/g, '')              // Eliminar cursivas
         .replace(/[#\-\*]/g, '')         // Eliminar markdown
         .replace(/\n{3,}/g, '\n\n')      // Normalizar saltos
-        .trim();
+        .replace(/[^\w\s.,;:!?¿¡áéíóúñÁÉÍÓÚÑüÜ\-]/g, '') // Solo caracteres válidos
+        .trim()
+        .substring(0, 1000);             // Limitar a 1000 caracteres para evitar errores
     
     if (!cleanText) {
         console.warn('⚠️ No hay texto para leer');
@@ -189,9 +191,21 @@ function speakWithWebAPI(text, button) {
     
     currentUtterance.onerror = (event) => {
         console.error('❌ Error TTS:', event.error);
+        
+        // Intentar detener cualquier speech en curso
+        if (window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+        }
+        
         isSpeaking = false;
         updateButtonState(button, 'idle');
         currentSpeakingButton = null;
+        currentUtterance = null;
+        
+        // Mostrar mensaje al usuario
+        if (event.error === 'synthesis-failed') {
+            console.warn('⚠️ Síntesis fallida. Intenta con un texto más corto o recarga la página.');
+        }
     };
     
     // Iniciar lectura
@@ -220,15 +234,21 @@ function stopSpeaking() {
  * Actualiza el estado visual del botón
  */
 function updateButtonState(button, state) {
+    // Validar que el botón existe
+    if (!button) {
+        console.warn('⚠️ updateButtonState: botón no encontrado');
+        return;
+    }
+
     const icon = button.querySelector('i');
     const text = button.querySelector('.btn-text');
     
     if (state === 'speaking') {
-        icon.setAttribute('data-lucide', 'volume-2');
+        if (icon) icon.setAttribute('data-lucide', 'volume-2');
         if (text) text.textContent = 'Detener';
         button.classList.add('speaking');
     } else {
-        icon.setAttribute('data-lucide', 'volume');
+        if (icon) icon.setAttribute('data-lucide', 'volume');
         if (text) text.textContent = 'Escuchar';
         button.classList.remove('speaking');
     }
