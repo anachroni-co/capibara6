@@ -13,6 +13,10 @@
       "destination": "/api/mcp-analyze.js"
     },
     {
+      "source": "/api/mcp-health",
+      "destination": "/api/mcp-health.js"
+    },
+    {
       "source": "/api/tts",
       "destination": "/api/tts.js"
     }
