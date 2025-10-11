@@ -47,8 +47,9 @@ echo "[4/7] Copiando requirements..."
 gcloud compute scp backend/requirements.txt $VM_NAME:~/capibara6/backend/ --zone=$ZONE
 
 echo ""
-echo "[5/7] Copiando script de inicio de Kyutai TTS..."
+echo "[5/7] Copiando scripts de inicio..."
 gcloud compute scp backend/start_kyutai_tts.sh $VM_NAME:~/capibara6/backend/ --zone=$ZONE
+gcloud compute scp backend/start_smart_mcp.sh $VM_NAME:~/capibara6/backend/ --zone=$ZONE
 
 echo ""
 echo "[6/7] Configurando firewall GCP (si no existe)..."
@@ -86,23 +87,22 @@ else
 fi
 
 echo ""
-echo "[7/7] Instalando dependencias en la VM..."
+echo "[7/7] Preparando virtualenv y permisos en la VM..."
 
-# Crear e instalar dependencias
+# Preparar scripts y virtualenv
 gcloud compute ssh $VM_NAME --zone=$ZONE --command="
     cd ~/capibara6/backend && \
-    echo '📦 Instalando dependencias básicas...' && \
-    python3 -m pip install --user flask flask-cors && \
-    echo '📦 Instalando Kyutai TTS (puede tardar varios minutos)...' && \
-    python3 -m pip install --user moshi>=0.2.6 && \
-    python3 -m pip install --user torch torchaudio soundfile numpy transformers huggingface-hub && \
-    echo '✓ Dependencias instaladas' && \
-    chmod +x start_kyutai_tts.sh
+    echo '✓ Dando permisos a scripts...' && \
+    chmod +x start_kyutai_tts.sh start_smart_mcp.sh && \
+    echo '✓ Permisos configurados' && \
+    echo '' && \
+    echo '📦 Nota: Las dependencias se instalarán automáticamente' && \
+    echo '   en un virtualenv la primera vez que ejecutes los scripts.'
 "
 
 if [ $? -ne 0 ]; then
-    echo -e "${YELLOW}⚠️  Advertencia: Error al instalar dependencias${NC}"
-    echo "Podrás instalarlas manualmente más tarde"
+    echo -e "${YELLOW}⚠️  Advertencia: Error al configurar permisos${NC}"
+    echo "Podrás darles permisos manualmente con: chmod +x start_*.sh"
 fi
 
 # Obtener IP de la VM
@@ -131,11 +131,12 @@ echo "   screen -S kyutai-tts"
 echo "   cd ~/capibara6/backend"
 echo "   ./start_kyutai_tts.sh"
 echo "   ${GREEN}[Ctrl+A, D para salir]${NC}"
+echo "   ${YELLOW}(La primera vez instalará dependencias en virtualenv - tardará ~5 min)${NC}"
 echo ""
 echo "3. ${YELLOW}Iniciar Smart MCP (en otro screen):${NC}"
 echo "   screen -S smart-mcp"
 echo "   cd ~/capibara6/backend"
-echo "   python3 smart_mcp_server.py"
+echo "   ./start_smart_mcp.sh"
 echo "   ${GREEN}[Ctrl+A, D para salir]${NC}"
 echo ""
 echo "4. ${YELLOW}Verificar servicios:${NC}"

@@ -31,15 +31,9 @@ echo [4/7] Copiando requirements...
 gcloud compute scp backend/requirements.txt %VM_NAME%:~/capibara6/backend/ --zone=%ZONE%
 
 echo.
-echo [5/7] Creando script de inicio...
-echo #!/bin/bash > start_services.sh
-echo cd ~/capibara6/backend >> start_services.sh
-echo # Instalar dependencias >> start_services.sh
-echo python3 -m pip install --user flask flask-cors >> start_services.sh
-echo python3 -m pip install --user moshi^>=0.2.6 torch torchaudio soundfile numpy >> start_services.sh
-echo echo "Dependencias instaladas" >> start_services.sh
-gcloud compute scp start_services.sh %VM_NAME%:~/ --zone=%ZONE%
-del start_services.sh
+echo [5/7] Copiando scripts de inicio...
+gcloud compute scp backend/start_kyutai_tts.sh %VM_NAME%:~/capibara6/backend/ --zone=%ZONE%
+gcloud compute scp backend/start_smart_mcp.sh %VM_NAME%:~/capibara6/backend/ --zone=%ZONE%
 
 echo.
 echo [6/7] Configurando firewall GCP (si no existe)...
@@ -60,8 +54,8 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [7/7] Instalando dependencias en la VM...
-gcloud compute ssh %VM_NAME% --zone=%ZONE% --command="bash ~/start_services.sh"
+echo [7/7] Preparando virtualenv y permisos en la VM...
+gcloud compute ssh %VM_NAME% --zone=%ZONE% --command="cd ~/capibara6/backend && chmod +x start_kyutai_tts.sh start_smart_mcp.sh && echo 'Permisos configurados'"
 
 echo.
 echo ========================================
@@ -76,13 +70,14 @@ echo.
 echo 2. Iniciar Kyutai TTS (en screen):
 echo    screen -S kyutai-tts
 echo    cd ~/capibara6/backend
-echo    python3 kyutai_tts_server.py
+echo    ./start_kyutai_tts.sh
 echo    [Ctrl+A, D para salir]
+echo    (La primera vez instalara dependencias - tardara ~5 min)
 echo.
 echo 3. Iniciar Smart MCP (en otro screen):
 echo    screen -S smart-mcp
 echo    cd ~/capibara6/backend
-echo    python3 smart_mcp_server.py
+echo    ./start_smart_mcp.sh
 echo    [Ctrl+A, D para salir]
 echo.
 echo 4. Verificar servicios:
