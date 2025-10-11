@@ -1,5 +1,6 @@
-# Vercel Proxy Ligero - NO carga modelos
-# Las dependencias pesadas van en la VM
+# Vercel Proxy Ligero - CERO dependencias
+# Solo usa librería estándar de Python (json, os, urllib)
+# Las dependencias pesadas (Flask, Torch, Moshi) van en la VM
 
-Flask==3.0.0
+# NO INSTALAR NADA - Proxy ultra-ligero
 
