@@ -5,6 +5,7 @@
 | Documento | Descripción | Tiempo |
 |-----------|-------------|--------|
 | **`FINALIZAR_AHORA.md`** | ⭐ Guía de 3 pasos para activar todo | 15 min |
+| **`ACTIVAR_CLONACION_VOZ.md`** | ⭐ Activar clonación de voz (nueva característica) | 15 min |
 | **`RESUMEN_COMPLETO.md`** | 📊 Estado completo del sistema | 5 min lectura |
 | **`ESTADO_FINAL_SISTEMA.md`** | 📋 Resumen ejecutivo | 3 min lectura |
 
@@ -54,8 +55,11 @@
 ### TTS (Text-to-Speech)
 | Documento | Contenido |
 |-----------|-----------|
+| **`ACTIVAR_CLONACION_VOZ.md`** | ⭐ Guía rápida: Activar clonación de voz |
+| **`CLONACION_VOZ_README.md`** | ⭐ Documentación completa de clonación |
 | `VOCES_COQUI_TTS.md` | Todas las voces disponibles en Coqui |
 | `COQUI_TTS_SETUP.md` | Setup inicial de Coqui TTS |
+| `REINICIAR_TTS_XTTS_V2.md` | Actualizar TTS a XTTS v2 |
 | `KYUTAI_TTS_README.md` | Kyutai TTS (alternativa, sin usar) |
 | `TTS_OPTIONS.md` | Comparación de opciones TTS |
 
