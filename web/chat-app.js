@@ -17,18 +17,18 @@ const MODEL_CONFIG = {
     serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? 'http://34.175.104.187:8080/completion'  // Desarrollo: directo a la VM
         : '/api/completion',  // Producción: proxy HTTPS de Vercel
-    systemPrompt: 'Eres un asistente útil.',  // Mínimo necesario para Gemma
+    systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
-        n_predict: 200,  // Reducido para respuestas más concisas
-        temperature: 0.7,  // Balance entre coherencia y creatividad
-        top_p: 0.9,  // Permitir buena diversidad
-        repeat_penalty: 1.5,  // Moderado - muy agresivo causa incoherencia
-        presence_penalty: 0.3,  // Reducido - muy alto causa basura
-        frequency_penalty: 0.3,  // Reducido - muy alto causa basura
+        n_predict: 300,  // Más tokens para respuestas completas
+        temperature: 0.6,  // Más conservador = más coherente
+        top_p: 0.85,  // Reducido ligeramente
+        repeat_penalty: 1.1,  // ⚠️ CRÍTICO: Bajado de 1.5 a 1.1 (muy importante)
+        presence_penalty: 0.0,  // ⚠️ CRÍTICO: Deshabilitado (causaba basura)
+        frequency_penalty: 0.0,  // ⚠️ CRÍTICO: Deshabilitado (causaba basura)
         stop: [
-            "<end_of_turn>", 
-            "<|im_end|>", 
-            "\n\n\n"
+            "<end_of_turn>",
+            "<|end_of_turn|>",
+            "<|im_end|>"
         ]
     }
 };
