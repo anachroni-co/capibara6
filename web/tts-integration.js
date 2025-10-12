@@ -64,7 +64,7 @@ function getBestSpanishVoice() {
 /**
  * Lee el texto usando Coqui TTS (si está disponible) o Web Speech API
  */
-async function speakText(text, button) {
+async function speakText(text, button, voiceId = null) {
     // Si ya está hablando, detener
     if (isSpeaking) {
         stopSpeaking();
@@ -106,7 +106,7 @@ async function speakText(text, button) {
     // Intentar usar Coqui TTS primero (en producción)
     if (TTS_CONFIG.useCoquiTTS) {
         try {
-            await speakWithCoquiTTS(cleanText, button);
+            await speakWithCoquiTTS(cleanText, button, voiceId);
             return;
         } catch (error) {
             console.warn('⚠️ Coqui TTS no disponible, usando Web Speech API:', error);
@@ -119,12 +119,22 @@ async function speakText(text, button) {
 }
 
 /**
- * Síntesis con Coqui TTS (VITS neural)
+ * Síntesis con Coqui TTS (XTTS v2)
  */
-async function speakWithCoquiTTS(text, button) {
+async function speakWithCoquiTTS(text, button, voiceId = null) {
     isSpeaking = true;
     currentSpeakingButton = button;
     updateButtonState(button, 'speaking');
+    
+    // Obtener voz seleccionada (si no se especifica)
+    if (!voiceId && typeof getSelectedVoice === 'function') {
+        voiceId = getSelectedVoice();
+    }
+    
+    // Voz por defecto
+    voiceId = voiceId || 'sofia';
+    
+    console.log(`🎤 Usando voz: ${voiceId}`);
     
     try {
         const response = await fetch(TTS_CONFIG.apiEndpoint, {
@@ -134,7 +144,8 @@ async function speakWithCoquiTTS(text, button) {
             },
             body: JSON.stringify({ 
                 text,
-                language: TTS_CONFIG.language 
+                language: TTS_CONFIG.language,
+                voice_id: voiceId
             })
         });
         

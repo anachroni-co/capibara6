@@ -89,6 +89,13 @@ function init() {
     // Verificar conexión al servidor
     checkServerConnection();
     
+    // Inicializar selector de voces
+    if (typeof initVoiceSelector === 'function') {
+        setTimeout(() => {
+            initVoiceSelector();
+        }, 1000);  // Esperar 1 seg para que el DOM esté listo
+    }
+    
     // Cargar configuración del consenso (comentado por ahora)
     // loadConsensusConfig();
     
