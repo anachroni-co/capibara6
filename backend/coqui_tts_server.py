@@ -15,10 +15,11 @@ CORS(app, origins='*')
 
 # Configuración del modelo
 COQUI_CONFIG = {
-    'model_name': 'tts_models/es/css10/vits',  # Modelo español de alta calidad
-    'sample_rate': 22050,
+    'model_name': 'tts_models/multilingual/multi-dataset/xtts_v2',  # ⭐ XTTS v2 - Máxima calidad
+    'sample_rate': 24000,  # XTTS usa 24kHz
     'max_chars': 3000,
     'speed': 1.0,
+    'language': 'es',  # Español por defecto
 }
 
 # Cache del modelo
@@ -83,9 +84,11 @@ def synthesize_audio(text, language='es'):
             tmp_path = tmp_file.name
         
         # Generar audio
+        # XTTS v2 requiere parámetro 'language'
         tts.tts_to_file(
             text=text,
             file_path=tmp_path,
+            language=language,
             speed=COQUI_CONFIG['speed']
         )
         
@@ -193,10 +196,12 @@ if __name__ == '__main__':
     print("=" * 60)
     print("🎙️  COQUI TTS SERVER - Capibara6")
     print("=" * 60)
-    print(f"📦 Modelo: {COQUI_CONFIG['model_name']}")
+    print(f"📦 Modelo: XTTS v2 (Máxima Calidad)")
+    print(f"🌍 Multilingüe: 16+ idiomas disponibles")
     print(f"🔊 Sample rate: {COQUI_CONFIG['sample_rate']} Hz")
     print(f"📝 Max caracteres: {COQUI_CONFIG['max_chars']}")
-    print(f"🌐 Idioma: Español")
+    print(f"🌐 Idioma por defecto: {COQUI_CONFIG['language']}")
+    print(f"✨ Características: Clonación de voz disponible")
     print("=" * 60)
     
     # Pre-cargar modelo al iniciar (recomendado)
