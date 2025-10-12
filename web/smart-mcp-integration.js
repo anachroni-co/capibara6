@@ -94,18 +94,29 @@ async function checkSmartMCPHealth() {
         // En producción: usar proxy de Vercel que conecta a la VM
         const healthUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'http://localhost:5010/health'
-            : '/api/mcp-health';  // Necesitamos crear este endpoint
+            : '/api/mcp-health';
+        
+        console.log(`🔍 Verificando Smart MCP en: ${healthUrl}`);
         
         const response = await fetch(healthUrl, {
             method: 'GET',
-            signal: AbortSignal.timeout(2000)
+            signal: AbortSignal.timeout(3000)  // 3 segundos de timeout
         });
+
+        console.log(`📡 Respuesta MCP: status=${response.status}, ok=${response.ok}`);
 
         if (response.ok) {
             const data = await response.json();
-            console.log('✅ Smart MCP activo:', data.service || data.approach);
-            return true;
+            console.log('📦 Datos MCP:', data);
+            
+            // Verificar que la respuesta tenga datos válidos
+            if (data && (data.status === 'healthy' || data.service || data.approach)) {
+                console.log('✅ Smart MCP ACTIVO:', data.service || data.approach || 'healthy');
+                return true;
+            }
         }
+        
+        console.log('⚠️ Smart MCP respondió pero con formato inesperado');
         return false;
     } catch (error) {
         console.log('ℹ️ Smart MCP no disponible (se usará modo directo)');
