@@ -83,11 +83,17 @@ function createVoiceSelectorUI() {
         <div class="voice-selector-header">
             <h3>🎤 Seleccionar Voz</h3>
             <button id="toggle-voice-panel" class="btn-icon" title="Mostrar/Ocultar">
-                <i data-lucide="chevron-down"></i>
+                <i data-lucide="chevron-up"></i>
             </button>
         </div>
         
-        <div class="voice-selector-content" style="display: none;">
+        <div class="voice-selector-content" style="display: block;">
+            <!-- Estado del TTS -->
+            <div id="tts-status-banner" class="tts-status-banner" style="display: none;">
+                <i data-lucide="alert-circle"></i>
+                <span>Usando voz del navegador. Para voces personalizadas, activa Coqui TTS en el servidor.</span>
+            </div>
+            
             <!-- Voces predefinidas -->
             <div class="voice-section">
                 <h4>Voces Predefinidas</h4>
@@ -209,6 +215,9 @@ function setupVoiceEvents() {
             }
         });
     }
+    
+    // Verificar si Coqui TTS está disponible
+    checkTTSAvailability();
     
     // Selección de voz
     const voiceRadios = document.querySelectorAll('input[name="voice"]');
@@ -418,6 +427,46 @@ async function updateCustomVoicesList() {
  */
 function getSelectedVoice() {
     return VOICE_CONFIG.selectedVoice;
+}
+
+/**
+ * Verificar si Coqui TTS está disponible
+ */
+async function checkTTSAvailability() {
+    try {
+        const endpoint = VOICE_CONFIG.isLocal 
+            ? `${VOICE_CONFIG.baseUrl}/health`
+            : '/api/tts';
+        
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: 'test', language: 'es' })
+        });
+        
+        const banner = document.getElementById('tts-status-banner');
+        
+        if (!response.ok || response.status === 503) {
+            // TTS no disponible, mostrar banner
+            if (banner) {
+                banner.style.display = 'flex';
+            }
+            console.warn('⚠️ Coqui TTS no disponible, usando Web Speech API');
+        } else {
+            // TTS disponible, ocultar banner
+            if (banner) {
+                banner.style.display = 'none';
+            }
+            console.log('✅ Coqui TTS disponible');
+        }
+    } catch (error) {
+        // Error al conectar, mostrar banner
+        const banner = document.getElementById('tts-status-banner');
+        if (banner) {
+            banner.style.display = 'flex';
+        }
+        console.warn('⚠️ No se pudo verificar Coqui TTS:', error.message);
+    }
 }
 
 // Exportar funciones
