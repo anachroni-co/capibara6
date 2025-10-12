@@ -19,6 +19,14 @@
     {
       "source": "/api/tts",
       "destination": "/api/tts.js"
+    },
+    {
+      "source": "/api/tts-voices",
+      "destination": "/api/tts-voices.js"
+    },
+    {
+      "source": "/api/tts-clone",
+      "destination": "/api/tts-clone.js"
     }
   ],
   "headers": [
