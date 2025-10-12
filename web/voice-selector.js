@@ -69,9 +69,12 @@ async function loadAvailableVoices() {
  * Crear UI del selector de voces
  */
 function createVoiceSelectorUI() {
-    // Buscar contenedor (debajo del chat header)
-    const chatContainer = document.querySelector('.chat-container');
-    if (!chatContainer) return;
+    // Buscar contenedor del chat (puede ser .chat-container o #chat-area)
+    const chatArea = document.querySelector('#chat-area') || document.querySelector('.chat-container');
+    if (!chatArea) {
+        console.warn('⚠️ No se encontró #chat-area o .chat-container');
+        return;
+    }
     
     // Crear panel de voces
     const voicePanel = document.createElement('div');
@@ -169,10 +172,15 @@ function createVoiceSelectorUI() {
         </div>
     `;
     
-    // Insertar antes del chat messages
-    const chatMessages = chatContainer.querySelector('.chat-messages');
-    if (chatMessages) {
-        chatContainer.insertBefore(voicePanel, chatMessages);
+    // Insertar antes del contenedor de mensajes
+    const messagesContainer = chatArea.querySelector('#messages-container') || chatArea.querySelector('.chat-messages');
+    if (messagesContainer) {
+        chatArea.insertBefore(voicePanel, messagesContainer);
+        console.log('✅ Selector de voz insertado en la UI');
+    } else {
+        // Si no hay contenedor de mensajes, agregar al final del chat-area
+        chatArea.appendChild(voicePanel);
+        console.log('✅ Selector de voz agregado al final del chat-area');
     }
     
     // Reinicializar iconos de Lucide
