@@ -5,10 +5,8 @@
  */
 
 const SMART_MCP_CONFIG = {
-    // Usar proxy de Vercel en producción (HTTPS), directo en desarrollo
-    serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5010/analyze'  // Desarrollo: MCP local (puerto 5010)
-        : '/api/mcp-analyze',  // Producción: proxy HTTPS de Vercel
+    // Usar el servidor integrado en la VM
+    serverUrl: 'http://34.175.215.109:5000/api/mcp/analyze',
     enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true

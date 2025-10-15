@@ -13,10 +13,10 @@ const CONSENSUS_CONFIG = {
 
 // Configuración del modelo original
 const MODEL_CONFIG = {
-    // Usar proxy de Vercel en producción (HTTPS), directo en desarrollo
+    // Conectar directamente con la VM donde está todo el sistema integrado
     serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://34.175.104.187:8080/completion'  // Desarrollo: directo a la VM
-        : '/api/completion',  // Producción: proxy HTTPS de Vercel
+        ? 'http://34.175.215.109:5000/api/chat'  // Desarrollo: VM directa con todo integrado
+        : 'http://34.175.215.109:5000/api/chat',  // Producción: VM directa
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 300,  // Más tokens para respuestas completas
@@ -840,9 +840,10 @@ async function simulateAssistantResponse(userMessage) {
     let streamingMessageDiv = null;
     let streamingTextDiv = null;
     let accumulatedText = '';
+    let tokensGenerated = 0;
     
     // Crear nuevo AbortController para esta generación
-    abortController = new AbortController();
+    let abortController = new AbortController();
     
     try {
         // Obtener el historial de la conversación actual
@@ -893,16 +894,16 @@ async function simulateAssistantResponse(userMessage) {
         streamingMessageDiv = createStreamingMessage();
         streamingTextDiv = streamingMessageDiv.querySelector('.message-text');
         
-        // Conectar con Capibara6 con streaming
+        // Conectar con nuestro backend que se conecta a GPT-OSS-20B
         const response = await fetch(MODEL_CONFIG.serverUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                prompt: conversationHistory,
-                ...MODEL_CONFIG.defaultParams,
-                stream: true
+                message: userMessage,  // Enviar solo el mensaje del usuario
+                max_tokens: MODEL_CONFIG.defaultParams.n_predict,
+                temperature: MODEL_CONFIG.defaultParams.temperature
             }),
             signal: abortController.signal
         });
@@ -911,102 +912,38 @@ async function simulateAssistantResponse(userMessage) {
             throw new Error(`Error del servidor: ${response.status}`);
         }
         
-        // Leer el stream
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = '';
-        let tokensGenerated = 0;
-        let tokensEvaluated = 0;
+        // Leer la respuesta JSON de nuestro backend
+        const data = await response.json();
         
-        while (true) {
-            const { done, value } = await reader.read();
+        if (data.response) {
+            // Simular streaming escribiendo la respuesta caracter por caracter
+            const fullResponse = data.response;
+            let currentText = '';
             
-            if (done) break;
-            
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || '';
-            
-            for (const line of lines) {
-                if (line.startsWith('data: ')) {
-                    try {
-                        const jsonStr = line.slice(6).trim();
-                        if (jsonStr === '[DONE]') continue;
-                        
-                        const data = JSON.parse(jsonStr);
-                        
-                        if (data.content) {
-                            // NUEVA ESTRATEGIA: Acumular primero, filtrar solo para visualización
-                            // Solo eliminar tokens de control críticos que rompen el flujo
-                            let chunkContent = data.content
-                                .replace(/<\|im_end\|>/g, '')
-                                .replace(/<\|end_of_turn\|>/g, '')
-                                .replace(/<end_of_turn>/g, '')
-                                .replace(/\[INST\]/g, '')
-                                .replace(/\[\/INST\]/g, '')
-                                .replace(/\<s\>/g, '')
-                                .replace(/\<\/s\>/g, '');
-                            
-                            // Acumular TODO (incluyendo HTML, se filtrará al renderizar)
-                            accumulatedText += chunkContent;
-                            
-                            // Aplicar filtros solo para VISUALIZACIÓN (no para almacenar)
-                            let displayText = accumulatedText
-                                // Convertir HTML a Markdown para mejor visualización
-                                .replace(/<\/?p>/gi, '\n\n')
-                                .replace(/<br\s*\/?>/gi, '\n')
-                                .replace(/<strong>/gi, '**')
-                                .replace(/<\/strong>/gi, '**')
-                                .replace(/<em>/gi, '_')
-                                .replace(/<\/em>/gi, '_')
-                                .replace(/<b>/gi, '**')
-                                .replace(/<\/b>/gi, '**')
-                                .replace(/<i>/gi, '_')
-                                .replace(/<\/i>/gi, '_')
-                                .replace(/<li>/gi, '\n• ')
-                                .replace(/<\/li>/gi, '')
-                                .replace(/<\/?ul>/gi, '\n')
-                                .replace(/<\/?ol>/gi, '\n')
-                                .replace(/<h1>/gi, '\n# ')
-                                .replace(/<\/h1>/gi, '\n')
-                                .replace(/<h2>/gi, '\n## ')
-                                .replace(/<\/h2>/gi, '\n')
-                                .replace(/<h3>/gi, '\n### ')
-                                .replace(/<\/h3>/gi, '\n')
-                                // Limpiar tags no convertidos
-                                .replace(/<\/?div>/gi, '')
-                                .replace(/<\/?span>/gi, '')
-                                .replace(/<img[^>]*>/gi, '')
-                                .replace(/<audio[^>]*>/gi, '')
-                                .replace(/<video[^>]*>/gi, '')
-                                // Reemplazar nombres de otros modelos
-                                .replace(/\bChatGPT\b/g, 'Capibara6')
-                                .replace(/\bBing\b/g, 'Capibara6')
-                                .replace(/\bClaude\b/g, 'Capibara6')
-                                .replace(/\bAnthropic\b/g, 'Anachroni s.coop')
-                                // Eliminar código LaTeX
-                                .replace(/\\textbackslash.*/gi, '')
-                                .replace(/\\begin\{.*?\}.*/gi, '')
-                                .replace(/\\end\{.*?\}.*/gi, '')
-                                .replace(/\\hline.*/gi, '')
-                                // Tags incompletos al final (mientras se está escribiendo)
-                                .replace(/<\w+$/gi, '')
-                                .replace(/<\/\w*$/gi, '');
-                            
-                            // Renderizar con formateo markdown
-                            streamingTextDiv.innerHTML = formatMessage(displayText);
-                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                        }
-                        
-                        // Guardar estadísticas si vienen
-                        if (data.tokens_predicted) tokensGenerated = data.tokens_predicted;
-                        if (data.tokens_evaluated) tokensEvaluated = data.tokens_evaluated;
-                        
-                    } catch (e) {
-                        console.log('Error parsing SSE:', e);
-                    }
+            for (let i = 0; i <= fullResponse.length; i++) {
+                if (abortController.signal.aborted) {
+                    console.log('🛑 Generación cancelada por el usuario');
+                    break;
+                }
+                
+                currentText = fullResponse.substring(0, i);
+                streamingTextDiv.textContent = currentText;
+                streamingMessageDiv.scrollIntoView({ behavior: 'smooth' });
+                
+                // Pequeña pausa para simular streaming
+                if (i < fullResponse.length) {
+                    await new Promise(resolve => setTimeout(resolve, 20));
                 }
             }
+            
+            accumulatedText = fullResponse;
+            
+            // Usar los datos reales del modelo si están disponibles
+            if (data.tokens) {
+                tokensGenerated = data.tokens;
+            }
+        } else {
+            throw new Error('No se recibió respuesta del modelo');
         }
         
         const endTime = performance.now();
@@ -1105,6 +1042,10 @@ async function simulateAssistantResponse(userMessage) {
             .trim();
         
         // Calcular estadísticas
+        if (tokensGenerated === 0) {
+            tokensGenerated = accumulatedText.split(' ').length; // Estimación simple si no tenemos datos del modelo
+        }
+        const tokensEvaluated = 0; // No disponible en nuestro formato
         const tokensPerSecond = duration > 0 ? (tokensGenerated / parseFloat(duration)).toFixed(1) : '0';
         const totalTokens = tokensGenerated + tokensEvaluated;
         const modelName = 'capibara6';

@@ -6,21 +6,15 @@
 
 const TTS_CONFIG = {
     enabled: true,
-    // Usar Coqui TTS en producción, Web Speech API en desarrollo
-    useCoquiTTS: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
-    apiEndpoint: '/api/tts',
+    // Usar Coqui TTS de la VM (siempre)
+    useCoquiTTS: true,
+    apiEndpoint: 'http://34.175.215.109:5000/api/tts/speak',
     language: 'es',
     rate: 1.0,      // Velocidad (0.5 - 2.0)
     pitch: 1.0,     // Tono (0 - 2)
     volume: 1.0,    // Volumen (0 - 1)
     preferredVoices: [
-        'Google español',
-        'Microsoft Helena',
-        'Microsoft Laura',
-        'es-ES-Neural2-A',
-        'es-ES',
-        'es-MX',
-        'Spanish'
+        'sofia'  // Solo usar la voz de Sofía del servidor Coqui TTS
     ]
 };
 
@@ -126,13 +120,8 @@ async function speakWithCoquiTTS(text, button, voiceId = null) {
     currentSpeakingButton = button;
     updateButtonState(button, 'speaking');
     
-    // Obtener voz seleccionada (si no se especifica)
-    if (!voiceId && typeof getSelectedVoice === 'function') {
-        voiceId = getSelectedVoice();
-    }
-    
-    // Voz por defecto
-    voiceId = voiceId || 'sofia';
+    // Siempre usar la voz de Sofía
+    voiceId = 'sofia';
     
     console.log(`🎤 Usando voz: ${voiceId}`);
     
@@ -153,25 +142,20 @@ async function speakWithCoquiTTS(text, button, voiceId = null) {
             throw new Error('Coqui TTS API error');
         }
         
-        const data = await response.json();
-        
-        if (data.fallback) {
-            throw new Error('API fallback activado');
-        }
-        
-        // Coqui TTS devuelve WAV en base64
-        const audioFormat = data.format || 'wav';
-        const audioData = `data:audio/${audioFormat};base64,${data.audioContent}`;
-        const audio = new Audio(audioData);
+        // El servidor devuelve un archivo WAV binario directamente
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
         
         audio.onplay = () => {
-            console.log(`🔊 Coqui TTS reproduciendo... (${data.model || 'modelo desconocido'})`);
+            console.log(`🔊 Coqui TTS reproduciendo... (audio WAV generado)`);
         };
         
         audio.onended = () => {
             isSpeaking = false;
             updateButtonState(button, 'idle');
             currentSpeakingButton = null;
+            URL.revokeObjectURL(audioUrl); // Limpiar el objeto URL
             console.log('✅ Coqui TTS completado');
         };
         
@@ -180,6 +164,7 @@ async function speakWithCoquiTTS(text, button, voiceId = null) {
             isSpeaking = false;
             updateButtonState(button, 'idle');
             currentSpeakingButton = null;
+            URL.revokeObjectURL(audioUrl); // Limpiar el objeto URL
         };
         
         await audio.play();
