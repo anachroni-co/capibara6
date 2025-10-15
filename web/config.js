@@ -2,9 +2,9 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // Conectar directamente con la VM donde está todo el sistema
-    BACKEND_URL: window.location.hostname === 'localhost' 
-        ? 'http://34.175.215.109:5000'
+    // HTTPS en producción para evitar Mixed Content
+    BACKEND_URL: window.location.protocol === 'https:'
+        ? 'https://34.175.215.109'
         : 'http://34.175.215.109:5000',
     
     // Endpoints

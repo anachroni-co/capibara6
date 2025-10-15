@@ -8,7 +8,9 @@ const TTS_CONFIG = {
     enabled: true,
     // Usar Coqui TTS de la VM (siempre)
     useCoquiTTS: true,
-    apiEndpoint: 'http://34.175.215.109:5000/api/tts/speak',
+    apiEndpoint: window.location.protocol === 'https:'
+        ? 'https://34.175.215.109/api/tts/speak'  // Producción: HTTPS
+        : 'http://34.175.215.109:5000/api/tts/speak',  // Desarrollo: HTTP
     language: 'es',
     rate: 1.0,      // Velocidad (0.5 - 2.0)
     pitch: 1.0,     // Tono (0 - 2)
