@@ -5,8 +5,10 @@
  */
 
 const SMART_MCP_CONFIG = {
-    // Usar el servidor integrado en la VM
-    serverUrl: 'http://34.175.215.109:5000/api/mcp/analyze',
+    // Usar el servidor integrado en la VM - HTTPS en producción
+    serverUrl: window.location.protocol === 'https:'
+        ? 'https://34.175.215.109/api/mcp/analyze'  // Producción: HTTPS
+        : 'http://34.175.215.109:5000/api/mcp/analyze',  // Desarrollo: HTTP
     enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true

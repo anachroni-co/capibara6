@@ -13,10 +13,10 @@ const CONSENSUS_CONFIG = {
 
 // Configuración del modelo original
 const MODEL_CONFIG = {
-    // Conectar directamente con la VM donde está todo el sistema integrado
-    serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://34.175.215.109:5000/api/chat'  // Desarrollo: VM directa con todo integrado
-        : 'http://34.175.215.109:5000/api/chat',  // Producción: VM directa
+    // Conectar con la VM - HTTPS para evitar Mixed Content
+    serverUrl: window.location.protocol === 'https:'
+        ? 'https://34.175.215.109/api/chat'  // Producción: HTTPS
+        : 'http://34.175.215.109:5000/api/chat',  // Desarrollo: HTTP
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 300,  // Más tokens para respuestas completas

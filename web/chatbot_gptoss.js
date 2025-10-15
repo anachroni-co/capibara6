@@ -35,11 +35,10 @@ class Capibara6ChatGPTOSS {
     }
     
     getBackendUrl() {
-        // Conectar directamente con la VM donde está todo el sistema integrado
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            return 'http://34.175.215.109:5000';
+        // HTTPS en producción para evitar Mixed Content
+        if (window.location.protocol === 'https:') {
+            return 'https://34.175.215.109';
         }
-        // En producción también usar la VM
         return 'http://34.175.215.109:5000';
     }
     

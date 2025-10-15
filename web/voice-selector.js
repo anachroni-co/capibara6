@@ -5,7 +5,9 @@
 
 const VOICE_CONFIG = {
     isLocal: true,  // Siempre usar la VM
-    baseUrl: 'http://34.175.215.109:5000',  // Servidor integrado en la VM
+    baseUrl: window.location.protocol === 'https:'
+        ? 'https://34.175.215.109'  // Producción: HTTPS
+        : 'http://34.175.215.109:5000',  // Desarrollo: HTTP
     selectedVoice: 'sofia',  // Voz por defecto
     customVoices: {}
 };
