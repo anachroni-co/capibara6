@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test HTTPS Connection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        button { padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Conexión HTTPS</h1>
+    <p>Protocolo actual: <strong id="protocol"></strong></p>
+    <p>URL que se usará: <strong id="url"></strong></p>
+    
+    <button onclick="testConnection()">Probar Conexión</button>
+    <div id="result"></div>
+
+    <script>
+        // Mostrar información actual
+        document.getElementById('protocol').textContent = window.location.protocol;
+        
+        const serverUrl = window.location.protocol === 'https:'
+            ? 'https://34.175.215.109/api/chat'
+            : 'http://34.175.215.109:5000/api/chat';
+        document.getElementById('url').textContent = serverUrl;
+
+        async function testConnection() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="result">🔄 Probando conexión...</div>';
+            
+            try {
+                const response = await fetch(serverUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: 'Hola, ¿cómo te llamas?',
+                        max_tokens: 50
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            ✅ Conexión exitosa!<br>
+                            Respuesta: ${data.response || 'Sin respuesta'}<br>
+                            Modelo: ${data.model || 'Desconocido'}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            ❌ Error HTTP: ${response.status} ${response.statusText}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        ❌ Error de conexión: ${error.message}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

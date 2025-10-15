@@ -1,5 +1,6 @@
 /**
  * TTS Integration for Capibara6
+ * Solo voz Sofia - Sin selector de voces
  * Prioridad 1: Coqui TTS (VITS neural, alta calidad español)
  * Fallback: Web Speech API del navegador
  */
@@ -15,9 +16,7 @@ const TTS_CONFIG = {
     rate: 1.0,      // Velocidad (0.5 - 2.0)
     pitch: 1.0,     // Tono (0 - 2)
     volume: 1.0,    // Volumen (0 - 1)
-    preferredVoices: [
-        'sofia'  // Solo usar la voz de Sofía del servidor Coqui TTS
-    ]
+    voice: 'sofia'  // Solo voz Sofia
 };
 
 // Estado global
@@ -26,7 +25,7 @@ let isSpeaking = false;
 let currentSpeakingButton = null;
 
 /**
- * Obtiene la mejor voz en español disponible
+ * Obtiene la mejor voz en español disponible (solo para fallback Web Speech API)
  */
 function getBestSpanishVoice() {
     const voices = window.speechSynthesis.getVoices();
@@ -36,23 +35,14 @@ function getBestSpanishVoice() {
         return null;
     }
     
-    // 1. Buscar voces específicas preferidas
-    for (const preferred of TTS_CONFIG.preferredVoices) {
-        const voice = voices.find(v => v.name.includes(preferred));
-        if (voice) {
-            console.log(`✓ Voz encontrada: ${voice.name} (${voice.lang})`);
-            return voice;
-        }
-    }
-    
-    // 2. Buscar cualquier voz en español
+    // Buscar cualquier voz en español
     const spanishVoice = voices.find(v => v.lang.startsWith('es'));
     if (spanishVoice) {
         console.log(`✓ Voz español encontrada: ${spanishVoice.name} (${spanishVoice.lang})`);
         return spanishVoice;
     }
     
-    // 3. Último recurso: primera voz disponible
+    // Último recurso: primera voz disponible
     console.warn(`⚠️ No se encontró voz en español. Usando: ${voices[0]?.name}`);
     return voices[0];
 }
@@ -60,7 +50,7 @@ function getBestSpanishVoice() {
 /**
  * Lee el texto usando Coqui TTS (si está disponible) o Web Speech API
  */
-async function speakText(text, button, voiceId = null) {
+async function speakText(text, button) {
     // Si ya está hablando, detener
     if (isSpeaking) {
         stopSpeaking();
@@ -102,7 +92,7 @@ async function speakText(text, button, voiceId = null) {
     // Intentar usar Coqui TTS primero (en producción)
     if (TTS_CONFIG.useCoquiTTS) {
         try {
-            await speakWithCoquiTTS(cleanText, button, voiceId);
+            await speakWithCoquiTTS(cleanText, button);
             return;
         } catch (error) {
             console.warn('⚠️ Coqui TTS no disponible, usando Web Speech API:', error);
@@ -115,15 +105,15 @@ async function speakText(text, button, voiceId = null) {
 }
 
 /**
- * Síntesis con Coqui TTS (XTTS v2)
+ * Síntesis con Coqui TTS (XTTS v2) - Solo voz Sofia
  */
-async function speakWithCoquiTTS(text, button, voiceId = null) {
+async function speakWithCoquiTTS(text, button) {
     isSpeaking = true;
     currentSpeakingButton = button;
     updateButtonState(button, 'speaking');
     
     // Siempre usar la voz de Sofía
-    voiceId = 'sofia';
+    const voiceId = TTS_CONFIG.voice;
     
     console.log(`🎤 Usando voz: ${voiceId}`);
     
