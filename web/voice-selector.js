@@ -4,10 +4,8 @@
  */
 
 const VOICE_CONFIG = {
-    isLocal: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
-    baseUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5002'
-        : '',  // Proxy de Vercel usa rutas relativas
+    isLocal: true,  // Siempre usar la VM
+    baseUrl: 'http://34.175.215.109:5000',  // Servidor integrado en la VM
     selectedVoice: 'sofia',  // Voz por defecto
     customVoices: {}
 };
