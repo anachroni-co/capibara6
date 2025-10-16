@@ -7,7 +7,7 @@
 
 const TTS_CONFIG = {
     enabled: true,
-    // Usar Coqui TTS de la VM (siempre)
+    // Habilitar TTS real (gTTS con voz Sofia)
     useCoquiTTS: true,
     apiEndpoint: window.location.protocol === 'https:'
         ? 'https://34.175.215.109/api/tts/speak'  // Producción: HTTPS
