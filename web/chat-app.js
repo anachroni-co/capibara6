@@ -19,16 +19,19 @@ const MODEL_CONFIG = {
         : 'http://34.175.215.109:5000/api/chat',  // Desarrollo: HTTP
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
-        n_predict: 300,  // Más tokens para respuestas completas
-        temperature: 0.6,  // Más conservador = más coherente
-        top_p: 0.85,  // Reducido ligeramente
-        repeat_penalty: 1.1,  // ⚠️ CRÍTICO: Bajado de 1.5 a 1.1 (muy importante)
-        presence_penalty: 0.0,  // ⚠️ CRÍTICO: Deshabilitado (causaba basura)
-        frequency_penalty: 0.0,  // ⚠️ CRÍTICO: Deshabilitado (causaba basura)
+        n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
+        temperature: 0.8,  // Aumentado para más creatividad y diversidad
+        top_p: 0.9,  // Aumentado para mejor diversidad de respuestas
+        repeat_penalty: 1.1,  // Mantenido bajo para evitar repeticiones excesivas
+        presence_penalty: 0.0,  // Deshabilitado (causaba respuestas extrañas)
+        frequency_penalty: 0.0,  // Deshabilitado (causaba respuestas extrañas)
         stop: [
+            "Usuario:",
+            "Capibara6:",
             "<end_of_turn>",
             "<|end_of_turn|>",
-            "<|im_end|>"
+            "<|im_end|>",
+            "\n\n"
         ]
     }
 };
