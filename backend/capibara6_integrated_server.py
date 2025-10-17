@@ -20,6 +20,7 @@ import io
 from datetime import datetime
 import re
 from pathlib import Path
+from gpt_oss_optimized_config import get_category_payload, get_context_aware_payload
 
 app = Flask(__name__)
 CORS(app, origins='*')  # Permitir conexiones desde cualquier origen
@@ -201,12 +202,25 @@ def chat_proxy():
         if enhanced_message != message:
             print(f"🧠 Contexto MCP añadido: {enhanced_message[:100]}...")
         
-        # Preparar petición para el modelo local
-        payload = {
-            "prompt": enhanced_message,
-            "n_predict": data.get('max_tokens', 100),
-            "temperature": 0.7
-        }
+        # 🚀 USAR CONFIGURACIÓN OPTIMIZADA
+        # Determinar categoría de la consulta
+        category = "general"
+        if any(word in message.lower() for word in ["código", "programar", "python", "javascript", "html", "css"]):
+            category = "programming"
+        elif any(word in message.lower() for word in ["escribir", "historia", "cuento", "poema", "creativo"]):
+            category = "creative_writing"
+        elif len(message.split()) < 10:  # Preguntas cortas
+            category = "quick_questions"
+        
+        # Crear payload optimizado con contexto
+        context = enhanced_message if enhanced_message != message else None
+        payload = get_category_payload(message, category, context)
+        
+        # Añadir parámetros personalizados del cliente si los hay
+        if 'max_tokens' in data:
+            payload['n_predict'] = data['max_tokens']
+        if 'temperature' in data:
+            payload['temperature'] = data['temperature']
         
         # Reenviar petición a la VM
         response = requests.post(

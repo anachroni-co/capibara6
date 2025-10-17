@@ -65,8 +65,10 @@ def call_gpt_oss(prompt, max_tokens=500, temperature=0.7):
             "prompt": prompt,
             "n_predict": max_tokens,
             "temperature": temperature,
+            "top_p": 0.9,  # Añadido para mejor diversidad
+            "repeat_penalty": 1.1,  # Reducido para evitar repeticiones excesivas
             "stream": False,
-            "stop": ["</s>", "<|end|>", "<|endoftext|>"]
+            "stop": ["Usuario:", "Capibara6:", "\n\n", "<|endoftext|>", "</s>", "<|end|>"]
         }
         
         response = requests.post(
@@ -105,12 +107,21 @@ def chat():
         if not user_message:
             return jsonify({'error': 'Mensaje requerido'}), 400
         
-        # Crear prompt mejorado
-        system_prompt = """Eres capibara6, un asistente de IA avanzado y amigable. 
-Eres experto en múltiples temas y siempre respondes de manera útil, precisa y en español.
+        # Crear prompt mejorado y optimizado
+        system_prompt = """Eres Capibara6, un asistente de IA especializado en tecnología, programación e inteligencia artificial desarrollado por Anachroni s.coop.
+
+INSTRUCCIONES CRÍTICAS:
+- Responde SIEMPRE en español
+- Sé específico y detallado en tus respuestas (mínimo 50 palabras)
+- Evita respuestas genéricas como "soy un modelo de IA"
+- Proporciona información útil y práctica
+- Mantén un tono profesional pero amigable
+- Si no sabes algo, admítelo honestamente
+- Incluye ejemplos cuando sea apropiado
+
 Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mejor manera posible."""
         
-        full_prompt = f"{system_prompt}\n\nUsuario: {user_message}\ncapibara6:"
+        full_prompt = f"{system_prompt}\n\nUsuario: {user_message}\n\nCapibara6:"
         
         # Llamar al modelo
         ai_response = call_gpt_oss(full_prompt, max_tokens, temperature)
@@ -142,12 +153,21 @@ def chat_stream():
         if not user_message:
             return jsonify({'error': 'Mensaje requerido'}), 400
         
-        # Crear prompt mejorado
-        system_prompt = """Eres capibara6, un asistente de IA avanzado y amigable. 
-Eres experto en múltiples temas y siempre respondes de manera útil, precisa y en español.
+        # Crear prompt mejorado y optimizado
+        system_prompt = """Eres Capibara6, un asistente de IA especializado en tecnología, programación e inteligencia artificial desarrollado por Anachroni s.coop.
+
+INSTRUCCIONES CRÍTICAS:
+- Responde SIEMPRE en español
+- Sé específico y detallado en tus respuestas (mínimo 50 palabras)
+- Evita respuestas genéricas como "soy un modelo de IA"
+- Proporciona información útil y práctica
+- Mantén un tono profesional pero amigable
+- Si no sabes algo, admítelo honestamente
+- Incluye ejemplos cuando sea apropiado
+
 Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mejor manera posible."""
         
-        full_prompt = f"{system_prompt}\n\nUsuario: {user_message}\ncapibara6:"
+        full_prompt = f"{system_prompt}\n\nUsuario: {user_message}\n\nCapibara6:"
         
         def generate():
             try:
@@ -155,8 +175,10 @@ Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mej
                     "prompt": full_prompt,
                     "n_predict": max_tokens,
                     "temperature": temperature,
+                    "top_p": 0.9,  # Añadido para mejor diversidad
+                    "repeat_penalty": 1.1,  # Reducido para evitar repeticiones excesivas
                     "stream": True,
-                    "stop": ["</s>", "<|end|>", "<|endoftext|>"]
+                    "stop": ["Usuario:", "Capibara6:", "\n\n", "<|endoftext|>", "</s>", "<|end|>"]
                 }
                 
                 response = requests.post(
