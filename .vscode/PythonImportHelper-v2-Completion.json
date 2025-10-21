@@ -4965,6 +4965,14 @@
         "documentation": {}
     },
     {
+        "label": "MIMEText",
+        "importPath": "email.mime.text",
+        "description": "email.mime.text",
+        "isExtraImport": true,
+        "detail": "email.mime.text",
+        "documentation": {}
+    },
+    {
         "label": "MIMEMultipart",
         "importPath": "email.mime.multipart",
         "description": "email.mime.multipart",
@@ -5716,6 +5724,14 @@
         "description": "execution.e2b_integration",
         "isExtraImport": true,
         "detail": "execution.e2b_integration",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
         "documentation": {}
     },
     {
@@ -13947,6 +13963,132 @@
         "description": "fine-tuning.t5x.finetuning.tpu_optimizer",
         "peekOfCode": "PERFORMANCE_METRICS = {optimization.performance_metrics}\n\"\"\"\n            # Guardar configuración\n            config_file = os.path.join(self.configs_dir, f\"{optimization.optimization_id}_t5x_config.gin\")\n            with open(config_file, 'w') as f:\n                f.write(config_content)\n            logger.info(f\"Configuración T5X generada: {config_file}\")\n            return config_file\n        except Exception as e:\n            logger.error(f\"Error generando configuración T5X: {e}\")",
         "detail": "fine-tuning.t5x.finetuning.tpu_optimizer",
+        "documentation": {}
+    },
+    {
+        "label": "Colors",
+        "kind": 6,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "class Colors:\n    GREEN = '\\033[92m'\n    RED = '\\033[91m'\n    YELLOW = '\\033[93m'\n    BLUE = '\\033[94m'\n    BOLD = '\\033[1m'\n    END = '\\033[0m'\ndef print_header():\n    \"\"\"Imprimir encabezado del script\"\"\"\n    print(f\"{Colors.BLUE}{Colors.BOLD}\")",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "print_header",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def print_header():\n    \"\"\"Imprimir encabezado del script\"\"\"\n    print(f\"{Colors.BLUE}{Colors.BOLD}\")\n    print(\"=\" * 60)\n    print(\"🦫 CAPIBARA6 - VERIFICADOR DE CONFIGURACIÓN\")\n    print(\"=\" * 60)\n    print(f\"{Colors.END}\")\ndef print_section(title):\n    \"\"\"Imprimir título de sección\"\"\"\n    print(f\"\\n{Colors.BOLD}{Colors.YELLOW}📋 {title}{Colors.END}\")",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "print_section",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def print_section(title):\n    \"\"\"Imprimir título de sección\"\"\"\n    print(f\"\\n{Colors.BOLD}{Colors.YELLOW}📋 {title}{Colors.END}\")\n    print(\"-\" * 40)\ndef check_env_var(var_name, required=True, description=\"\"):\n    \"\"\"Verificar si una variable de entorno está configurada\"\"\"\n    value = os.getenv(var_name)\n    if value and value != f\"tu_{var_name.lower()}\" and not value.startswith(\"xxxxxxxx\"):\n        print(f\"✅ {var_name}: {Colors.GREEN}Configurado{Colors.END}\")\n        return True",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_env_var",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_env_var(var_name, required=True, description=\"\"):\n    \"\"\"Verificar si una variable de entorno está configurada\"\"\"\n    value = os.getenv(var_name)\n    if value and value != f\"tu_{var_name.lower()}\" and not value.startswith(\"xxxxxxxx\"):\n        print(f\"✅ {var_name}: {Colors.GREEN}Configurado{Colors.END}\")\n        return True\n    else:\n        status = f\"{Colors.RED}No configurado{Colors.END}\" if required else f\"{Colors.YELLOW}Opcional{Colors.END}\"\n        print(f\"❌ {var_name}: {status}\")\n        if description:",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_smtp",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_smtp():\n    \"\"\"Probar configuración SMTP\"\"\"\n    print_section(\"CONFIGURACIÓN SMTP\")\n    smtp_server = os.getenv('SMTP_SERVER')\n    smtp_port = os.getenv('SMTP_PORT', '587')\n    smtp_user = os.getenv('SMTP_USER')\n    smtp_password = os.getenv('SMTP_PASSWORD')\n    if not all([smtp_server, smtp_user, smtp_password]):\n        print(\"❌ Configuración SMTP incompleta\")\n        return False",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_openai",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_openai():\n    \"\"\"Probar API de OpenAI\"\"\"\n    print_section(\"OPENAI API\")\n    api_key = os.getenv('OPENAI_API_KEY')\n    if not api_key or api_key.startswith('sk-xxxxxxxx'):\n        print(\"❌ OpenAI API Key no configurada\")\n        return False\n    try:\n        headers = {\n            'Authorization': f'Bearer {api_key}',",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_anthropic",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_anthropic():\n    \"\"\"Probar API de Anthropic\"\"\"\n    print_section(\"ANTHROPIC API\")\n    api_key = os.getenv('ANTHROPIC_API_KEY')\n    if not api_key or api_key.startswith('sk-ant-xxxxxxxx'):\n        print(\"❌ Anthropic API Key no configurada\")\n        return False\n    try:\n        headers = {\n            'x-api-key': api_key,",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_google_ai",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_google_ai():\n    \"\"\"Probar API de Google AI\"\"\"\n    print_section(\"GOOGLE AI API\")\n    api_key = os.getenv('GOOGLE_AI_API_KEY')\n    if not api_key or api_key.startswith('AIzaSyxxxxxxxx'):\n        print(\"❌ Google AI API Key no configurada\")\n        return False\n    try:\n        url = f\"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}\"\n        response = requests.get(url, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_huggingface",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_huggingface():\n    \"\"\"Probar API de Hugging Face\"\"\"\n    print_section(\"HUGGING FACE API\")\n    api_key = os.getenv('HUGGINGFACE_API_KEY')\n    if not api_key or api_key.startswith('hf_xxxxxxxx'):\n        print(\"❌ Hugging Face API Key no configurada\")\n        return False\n    try:\n        headers = {'Authorization': f'Bearer {api_key}'}\n        response = requests.get('https://huggingface.co/api/whoami', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_pinecone",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_pinecone():\n    \"\"\"Probar API de Pinecone\"\"\"\n    print_section(\"PINECONE API\")\n    api_key = os.getenv('PINECONE_API_KEY')\n    if not api_key or api_key.startswith('xxxxxxxx-xxxx'):\n        print(\"❌ Pinecone API Key no configurada\")\n        return False\n    try:\n        headers = {'Api-Key': api_key}\n        response = requests.get('https://api.pinecone.io/actions/whoami', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_github",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_github():\n    \"\"\"Probar API de GitHub\"\"\"\n    print_section(\"GITHUB API\")\n    token = os.getenv('GITHUB_TOKEN')\n    if not token or token.startswith('ghp_xxxxxxxx'):\n        print(\"❌ GitHub Token no configurado\")\n        return False\n    try:\n        headers = {'Authorization': f'token {token}'}\n        response = requests.get('https://api.github.com/user', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_required_config",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_required_config():\n    \"\"\"Verificar configuración requerida\"\"\"\n    print_section(\"CONFIGURACIÓN REQUERIDA\")\n    required_vars = [\n        ('SMTP_SERVER', 'Servidor SMTP para emails'),\n        ('SMTP_PORT', 'Puerto SMTP'),\n        ('SMTP_USER', 'Usuario SMTP'),\n        ('SMTP_PASSWORD', 'Contraseña SMTP'),\n        ('FROM_EMAIL', 'Email de origen')\n    ]",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_optional_config",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_optional_config():\n    \"\"\"Verificar configuración opcional\"\"\"\n    print_section(\"CONFIGURACIÓN OPCIONAL\")\n    optional_vars = [\n        ('OPENAI_API_KEY', 'API Key de OpenAI'),\n        ('ANTHROPIC_API_KEY', 'API Key de Anthropic'),\n        ('GOOGLE_AI_API_KEY', 'API Key de Google AI'),\n        ('HUGGINGFACE_API_KEY', 'API Key de Hugging Face'),\n        ('PINECONE_API_KEY', 'API Key de Pinecone'),\n        ('WEAVIATE_URL', 'URL de Weaviate'),",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def main():\n    \"\"\"Función principal\"\"\"\n    print_header()\n    # Verificar que existe el archivo .env\n    if not os.path.exists('.env'):\n        print(f\"{Colors.RED}❌ Archivo .env no encontrado{Colors.END}\")\n        print(\"💡 Copia .env.example a .env y configura tus claves:\")\n        print(\"   cp .env.example .env\")\n        sys.exit(1)\n    print(\"✅ Archivo .env encontrado\")",
+        "detail": "check_env",
         "documentation": {}
     },
     {
