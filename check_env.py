@@ -111,15 +111,33 @@ def test_anthropic():
     try:
         headers = {
             'x-api-key': api_key,
-            'Content-Type': 'application/json'
+            'anthropic-version': os.getenv('ANTHROPIC_API_VERSION', '2023-06-01'),
+            'Content-Type': 'application/json',
         }
-        response = requests.get('https://api.anthropic.com/v1/messages', headers=headers, timeout=10)
-        if response.status_code in [200, 400]:  # 400 es normal si no enviamos datos
+        model = os.getenv('ANTHROPIC_MODEL', 'claude-3-haiku-20240307')
+        payload = {
+            "model": model,
+            "max_tokens": 1,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": "ping"}
+                    ]
+                }
+            ]
+        }
+        response = requests.post(
+            'https://api.anthropic.com/v1/messages',
+            headers=headers,
+            json=payload,
+            timeout=10,
+        )
+        if response.status_code in (200, 400):
             print("✅ Anthropic API conectada correctamente")
             return True
-        else:
-            print(f"❌ Error Anthropic API: {response.status_code}")
-            return False
+        print(f"❌ Error Anthropic API: {response.status_code} - {response.text}")
+        return False
     except Exception as e:
         print(f"❌ Error conectando a Anthropic: {e}")
         return False
