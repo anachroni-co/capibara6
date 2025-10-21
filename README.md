@@ -385,15 +385,53 @@ result = model.process_multimodal({
 - [x] Lanzamiento v1.0
 - [x] Arquitectura híbrida 70/30
 - [x] Google TPU v5e/v6e-64 optimization
-- [x] Google ARM Axion support
-- [x] 10M+ tokens contexto
-- [x] Compliance UE total
+- [x] Google ARM Axi## ⚙️ Configuración Rápida
 
-### Q2 2025 🚧
-- [ ] Multimodal RAG avanzado
-- [ ] Federación para AAPP
-- [ ] Certificación ENS Alto
-- [ ] Deployment on-premise
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/anachroni/capibara6
+cd capibara6
+```
+
+### 2. Configurar API Keys
+```bash
+# Copiar archivo de configuración
+cp .env.example .env
+
+# Editar con tus claves
+nano .env
+```
+
+### 3. Verificar configuración
+```bash
+python check_env.py
+```
+
+### 4. Ejecutar el proyecto
+```bash
+# Backend
+cd backend
+python server.py
+
+# Frontend (en otra terminal)
+cd web
+python -m http.server 8000
+```
+
+📚 **Documentación completa**: [CONFIGURACION.md](CONFIGURACION.md) | [API_KEYS_GUIDE.md](API_KEYS_GUIDE.md)
+
+---
+
+## 🤝 Contribución
+
+```bash
+git clone https://github.com/anachroni/capibara6
+cd capibara6
+python -m venv venv
+source venv/bin/activate
+pip install -e .[dev]
+pytest tests/
+```- [ ] Deployment on-premise
 - [ ] API marketplace
 
 ### Q3-Q4 2025 📋
