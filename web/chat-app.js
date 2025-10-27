@@ -14,7 +14,7 @@ const CONSENSUS_CONFIG = {
 // Configuración del modelo original
 const MODEL_CONFIG = {
     // Conectar con la VM - HTTPS para evitar Mixed Content
-    serverUrl: 'https://capibara6.com/api/completion',  // Usar dominio correcto
+    serverUrl: 'https://www.capibara6.com/api/completion',  // Usar dominio correcto con www
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
