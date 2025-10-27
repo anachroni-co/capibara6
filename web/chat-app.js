@@ -911,9 +911,9 @@ async function simulateAssistantResponse(userMessage) {
         // Leer la respuesta JSON de nuestro backend
         const data = await response.json();
         
-        if (data.response) {
+        if (data.response || data.content) {
             // Simular streaming escribiendo la respuesta caracter por caracter
-            const fullResponse = data.response;
+            const fullResponse = data.response || data.content;
             let currentText = '';
             
             for (let i = 0; i <= fullResponse.length; i++) {
