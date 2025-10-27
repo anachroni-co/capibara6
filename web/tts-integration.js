@@ -9,9 +9,7 @@ const TTS_CONFIG = {
     enabled: true,
     // Habilitar TTS real (gTTS con voz Sofia)
     useCoquiTTS: true,
-    apiEndpoint: window.location.protocol === 'https:'
-        ? 'https://34.175.215.109/api/tts/speak'  // Producción: HTTPS
-        : 'http://34.175.215.109:5000/api/tts/speak',  // Desarrollo: HTTP
+    apiEndpoint: 'https://capibara6.vercel.app/api/tts/speak',  // Usar dominio Vercel con SSL
     language: 'es',
     rate: 1.0,      // Velocidad (0.5 - 2.0)
     pitch: 1.0,     // Tono (0 - 2)

@@ -2,10 +2,8 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // HTTPS en producción para evitar Mixed Content
-    BACKEND_URL: window.location.protocol === 'https:'
-        ? 'https://34.175.215.109'
-        : 'http://34.175.215.109:5000',
+    // Usar dominio Vercel con SSL válido
+    BACKEND_URL: 'https://capibara6.vercel.app',
     
     // Endpoints
     ENDPOINTS: {

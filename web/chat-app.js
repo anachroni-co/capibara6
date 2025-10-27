@@ -14,9 +14,7 @@ const CONSENSUS_CONFIG = {
 // Configuración del modelo original
 const MODEL_CONFIG = {
     // Conectar con la VM - HTTPS para evitar Mixed Content
-    serverUrl: window.location.protocol === 'https:'
-        ? 'https://34.175.215.109/api/chat'  // Producción: HTTPS
-        : 'http://34.175.215.109:5001/api/chat',  // Desarrollo: HTTP
+    serverUrl: 'https://capibara6.vercel.app/api/chat',  // Usar dominio Vercel con SSL
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
