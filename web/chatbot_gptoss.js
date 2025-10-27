@@ -35,8 +35,8 @@ class Capibara6ChatGPTOSS {
     }
     
     getBackendUrl() {
-        // Usar dominio Vercel con SSL válido
-        return 'https://capibara6.vercel.app';
+        // Usar dominio correcto con SSL válido
+        return 'https://capibara6.com';
     }
     
     toggleChat() {

@@ -6,7 +6,7 @@
 
 const SMART_MCP_CONFIG = {
     // Usar el servidor integrado en la VM - HTTPS en producción
-    serverUrl: 'https://capibara6.vercel.app/api/mcp/analyze',  // Usar dominio Vercel con SSL
+    serverUrl: 'https://capibara6.com/api/mcp/analyze',  // Usar dominio correcto
     enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true
