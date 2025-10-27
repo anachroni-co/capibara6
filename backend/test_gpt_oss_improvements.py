@@ -10,7 +10,7 @@ import time
 from gpt_oss_optimized_config import get_category_payload, get_quality_payload
 
 # Configuración de prueba
-TEST_SERVER_URL = "http://localhost:5000/api/chat"
+TEST_SERVER_URL = "http://localhost:5001/api/chat"
 TEST_QUESTIONS = [
     {
         "question": "¿Cómo te llamas?",
@@ -37,7 +37,7 @@ TEST_QUESTIONS = [
 def test_server_connection():
     """Probar conexión con el servidor"""
     try:
-        response = requests.get("http://localhost:5000/health", timeout=5)
+        response = requests.get("http://localhost:5001/health", timeout=5)
         if response.status_code == 200:
             print("✅ Servidor conectado correctamente")
             return True

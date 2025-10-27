@@ -28,8 +28,8 @@ CORS(app, origins='*')  # Permitir conexiones desde cualquier origen
 # ============================================
 # CONFIGURACIÓN GPT-OSS-20B (Local en la VM)
 # ============================================
-GPTOSS_API_URL = 'http://localhost:8080/completion'  # Modelo local en la VM
-GPTOSS_HEALTH_URL = 'http://localhost:8080/health'
+GPTOSS_API_URL = 'http://34.175.215.109:8080/completion'  # VM en la nube
+GPTOSS_HEALTH_URL = 'http://34.175.215.109:8080/health'
 
 # ============================================
 # CONFIGURACIÓN MCP (Smart Context)
@@ -397,4 +397,4 @@ if __name__ == '__main__':
         print(f'⚠️ Advertencia: No se puede conectar con la VM: {e}')
     
     print('🦫 Servidor Integrado iniciado correctamente')
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5001, debug=False)
