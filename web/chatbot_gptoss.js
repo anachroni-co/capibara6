@@ -35,11 +35,8 @@ class Capibara6ChatGPTOSS {
     }
     
     getBackendUrl() {
-        // HTTPS en producción para evitar Mixed Content
-        if (window.location.protocol === 'https:') {
-            return 'https://34.175.215.109';
-        }
-        return 'http://34.175.215.109:5000';
+        // Usar dominio Vercel con SSL válido
+        return 'https://capibara6.vercel.app';
     }
     
     toggleChat() {
