@@ -2,8 +2,8 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // Usar dominio correcto con SSL válido
-    BACKEND_URL: 'https://capibara6.com',
+    // Usar dominio correcto con SSL válido y www
+    BACKEND_URL: 'https://www.capibara6.com',
     
     // Endpoints
     ENDPOINTS: {
