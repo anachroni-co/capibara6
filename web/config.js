@@ -2,8 +2,8 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // Usar dominio Vercel con SSL válido
-    BACKEND_URL: 'https://capibara6.vercel.app',
+    // Usar dominio correcto con SSL válido
+    BACKEND_URL: 'https://capibara6.com',
     
     // Endpoints
     ENDPOINTS: {
