@@ -33,6 +33,15 @@ export default async function handler(req, res) {
             body: JSON.stringify(req.body)
         });
 
+        // Si la VM no está disponible, usar fallback
+        if (!response.ok) {
+            console.log('⚠️ VM no disponible, usando fallback...');
+            return res.status(200).json({
+                content: "Lo siento, el modelo de IA no está disponible en este momento. Por favor, intenta más tarde o contacta al administrador.",
+                stop: true
+            });
+        }
+
         // Si es streaming, manejar como stream
         if (req.body.stream) {
             res.setHeader('Content-Type', 'text/event-stream');
@@ -60,6 +69,16 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('Proxy error:', error);
+        
+        // Si es error de conexión, usar fallback en lugar de error 500
+        if (error.message.includes('fetch failed') || error.message.includes('ECONNREFUSED')) {
+            console.log('⚠️ Error de conexión, usando fallback...');
+            return res.status(200).json({
+                content: "Lo siento, el modelo de IA no está disponible en este momento. Por favor, intenta más tarde o contacta al administrador.",
+                stop: true
+            });
+        }
+        
         res.status(500).json({ 
             error: 'Error al conectar con el modelo',
             details: error.message 
