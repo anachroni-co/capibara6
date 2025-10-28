@@ -4,7 +4,7 @@
 
 // Configuración del sistema de consenso (comentado por ahora, usar modelo original)
 const CONSENSUS_CONFIG = {
-    serverUrl: 'http://localhost:5002/api/consensus/query',
+    serverUrl: 'https://www.capibara6.com/api/consensus/query',
     fallbackUrl: 'http://34.175.104.187:8080/completion',  // IP actualizada
     enabled: false, // Deshabilitado por ahora
     defaultTemplate: 'general',
@@ -14,7 +14,7 @@ const CONSENSUS_CONFIG = {
 // Configuración del modelo original
 const MODEL_CONFIG = {
     // Conectar con la VM - HTTPS para evitar Mixed Content
-    serverUrl: 'https://www.capibara6.com/api/completion',  // Usar dominio correcto con www
+    serverUrl: 'https://www.capibara6.com/api/chat',  // Usar servidor de producción
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
