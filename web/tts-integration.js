@@ -238,30 +238,31 @@ function speakWithWebAPI(text, button, retryCount = 0) {
         currentSpeakingButton = null;
         currentUtterance = null;
         
-        // Si el error es 'undefined' o desconocido, es probable que el texto sea muy largo
-        // Reintentar con texto MUY corto
-        if ((errorType === 'unknown' || errorType === 'undefined' || errorType === 'synthesis-failed') && retryCount === 0) {
-            console.warn('⚠️ Error de síntesis. Intentando solo la primera oración...');
+        // Si el error es 'unknown' o 'undefined', es probable que el texto sea muy largo
+        // Reintentar con texto más corto
+        if ((errorType === 'unknown' || errorType === 'undefined' || errorType === 'synthesis-failed') && retryCount < 2) {
+            console.warn(`⚠️ Error de síntesis (${errorType}). Intentando con texto más corto...`);
             
-            // Extraer solo la primera oración (hasta el primer punto)
-            const firstSentence = text.split(/[.!?]/)[0] + '.';
+            // Acortar el texto progresivamente
+            let shortText;
+            if (retryCount === 0) {
+                // Primera vez: solo primera oración
+                shortText = text.split(/[.!?]/)[0] + '.';
+            } else {
+                // Segunda vez: solo primeras 50 caracteres
+                shortText = text.substring(0, 50) + '...';
+            }
             
-            setTimeout(() => {
-                speakWithWebAPI(firstSentence, button, retryCount + 1);
-            }, 500);
-        } else if (retryCount < 2 && text.length > 100) {
-            console.warn(`⚠️ Retry ${retryCount + 1}: probando con texto aún más corto...`);
-            
-            // Acortar drásticamente
-            const shortText = text.substring(0, 100);
-            
-            setTimeout(() => {
-                speakWithWebAPI(shortText, button, retryCount + 1);
-            }, 500);
+            if (shortText.length > 10) { // Solo si hay suficiente texto
+                setTimeout(() => {
+                    speakWithWebAPI(shortText, button, retryCount + 1);
+                }, 500);
+            } else {
+                console.warn('⚠️ Texto demasiado corto para sintetizar.');
+            }
         } else {
             console.warn('⚠️ No se pudo sintetizar el texto después de varios intentos.');
             console.log('💡 Web Speech API tiene limitaciones con textos largos o complejos.');
-            console.log('💡 Solución: Deployar Coqui TTS en la VM para mejor compatibilidad.');
         }
     };
     
