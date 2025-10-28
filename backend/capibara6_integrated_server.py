@@ -383,8 +383,8 @@ if __name__ == '__main__':
     print(f'📡 VM GPT-OSS-20B: {GPTOSS_API_URL}')
     print('🧠 Smart MCP: Activo')
     print('🎵 Coqui TTS: Activo')
-    print('🌐 Puerto: 5000')
-    print('🔧 CORS habilitado para localhost:8000')
+    print('🌐 Puerto: 5001')
+    print('🔧 CORS habilitado para *')
     
     # Verificar conexión con la VM al inicio
     try:
