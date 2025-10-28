@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     
     try {
         // Reenviar la petición a la VM
-        const response = await fetch('http://34.175.215.109:5001/api/chat', {
+        const response = await fetch('http://34.175.215.109:5002/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
