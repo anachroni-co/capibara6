@@ -3,8 +3,8 @@
 // ============================================
 
 // Configuración del sistema de consenso (comentado por ahora, usar modelo original)
-const CONSENSUS_CONFIG = {
-    serverUrl: 'http://34.175.215.109:5001/api/consensus/query',
+    const CONSENSUS_CONFIG = {
+        serverUrl: 'https://34.175.215.109:5001/api/consensus/query',
     fallbackUrl: 'http://34.175.104.187:8080/completion',  // IP actualizada
     enabled: false, // Deshabilitado por ahora
     defaultTemplate: 'general',
@@ -12,9 +12,9 @@ const CONSENSUS_CONFIG = {
 };
 
 // Configuración del modelo original
-const MODEL_CONFIG = {
-    // Conectar con la VM - HTTPS para evitar Mixed Content
-    serverUrl: 'http://34.175.215.109:5001/api/chat',  // Conectar directamente con la VM
+    const MODEL_CONFIG = {
+        // Conectar con la VM - HTTPS para evitar Mixed Content
+        serverUrl: 'https://34.175.215.109:5001/api/chat',  // Conectar directamente con la VM
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
