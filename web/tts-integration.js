@@ -7,8 +7,8 @@
 
 const TTS_CONFIG = {
     enabled: true,
-    // Habilitar TTS real (gTTS con voz Sofia)
-    useCoquiTTS: true,
+    // Deshabilitar Coqui TTS temporalmente (usar solo Web Speech API)
+    useCoquiTTS: false,
     apiEndpoint: 'https://www.capibara6.com/api/tts/speak',  // Usar dominio correcto con www
     language: 'es',
     rate: 1.0,      // Velocidad (0.5 - 2.0)
@@ -204,9 +204,9 @@ function speakWithWebAPI(text, button, retryCount = 0) {
     }
     
     // Configurar parámetros
-    currentUtterance.rate = TTS_CONFIG.rate;
-    currentUtterance.pitch = TTS_CONFIG.pitch;
-    currentUtterance.volume = TTS_CONFIG.volume;
+    currentUtterance.rate = Math.max(0.5, Math.min(2.0, TTS_CONFIG.rate)); // Limitar rango
+    currentUtterance.pitch = Math.max(0, Math.min(2, TTS_CONFIG.pitch)); // Limitar rango
+    currentUtterance.volume = Math.max(0, Math.min(1, TTS_CONFIG.volume)); // Limitar rango
     
     // Event handlers
     currentUtterance.onstart = () => {
@@ -240,29 +240,22 @@ function speakWithWebAPI(text, button, retryCount = 0) {
         
         // Si el error es 'unknown' o 'undefined', es probable que el texto sea muy largo
         // Reintentar con texto más corto
-        if ((errorType === 'unknown' || errorType === 'undefined' || errorType === 'synthesis-failed') && retryCount < 2) {
+        if ((errorType === 'unknown' || errorType === 'undefined' || errorType === 'synthesis-failed') && retryCount < 1) {
             console.warn(`⚠️ Error de síntesis (${errorType}). Intentando con texto más corto...`);
             
-            // Acortar el texto progresivamente
-            let shortText;
-            if (retryCount === 0) {
-                // Primera vez: solo primera oración
-                shortText = text.split(/[.!?]/)[0] + '.';
-            } else {
-                // Segunda vez: solo primeras 50 caracteres
-                shortText = text.substring(0, 50) + '...';
-            }
+            // Acortar el texto a solo la primera oración
+            const shortText = text.split(/[.!?]/)[0] + '.';
             
-            if (shortText.length > 10) { // Solo si hay suficiente texto
+            if (shortText.length > 5 && shortText.length < 200) { // Rango válido
                 setTimeout(() => {
                     speakWithWebAPI(shortText, button, retryCount + 1);
-                }, 500);
+                }, 1000); // Esperar más tiempo
             } else {
-                console.warn('⚠️ Texto demasiado corto para sintetizar.');
+                console.warn('⚠️ Texto no adecuado para síntesis.');
             }
         } else {
             console.warn('⚠️ No se pudo sintetizar el texto después de varios intentos.');
-            console.log('💡 Web Speech API tiene limitaciones con textos largos o complejos.');
+            console.log('💡 Web Speech API tiene limitaciones. TTS deshabilitado para este mensaje.');
         }
     };
     
