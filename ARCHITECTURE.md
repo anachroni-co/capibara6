@@ -1,415 +1,235 @@
-# Arquitectura del Sistema capibara6
+# Arquitectura de Capibara6
 
-## Tabla de Contenidos
-- [Visión General de la Arquitectura](#visión-general-de-la-arquitectura)
-- [Arquitectura Híbrida Transformer-Mamba](#arquitectura-híbrida-transformer-mamba)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Frontend Web](#frontend-web)
-- [Backend API](#backend-api)
-- [Componentes del Modelo](#componentes-del-modelo)
-- [Optimización Hardware](#optimización-hardware)
-- [Flujo de Datos](#flujo-de-datos)
-- [Patrones de Diseño](#patrones-de-diseño)
-- [Seguridad y Compliance](#seguridad-y-compliance)
-- [Escalabilidad](#escalabilidad)
-- [Monitorización](#monitorización)
+## Visión General
 
-## Visión General de la Arquitectura
+Capibara6 es una aplicación de chat con IA que combina un frontend web moderno con un backend distribuido que ejecuta el modelo GPT-OSS-20B en Google Cloud.
 
-capibara6 implementa una arquitectura de IA conversacional de última generación que combina lo mejor de las arquitecturas Transformer y Mamba SSM en un diseño híbrido optimizado (70% Transformer / 30% Mamba). Diseñado específicamente para Google TPU v5e/v6e-64 y procesadores Google ARM Axion, el sistema ofrece la mayor ventana de contexto del mercado (10M+ tokens) con compliance total para empresas y administraciones públicas.
+## Componentes Principales
 
-### Visión General del Sistema
+### 1. Frontend Web (`web/`)
+
+**Tecnologías**: HTML5, CSS3, JavaScript ES6+
+
+**Archivos clave**:
+- `chat.html` - Interfaz principal del chat
+- `chat-app.js` - Lógica del chat y comunicación con API
+- `tts-integration.js` - Integración de síntesis de voz
+- `smart-mcp-integration.js` - Integración de Smart MCP
+- `entropy-auto-inject.js` - Sistema de entropía automática
+
+**Características**:
+- Interfaz responsive y moderna
+- Integración con Web Speech API
+- Sistema de clonación de voces
+- Contexto inteligente con MCP
+- Monitoreo de entropía en tiempo real
+
+### 2. Backend Flask (`backend/`)
+
+**Tecnologías**: Python 3.11+, Flask, Flask-CORS
+
+**Servidores principales**:
+
+#### Servidor Integrado (`capibara6_integrated_server.py`)
+- **Puerto**: 5001
+- **Función**: Proxy principal entre frontend y modelo GPT-OSS-20B
+- **Endpoints**:
+  - `POST /api/chat` - Procesamiento de mensajes
+  - `GET /health` - Health check
+  - `POST /api/tts/speak` - Proxy a TTS
+  - `POST /api/mcp/analyze` - Proxy a MCP
+
+#### Servidor TTS (`coqui_tts_server.py`)
+- **Puerto**: 5002
+- **Función**: Síntesis de voz con Coqui TTS
+- **Características**:
+  - Múltiples voces predefinidas
+  - Clonación de voz
+  - Fallback a Web Speech API
+
+#### Servidor Smart MCP (`smart_mcp_server.py`)
+- **Puerto**: 5003
+- **Función**: Contexto inteligente para respuestas
+- **Características**:
+  - Análisis de contexto
+  - Triggers inteligentes
+  - Mejora de respuestas
+
+### 3. Proxies de Vercel (`api/`)
+
+**Tecnologías**: Node.js, Vercel Functions
+
+**Archivos**:
+- `chat.js` - Proxy para `/api/chat`
+- `consensus/query.js` - Proxy para consenso
+- `tts/speak.js` - Proxy para TTS
+- `mcp/analyze.js` - Proxy para MCP
+
+**Función**: Resolver problemas de CORS y Mixed Content entre HTTPS (Vercel) y HTTP (VM)
+
+### 4. Modelo GPT-OSS-20B
+
+**Ubicación**: Google Cloud VM (`gpt-oss-20b`)
+- **Zona**: `europe-southwest1-b`
+- **Proyecto**: `mamba-001`
+- **Servidor**: llama-server en puerto 8080
+- **Configuración**: Optimizada para producción
+
+### 5. Fine-tuning (`fine-tuning/`)
+
+**Tecnologías**: T5X, SeqIO, JAX, Flax
+
+**Estructura**:
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    capibara6 Arquitectura                      │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐         │
-│  │   Frontend  │    │   Backend   │    │   Modelo    │         │
-│  │   Web UI    │◄──►│   Flask     │◄──►│  Híbrido    │         │
-│  │             │    │   API       │    │Transformer- │         │
-│  └─────────────┘    └─────────────┘    │   Mamba     │         │
-│                                        └─────────────┘         │
-│                                                              │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐       │
-│  │   Chatbot   │    │   Email     │    │   TPU/ARM   │       │
-│  │   Widget    │    │  Service    │    │   Opt.      │       │
-│  └─────────────┘    └─────────────┘    └─────────────┘       │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## Arquitectura Híbrida Transformer-Mamba
-
-### Distribución de Arquitectura (70/30)
-El sistema utiliza una distribución optimizada de 70% Transformer y 30% Mamba SSM para balancear precisión y velocidad:
-
-```
-┌─────────────────────────────────────┐
-│  Entrada Multimodal                 │
-│  (Texto, Imagen, Video, Audio)      │
-└──────────────┬──────────────────────┘
-               │
-┌──────────────▼──────────────────────┐
-│  Arquitectura Híbrida               │
-│                                     │
-│  ┌─────────────────┐                │
-│  │  Transformer    │  70%           │
-│  │  - Atención     │  - Precisión   │
-│  │  - Contexto     │  - Calidad     │
-│  └─────────────────┘                │
-│                                     │
-│  ┌─────────────────┐                │
-│  │  Mamba SSM      │  30%           │
-│  │  - O(n) linear  │  - Velocidad   │
-│  │  - Eficiencia   │  - Escalado    │
-│  └─────────────────┘                │
-│                                     │
-│  Routing Inteligente Automático    │
-└──────────────┬──────────────────────┘
-               │
-┌──────────────▼──────────────────────┐
-│  Ventana de Contexto: 10M+ tokens  │
-│  (Mayor del mercado)                │
-└─────────────────────────────────────┘
-```
-
-### Componentes de la Arquitectura Híbrida
-
-#### Transformer (70%)
-- **Atención multi-cabeza**: Implementación optimizada para TPU
-- **Feed-forward networks**: Capas densas con GeLU activation
-- **Capas residuales y normalization**: LayerNorm para estabilidad
-- **Posicional encoding**: Rotary Position Embedding (RoPE) para secuencias largas
-
-#### Mamba SSM (30%)
-- **Selective State Spaces**: Complejidad lineal O(n) para secuencias largas
-- **Hardware-aware optimization**: Optimizado específicamente para TPU v5e/v6e
-- **Gating mechanisms**: Mejor manejo de información a largo plazo
-- **Efficient memory utilization**: Uso optimizado de HBM en TPUs
-
-#### Sistema de Enrutamiento Inteligente
-- **Meta-consensus router**: Sistema de enrutamiento basado en confianza
-- **Input-adaptive routing**: Decide dinámicamente qué componente usar
-- **Performance-based load balancing**: Distribuye la carga según rendimiento
-
-## Estructura del Proyecto
-
-### Organización de Directorios
-```
-capibara6/
-├── backend/              # Servidor Flask y lógica de negocio
-│   ├── server.py         # Punto de entrada del servidor
-│   ├── requirements.txt  # Dependencias de Python
-│   ├── .env.example      # Plantilla de variables de entorno
-│   ├── user_data/        # Almacenamiento temporal de conversaciones
-│   ├── __pycache__/      # Caché de Python
-│   └── tests/            # Pruebas unitarias (si existen)
-├── web/                  # Frontend web
-│   ├── index.html        # Página principal
-│   ├── styles.css        # Estilos CSS
-│   ├── script.js         # Lógica de frontend
-│   ├── chatbot.js        # Funcionalidad del chatbot
-│   ├── neural-animation.js # Animación de red neuronal en header
-│   ├── config.js         # Configuración del frontend
-│   ├── translations.js   # Sistema de traducción i18n
-│   ├── favicon.svg       # Favicon
-│   └── .vercel/          # Configuración de despliegue en Vercel
-├── user_data/            # Datos de usuario (excluido de git)
-├── datasets/             # Datasets especializados (no implementado aún)
-├── AGENTS.md             # Documentación de agentes de IA
-├── README.md             # Documentación general
-├── DOCS.md               # Documentación completa
-├── API.md                # Documentación de la API
-├── INSTALLATION.md       # Guía de instalación
-├── ARCHITECTURE.md       # Documentación de arquitectura (este archivo)
-├── Qwen.md               # Notas del asistente Qwen
-├── LICENSE               # Licencia Apache 2.0
-├── .gitignore            # Archivos excluidos de git
-└── vercel.json           # Configuración de despliegue Vercel
+fine-tuning/
+├── configs/           # Configuraciones T5X
+├── scripts/           # Scripts de entrenamiento
+├── datasets/          # Configuración SeqIO
+└── t5x/              # Código T5X existente
 ```
 
-## Frontend Web
-
-### Componentes Principales
-
-#### index.html
-- **Estructura principal**: Define la arquitectura visual del sitio
-- **Secciones**: Hero, Features, Architecture, Datasets, Component Status, Performance, CTA, Footer
-- **Chatbot integration**: Widget de chatbot integrado
-- **Internationalization**: Soporte para múltiples idiomas
-- **Responsive design**: Compatible con dispositivos móviles
-
-#### styles.css
-- **CSS moderno**: Utiliza Grid y Flexbox
-- **Variables CSS**: Sistema de theming
-- **Animaciones**: Transiciones suaves y efectos visuales
-- **Responsive breakpoints**: Diseño adaptable
-
-#### script.js
-- **DOM manipulation**: Control de la interfaz de usuario
-- **API calls**: Comunicación con el backend
-- **Event handling**: Gestión de interacciones del usuario
-- **Performance optimization**: Lazy loading y optimizaciones de renderizado
-
-#### chatbot.js
-- **Message management**: Gestión del historial de conversación
-- **UI controls**: Control del widget de chat
-- **Email collection**: Sistema de recolección de emails
-- **API integration**: Comunicación con `/api/save-conversation`
-
-#### neural-animation.js
-- **Canvas rendering**: Animación de red neuronal en el hero
-- **Performance optimization**: Uso eficiente de requestAnimationFrame
-- **WebGL (opcional)**: Potencial uso para animaciones 3D
-
-#### translations.js
-- **i18n system**: Sistema de traducción multi-idioma
-- **Dynamic loading**: Carga dinámica de traducciones
-- **Language detection**: Detección automática de idioma
-
-### Patrones de Diseño en el Frontend
-- **Modular architecture**: Código organizado en módulos lógicos
-- **Separation of concerns**: HTML/CSS/JS separados claramente
-- **Component-based UI**: Estructura similar a componentes
-
-## Backend API
-
-### Arquitectura del Backend
-
-#### server.py
-- **Flask framework**: Web framework ligero
-- **RESTful API**: Endpoints siguiendo principios REST
-- **CORS handling**: Gestión de peticiones cross-origin
-- **Email service**: Integración con SMTP para notificaciones
-- **Data persistence**: Almacenamiento local de conversaciones
-
-#### Componentes Clave
-```python
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import smtplib
-import json
-import os
-from datetime import datetime
-```
-
-#### Endpoints Disponibles
-- `POST /api/save-conversation`: Guarda conversaciones y envía emails
-- `GET /api/health`: Verificación de estado del servidor
-
-#### Flujo de Trabajo del Backend
-1. Recibe solicitud de conversación
-2. Valida los datos de entrada
-3. Guarda los datos localmente
-4. Envía email de confirmación al usuario
-5. Envía notificación al administrador
-6. Retorna respuesta de éxito
-
-### Seguridad del Backend
-- **Input validation**: Validación de datos entrantes
-- **Email validation**: Verificación de formato de email
-- **Rate limiting**: (No implementado en la versión base)
-- **Environment isolation**: Variables de entorno protegidas
-
-## Componentes del Modelo
-
-### Arquitectura del Modelo Principal
-
-#### Mixture of Experts (MoE)
-- **32 expertos especializados**: Para diferentes dominios (matemáticas, ciencias, código, creatividad)
-- **Expert routing**: Sistema de enrutamiento dinámico
-- **Load balancing**: Distribución inteligente de carga
-- **Domain specialization**: Cada experto especializado en dominios específicos
-
-#### Chain-of-Thought (CoT) Reasoning
-- **Up to 12 steps**: Razonamiento paso a paso verificable
-- **Meta-cognition**: Sistema de autoevaluación de confianza
-- **Self-reflection**: Mecanismos de reflexión interna
-- **Process reward models**: Integración de modelos de recompensa de proceso
-
-#### Capacidades Multimodales
-- **Vision encoder**: ViT-Large optimizado para imágenes
-- **Video encoder**: Capacidad para procesar hasta 64 frames
-- **Audio processing**: Text-to-speech con contexto emocional
-- **Multimodal fusion**: Atención multimodal para integrar diferentes tipos de datos
-
-### Rendimiento y Optimización
-
-#### Google TPU v5e/v6e-64
-- **XLA compilation**: Compilación avanzada para aceleración
-- **Kernel fusion**: Fusión automática de kernels
-- **Mixed precision**: Uso de bfloat16 para eficiencia
-- **Flash attention**: Atención optimizada para secuencias largas
-- **Pipeline parallelism**: Paralelismo de pipeline para alto throughput
-
-#### Google ARM Axion
-- **NEON vectorization**: Vectorización automática
-- **SVE2 optimizations**: Optimizaciones de 512-bit
-- **Quantization**: Cuantización 4-bit/8-bit calibrada
-- **Memory pool optimization**: Optimización de pools de memoria
-- **Cache-aware algorithms**: Algoritmos conscientes de cache
-
-## Optimización Hardware
-
-### Google TPU v6e-64 Performance
-```
-Throughput:      4,500+ tokens/sec
-Latencia P95:    120ms
-Memoria HBM:     32GB
-Eficiencia:      98.5%
-Arquitectura:    256 chips interconectados
-```
-
-### Google TPU v5e-64 Performance
-```
-Throughput:      3,800+ tokens/sec
-Latencia P95:    145ms
-Memoria HBM:     24GB
-Eficiencia:      96.8%
-```
-
-### Google ARM Axion Performance
-```
-Throughput:      2,100+ tokens/sec
-Latencia P95:    280ms
-Memoria:         16GB
-Consumo:         95W
-Cores:           Hasta 192 cores
-```
-
-### Optimizaciones Clave
-- **Cython kernels**: 20x speedup para operaciones críticas
-- **Memory optimization**: Gestión eficiente de memoria para contextos largos
-- **Distributed training**: Soporte para entrenamiento multi-worker
-- **Quantization**: INT8 para reducción de 75% de memoria
-- **Hybrid architectures**: Combinación teórica de 40x mejora
+**Función**: Entrenamiento y fine-tuning del modelo GPT-OSS-20B
 
 ## Flujo de Datos
 
-### Flujo de Conversación Completo
-```
-Usuario → Frontend → Backend → Almacenamiento → Email Service → Confirmación
-   ↓           ↓          ↓           ↓              ↓              ↓
-Mensaje → Widget → API Call → JSON/File → SMTP → User/Admin → Success
-```
+### 1. Chat Flow
 
-### Flujo de Procesamiento del Modelo
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  Input textual  │ -> │  Preprocessing  │ -> │  MoE Routing    │
-│  or multimodal  │    │  & Embedding    │    │  & Distribution │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         ↓                       ↓                       ↓
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  Context        │ -> │  Hybrid        │ -> │  CoT Reasoning  │
-│  Management     │    │  Processing     │    │  & Validation   │
-│  (10M+ tokens)  │    │  (T/M Split)    │    │  (12 steps)     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         ↓                       ↓                       ↓
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  TPU/ARM        │ -> │  Postprocessing │ -> │  Response       │
-│  Acceleration   │    │  & Formatting   │    │  Generation     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+Usuario → Frontend → Vercel Proxy → VM Backend → GPT-OSS-20B
+       ← Frontend ← Vercel Proxy ← VM Backend ← GPT-OSS-20B
 ```
 
-### Gestión de Contexto
-- **Long-context handling**: Capacidad para manejar contextos de 10M+ tokens
-- **Memory compression**: Técnicas de compresión de memoria
-- **Chunking strategies**: Estrategias de división de contexto
-- **Attention optimization**: Optimización de mecanismos de atención para long-context
+### 2. TTS Flow
 
-## Patrones de Diseño
+```
+Frontend → Vercel Proxy → VM TTS Server → Coqui TTS → Audio
+        ← Frontend ← Vercel Proxy ← VM TTS Server ← Audio
+```
 
-### Patrones de Arquitectura
+### 3. MCP Flow
 
-#### Factory Pattern
-- **Agent factory**: Sistema para crear diferentes tipos de agentes
-- **Hardware adapter**: Adaptadores para diferentes tipos de hardware (TPU/ARM/CUDA)
+```
+Frontend → Vercel Proxy → VM MCP Server → Análisis → Contexto
+        ← Frontend ← Vercel Proxy ← VM MCP Server ← Contexto
+```
 
-#### Strategy Pattern
-- **Orchestration strategy**: Diferentes estrategias de orquestación
-- **Processing strategy**: Diferentes enfoques para procesamiento
+## Configuración de Red
 
-#### Adapter Pattern
-- **Hardware abstraction**: Capa de abstracción para diferentes hardware
-- **Storage adapter**: Adaptadores para diferentes backends de almacenamiento
+### Puertos
 
-### Patrones de Código
+| Servicio | Puerto | Protocolo | Función |
+|----------|--------|-----------|---------|
+| Frontend | 8000 | HTTP | Desarrollo local |
+| Backend Principal | 5001 | HTTP | Servidor integrado |
+| TTS Server | 5002 | HTTP | Síntesis de voz |
+| MCP Server | 5003 | HTTP | Contexto inteligente |
+| GPT-OSS-20B | 8080 | HTTP | Modelo de IA |
 
-#### Modular Design
-- **Component isolation**: Componentes aislados funcionalmente
-- **Dependency injection**: Inyección de dependencias donde es apropiado
-- **Configuration management**: Sistema de configuración flexible
+### CORS
 
-#### Performance Patterns
-- **Caching strategies**: Caching inteligente para resultados frecuentes
-- **Lazy loading**: Carga diferida de componentes pesados
-- **Batch processing**: Procesamiento en lotes para eficiencia
+- **Orígenes permitidos**: `https://www.capibara6.com`, `http://localhost:8000`
+- **Métodos**: GET, POST, OPTIONS
+- **Headers**: Content-Type, Authorization
 
-## Seguridad y Compliance
+## Despliegue
 
-### Niveles de Seguridad
+### 1. Google Cloud VM (Backend)
 
-#### Datos y Privacidad
-- **Encriptación AES-256**: En reposo y en tránsito con TLS 1.3
-- **Segregación de datos**: Por cliente y sesión
-- **Derecho al olvido**: Implementación del derecho a ser olvidado
-- **Portabilidad de datos**: Sistema para exportar datos de usuario
+```bash
+# Conectar
+gcloud compute ssh --zone "europe-southwest1-b" "gpt-oss-20b" --project "mamba-001"
 
-#### Cumplimiento Regulatorio
-- **GDPR**: Reglamento General de Protección de Datos
-- **AI Act**: Ley de IA de la Unión Europea
-- **CCPA**: California Consumer Privacy Act
-- **ePrivacy Directive**: Directiva de privacidad electrónica
-- **NIS2 Directive**: Directiva de ciberseguridad
+# Ejecutar servicios
+python3 capibara6_integrated_server.py &
+python3 coqui_tts_server.py &
+python3 smart_mcp_server.py &
+```
 
-#### Certificaciones
-- **Certificado para administraciones públicas**: Cumplimiento para sector público
-- **Auditorías de seguridad continuas**: Revisiones periódicas
-- **Evaluación ética independiente**: Revisión externa de algoritmos
-- **Transparencia algorítmica**: Explicabilidad de decisiones
+### 2. Vercel (Frontend)
 
-### Registros y Auditoría
-- **Logs de auditoría inmutables**: Registros seguros de todas las operaciones
-- **Backup georeplicado UE**: Copias de seguridad en la Unión Europea
-- **Control de acceso**: Gestión detallada de permisos
+- **Build Command**: `npm run build`
+- **Output Directory**: `web`
+- **Environment Variables**: Configuradas en Vercel Dashboard
+
+### 3. Dominio
+
+- **Frontend**: `https://www.capibara6.com`
+- **API**: `https://www.capibara6.com/api/*`
+
+## Monitoreo
+
+### Logs
+
+- **Backend**: `backend/logs/`
+- **VM**: `/var/log/capibara6/`
+- **Vercel**: Dashboard de Vercel
+
+### Métricas
+
+- **Throughput**: Tokens por segundo
+- **Latencia**: Tiempo de respuesta
+- **Uso de memoria**: RAM y VRAM
+- **Utilización TPU**: Para fine-tuning
+
+## Seguridad
+
+### Autenticación
+
+- **Frontend**: Sin autenticación (público)
+- **Backend**: CORS configurado
+- **VM**: SSH con claves
+
+### Datos
+
+- **Mensajes**: No se almacenan permanentemente
+- **Voces**: Procesadas localmente
+- **Modelo**: Ejecutado en VM privada
 
 ## Escalabilidad
 
-### Escalabilidad Horizontal
-- **Multi-worker training**: Soporte para entrenamiento distribuido
-- **Load balancing**: Distribución de carga entre múltiples instancias
-- **Byzantine fault-tolerant**: Sistema tolerante a fallos
+### Horizontal
 
-### Escalabilidad Vertical
-- **TPU/ARM/CUDA support**: Soporte para diferentes tipos de hardware
-- **Resource optimization**: Uso eficiente de recursos disponibles
-- **Auto-scaling readiness**: Preparado para sistemas de auto-escalado
+- **Frontend**: CDN de Vercel
+- **Backend**: Múltiples instancias de VM
+- **Modelo**: Distribución en múltiples GPUs/TPUs
 
-### Estrategias de Escalado
-- **Microservices approach**: Arquitectura preparada para servicios
-- **Container deployment**: Compatible con contenedores (Docker)
-- **Cloud-native design**: Diseño nativo para nube
+### Vertical
 
-## Monitorización
+- **VM**: Escalado automático de Google Cloud
+- **Modelo**: Optimizaciones de memoria
+- **TTS**: Caching de voces
 
-### Métricas Clave
-- **TPU metrics**: TFLOPS, uso de memoria, eficiencia
-- **Performance metrics**: Throughput, latencia, tasa de error
-- **System metrics**: CPU, memoria, disco, red
+## Troubleshooting
 
-### Herramientas de Monitorización
-- **Grafana/Prometheus**: Exportación y visualización de métricas
-- **Weights & Biases**: Seguimiento de entrenamiento y experimentos
-- **Custom dashboards**: Paneles personalizados para operaciones
+### Problemas Comunes
 
-### Auto-optimización
-- **Metrics-based optimization**: Optimización basada en métricas en tiempo real
-- **Predictive scaling**: Escalado predictivo basado en patrones
-- **Performance alerting**: Alertas automáticas para degradaciones
+1. **CORS Error**: Verificar configuración de orígenes
+2. **502 Bad Gateway**: Verificar que el backend esté ejecutándose
+3. **TTS No Funciona**: Verificar Coqui TTS instalado
+4. **MCP No Responde**: Verificar servidor MCP en puerto 5003
 
-### Monitoreo Distribuido
-- **Distributed tracing**: Seguimiento de solicitudes a través del sistema
-- **Centralized logging**: Registro centralizado de todos los componentes
-- **Health monitoring**: Verificación continua de salud del sistema
+### Logs Importantes
+
+- `backend/logs/capibara6.log` - Logs principales
+- `backend/logs/errors.log` - Errores del sistema
+- Vercel Function Logs - Errores de proxy
+
+## Futuras Mejoras
+
+### Corto Plazo
+
+- [ ] Implementar autenticación de usuarios
+- [ ] Mejorar sistema de clonación de voces
+- [ ] Optimizar latencia del modelo
+
+### Largo Plazo
+
+- [ ] Implementar fine-tuning automático
+- [ ] Añadir más modelos de IA
+- [ ] Sistema de plugins
+- [ ] API pública
+
+---
+
+**Última actualización**: Enero 2025
+**Versión**: 2.0.0
