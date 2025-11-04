@@ -396,131 +396,9 @@
 }
 
 /* ============================================
-   Templates Sidebar (Vertical)
+   Templates Sidebar - REMOVED
+   Sidebar de plantillas eliminado para mejorar el diseño
    ============================================ */
-.templates-sidebar {
-    width: 240px;
-    min-width: 240px;
-    background: #1a1a1a;
-    border-right: 1px solid #2d2d2d;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #3d3d3d #1a1a1a;
-}
-
-.templates-sidebar::-webkit-scrollbar {
-    width: 6px;
-}
-
-.templates-sidebar::-webkit-scrollbar-track {
-    background: #1a1a1a;
-}
-
-.templates-sidebar::-webkit-scrollbar-thumb {
-    background: #3d3d3d;
-    border-radius: 3px;
-}
-
-.sidebar-header {
-    padding: 1rem;
-    border-bottom: 1px solid #2d2d2d;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #ececec;
-}
-
-.sidebar-header h3 {
-    margin: 0;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.template-list {
-    flex: 1;
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.template-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    color: #b4b4b4;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-align: left;
-}
-
-.template-item:hover {
-    background: #252525;
-    color: #ececec;
-    border-color: #3d3d3d;
-}
-
-.template-item.active {
-    background: #2d2d2d;
-    color: #10a37f;
-    border-color: #10a37f;
-}
-
-.template-emoji {
-    font-size: 1.1rem;
-    flex-shrink: 0;
-}
-
-.template-name {
-    flex: 1;
-}
-
-.sidebar-footer {
-    padding: 0.75rem;
-    border-top: 1px solid #2d2d2d;
-}
-
-.btn-stats-sidebar {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1rem;
-    background: #252525;
-    border: 1px solid #3d3d3d;
-    border-radius: 8px;
-    color: #ececec;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.btn-stats-sidebar:hover {
-    background: #2d2d2d;
-    border-color: #10a37f;
-    color: #10a37f;
-}
-
-.template-description-sidebar {
-    padding: 0.75rem 1rem;
-    font-size: 0.8rem;
-    color: #8e8e8e;
-    line-height: 1.4;
-    border-top: 1px solid #2d2d2d;
-    background: #1f1f1f;
-}
 
 /* ============================================
    Chat Content Wrapper
@@ -2373,6 +2251,311 @@
 @keyframes pulse-mcp {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* ============================================
+   Digital Twin Tab Styles
+   ============================================ */
+.digital-twin-container {
+    padding: 1rem;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.digital-twin-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(16, 163, 127, 0.1), rgba(217, 119, 87, 0.1));
+    border-radius: 12px;
+    border: 1px solid rgba(16, 163, 127, 0.2);
+}
+
+.twin-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 0.75rem;
+    background: linear-gradient(135deg, #10a37f, #D97757);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.digital-twin-header h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ececec;
+}
+
+.twin-subtitle {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #8e8e8e;
+}
+
+.training-status {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #1a1a1a;
+    border-radius: 8px;
+    border: 1px solid #2d2d2d;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #2a2a2a;
+    border-radius: 6px;
+    color: #8e8e8e;
+    font-size: 0.875rem;
+}
+
+.status-badge.training {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-badge.trained {
+    color: #10a37f;
+    background: rgba(16, 163, 127, 0.1);
+    border: 1px solid rgba(16, 163, 127, 0.3);
+}
+
+.training-progress {
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #2a2a2a;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10a37f, #14b88f);
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    font-size: 0.75rem;
+    color: #8e8e8e;
+}
+
+.data-sources {
+    margin-bottom: 1.5rem;
+}
+
+.sources-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ececec;
+}
+
+.sources-hint {
+    margin: 0 0 1rem 0;
+    font-size: 0.75rem;
+    color: #8e8e8e;
+}
+
+.source-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.source-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #1a1a1a;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.source-item:hover {
+    background: #2a2a2a;
+    border-color: #3d3d3d;
+}
+
+.source-item.uploaded {
+    border-color: #10a37f;
+    background: rgba(16, 163, 127, 0.05);
+}
+
+.source-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.source-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.source-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #ececec;
+}
+
+.source-status {
+    font-size: 0.75rem;
+    color: #8e8e8e;
+}
+
+.source-item.uploaded .source-status {
+    color: #10a37f;
+}
+
+.btn-upload {
+    padding: 0.5rem;
+    background: #2a2a2a;
+    border: 1px solid #3d3d3d;
+    border-radius: 6px;
+    color: #ececec;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-upload:hover {
+    background: #10a37f;
+    border-color: #10a37f;
+}
+
+.source-item.uploaded .btn-upload {
+    background: rgba(16, 163, 127, 0.2);
+    border-color: #10a37f;
+    color: #10a37f;
+}
+
+.twin-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-train-twin,
+.btn-export-twin {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.btn-train-twin {
+    background: linear-gradient(135deg, #10a37f, #0d8f6d);
+    color: white;
+}
+
+.btn-train-twin:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
+}
+
+.btn-train-twin:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #3d3d3d;
+}
+
+.btn-export-twin {
+    background: #2a2a2a;
+    border: 1px solid #3d3d3d;
+    color: #ececec;
+}
+
+.btn-export-twin:hover:not(:disabled) {
+    background: #3a3a3a;
+    border-color: #565656;
+}
+
+.btn-export-twin:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.twin-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.info-card {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #1a1a1a;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
+}
+
+.info-card i {
+    color: #10a37f;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.info-card strong {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ececec;
+    margin-bottom: 0.25rem;
+}
+
+.info-card p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #8e8e8e;
+    line-height: 1.4;
+}
+
+/* Animación para el botón de entrenar */
+@keyframes pulse-train {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.btn-train-twin.training {
+    animation: pulse-train 2s infinite;
 }
 
 /* ============================================

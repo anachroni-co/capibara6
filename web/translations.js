@@ -161,6 +161,30 @@ const translations = {
         'settings.model': 'Modelo',
         'settings.temperature': 'Temperatura (Creatividad)',
         'settings.language': 'Idioma',
+
+        // Sidebar
+        'sidebar.chats': 'Chats',
+        'sidebar.agents': 'Agentes',
+        'sidebar.digitalTwin': 'Gemelo Digital',
+
+        // Digital Twin
+        'digitalTwin.title': 'Gemelo Digital',
+        'digitalTwin.subtitle': 'Entrena tu ego sintético con tus datos',
+        'digitalTwin.notTrained': 'No entrenado',
+        'digitalTwin.training': 'Entrenando...',
+        'digitalTwin.trained': 'Entrenado',
+        'digitalTwin.sources': 'Fuentes de Datos',
+        'digitalTwin.hint': 'Sube tus conversaciones exportadas de estas plataformas',
+        'digitalTwin.notUploaded': 'Sin datos',
+        'digitalTwin.train': 'Entrenar Gemelo Digital',
+        'digitalTwin.export': 'Exportar',
+        'digitalTwin.security': 'Seguridad',
+        'digitalTwin.securityDesc': 'Datos encriptados con AES-256',
+        'digitalTwin.privacy': 'Privacidad',
+        'digitalTwin.privacyDesc': 'Procesamiento local, sin servidores externos',
+
+        // Agents
+        'agents.create': 'Crear Agente',
         
         // Quick Start Steps
         'step.1.title': 'Requisitos Previos',
@@ -517,6 +541,30 @@ const translations = {
         'settings.model': 'Model',
         'settings.temperature': 'Temperature (Creativity)',
         'settings.language': 'Language',
+
+        // Sidebar
+        'sidebar.chats': 'Chats',
+        'sidebar.agents': 'Agents',
+        'sidebar.digitalTwin': 'Digital Twin',
+
+        // Digital Twin
+        'digitalTwin.title': 'Digital Twin',
+        'digitalTwin.subtitle': 'Train your synthetic ego with your data',
+        'digitalTwin.notTrained': 'Not trained',
+        'digitalTwin.training': 'Training...',
+        'digitalTwin.trained': 'Trained',
+        'digitalTwin.sources': 'Data Sources',
+        'digitalTwin.hint': 'Upload your exported conversations from these platforms',
+        'digitalTwin.notUploaded': 'No data',
+        'digitalTwin.train': 'Train Digital Twin',
+        'digitalTwin.export': 'Export',
+        'digitalTwin.security': 'Security',
+        'digitalTwin.securityDesc': 'Data encrypted with AES-256',
+        'digitalTwin.privacy': 'Privacy',
+        'digitalTwin.privacyDesc': 'Local processing, no external servers',
+
+        // Agents
+        'agents.create': 'Create Agent',
         
         // Quick Start Steps
         'step.1.title': 'Prerequisites',

@@ -42,7 +42,7 @@
                 </div>
             </div>
             
-            <!-- Tabs para Conversaciones / Agentes -->
+            <!-- Tabs para Conversaciones / Agentes / Gemelo Digital -->
             <div class="sidebar-tabs">
                 <button class="sidebar-tab active" data-tab="chats">
                     <i data-lucide="messages-square" style="width: 16px; height: 16px;"></i>
@@ -51,6 +51,10 @@
                 <button class="sidebar-tab" data-tab="agents">
                     <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
                     <span data-i18n="sidebar.agents">Agentes</span>
+                </button>
+                <button class="sidebar-tab" data-tab="digital-twin">
+                    <i data-lucide="brain" style="width: 16px; height: 16px;"></i>
+                    <span data-i18n="sidebar.digitalTwin">Gemelo Digital</span>
                 </button>
             </div>
 
@@ -83,6 +87,158 @@
                     <!-- Se llenarán dinámicamente -->
                 </div>
             </div>
+
+            <!-- Tab: Gemelo Digital -->
+            <div id="tab-digital-twin" class="tab-content">
+                <div class="digital-twin-container">
+                    <div class="digital-twin-header">
+                        <div class="twin-icon">
+                            <i data-lucide="brain" style="width: 24px; height: 24px;"></i>
+                        </div>
+                        <h3 data-i18n="digitalTwin.title">Gemelo Digital</h3>
+                        <p class="twin-subtitle" data-i18n="digitalTwin.subtitle">Entrena tu ego sintético con tus datos</p>
+                    </div>
+
+                    <div class="training-status">
+                        <div class="status-badge" id="twin-status">
+                            <i data-lucide="circle" style="width: 8px; height: 8px;"></i>
+                            <span data-i18n="digitalTwin.notTrained">No entrenado</span>
+                        </div>
+                        <div class="training-progress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="training-progress"></div>
+                            </div>
+                            <span class="progress-text" id="progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="data-sources">
+                        <h4 class="sources-title" data-i18n="digitalTwin.sources">Fuentes de Datos</h4>
+                        <p class="sources-hint" data-i18n="digitalTwin.hint">Sube tus conversaciones exportadas de estas plataformas</p>
+
+                        <div class="source-list">
+                            <div class="source-item" data-source="twitter">
+                                <div class="source-icon" style="background: linear-gradient(135deg, #1DA1F2, #0d8bd9);">
+                                    <i data-lucide="twitter" style="width: 20px; height: 20px;"></i>
+                                </div>
+                                <div class="source-info">
+                                    <span class="source-name">X (Twitter)</span>
+                                    <span class="source-status" data-i18n="digitalTwin.notUploaded">Sin datos</span>
+                                </div>
+                                <button class="btn-upload" onclick="uploadData('twitter')">
+                                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+
+                            <div class="source-item" data-source="facebook">
+                                <div class="source-icon" style="background: linear-gradient(135deg, #1877F2, #0c5bbf);">
+                                    <i data-lucide="facebook" style="width: 20px; height: 20px;"></i>
+                                </div>
+                                <div class="source-info">
+                                    <span class="source-name">Facebook</span>
+                                    <span class="source-status" data-i18n="digitalTwin.notUploaded">Sin datos</span>
+                                </div>
+                                <button class="btn-upload" onclick="uploadData('facebook')">
+                                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+
+                            <div class="source-item" data-source="instagram">
+                                <div class="source-icon" style="background: linear-gradient(135deg, #E1306C, #C13584, #833AB4);">
+                                    <i data-lucide="instagram" style="width: 20px; height: 20px;"></i>
+                                </div>
+                                <div class="source-info">
+                                    <span class="source-name">Instagram</span>
+                                    <span class="source-status" data-i18n="digitalTwin.notUploaded">Sin datos</span>
+                                </div>
+                                <button class="btn-upload" onclick="uploadData('instagram')">
+                                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+
+                            <div class="source-item" data-source="whatsapp">
+                                <div class="source-icon" style="background: linear-gradient(135deg, #25D366, #1ead5a);">
+                                    <i data-lucide="message-circle" style="width: 20px; height: 20px;"></i>
+                                </div>
+                                <div class="source-info">
+                                    <span class="source-name">WhatsApp</span>
+                                    <span class="source-status" data-i18n="digitalTwin.notUploaded">Sin datos</span>
+                                </div>
+                                <button class="btn-upload" onclick="uploadData('whatsapp')">
+                                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+
+                            <div class="source-item" data-source="telegram">
+                                <div class="source-icon" style="background: linear-gradient(135deg, #0088cc, #006699);">
+                                    <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+                                </div>
+                                <div class="source-info">
+                                    <span class="source-name">Telegram</span>
+                                    <span class="source-status" data-i18n="digitalTwin.notUploaded">Sin datos</span>
+                                </div>
+                                <button class="btn-upload" onclick="uploadData('telegram')">
+                                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+
+                            <div class="source-item" data-source="chatgpt">
+                                <div class="source-icon" style="background: linear-gradient(135deg, #10a37f, #0d8f6d);">
+                                    <i data-lucide="bot" style="width: 20px; height: 20px;"></i>
+                                </div>
+                                <div class="source-info">
+                                    <span class="source-name">ChatGPT</span>
+                                    <span class="source-status" data-i18n="digitalTwin.notUploaded">Sin datos</span>
+                                </div>
+                                <button class="btn-upload" onclick="uploadData('chatgpt')">
+                                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+
+                            <div class="source-item" data-source="claude">
+                                <div class="source-icon" style="background: linear-gradient(135deg, #D97757, #c76646);">
+                                    <i data-lucide="zap" style="width: 20px; height: 20px;"></i>
+                                </div>
+                                <div class="source-info">
+                                    <span class="source-name">Claude</span>
+                                    <span class="source-status" data-i18n="digitalTwin.notUploaded">Sin datos</span>
+                                </div>
+                                <button class="btn-upload" onclick="uploadData('claude')">
+                                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="twin-actions">
+                        <button id="train-twin-btn" class="btn-train-twin" disabled>
+                            <i data-lucide="brain" style="width: 18px; height: 18px;"></i>
+                            <span data-i18n="digitalTwin.train">Entrenar Gemelo Digital</span>
+                        </button>
+                        <button id="export-twin-btn" class="btn-export-twin" disabled>
+                            <i data-lucide="download" style="width: 18px; height: 18px;"></i>
+                            <span data-i18n="digitalTwin.export">Exportar</span>
+                        </button>
+                    </div>
+
+                    <div class="twin-info">
+                        <div class="info-card">
+                            <i data-lucide="shield-check" style="width: 20px; height: 20px;"></i>
+                            <div>
+                                <strong data-i18n="digitalTwin.security">Seguridad</strong>
+                                <p data-i18n="digitalTwin.securityDesc">Datos encriptados con AES-256</p>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <i data-lucide="lock" style="width: 20px; height: 20px;"></i>
+                            <div>
+                                <strong data-i18n="digitalTwin.privacy">Privacidad</strong>
+                                <p data-i18n="digitalTwin.privacyDesc">Procesamiento local, sin servidores externos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="sidebar-footer">
@@ -109,65 +265,6 @@
 
     <!-- Área principal del chat -->
     <main class="chat-main">
-        <!-- Sidebar de plantillas -->
-        <aside class="templates-sidebar">
-            <div class="sidebar-header">
-                <i data-lucide="settings-2" style="width: 18px; height: 18px;"></i>
-                <h3>Plantillas</h3>
-            </div>
-            <div class="template-list">
-                <button class="template-item" data-template="conservador">
-                    <span class="template-emoji">🛡️</span>
-                    <span class="template-name">Conservador</span>
-                </button>
-                <button class="template-item active" data-template="balanceado">
-                    <span class="template-emoji">⚖️</span>
-                    <span class="template-name">Balanceado</span>
-                </button>
-                <button class="template-item" data-template="creativo">
-                    <span class="template-emoji">🎨</span>
-                    <span class="template-name">Creativo</span>
-                </button>
-                <button class="template-item" data-template="preciso">
-                    <span class="template-emoji">🎯</span>
-                    <span class="template-name">Preciso</span>
-                </button>
-                <button class="template-item" data-template="conversacional">
-                    <span class="template-emoji">💬</span>
-                    <span class="template-name">Conversacional</span>
-                </button>
-                <button class="template-item" data-template="tecnico">
-                    <span class="template-emoji">🔧</span>
-                    <span class="template-name">Técnico</span>
-                </button>
-                <button class="template-item" data-template="conciso">
-                    <span class="template-emoji">⚡</span>
-                    <span class="template-name">Conciso</span>
-                </button>
-                <button class="template-item" data-template="detallado">
-                    <span class="template-emoji">📚</span>
-                    <span class="template-name">Detallado</span>
-                </button>
-                <button class="template-item" data-template="experimental">
-                    <span class="template-emoji">🧪</span>
-                    <span class="template-name">Experimental</span>
-                </button>
-                <button class="template-item" data-template="gemma_optimizado">
-                    <span class="template-emoji">✨</span>
-                    <span class="template-name">Capibara6 Optimizado</span>
-                </button>
-            </div>
-            <div class="sidebar-footer">
-                <button id="show-template-stats-sidebar" class="btn-stats-sidebar" title="Ver estadísticas">
-                    <i data-lucide="bar-chart-3" style="width: 16px; height: 16px;"></i>
-                    <span>Estadísticas</span>
-                </button>
-            </div>
-            <div id="template-description-sidebar" class="template-description-sidebar">
-                Equilibrio entre coherencia y creatividad
-            </div>
-        </aside>
-
         <!-- Contenedor del contenido del chat -->
         <div class="chat-content-wrapper">
         <!-- Vista vacía (sin conversación seleccionada) -->
@@ -331,7 +428,8 @@
     <!-- <script src="consensus-integration.js"></script> Pausado: Activar más tarde -->
     <script src="template-profiles.js?v=5.0"></script>
     <script src="rating-system.js?v=5.0"></script>
-           <script src="tts-integration.js?v=18.0"></script>
+    <script src="tts-integration.js?v=18.0"></script>
+    <script src="digital-twin.js?v=1.0"></script>
     <script src="chat-app.js?v=35.0&t=1736987000"></script>
     <script src="entropy-auto-inject.js?v=5.0"></script>
     <script>
@@ -351,40 +449,35 @@
             console.error('❌ Lucide no cargado');
         }
 
-        // Manejar clics en plantillas del sidebar
+        // Manejar clics en tabs del sidebar
         document.addEventListener('DOMContentLoaded', () => {
-            const templateButtons = document.querySelectorAll('.template-item');
-            const descriptionSidebar = document.getElementById('template-description-sidebar');
-            
-            templateButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Remover clase active de todos
-                    templateButtons.forEach(btn => btn.classList.remove('active'));
-                    // Agregar clase active al clickeado
-                    button.classList.add('active');
-                    
-                    // Aplicar plantilla
-                    const templateId = button.getAttribute('data-template');
-                    if (window.applyTemplate) {
-                        window.applyTemplate(templateId);
+            // Tabs del sidebar
+            const sidebarTabs = document.querySelectorAll('.sidebar-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            sidebarTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+
+                    // Remover clase active de todos los tabs
+                    sidebarTabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Agregar clase active al tab clickeado
+                    tab.classList.add('active');
+
+                    // Mostrar el contenido correspondiente
+                    const targetContent = document.getElementById(`tab-${tabId}`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
                     }
-                    
-                    // Actualizar descripción
-                    if (window.TEMPLATE_PROFILES && window.TEMPLATE_PROFILES[templateId]) {
-                        descriptionSidebar.textContent = window.TEMPLATE_PROFILES[templateId].description;
+
+                    // Reinicializar iconos de Lucide
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
                     }
                 });
             });
-
-            // Botón de estadísticas en sidebar
-            const statsBtn = document.getElementById('show-template-stats-sidebar');
-            if (statsBtn) {
-                statsBtn.addEventListener('click', () => {
-                    if (window.showDetailedStats) {
-                        window.showDetailedStats();
-                    }
-                });
-            }
         });
     </script>
 </body>
