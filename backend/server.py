@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Backend de capibara6 - Servidor Flask para gestión de emails
-"""
-
-from flask import Flask, request, jsonify
+"from flask import Flask, request, jsonify
 from flask_cors import CORS
 import smtplib
 from email.mime.text import MIMEText
@@ -14,11 +12,28 @@ import os
 from dotenv import load_dotenv
 import json
 
-# Cargar variables de entorno
+# Importar conector MCP
+try:
+    from mcp_connector import Capibara6MCPConnector
+    MCP_AVAILABLE = True
+except ImportError:
+    MCP_AVAILABLE = False
+    print("⚠️  MCP Connector no disponible - instalando dependencias...")v
+import j# Cargar variables de entorno
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Habilitar CORS para permitir peticiones desde el frontend
+
+# Inicializar conector MCP si está disponible
+mcp_connector = None
+if MCP_AVAILABLE:
+    try:
+        mcp_connector = Capibara6MCPConnector()
+        print("✅ Conector MCP inicializado correctamente")
+    except Exception as e:
+        print(f"❌ Error inicializando MCP: {e}")
+        MCP_AVAILABLE = Falseel frontend
 
 # Configuración SMTP
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
@@ -566,16 +581,535 @@ def save_lead():
 @app.route('/api/health', methods=['GET'])
 def health():
     """Endpoint de health check"""
-    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})on as e:
-        print(f'Error: {e}')
-        return jsonify({'success': False, 'error': str(e)}), 500
-
-@app.route('/api/health', methods=['GET'])
-def health():
-    """Endpoint de health check"""
     return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})
 
-@app.route('/', methods=['GET'])
+# ============================================================================
+# ENDPOINTS MCP (Model Context Protocol)
+# ============================================================================
+
+@app.route('/api/mcp/status', methods=['GET'])
+def mcp_status():
+    """Estado del conector MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'MCP Connector no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+    
+    return jsonify({
+        'status': 'running',
+        'connector': 'capibara6-mcp-connector',
+        'version': '1.0.0',
+        'capabilities': mcp_connector.capabilities if mcp_connector else {},
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/api/mcp/initialize', methods=['POST'])
+def mcp_initialize():
+    """Inicializar conexión MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({'error': 'MCP Connector no disponible'}), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        request_data = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": request.get_json() or {}
+        }
+        
+        response = loop.run_until_complete(mcp_connector.handle_request(request_data))
+        return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "id": 1,
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }), 500
+
+@app.route('/api/mcp/tools/list', methods=['GET', 'POST'])
+def mcp_tools_list():
+    """Listar herramientas MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({'error': 'MCP Connector no disponible'}), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        request_data = {
+            "jsonrpc": "2.0",
+            "id": 2,
+            "method": "tools/list",
+            "params": request.get_json() or {}
+        }
+        
+        response = loop.run_until_complete(mcp_connector.handle_request(request_data))
+        return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "id": 2,
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }), 500
+
+@app.route('/api/mcp/tools/call', methods=['POST'])
+def mcp_tools_call():
+    """Ejecutar herramienta MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({'error': 'MCP Connector no disponible'}), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Datos requeridos"}), 400
+        
+        request_data = {
+            "jsonrpc": "2.0",
+            "id": data.get("id", 3),
+            "method": "tools/call",
+            "params": data
+        }
+        
+        response = loop.run_until_complete(mcp_connector.handle_request(request_data))
+        return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "id": request.get_json().get("id", 3) if request.get_json() else 3,
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }), 500
+
+@app.route('/api/mcp/resources/list', methods=['GET', 'POST'])
+def mcp_resources_list():
+    """Listar recursos MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({'error': 'MCP Connector no disponible'}), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        request_data = {
+            "jsonrpc": "2.0",
+            "id": 4,
+            "method": "resources/list",
+            "params": request.get_json() or {}
+        }
+        
+        response = loop.run_until_complete(mcp_connector.handle_request(request_data))
+        return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "id": 4,
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }), 500
+
+@app.route('/api/mcp/resources/read', methods=['POST'])
+def mcp_resources_read():
+    """Leer recurso MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({'error': 'MCP Connector no disponible'}), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Datos requeridos"}), 400
+        
+        request_data = {
+            "jsonrpc": "2.0",
+            "id": data.get("id", 5),
+            "method": "resources/read",
+            "params": data
+        }
+        
+        response = loop.run_until_complete(mcp_connector.handle_request(request_data))
+        return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "id": request.get_json().get("id", 5) if request.get_json() else 5,
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }), 500
+
+@app.route('/api/mcp/prompts/list', methods=['GET', 'POST'])
+def mcp_prompts_list():
+    """Listar prompts MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({'error': 'MCP Connector no disponible'}), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        request_data = {
+            "jsonrpc": "2.0",
+            "id": 6,
+            "method": "prompts/list",
+            "params": request.get_json() or {}
+        }
+        
+        response = loop.run_until_complete(mcp_connector.handle_request(request_data))
+        return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "id": 6,
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }), 500
+
+@app.route('/api/mcp/prompts/get', methods=['POST'])
+def mcp_prompts_get():
+    """Obtener prompt MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({'error': 'MCP Connector no disponible'}), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Datos requeridos"}), 400
+        
+        request_data = {
+            "jsonrpc": "2.0",
+            "id": data.get("id", 7),
+            "method": "prompts/get",
+            "params": data
+        }
+        
+        response = loop.run_until_complete(mcp_connector.handle_request(request_data))
+        return jsonify(response)
+    
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "id": request.get_json().get("id", 7) if request.get_json() else 7,
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }), 500
+
+@app.route('/api/mcp/test', methods=['POST'])
+def mcp_test():
+    """Probar funcionalidad MCP"""
+    if not MCP_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'MCP Connector no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+    
+    try:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        data = request.get_json() or {}
+        test_type = data.get("test_type", "full")
+        
+        results = {}
+        
+        if test_type in ["full", "tools"]:
+            # Test de herramientas
+            tools_request = {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "tools/list",
+                "params": {}
+            }
+            tools_response = loop.run_until_complete(mcp_connector.handle_request(tools_request))
+            results["tools"] = tools_response
+        
+        if test_type in ["full", "resources"]:
+            # Test de recursos
+            resources_request = {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "resources/list",
+                "params": {}
+            }
+            resources_response = loop.run_until_complete(mcp_connector.handle_request(resources_request))
+            results["resources"] = resources_response
+        
+        if test_type in ["full", "prompts"]:
+            # Test de prompts
+            prompts_request = {
+                "jsonrpc": "2.0",
+                "id": 3,
+                "method": "prompts/list",
+                "params": {}
+            }
+            prompts_response = loop.run_until_complete(mcp_connector.handle_request(prompts_request))
+            results["prompts"] = prompts_response
+        
+        return jsonify({
+            "status": "success",
+            "test_type": test_type,
+            "results": results,
+            "timestamp": datetime.now().isoformat()
+        })
+    
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "error": str(e),
+            "timestamp": datetime.now().isoformat()
+        }), 500
+
+@app.route('/mcp', methods=['GET'])
+def mcp_documentation():
+    """Página de documentación del conector MCP"""
+    return '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>capibara6 MCP Connector</title>
+        <meta charset="UTF-8">
+        <style>
+            body { 
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                line-height: 1.6; 
+                color: #333; 
+                max-width: 1200px; 
+                margin: 0 auto; 
+                padding: 20px;
+                background: #f5f5f5;
+            }
+            .header { 
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                color: white; 
+                padding: 40px; 
+                border-radius: 10px; 
+                text-align: center; 
+                margin-bottom: 30px;
+            }
+            .header h1 { margin: 0; font-size: 36px; }
+            .header p { margin: 10px 0 0 0; font-size: 18px; opacity: 0.9; }
+            .section { 
+                background: white; 
+                padding: 30px; 
+                border-radius: 10px; 
+                margin-bottom: 20px; 
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            .section h2 { color: #667eea; margin-top: 0; }
+            .endpoint { 
+                background: #f8f9fa; 
+                padding: 15px; 
+                border-radius: 5px; 
+                margin: 10px 0; 
+                border-left: 4px solid #667eea;
+            }
+            .method { 
+                font-weight: bold; 
+                color: #28a745; 
+                font-family: monospace; 
+            }
+            .url { 
+                font-family: monospace; 
+                background: #e9ecef; 
+                padding: 2px 6px; 
+                border-radius: 3px;
+            }
+            .code { 
+                background: #2d3748; 
+                color: #e2e8f0; 
+                padding: 20px; 
+                border-radius: 5px; 
+                overflow-x: auto; 
+                font-family: 'Courier New', monospace;
+            }
+            .feature { 
+                display: inline-block; 
+                background: #667eea; 
+                color: white; 
+                padding: 5px 15px; 
+                border-radius: 20px; 
+                margin: 5px; 
+                font-size: 14px;
+            }
+            .status { 
+                display: inline-block; 
+                background: #28a745; 
+                color: white; 
+                padding: 5px 15px; 
+                border-radius: 20px; 
+                font-size: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>🦫 capibara6 MCP Connector</h1>
+            <p>Conector Model Context Protocol para IA híbrida Transformer-Mamba</p>
+            <div class="status">🟢 Servidor Activo</div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 Descripción General</h2>
+            <p>El conector MCP de capibara6 permite integrar el sistema de IA híbrido con aplicaciones que soporten el Model Context Protocol. Proporciona acceso a herramientas, recursos y prompts del modelo a través de una API estandarizada.</p>
+            
+            <h3>Características Principales:</h3>
+            <div class="feature">Arquitectura Híbrida 70/30</div>
+            <div class="feature">Google TPU v5e/v6e</div>
+            <div class="feature">Google ARM Axion</div>
+            <div class="feature">10M+ Tokens Contexto</div>
+            <div class="feature">Compliance UE Total</div>
+            <div class="feature">Multimodal</div>
+            <div class="feature">Chain-of-Thought</div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 Endpoints Disponibles</h2>
+            
+            <div class="endpoint">
+                <div class="method">GET</div>
+                <div class="url">/api/mcp/status</div>
+                <p>Verificar estado del servidor MCP</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">POST</div>
+                <div class="url">/api/mcp/initialize</div>
+                <p>Inicializar conexión MCP</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">GET/POST</div>
+                <div class="url">/api/mcp/tools/list</div>
+                <p>Listar herramientas disponibles</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">POST</div>
+                <div class="url">/api/mcp/tools/call</div>
+                <p>Ejecutar herramienta específica</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">GET/POST</div>
+                <div class="url">/api/mcp/resources/list</div>
+                <p>Listar recursos disponibles</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">POST</div>
+                <div class="url">/api/mcp/resources/read</div>
+                <p>Leer recurso específico</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">GET/POST</div>
+                <div class="url">/api/mcp/prompts/list</div>
+                <p>Listar prompts disponibles</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">POST</div>
+                <div class="url">/api/mcp/prompts/get</div>
+                <p>Obtener prompt específico</p>
+            </div>
+            
+            <div class="endpoint">
+                <div class="method">POST</div>
+                <div class="url">/api/mcp/test</div>
+                <p>Probar funcionalidad MCP</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🛠️ Herramientas Disponibles</h2>
+            <ul>
+                <li><strong>analyze_document</strong> - Análisis de documentos extensos (10M+ tokens)</li>
+                <li><strong>codebase_analysis</strong> - Análisis completo de bases de código</li>
+                <li><strong>multimodal_processing</strong> - Procesamiento de texto, imagen, video y audio</li>
+                <li><strong>compliance_check</strong> - Verificación GDPR, AI Act UE, CCPA</li>
+                <li><strong>reasoning_chain</strong> - Chain-of-Thought reasoning hasta 12 pasos</li>
+                <li><strong>performance_optimization</strong> - Optimización para TPU y ARM</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>📚 Ejemplo de Uso</h2>
+            <div class="code">
+# Ejemplo de llamada a herramienta
+curl -X POST http://localhost:5000/api/mcp/tools/call \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "name": "analyze_document",
+    "arguments": {
+      "document": "Contenido del documento...",
+      "analysis_type": "compliance",
+      "language": "es"
+    }
+  }'
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔗 Recursos Adicionales</h2>
+            <ul>
+                <li><a href="https://modelcontextprotocol.io">Documentación oficial MCP</a></li>
+                <li><a href="https://capibara6.com">Sitio web capibara6</a></li>
+                <li><a href="https://github.com/anachroni-co/capibara6">Repositorio GitHub</a></li>
+                <li><a href="https://www.anachroni.co">Anachroni s.coop</a></li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>📞 Soporte</h2>
+            <p>Para soporte técnico o consultas sobre el conector MCP de capibara6:</p>
+            <p>📧 Email: <a href="mailto:info@anachroni.co">info@anachroni.co</a></p>
+            <p>🌐 Web: <a href="https://www.anachroni.co">www.anachroni.co</a></p>
+        </div>
+    </body>
+    </html>
+    '''on as e@app.route('/', methods=['GET'])
 def index():
     """Página principal"""
     return '''
@@ -586,21 +1120,67 @@ def index():
                 body { font-family: monospace; background: #0a0a0a; color: #00ff00; padding: 40px; }
                 h1 { color: #00ffff; }
                 .status { color: #00ff00; }
+                .mcp { color: #ff6b6b; }
+                a { color: #00ffff; text-decoration: none; }
+                a:hover { text-decoration: underline; }
             </style>
         </head>
         <body>
-            <h1>capibara6 Backend</h1>
+            <h1>🦫 capibara6 Backend</h1>
             <p class="status">Servidor funcionando correctamente</p>
-            <p>Endpoints disponibles:</p>
+            
+            <h2>📡 Endpoints Disponibles:</h2>
             <ul>
                 <li>POST /api/save-conversation - Guardar conversacion y enviar email</li>
+                <li>POST /api/save-lead - Guardar leads empresariales</li>
                 <li>GET /api/health - Health check</li>
+            </ul>
+            
+            <h2 class="mcp">🔌 MCP Connector:</h2>
+            <ul>
+                <li><a href="/mcp">📚 Documentación MCP</a></li>
+                <li>GET /api/mcp/status - Estado del conector MCP</li>
+                <li>POST /api/mcp/initialize - Inicializar MCP</li>
+                <li>GET /api/mcp/tools/list - Listar herramientas</li>
+                <li>POST /api/mcp/tools/call - Ejecutar herramienta</li>
+                <li>GET /api/mcp/resources/list - Listar recursos</li>
+                <li>POST /api/mcp/resources/read - Leer recurso</li>
+                <li>GET /api/mcp/prompts/list - Listar prompts</li>
+                <li>POST /api/mcp/prompts/get - Obtener prompt</li>
+                <li>POST /api/mcp/test - Probar funcionalidad</li>
+            </ul>
+            
+            <h2>🚀 Características:</h2>
+            <ul>
+                <li>Arquitectura Híbrida 70% Transformer / 30% Mamba</li>
+                <li>Google TPU v5e/v6e-64 optimizado</li>
+                <li>Google ARM Axion support</li>
+                <li>10M+ tokens de contexto</li>
+                <li>Compliance total UE (GDPR, AI Act, CCPA)</li>
+                <li>Procesamiento multimodal</li>
+                <li>Chain-of-Thought reasoning</li>
             </ul>
         </body>
     </html>
-    '''
-
-if __name__ == '__main__':
+    '''or funcionando correctamente</p>
+       if __name__ == '__main__':
+    ensure_data_dir()
+    print('🦫 capibara6 Backend iniciado')
+    print(f'📧 Email configurado: {FROM_EMAIL}')
+    
+    if MCP_AVAILABLE:
+        print('✅ Conector MCP disponible')
+        print('🔌 Endpoints MCP: /api/mcp/*')
+        print('📚 Documentación MCP: /mcp')
+    else:
+        print('⚠️  Conector MCP no disponible')
+    
+    # Puerto para Railway (usa variable de entorno PORT)
+    port = int(os.getenv('PORT', 5000))
+    print(f'🌐 Servidor iniciado en puerto {port}')
+    print(f'🔗 URL: http://localhost:{port}')
+    
+    app.run(host='0.0.0.0', port=port, debug=False):
     ensure_data_dir()
     print('capibara6 Backend iniciado')
     print(f'Email configurado: {FROM_EMAIL}')
