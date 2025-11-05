@@ -740,11 +740,31 @@ class Capibara6Chat {
     }
 }
 
-// Inicializar chatbot
+// Inicializar chatbot y exponer instancia global
+let capibara6ChatInstance = null;
+
+function initializeChatbot() {
+    capibara6ChatInstance = new Capibara6Chat();
+    // Exponer función global para abrir el chat desde otros lugares
+    window.openChatbot = function() {
+        if (capibara6ChatInstance) {
+            // Si el chat está cerrado, abrirlo
+            if (!capibara6ChatInstance.isOpen) {
+                capibara6ChatInstance.toggleChat();
+            }
+            // Si ya está abierto, hacer scroll al chat
+            else {
+                const chatWindow = document.getElementById('chatbot-window');
+                if (chatWindow) {
+                    chatWindow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        }
+    };
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new Capibara6Chat();
-    });
+    document.addEventListener('DOMContentLoaded', initializeChatbot);
 } else {
-    new Capibara6Chat();
+    initializeChatbot();
 }
