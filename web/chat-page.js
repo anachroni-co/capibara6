@@ -9,21 +9,52 @@ class Capibara6ChatPage {
                 : 'https://www.capibara6.com');
         
         this.messages = [];
+        this.chats = [];
+        this.currentChatId = null;
         this.isConnected = false;
         this.isProcessing = false;
+        this.sidebarCollapsed = false;
         
+        // Elementos del DOM
         this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chat-input');
         this.chatSendBtn = document.getElementById('chat-send-btn');
         this.statusIndicator = document.getElementById('status-indicator');
         this.statusText = document.getElementById('status-text');
         this.clearChatBtn = document.getElementById('clear-chat-btn');
+        this.sidebar = document.getElementById('sidebar');
+        this.sidebarToggle = document.getElementById('sidebar-toggle');
+        this.sidebarToggleMobile = document.getElementById('sidebar-toggle-mobile');
+        this.sidebarOverlay = document.getElementById('sidebar-overlay');
+        this.newChatBtn = document.getElementById('new-chat-btn');
+        this.chatList = document.getElementById('chat-list');
+        this.profileMenuBtn = document.getElementById('profile-menu-btn');
+        this.profileMenu = document.getElementById('profile-menu');
+        this.settingsModal = document.getElementById('settings-modal');
         
         this.init();
     }
     
     async init() {
+        // Cargar configuración del usuario
+        this.loadUserSettings();
+        this.loadUserProfile();
+        
         // Configurar event listeners
+        this.setupEventListeners();
+        
+        // Verificar conexión con el backend
+        await this.checkConnection();
+        
+        // Cargar chats guardados
+        this.loadChats();
+        
+        // Cargar mensajes del chat actual
+        this.loadMessages();
+    }
+    
+    setupEventListeners() {
+        // Enviar mensaje
         this.chatSendBtn.addEventListener('click', () => this.sendMessage());
         this.chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -38,14 +69,98 @@ class Capibara6ChatPage {
             this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 200) + 'px';
         });
         
+        // Sidebar
+        this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
+        this.sidebarToggleMobile.addEventListener('click', () => this.toggleSidebarMobile());
+        this.sidebarOverlay.addEventListener('click', () => this.closeSidebarMobile());
+        
+        // Nuevo chat
+        this.newChatBtn.addEventListener('click', () => this.createNewChat());
+        
         // Limpiar chat
         this.clearChatBtn.addEventListener('click', () => this.clearChat());
         
-        // Verificar conexión con el backend
-        await this.checkConnection();
+        // Perfil
+        this.profileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleProfileMenu();
+        });
         
-        // Cargar mensajes guardados
-        this.loadMessages();
+        // Cerrar menú de perfil al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (!this.profileMenu.contains(e.target) && !this.profileMenuBtn.contains(e.target)) {
+                this.profileMenu.classList.remove('active');
+            }
+        });
+        
+        // Configuración
+        document.getElementById('profile-settings-btn').addEventListener('click', () => {
+            this.openSettings();
+            this.profileMenu.classList.remove('active');
+        });
+        
+        document.getElementById('settings-modal-close').addEventListener('click', () => {
+            this.closeSettings();
+        });
+        
+        document.getElementById('settings-save-btn').addEventListener('click', () => {
+            this.saveSettings();
+        });
+        
+        // Temperatura slider
+        const tempSlider = document.getElementById('temperature-setting');
+        const tempValue = document.getElementById('temperature-value');
+        tempSlider.addEventListener('input', (e) => {
+            tempValue.textContent = e.target.value;
+        });
+    }
+    
+    toggleSidebar() {
+        this.sidebarCollapsed = !this.sidebarCollapsed;
+        if (this.sidebarCollapsed) {
+            this.sidebar.classList.add('collapsed');
+        } else {
+            this.sidebar.classList.remove('collapsed');
+        }
+        this.saveUserSettings();
+    }
+    
+    toggleSidebarMobile() {
+        this.sidebar.classList.toggle('active');
+        this.sidebarOverlay.classList.toggle('active');
+    }
+    
+    closeSidebarMobile() {
+        this.sidebar.classList.remove('active');
+        this.sidebarOverlay.classList.remove('active');
+    }
+    
+    toggleProfileMenu() {
+        this.profileMenu.classList.toggle('active');
+    }
+    
+    createNewChat() {
+        this.currentChatId = null;
+        this.messages = [];
+        this.chatMessages.innerHTML = `
+            <div class="chat-message bot-message">
+                <div class="message-avatar">
+                    <div class="avatar-gradient">
+                        <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                    </div>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">
+                        <p>¡Hola! Soy capibara6, un modelo de IA híbrido Transformer-Mamba. ¿En qué puedo ayudarte hoy?</p>
+                    </div>
+                    <div class="message-time">${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div>
+                </div>
+            </div>
+        `;
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        this.closeSidebarMobile();
     }
     
     async checkConnection() {
@@ -81,6 +196,7 @@ class Capibara6ChatPage {
             'connecting': '#6366f1'
         };
         this.statusIndicator.style.background = colors[type] || colors.connecting;
+        this.statusIndicator.style.boxShadow = `0 0 8px ${colors[type] || colors.connecting}`;
     }
     
     async sendMessage() {
@@ -90,6 +206,12 @@ class Capibara6ChatPage {
         if (!this.isConnected) {
             this.showError('No hay conexión con el servidor. Por favor, verifica tu conexión.');
             return;
+        }
+        
+        // Crear chat si no existe
+        if (!this.currentChatId) {
+            this.currentChatId = 'chat_' + Date.now();
+            this.saveChats();
         }
         
         // Agregar mensaje del usuario
@@ -117,6 +239,9 @@ class Capibara6ChatPage {
                 throw new Error('Respuesta inválida del servidor');
             }
             
+            // Actualizar lista de chats
+            this.updateChatInList();
+            
         } catch (error) {
             console.error('Error enviando mensaje:', error);
             this.removeTypingIndicator(typingIndicator);
@@ -133,7 +258,6 @@ class Capibara6ChatPage {
     
     async sendToBackend(message) {
         // Usar el endpoint MCP tools/call para enviar mensajes al modelo
-        // Por ahora, usamos una herramienta de análisis de texto como ejemplo
         const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
             ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
             : `${this.backendUrl}/api/mcp/tools/call`;
@@ -206,16 +330,22 @@ class Capibara6ChatPage {
         
         const avatar = document.createElement('div');
         avatar.className = 'message-avatar';
-        avatar.innerHTML = type === 'bot' 
+        const avatarGradient = document.createElement('div');
+        avatarGradient.className = 'avatar-gradient';
+        avatarGradient.innerHTML = type === 'bot' 
             ? '<i data-lucide="bot" style="width: 24px; height: 24px;"></i>'
             : '<i data-lucide="user" style="width: 24px; height: 24px;"></i>';
+        avatar.appendChild(avatarGradient);
         
         const content = document.createElement('div');
         content.className = 'message-content';
         
+        const textDiv = document.createElement('div');
+        textDiv.className = 'message-text';
         const textP = document.createElement('p');
         textP.textContent = text;
-        content.appendChild(textP);
+        textDiv.appendChild(textP);
+        content.appendChild(textDiv);
         
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
@@ -286,8 +416,8 @@ class Capibara6ChatPage {
         errorDiv.textContent = message;
         
         // Insertar después del header
-        const chatMain = document.querySelector('.chat-main');
-        chatMain.insertBefore(errorDiv, chatMain.firstChild);
+        const chatMain = document.querySelector('.chat-main-content');
+        chatMain.insertBefore(errorDiv, chatMain.children[1]);
         
         // Remover después de 5 segundos
         setTimeout(() => {
@@ -297,31 +427,187 @@ class Capibara6ChatPage {
     
     clearChat() {
         if (confirm('¿Estás seguro de que quieres limpiar toda la conversación?')) {
-            // Mantener solo el mensaje de bienvenida
-            this.messages = [];
-            this.chatMessages.innerHTML = `
-                <div class="chat-message bot-message">
-                    <div class="message-avatar">
-                        <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
-                    </div>
-                    <div class="message-content">
-                        <p>¡Hola! Soy capibara6, un modelo de IA híbrido Transformer-Mamba. ¿En qué puedo ayudarte hoy?</p>
-                        <div class="message-time">${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div>
-                    </div>
+            this.createNewChat();
+        }
+    }
+    
+    // Gestión de chats
+    loadChats() {
+        try {
+            const saved = localStorage.getItem('capibara6_chats');
+            if (saved) {
+                this.chats = JSON.parse(saved);
+                this.renderChatList();
+            }
+        } catch (error) {
+            console.warn('Error cargando chats:', error);
+        }
+    }
+    
+    saveChats() {
+        try {
+            if (this.currentChatId) {
+                const chatIndex = this.chats.findIndex(c => c.id === this.currentChatId);
+                const chatData = {
+                    id: this.currentChatId,
+                    title: this.messages[0]?.text?.substring(0, 50) || 'Nueva conversación',
+                    lastMessage: this.messages[this.messages.length - 1]?.text?.substring(0, 100),
+                    timestamp: new Date().toISOString(),
+                    messageCount: this.messages.length
+                };
+                
+                if (chatIndex >= 0) {
+                    this.chats[chatIndex] = chatData;
+                } else {
+                    this.chats.unshift(chatData);
+                }
+                
+                // Mantener solo los últimos 20 chats
+                this.chats = this.chats.slice(0, 20);
+                localStorage.setItem('capibara6_chats', JSON.stringify(this.chats));
+                this.renderChatList();
+            }
+        } catch (error) {
+            console.warn('Error guardando chats:', error);
+        }
+    }
+    
+    renderChatList() {
+        this.chatList.innerHTML = '';
+        
+        if (this.chats.length === 0) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'empty-chat-list';
+            emptyDiv.style.cssText = 'padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;';
+            emptyDiv.textContent = 'No hay conversaciones anteriores';
+            this.chatList.appendChild(emptyDiv);
+            return;
+        }
+        
+        this.chats.forEach(chat => {
+            const chatItem = document.createElement('div');
+            chatItem.className = 'chat-item';
+            if (chat.id === this.currentChatId) {
+                chatItem.classList.add('active');
+            }
+            
+            chatItem.innerHTML = `
+                <div class="chat-item-icon">
+                    <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="chat-item-content">
+                    <div class="chat-item-title">${chat.title}</div>
+                    <div class="chat-item-time">${new Date(chat.timestamp).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div>
                 </div>
             `;
             
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
+            chatItem.addEventListener('click', () => {
+                this.loadChat(chat.id);
+            });
             
-            this.saveMessages();
+            this.chatList.appendChild(chatItem);
+        });
+        
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+    
+    updateChatInList() {
+        this.saveChats();
+    }
+    
+    loadChat(chatId) {
+        // Por ahora, solo actualizamos el ID actual
+        // En una implementación completa, cargaríamos los mensajes del chat
+        this.currentChatId = chatId;
+        this.renderChatList();
+        this.closeSidebarMobile();
+    }
+    
+    // Configuración
+    loadUserSettings() {
+        try {
+            const settings = localStorage.getItem('capibara6_settings');
+            if (settings) {
+                const parsed = JSON.parse(settings);
+                if (parsed.sidebarCollapsed) {
+                    this.sidebarCollapsed = parsed.sidebarCollapsed;
+                    if (this.sidebarCollapsed) {
+                        this.sidebar.classList.add('collapsed');
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('Error cargando configuración:', error);
+        }
+    }
+    
+    saveUserSettings() {
+        try {
+            const settings = {
+                sidebarCollapsed: this.sidebarCollapsed
+            };
+            localStorage.setItem('capibara6_settings', JSON.stringify(settings));
+        } catch (error) {
+            console.warn('Error guardando configuración:', error);
+        }
+    }
+    
+    loadUserProfile() {
+        try {
+            const profile = localStorage.getItem('capibara6_profile');
+            if (profile) {
+                const parsed = JSON.parse(profile);
+                if (parsed.name) {
+                    document.getElementById('user-name').textContent = parsed.name;
+                }
+                if (parsed.email) {
+                    document.getElementById('user-email').textContent = parsed.email;
+                }
+            }
+        } catch (error) {
+            console.warn('Error cargando perfil:', error);
+        }
+    }
+    
+    openSettings() {
+        this.settingsModal.classList.add('active');
+    }
+    
+    closeSettings() {
+        this.settingsModal.classList.remove('active');
+    }
+    
+    saveSettings() {
+        // Guardar configuración
+        const settings = {
+            temperature: document.getElementById('temperature-setting').value,
+            maxTokens: document.getElementById('max-tokens-setting').value,
+            soundNotifications: document.getElementById('sound-notifications').checked,
+            autoScroll: document.getElementById('auto-scroll').checked
+        };
+        
+        try {
+            localStorage.setItem('capibara6_chat_settings', JSON.stringify(settings));
+            this.closeSettings();
+            // Mostrar confirmación
+            alert('Configuración guardada correctamente');
+        } catch (error) {
+            console.error('Error guardando configuración:', error);
+            alert('Error al guardar la configuración');
         }
     }
     
     saveMessages() {
         try {
-            localStorage.setItem('capibara6_chat_messages', JSON.stringify(this.messages));
+            if (this.currentChatId) {
+                const chatData = {
+                    id: this.currentChatId,
+                    messages: this.messages
+                };
+                localStorage.setItem(`capibara6_chat_${this.currentChatId}`, JSON.stringify(chatData));
+            }
         } catch (error) {
             console.warn('Error guardando mensajes:', error);
         }
@@ -329,15 +615,18 @@ class Capibara6ChatPage {
     
     loadMessages() {
         try {
-            const saved = localStorage.getItem('capibara6_chat_messages');
-            if (saved) {
-                const messages = JSON.parse(saved);
-                // Restaurar mensajes (excepto el de bienvenida)
-                messages.forEach(msg => {
-                    if (msg.type !== 'welcome') {
+            if (this.currentChatId) {
+                const saved = localStorage.getItem(`capibara6_chat_${this.currentChatId}`);
+                if (saved) {
+                    const chatData = JSON.parse(saved);
+                    this.messages = chatData.messages || [];
+                    
+                    // Renderizar mensajes
+                    this.chatMessages.innerHTML = '';
+                    this.messages.forEach(msg => {
                         this.addMessage(msg.text, msg.type, msg.isError);
-                    }
-                });
+                    });
+                }
             }
         } catch (error) {
             console.warn('Error cargando mensajes:', error);
@@ -353,4 +642,3 @@ if (document.readyState === 'loading') {
 } else {
     new Capibara6ChatPage();
 }
-
