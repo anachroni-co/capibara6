@@ -73,6 +73,14 @@ function changeLanguage(lang) {
         }
     });
     
+    // Re-configurar botones de chat después de cambiar idioma (por si el texto cambió)
+    // Usar setTimeout para asegurar que las traducciones se hayan aplicado
+    setTimeout(() => {
+        if (typeof setupChatButtons === 'function') {
+            setupChatButtons();
+        }
+    }, 100);
+    
     console.log(`✓ Idioma cambiado a: ${lang === 'es' ? 'Español' : 'English'}`);
 }
 
@@ -391,14 +399,60 @@ prefersDarkScheme.addEventListener('change', (e) => {
 });
 
 // ============================================
+// Abrir chat desde botones "Comenzar Ahora" / "Probar Ahora"
+// ============================================
+function setupChatButtons() {
+    // Buscar todos los botones que deberían abrir el chat
+    // Buscar por href primero, luego por clases
+    const chatButtons = document.querySelectorAll('a[href="#docs"].btn, a.btn-primary[href="#docs"], a.btn-white[href="#docs"]');
+    
+    chatButtons.forEach(button => {
+        // Verificar si el botón tiene texto relacionado con "Comenzar" o "Probar"
+        // textContent obtiene todo el texto incluyendo el de los hijos (spans, etc.)
+        const buttonText = button.textContent.toLowerCase().trim();
+        const isStartButton = buttonText.includes('comenzar') || 
+                              buttonText.includes('empezar') || 
+                              buttonText.includes('probar') || 
+                              buttonText.includes('try') ||
+                              buttonText.includes('start');
+        
+        // Solo modificar botones que apuntan a #docs y tienen texto relevante
+        // Verificar si ya tiene un listener personalizado para evitar duplicados
+        if (isStartButton && button.getAttribute('href') === '#docs' && !button.dataset.chatButton) {
+            button.dataset.chatButton = 'true'; // Marcar como configurado
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // Abrir el chat si la función está disponible
+                if (typeof window.openChatbot === 'function') {
+                    window.openChatbot();
+                } else {
+                    // Si el chatbot aún no está inicializado, esperar un poco
+                    setTimeout(() => {
+                        if (typeof window.openChatbot === 'function') {
+                            window.openChatbot();
+                        }
+                    }, 500);
+                }
+            });
+        }
+    });
+}
+
+// ============================================
 // Inicialización
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ Capibara6 website loaded successfully');
     
+    // Configurar botones para abrir el chat
+    setupChatButtons();
+    
     // Añadir clase loaded al body para posibles animaciones CSS
     setTimeout(() => {
         document.body.classList.add('loaded');
+        // Re-configurar botones después de que se carguen las traducciones
+        setupChatButtons();
     }, 100);
 });
 
