@@ -1,0 +1,424 @@
+/* ============================================
+   NEUMORPHIC STYLES FOR CAPIBARA6 CHAT
+
+   Este archivo contiene estilos neumorphic que se pueden
+   integrar gradualmente en el diseño actual del chat.
+
+   Para activar: agregar <link rel="stylesheet" href="chat-neumorphic.css">
+   en chat.html después de chat.css
+   ============================================ */
+
+/* ============================================
+   VARIABLES NEUMORPHIC
+   ============================================ */
+:root {
+    /* Colores base para neumorphism en dark mode */
+    --neuro-bg-base: #212121;
+    --neuro-bg-light: #2a2a2a;
+    --neuro-bg-dark: #1a1a1a;
+
+    /* Sombras neumorphic */
+    --neuro-shadow-light: rgba(255, 255, 255, 0.05);
+    --neuro-shadow-dark: rgba(0, 0, 0, 0.5);
+
+    /* Sombras para elementos extruidos (convex) */
+    --neuro-convex:
+        6px 6px 12px var(--neuro-shadow-dark),
+        -6px -6px 12px var(--neuro-shadow-light);
+
+    /* Sombras para elementos hundidos (concave) */
+    --neuro-concave:
+        inset 6px 6px 12px var(--neuro-shadow-dark),
+        inset -6px -6px 12px var(--neuro-shadow-light);
+
+    /* Sombras suaves para hover */
+    --neuro-hover:
+        8px 8px 16px var(--neuro-shadow-dark),
+        -8px -8px 16px var(--neuro-shadow-light);
+
+    /* Sombras para elementos presionados */
+    --neuro-pressed:
+        inset 4px 4px 8px var(--neuro-shadow-dark),
+        inset -4px -4px 8px var(--neuro-shadow-light);
+}
+
+/* ============================================
+   BOTONES NEUMORPHIC
+   ============================================ */
+
+/* Botón de nueva conversación */
+.btn-new-chat.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+    transition: all 0.3s ease;
+}
+
+.btn-new-chat.neumorphic:hover {
+    box-shadow: var(--neuro-hover);
+    transform: translateY(-2px);
+}
+
+.btn-new-chat.neumorphic:active {
+    box-shadow: var(--neuro-pressed);
+    transform: translateY(0);
+}
+
+/* Botón de enviar mensaje */
+.btn-send.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+    transition: all 0.3s ease;
+}
+
+.btn-send.neumorphic:hover:not(:disabled) {
+    box-shadow: var(--neuro-hover);
+    transform: scale(1.05);
+}
+
+.btn-send.neumorphic:active:not(:disabled) {
+    box-shadow: var(--neuro-pressed);
+    transform: scale(0.98);
+}
+
+/* Botones de iconos */
+.btn-icon.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+    transition: all 0.3s ease;
+}
+
+.btn-icon.neumorphic:hover {
+    box-shadow: var(--neuro-hover);
+}
+
+.btn-icon.neumorphic:active {
+    box-shadow: var(--neuro-pressed);
+}
+
+/* ============================================
+   INPUT DE MENSAJE NEUMORPHIC
+   ============================================ */
+.chat-input-wrapper.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-concave);
+    padding: 1rem;
+}
+
+.chat-input-wrapper.neumorphic:focus-within {
+    box-shadow:
+        inset 8px 8px 16px var(--neuro-shadow-dark),
+        inset -8px -8px 16px var(--neuro-shadow-light),
+        0 0 0 2px rgba(16, 163, 127, 0.3);
+}
+
+/* ============================================
+   TARJETAS DE SUGERENCIAS NEUMORPHIC
+   ============================================ */
+.suggestion-card.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+    transition: all 0.3s ease;
+}
+
+.suggestion-card.neumorphic:hover {
+    box-shadow: var(--neuro-hover);
+    transform: translateY(-4px);
+}
+
+.suggestion-card.neumorphic:active {
+    box-shadow: var(--neuro-pressed);
+    transform: translateY(0);
+}
+
+/* ============================================
+   ITEMS DE PLANTILLA NEUMORPHIC
+   ============================================ */
+.template-item.neumorphic {
+    background: var(--neuro-bg-light);
+    border: none;
+    box-shadow: var(--neuro-convex);
+    transition: all 0.3s ease;
+}
+
+.template-item.neumorphic:hover {
+    box-shadow: var(--neuro-hover);
+    transform: translateX(4px);
+}
+
+.template-item.neumorphic.active {
+    background: var(--neuro-bg-base);
+    box-shadow: var(--neuro-pressed);
+    border-left: 3px solid #10a37f;
+}
+
+/* ============================================
+   MENSAJES NEUMORPHIC
+   ============================================ */
+.message.neumorphic .message-content {
+    background: var(--neuro-bg-light);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: var(--neuro-convex);
+}
+
+.message.user.neumorphic .message-content {
+    box-shadow:
+        6px 6px 12px rgba(0, 0, 0, 0.4),
+        -6px -6px 12px rgba(255, 255, 255, 0.03);
+}
+
+.message.assistant.neumorphic .message-content {
+    box-shadow: var(--neuro-convex);
+}
+
+/* ============================================
+   SIDEBAR NEUMORPHIC
+   ============================================ */
+.sidebar.neumorphic {
+    background: var(--neuro-bg-base);
+    box-shadow:
+        12px 0 24px rgba(0, 0, 0, 0.3),
+        -4px 0 8px rgba(255, 255, 255, 0.02);
+}
+
+.templates-sidebar.neumorphic {
+    background: var(--neuro-bg-light);
+    box-shadow:
+        12px 0 24px rgba(0, 0, 0, 0.3),
+        -4px 0 8px rgba(255, 255, 255, 0.02);
+}
+
+/* ============================================
+   ITEMS DE CHAT NEUMORPHIC
+   ============================================ */
+.chat-item.neumorphic {
+    background: transparent;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.chat-item.neumorphic:hover {
+    background: var(--neuro-bg-base);
+    box-shadow: var(--neuro-convex);
+}
+
+.chat-item.neumorphic.active {
+    background: var(--neuro-bg-base);
+    box-shadow: var(--neuro-pressed);
+}
+
+/* ============================================
+   INDICADORES DE ESTADO NEUMORPHIC
+   ============================================ */
+.server-status.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+}
+
+.consensus-indicator.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+    transition: all 0.3s ease;
+}
+
+.consensus-indicator.neumorphic:hover {
+    box-shadow: var(--neuro-hover);
+    cursor: pointer;
+}
+
+/* ============================================
+   MODAL NEUMORPHIC
+   ============================================ */
+.modal-content.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow:
+        20px 20px 40px rgba(0, 0, 0, 0.5),
+        -20px -20px 40px rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   SELECTS Y INPUTS NEUMORPHIC
+   ============================================ */
+.template-select.neumorphic,
+.setting-select.neumorphic,
+.setting-input.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-concave);
+    padding: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.template-select.neumorphic:focus,
+.setting-select.neumorphic:focus,
+.setting-input.neumorphic:focus {
+    box-shadow:
+        inset 8px 8px 16px var(--neuro-shadow-dark),
+        inset -8px -8px 16px var(--neuro-shadow-light),
+        0 0 0 2px rgba(16, 163, 127, 0.4);
+}
+
+/* ============================================
+   ESTADÍSTICAS NEUMORPHIC
+   ============================================ */
+.message-stats.neumorphic {
+    background: var(--neuro-bg-dark);
+    border-radius: 12px;
+    box-shadow: var(--neuro-concave);
+}
+
+/* ============================================
+   ATTACHMENTS NEUMORPHIC
+   ============================================ */
+.attachment-item.neumorphic {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+}
+
+/* ============================================
+   EMPTY STATE NEUMORPHIC
+   ============================================ */
+.capibara-logo-large.neumorphic {
+    text-shadow:
+        4px 4px 8px rgba(0, 0, 0, 0.5),
+        -4px -4px 8px rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   MODO NEUMORPHIC COMPLETO
+
+   Aplicar clase .neumorphic-mode al body para
+   activar el estilo neumorphic en todo el chat
+   ============================================ */
+body.neumorphic-mode .btn-new-chat {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+}
+
+body.neumorphic-mode .btn-new-chat:hover {
+    box-shadow: var(--neuro-hover);
+}
+
+body.neumorphic-mode .chat-input-wrapper {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-concave);
+}
+
+body.neumorphic-mode .suggestion-card {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+}
+
+body.neumorphic-mode .suggestion-card:hover {
+    box-shadow: var(--neuro-hover);
+    transform: translateY(-4px);
+}
+
+body.neumorphic-mode .template-item {
+    background: var(--neuro-bg-light);
+    border: none;
+    box-shadow: var(--neuro-convex);
+}
+
+body.neumorphic-mode .template-item:hover {
+    box-shadow: var(--neuro-hover);
+}
+
+body.neumorphic-mode .template-item.active {
+    box-shadow: var(--neuro-pressed);
+}
+
+body.neumorphic-mode .btn-icon {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+}
+
+body.neumorphic-mode .btn-send {
+    background: var(--neuro-bg-base);
+    border: none;
+    box-shadow: var(--neuro-convex);
+}
+
+body.neumorphic-mode .chat-item:hover {
+    background: var(--neuro-bg-base);
+    box-shadow: var(--neuro-convex);
+}
+
+body.neumorphic-mode .chat-item.active {
+    background: var(--neuro-bg-base);
+    box-shadow: var(--neuro-pressed);
+}
+
+/* ============================================
+   ANIMACIONES SUAVES
+   ============================================ */
+@keyframes neuro-pulse {
+    0%, 100% {
+        box-shadow: var(--neuro-convex);
+    }
+    50% {
+        box-shadow: var(--neuro-hover);
+    }
+}
+
+.neuro-pulse {
+    animation: neuro-pulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+.neuro-convex {
+    box-shadow: var(--neuro-convex) !important;
+}
+
+.neuro-concave {
+    box-shadow: var(--neuro-concave) !important;
+}
+
+.neuro-flat {
+    box-shadow: none !important;
+}
+
+/* ============================================
+   MODO RESPONSIVO
+   ============================================ */
+@media (max-width: 768px) {
+    :root {
+        /* Sombras más sutiles en móvil para mejor rendimiento */
+        --neuro-convex:
+            4px 4px 8px var(--neuro-shadow-dark),
+            -4px -4px 8px var(--neuro-shadow-light);
+
+        --neuro-concave:
+            inset 4px 4px 8px var(--neuro-shadow-dark),
+            inset -4px -4px 8px var(--neuro-shadow-light);
+    }
+}
+
+/* ============================================
+   MODO LIGHT (para futuro)
+   ============================================ */
+@media (prefers-color-scheme: light) {
+    :root {
+        --neuro-bg-base: #e0e5ec;
+        --neuro-bg-light: #e8edf5;
+        --neuro-bg-dark: #d1d9e6;
+
+        --neuro-shadow-light: rgba(255, 255, 255, 0.7);
+        --neuro-shadow-dark: rgba(163, 177, 198, 0.6);
+    }
+}

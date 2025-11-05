@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neumorphic Demo - Capibara6</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="chat.css?v=11.0">
+    <link rel="stylesheet" href="chat-neumorphic.css?v=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #212121;
+            color: #ececec;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .demo-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #10a37f, #14b88f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-header p {
+            color: #8e8e8e;
+            font-size: 1.1rem;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #1a1a1a;
+            border-radius: 12px;
+        }
+
+        .toggle-btn {
+            padding: 0.875rem 2rem;
+            background: #2a2a2a;
+            border: 2px solid #3d3d3d;
+            border-radius: 12px;
+            color: #ececec;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: #10a37f;
+            border-color: #10a37f;
+            color: white;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .comparison-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 16px;
+        }
+
+        .comparison-section h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .flat-section h2 {
+            color: #8e8e8e;
+        }
+
+        .neuro-section h2 {
+            color: #10a37f;
+        }
+
+        .component-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .component-item {
+            padding: 1.5rem;
+            background: #212121;
+            border-radius: 12px;
+        }
+
+        .component-label {
+            font-size: 0.875rem;
+            color: #8e8e8e;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Ejemplos de componentes */
+        .demo-button {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background: #2a2a2a;
+            color: #ececec;
+            border: 1px solid #3d3d3d;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: #343434;
+        }
+
+        .demo-input-wrapper {
+            background: #2a2a2a;
+            border: 1px solid #3d3d3d;
+            border-radius: 12px;
+            padding: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .demo-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #ececec;
+            font-size: 0.875rem;
+            outline: none;
+        }
+
+        .demo-card {
+            background: #2a2a2a;
+            border: 1px solid #3d3d3d;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-card:hover {
+            background: #343434;
+        }
+
+        .demo-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .demo-card p {
+            margin: 0;
+            color: #8e8e8e;
+            font-size: 0.875rem;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #2d2d2d;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: #10a37f;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10a37f;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #8e8e8e;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🎨 Demostración de Estilo Neumorphic</h1>
+            <p>Compara el diseño flat actual con la propuesta neumorphic para Capibara6 Chat</p>
+        </div>
+
+        <div class="toggle-container">
+            <button class="toggle-btn active" onclick="showFlat()">
+                🎯 Diseño Flat (Actual)
+            </button>
+            <button class="toggle-btn" onclick="showNeuro()">
+                ✨ Diseño Neumorphic (Propuesta)
+            </button>
+            <button class="toggle-btn" onclick="showComparison()">
+                🔀 Comparación Lado a Lado
+            </button>
+        </div>
+
+        <!-- Vista Comparación -->
+        <div id="comparison-view" class="comparison-grid">
+            <!-- Columna Flat -->
+            <div class="comparison-section flat-section">
+                <h2>📊 Diseño Flat (Actual)</h2>
+                <div class="component-showcase">
+                    <!-- Botón -->
+                    <div class="component-item">
+                        <div class="component-label">Botón</div>
+                        <button class="demo-button">
+                            <i data-lucide="edit-3" style="width: 16px; height: 16px;"></i>
+                            Nueva Conversación
+                        </button>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="component-item">
+                        <div class="component-label">Campo de Entrada</div>
+                        <div class="demo-input-wrapper">
+                            <i data-lucide="message-square" style="width: 16px; height: 16px;"></i>
+                            <input type="text" class="demo-input" placeholder="Escribe tu mensaje...">
+                            <button style="padding: 0.5rem; background: #ececec; border: none; border-radius: 8px; cursor: pointer;">
+                                <i data-lucide="arrow-up" style="width: 16px; height: 16px; color: #171717;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta -->
+                    <div class="component-item">
+                        <div class="component-label">Tarjeta de Sugerencia</div>
+                        <div class="demo-card">
+                            <h3>💬 Arquitectura Híbrida</h3>
+                            <p>Explícame cómo funciona la arquitectura Transformer-Mamba</p>
+                        </div>
+                    </div>
+
+                    <!-- Código CSS -->
+                    <div class="component-item">
+                        <div class="component-label">CSS Usado</div>
+                        <div class="code-block">
+                            <code>background: #2a2a2a;<br>border: 1px solid #3d3d3d;<br>border-radius: 12px;</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Neumorphic -->
+            <div class="comparison-section neuro-section">
+                <h2>✨ Diseño Neumorphic (Propuesta)</h2>
+                <div class="component-showcase">
+                    <!-- Botón -->
+                    <div class="component-item">
+                        <div class="component-label">Botón</div>
+                        <button class="demo-button neumorphic">
+                            <i data-lucide="edit-3" style="width: 16px; height: 16px;"></i>
+                            Nueva Conversación
+                        </button>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="component-item">
+                        <div class="component-label">Campo de Entrada</div>
+                        <div class="demo-input-wrapper neumorphic">
+                            <i data-lucide="message-square" style="width: 16px; height: 16px;"></i>
+                            <input type="text" class="demo-input" placeholder="Escribe tu mensaje...">
+                            <button class="neumorphic" style="padding: 0.5rem; background: #212121; border: none; border-radius: 8px; cursor: pointer;">
+                                <i data-lucide="arrow-up" style="width: 16px; height: 16px; color: #ececec;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta -->
+                    <div class="component-item">
+                        <div class="component-label">Tarjeta de Sugerencia</div>
+                        <div class="demo-card neumorphic">
+                            <h3>💬 Arquitectura Híbrida</h3>
+                            <p>Explícame cómo funciona la arquitectura Transformer-Mamba</p>
+                        </div>
+                    </div>
+
+                    <!-- Código CSS -->
+                    <div class="component-item">
+                        <div class="component-label">CSS Usado</div>
+                        <div class="code-block">
+                            <code>background: #212121;<br>box-shadow:<br>&nbsp;&nbsp;6px 6px 12px rgba(0,0,0,0.5),<br>&nbsp;&nbsp;-6px -6px 12px rgba(255,255,255,0.05);<br>border-radius: 12px;</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista Solo Flat -->
+        <div id="flat-view" style="display: none;">
+            <div class="comparison-section flat-section">
+                <h2>📊 Diseño Flat Completo</h2>
+                <div class="component-showcase">
+                    <div class="component-item">
+                        <button class="demo-button">
+                            <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+                            Botón Primario
+                        </button>
+                    </div>
+                    <div class="component-item">
+                        <button class="demo-button" style="background: transparent; border: 1px solid #3d3d3d;">
+                            <i data-lucide="settings" style="width: 16px; height: 16px;"></i>
+                            Botón Secundario
+                        </button>
+                    </div>
+                    <div class="component-item">
+                        <div class="demo-input-wrapper">
+                            <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                            <input type="text" class="demo-input" placeholder="Buscar conversaciones...">
+                        </div>
+                    </div>
+                    <div class="component-item">
+                        <div class="demo-card">
+                            <h3>🎯 Optimización Web</h3>
+                            <p>¿Cómo puedo mejorar el rendimiento de mi aplicación?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista Solo Neumorphic -->
+        <div id="neuro-view" style="display: none;">
+            <div class="comparison-section neuro-section">
+                <h2>✨ Diseño Neumorphic Completo</h2>
+                <div class="component-showcase">
+                    <div class="component-item">
+                        <button class="demo-button neumorphic">
+                            <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+                            Botón Primario
+                        </button>
+                    </div>
+                    <div class="component-item">
+                        <button class="demo-button neumorphic" style="box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3), inset -2px -2px 4px rgba(255,255,255,0.02);">
+                            <i data-lucide="settings" style="width: 16px; height: 16px;"></i>
+                            Botón Secundario (Presionado)
+                        </button>
+                    </div>
+                    <div class="component-item">
+                        <div class="demo-input-wrapper neumorphic">
+                            <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                            <input type="text" class="demo-input" placeholder="Buscar conversaciones...">
+                        </div>
+                    </div>
+                    <div class="component-item">
+                        <div class="demo-card neumorphic">
+                            <h3>🎯 Optimización Web</h3>
+                            <p>¿Cómo puedo mejorar el rendimiento de mi aplicación?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Compatible con diseño actual</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">~3KB</div>
+                <div class="stat-label">Tamaño CSS (gzip)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Toggle</div>
+                <div class="stat-label">Activación/Desactivación</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0%</div>
+                <div class="stat-label">Cambios en JavaScript</div>
+            </div>
+        </div>
+
+        <!-- Instrucciones -->
+        <div style="margin-top: 3rem; padding: 2rem; background: #1a1a1a; border-radius: 16px; border-left: 4px solid #10a37f;">
+            <h3 style="margin-top: 0;">📚 Cómo Implementar</h3>
+            <ol style="color: #a0a0a0; line-height: 1.8;">
+                <li>Agrega <code style="background: #2a2a2a; padding: 0.25rem 0.5rem; border-radius: 4px; color: #10a37f;">chat-neumorphic.css</code> al HTML</li>
+                <li>Opción 1: Agrega clase <code style="background: #2a2a2a; padding: 0.25rem 0.5rem; border-radius: 4px; color: #10a37f;">neumorphic-mode</code> al body</li>
+                <li>Opción 2: Agrega clase <code style="background: #2a2a2a; padding: 0.25rem 0.5rem; border-radius: 4px; color: #10a37f;">neumorphic</code> a componentes individuales</li>
+                <li>Revisa <code style="background: #2a2a2a; padding: 0.25rem 0.5rem; border-radius: 4px; color: #10a37f;">NEUMORPHIC_GUIDE.md</code> para instrucciones detalladas</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar iconos
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        // Funciones de toggle
+        function showFlat() {
+            document.getElementById('comparison-view').style.display = 'none';
+            document.getElementById('neuro-view').style.display = 'none';
+            document.getElementById('flat-view').style.display = 'block';
+            updateActiveButton(0);
+        }
+
+        function showNeuro() {
+            document.getElementById('comparison-view').style.display = 'none';
+            document.getElementById('flat-view').style.display = 'none';
+            document.getElementById('neuro-view').style.display = 'block';
+            updateActiveButton(1);
+        }
+
+        function showComparison() {
+            document.getElementById('flat-view').style.display = 'none';
+            document.getElementById('neuro-view').style.display = 'none';
+            document.getElementById('comparison-view').style.display = 'grid';
+            updateActiveButton(2);
+        }
+
+        function updateActiveButton(index) {
+            const buttons = document.querySelectorAll('.toggle-btn');
+            buttons.forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
