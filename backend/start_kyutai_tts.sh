@@ -39,23 +39,30 @@ if [ $? -ne 0 ]; then
     pip install flask flask-cors
 fi
 
-python -c "import moshi" 2>/dev/null
-if [ $? -ne 0 ]; then
-    echo "⚙️  Instalando Moshi y dependencias (esto puede tardar varios minutos)..."
-    pip install moshi>=0.2.6
-    pip install torch torchaudio soundfile numpy transformers huggingface-hub
+# Verificar e instalar moshi
+PYTHON_CMD=$(python -c "import sys; print(sys.version_info.major)" 2>/dev/null)
+if [ "$PYTHON_CMD" = "3" ]; then
+    python -c "import moshi" 2>/dev/null
+    if [ $? -ne 0 ]; then
+        echo "⚙️  Instalando Moshi y dependencias (esto puede tardar varios minutos)..."
+        pip install moshi>=0.2.11 safetensors>=0.4.0 sphn>=0.1.0 torch>=2.0.0 torchaudio>=2.0.0
+        pip install sounddevice soundfile numpy transformers huggingface-hub
+    fi
+else
+    echo "❌ Error: Se requiere Python 3"
+    exit 1
 fi
 
 echo ""
 echo "✅ Dependencias listas"
 echo ""
-echo "⚠️  NOTA: Usando servidor fallback (Kyutai TTS API en investigación)"
-echo "💡 El frontend usará Web Speech API del navegador"
-echo "🔗 Ver: KYUTAI_TTS_PENDIENTE.md para más info"
-echo ""
-echo "🚀 Iniciando servidor en puerto 5001..."
+echo "🚀 Iniciando servidor Kyutai TTS completo..."
 echo ""
 
-# Ejecutar servidor simple (fallback)
-python kyutai_tts_server_simple.py
+# Ejecutar servidor KYUTAI completo (no el fallback)
+python kyutai_tts_server.py
 
+echo ""
+echo "========================================="
+echo "  Kyutai TTS Server detenido"
+echo "========================================="
