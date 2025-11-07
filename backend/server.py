@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Backend de capibara6 - Servidor Flask para gestión de emails
-"from flask import Flask, request, jsonify
-from flask_cors import CORS
+Backend de capibara6 - Servidor Flask para gestión de emails y endpoints MCP.
+"""
+
+from flask import Flask, request, jsonify, Response, stream_with_context
+from flask_cors import CORS  # type: ignore[import-untyped]
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 import os
-from dotenv import load_dotenv
 import json
+import socket
+from dotenv import load_dotenv
+
+from task_classifier import TaskClassifier
+from ollama_client import OllamaClient
 
 # Importar conector MCP
 try:
@@ -18,12 +25,42 @@ try:
     MCP_AVAILABLE = True
 except ImportError:
     MCP_AVAILABLE = False
-    print("⚠️  MCP Connector no disponible - instalando dependencias...")v
-import j# Cargar variables de entorno
+    print("⚠️  MCP Connector no disponible - instala dependencias opcionales para MCP.")
+
+# Cargar variables de entorno
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Habilitar CORS para permitir peticiones desde el frontend
+
+# Configuración de modelos de IA
+MODEL_CONFIG: Dict[str, Any] = {}
+MODEL_CONFIG_PATH = os.getenv(
+    "MODEL_CONFIG_PATH",
+    os.path.join(os.path.dirname(__file__), "model_config.json"),
+)
+ollama_router: Optional[OllamaClient] = None
+AI_ROUTER_AVAILABLE = False
+
+try:
+    with open(MODEL_CONFIG_PATH, "r", encoding="utf-8") as config_file:
+        MODEL_CONFIG = json.load(config_file)
+    ollama_router = OllamaClient(MODEL_CONFIG)
+    AI_ROUTER_AVAILABLE = True
+    print("✅ Configuración de modelos cargada correctamente")
+except FileNotFoundError:
+    print(f"⚠️ Archivo de configuración de modelos no encontrado: {MODEL_CONFIG_PATH}")
+except Exception as exc:  # noqa: BLE001 - queremos avisar y continuar
+    print(f"⚠️ No se pudo inicializar el router de modelos: {exc}")
+
+DEFAULT_MODEL_TIER = os.getenv(
+    "DEFAULT_MODEL_TIER",
+    (MODEL_CONFIG.get("api_settings", {}).get("default_model") if MODEL_CONFIG else "fast_response"),
+) or "fast_response"
+STREAMING_ENABLED = os.getenv(
+    "STREAMING_ENABLED",
+    str(MODEL_CONFIG.get("api_settings", {}).get("streaming_enabled", True) if MODEL_CONFIG else "true"),
+).lower() == "true"
 
 # Inicializar conector MCP si está disponible
 mcp_connector = None
@@ -33,7 +70,7 @@ if MCP_AVAILABLE:
         print("✅ Conector MCP inicializado correctamente")
     except Exception as e:
         print(f"❌ Error inicializando MCP: {e}")
-        MCP_AVAILABLE = Falseel frontend
+        MCP_AVAILABLE = False
 
 # Configuración SMTP
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
@@ -48,6 +85,20 @@ DATA_FILE = 'user_data/conversations.json'
 def ensure_data_dir():
     """Crear directorio de datos si no existe"""
     os.makedirs('user_data', exist_ok=True)
+
+
+def extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Extraer las opciones válidas para generación desde el payload."""
+
+    option_keys = ("max_tokens", "temperature", "top_p", "top_k", "timeout", "stop")
+    options: Dict[str, Any] = {key: payload[key] for key in option_keys if payload.get(key) is not None}
+
+    context = payload.get("context") or payload.get("messages")
+    if context:
+        options["context"] = context
+
+    return options
+
 
 def save_to_file(data):
     """Guardar datos en archivo JSON"""
@@ -530,7 +581,16 @@ def save_conversation():
         
         return jsonify({
             'success': True,
-         @app.route('/api/save-lead', methods=['POST'])
+            'email_sent': email_sent,
+            'admin_notified': admin_notified,
+            'message': 'Conversación guardada correctamente'
+        })
+    except Exception as e:
+        print(f'Error guardando conversación: {e}')
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/save-lead', methods=['POST'])
 def save_lead():
     """Endpoint para guardar leads empresariales"""
     try:
@@ -582,6 +642,118 @@ def save_lead():
 def health():
     """Endpoint de health check"""
     return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})
+
+# ============================================================================
+# ENDPOINTS IA MULTI-MODELO
+# ============================================================================
+
+
+@app.route('/api/ai/generate', methods=['POST'])
+def ai_generate():
+    """Generar texto seleccionando el modelo adecuado de forma automática."""
+
+    if not (AI_ROUTER_AVAILABLE and ollama_router):
+        return jsonify({'success': False, 'error': 'Router de modelos no disponible'}), 503
+
+    data = request.get_json() or {}
+    prompt = (data.get('prompt') or '').strip()
+
+    if not prompt:
+        return jsonify({'success': False, 'error': 'Prompt requerido'}), 400
+
+    model_preference = data.get('modelPreference') or data.get('model_preference') or DEFAULT_MODEL_TIER
+    streaming_requested = bool(data.get('streaming', False)) and STREAMING_ENABLED
+    options = extract_generation_options(data)
+
+    classification = TaskClassifier.classify(prompt)
+
+    if streaming_requested:
+        selected_tier = model_preference or 'auto'
+        if selected_tier == 'auto':
+            selected_tier = classification.model_tier
+
+        def stream_generator():
+            try:
+                for chunk in ollama_router.stream_with_model(prompt, selected_tier, **options):
+                    yield chunk
+            except Exception as exc:  # noqa: BLE001 - cerrar el stream con mensaje de error
+                yield f"[ERROR] {exc}"
+
+        return Response(stream_with_context(stream_generator()), mimetype='text/plain; charset=utf-8')
+
+    result = ollama_router.generate_with_fallback(prompt, model_preference, **options)
+
+    if result.get('success'):
+        response_body = {
+            'success': True,
+            'response': result.get('response', ''),
+            'model_used': result.get('model'),
+            'processing_time': result.get('total_duration'),
+            'token_count': result.get('token_count'),
+            'classification': classification.model_tier,
+            'scores': classification.scores,
+            'estimated_response_time': TaskClassifier.estimate_response_time(classification.model_tier),
+        }
+        return jsonify(response_body)
+
+    return jsonify({'success': False, 'error': result.get('error', 'Error desconocido')}), 500
+
+
+@app.route('/api/ai/classify', methods=['POST'])
+def ai_classify():
+    """Clasificar un prompt sin ejecutarlo."""
+
+    data = request.get_json() or {}
+    prompt = (data.get('prompt') or '').strip()
+
+    if not prompt:
+        return jsonify({'error': 'Prompt requerido'}), 400
+
+    classification = TaskClassifier.classify(prompt)
+    model_cfg = MODEL_CONFIG.get('models', {}).get(classification.model_tier, {})
+    scores = classification.scores
+    ordered_scores = sorted(scores.values(), reverse=True)
+    confidence = 'medium'
+    if len(ordered_scores) >= 2 and ordered_scores[0] - ordered_scores[1] >= 2:
+        confidence = 'high'
+
+    return jsonify({
+        'model_recommendation': classification.model_tier,
+        'model_name': model_cfg.get('name'),
+        'estimated_response_time': TaskClassifier.estimate_response_time(classification.model_tier),
+        'confidence': confidence,
+        'scores': scores,
+    })
+
+
+@app.route('/api/ai/<model_tier>/generate', methods=['POST'])
+def ai_generate_specific(model_tier: str):
+    """Generar texto forzando un tier/modelo específico."""
+
+    if not (AI_ROUTER_AVAILABLE and ollama_router):
+        return jsonify({'success': False, 'error': 'Router de modelos no disponible'}), 503
+
+    data = request.get_json() or {}
+    prompt = (data.get('prompt') or '').strip()
+
+    if not prompt:
+        return jsonify({'success': False, 'error': 'Prompt requerido'}), 400
+
+    options = extract_generation_options(data)
+
+    try:
+        result = ollama_router.generate(prompt, model_tier, **options)
+    except Exception as exc:  # noqa: BLE001 - devolver error controlado
+        return jsonify({'success': False, 'error': str(exc)}), 500
+
+    return jsonify({
+        'success': True,
+        'response': result.get('response', ''),
+        'model_used': result.get('model'),
+        'processing_time': result.get('total_duration'),
+        'token_count': result.get('token_count'),
+    })
+
 
 # ============================================================================
 # ENDPOINTS MCP (Model Context Protocol)
@@ -1109,7 +1281,10 @@ curl -X POST http://localhost:5000/api/mcp/tools/call \\
         </div>
     </body>
     </html>
-    '''on as e@app.route('/', methods=['GET'])
+    '''
+
+
+@app.route('/', methods=['GET'])
 def index():
     """Página principal"""
     return '''
@@ -1131,7 +1306,7 @@ def index():
             
             <h2>📡 Endpoints Disponibles:</h2>
             <ul>
-                <li>POST /api/save-conversation - Guardar conversacion y enviar email</li>
+                <li>POST /api/save-conversation - Guardar conversación y enviar email</li>
                 <li>POST /api/save-lead - Guardar leads empresariales</li>
                 <li>GET /api/health - Health check</li>
             </ul>
@@ -1162,30 +1337,75 @@ def index():
             </ul>
         </body>
     </html>
-    '''or funcionando correctamente</p>
-       if __name__ == '__main__':
+    '''
+
+
+def _is_port_available(port: int) -> bool:
+    """Verificar si un puerto está disponible para escuchar."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            sock.bind(('0.0.0.0', port))
+        except OSError:
+            return False
+    return True
+
+
+def choose_port(preferred: int, extra_candidates: Optional[List[int]] = None) -> int:
+    """Seleccionar un puerto disponible a partir de candidatos predefinidos."""
+    candidates = [preferred]
+    if extra_candidates:
+        candidates.extend(extra_candidates)
+    # Asegurar candidatos únicos y positivos
+    seen = set()
+    filtered = []
+    for p in candidates:
+        if p and p > 0 and p not in seen:
+            filtered.append(p)
+            seen.add(p)
+
+    for port in filtered:
+        if _is_port_available(port):
+            return port
+
+    # Fallback a un puerto aleatorio asignado por el SO
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind(('0.0.0.0', 0))
+        return sock.getsockname()[1]
+
+
+if __name__ == '__main__':
     ensure_data_dir()
     print('🦫 capibara6 Backend iniciado')
     print(f'📧 Email configurado: {FROM_EMAIL}')
-    
+
     if MCP_AVAILABLE:
         print('✅ Conector MCP disponible')
         print('🔌 Endpoints MCP: /api/mcp/*')
         print('📚 Documentación MCP: /mcp')
     else:
         print('⚠️  Conector MCP no disponible')
-    
-    # Puerto para Railway (usa variable de entorno PORT)
-    port = int(os.getenv('PORT', 5000))
-    print(f'🌐 Servidor iniciado en puerto {port}')
-    print(f'🔗 URL: http://localhost:{port}')
-    
-    app.run(host='0.0.0.0', port=port, debug=False):
-    ensure_data_dir()
-    print('capibara6 Backend iniciado')
-    print(f'Email configurado: {FROM_EMAIL}')
-    
-    # Puerto para Railway (usa variable de entorno PORT)
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+
+    preferred_port = int(os.getenv('PORT', 5000))
+    fallback_env = os.getenv('PORT_FALLBACKS', '')
+    fallback_ports = []
+    if fallback_env:
+        try:
+            fallback_ports = [int(p.strip()) for p in fallback_env.split(',') if p.strip()]
+        except ValueError:
+            print('⚠️  PORT_FALLBACKS contiene valores no numéricos, usando valores por defecto.')
+            fallback_ports = []
+
+    # Añadir algunos candidatos comunes adicionales
+    fallback_ports.extend([5001, 5002, 8000, 8080])
+
+    selected_port = choose_port(preferred_port, fallback_ports)
+
+    if selected_port != preferred_port:
+        print(f'⚠️  Puerto {preferred_port} en uso. Cambiando a {selected_port}.')
+
+    print(f'🌐 Servidor escuchando en puerto {selected_port}')
+    print(f'🔗 URL: http://localhost:{selected_port}')
+
+    app.run(host='0.0.0.0', port=selected_port, debug=False)
 
