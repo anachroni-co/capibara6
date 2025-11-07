@@ -165,19 +165,37 @@ class Capibara6ChatPage {
     
     async checkConnection() {
         try {
-            const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.MCP_STATUS
-                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.MCP_STATUS
-                : `${this.backendUrl}/api/mcp/status`;
-            const response = await fetch(endpoint);
-            const data = await response.json();
-            
-            if (data.status === 'running') {
+            const classifyEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
+                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
+                : `${this.backendUrl}/api/ai/classify`;
+
+            const response = await fetch(classifyEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: 'ping' })
+            });
+
+            if (response.ok) {
+                this.isConnected = true;
+                this.updateStatus('Conectado', 'success');
+                return;
+            }
+
+            // Fallback al health check clásico
+            const healthEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.HEALTH
+                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.HEALTH
+                : `${this.backendUrl}/api/health`;
+
+            const healthResponse = await fetch(healthEndpoint);
+            if (healthResponse.ok) {
                 this.isConnected = true;
                 this.updateStatus('Conectado', 'success');
             } else {
                 this.isConnected = false;
                 this.updateStatus('Desconectado', 'error');
-                this.showError('El servidor MCP no está disponible. Por favor, verifica que el backend esté corriendo.');
+                this.showError('El backend no respondió correctamente. Verifica que el servidor esté activo.');
             }
         } catch (error) {
             console.error('Error verificando conexión:', error);
@@ -258,48 +276,38 @@ class Capibara6ChatPage {
     
     async sendToBackend(message) {
         // Usar el endpoint MCP tools/call para enviar mensajes al modelo
-        const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
-            ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
-            : `${this.backendUrl}/api/mcp/tools/call`;
+        const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
+            ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
+            : `${this.backendUrl}/api/ai/generate`;
+
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                name: 'analyze_document',
-                arguments: {
-                    document: message,
-                    analysis_type: 'conversational',
-                    context: this.getConversationContext()
-                }
+                prompt: message,
+                modelPreference: 'auto',
+                streaming: false,
+                context: this.getConversationContext(),
             })
         });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
+
         const data = await response.json();
-        
-        // Procesar respuesta MCP
-        if (data.error) {
-            throw new Error(data.error.message || 'Error en la respuesta del servidor');
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || `HTTP error! status: ${response.status}`);
         }
-        
-        // Extraer contenido de la respuesta
-        if (data.result && data.result.content) {
-            return { content: data.result.content };
-        } else if (data.result && typeof data.result === 'string') {
-            return { content: data.result };
-        } else if (data.result && data.result.text) {
-            return { content: data.result.text };
-        } else {
-            // Respuesta genérica si no hay contenido específico
-            return { 
-                content: 'He recibido tu mensaje. El modelo está procesando tu solicitud. Por favor, ten en cuenta que este es un sistema de demostración y puede requerir configuración adicional del backend para funcionar completamente.'
-            };
-        }
+
+        return {
+            content: data.response,
+            modelUsed: data.model_used,
+            metadata: {
+                tokenCount: data.token_count,
+                processingTime: data.processing_time,
+                classification: data.classification,
+            }
+        };
     }
     
     getConversationContext() {

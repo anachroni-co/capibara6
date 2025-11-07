@@ -13,7 +13,9 @@ const CHATBOT_CONFIG = {
         SAVE_LEAD: '/api/save-lead',
         HEALTH: '/api/health',
         MCP_STATUS: '/api/mcp/status',
-        MCP_TOOLS_CALL: '/api/mcp/tools/call'
+        MCP_TOOLS_CALL: '/api/mcp/tools/call',
+        AI_GENERATE: '/api/ai/generate',
+        AI_CLASSIFY: '/api/ai/classify'
     }
 };
 

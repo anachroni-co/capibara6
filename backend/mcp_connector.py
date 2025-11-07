@@ -8,9 +8,12 @@ Integración híbrida Transformer-Mamba con Google TPU v5e/v6e y ARM Axion
 import asyncio
 import json
 import logging
+import os
 from typing import Any, Dict, List, Optional, Union
 from datetime import datetime
 import uuid
+
+import requests  # type: ignore[import-untyped]
 
 # Configuración de logging
 logging.basicConfig(level=logging.INFO)
@@ -25,7 +28,10 @@ class Capibara6MCPConnector:
                  tpu_type: str = "v6e-64",
                  context_window: int = 10_000_000,
                  hybrid_mode: bool = True,
-                 compliance_mode: str = "eu_public_sector"):
+                 compliance_mode: str = "eu_public_sector",
+                 ollama_base_url: Optional[str] = None,
+                 ollama_model: Optional[str] = None,
+                 ollama_timeout: Optional[float] = None):
         """
         Inicializar el conector MCP para capibara6
         
@@ -41,8 +47,184 @@ class Capibara6MCPConnector:
         self.compliance_mode = compliance_mode
         self.session_id = str(uuid.uuid4())
         self.capabilities = self._initialize_capabilities()
+        self.ollama_base_url = (ollama_base_url or os.getenv("OLLAMA_BASE_URL")
+                                or "http://10.164.0.9:11434")
+        self.ollama_model = (ollama_model or os.getenv("OLLAMA_MODEL")
+                             or "gpt-oss:20b")
+
+        env_timeout = os.getenv("OLLAMA_TIMEOUT")
+        if ollama_timeout is not None:
+            self.ollama_timeout = float(ollama_timeout)
+        elif env_timeout is not None:
+            self.ollama_timeout = float(env_timeout)
+        else:
+            self.ollama_timeout = 60.0
+        self.ollama_options = self._load_ollama_options()
         
         logger.info(f"Conector MCP capibara6 inicializado - TPU: {tpu_type}, Contexto: {context_window}")
+        logger.info("Ollama configurado en %s con modelo %s", self.ollama_base_url, self.ollama_model)
+
+    def _load_ollama_options(self) -> Dict[str, Any]:
+        """Cargar opciones adicionales para Ollama desde variables de entorno."""
+        options: Dict[str, Any] = {}
+        maybe_temperature = os.getenv("OLLAMA_TEMPERATURE")
+        maybe_top_p = os.getenv("OLLAMA_TOP_P")
+        maybe_top_k = os.getenv("OLLAMA_TOP_K")
+        maybe_seed = os.getenv("OLLAMA_SEED")
+
+        try:
+            if maybe_temperature is not None:
+                options["temperature"] = float(maybe_temperature)
+            if maybe_top_p is not None:
+                options["top_p"] = float(maybe_top_p)
+            if maybe_top_k is not None:
+                options["top_k"] = int(maybe_top_k)
+            if maybe_seed is not None:
+                options["seed"] = int(maybe_seed)
+        except ValueError as exc:
+            logger.warning("Valores inválidos en opciones de Ollama: %s", exc)
+
+        return options
+
+    def _call_ollama(self, prompt: str, stream: bool = False, options: Optional[Dict[str, Any]] = None) -> str:
+        """Realizar una llamada al modelo Ollama configurado."""
+        url = self.ollama_base_url.rstrip("/") + "/api/generate"
+        payload: Dict[str, Any] = {
+            "model": self.ollama_model,
+            "prompt": prompt,
+            "stream": stream,
+        }
+
+        merged_options = dict(self.ollama_options)
+        if options:
+            merged_options.update(options)
+        if merged_options:
+            payload["options"] = merged_options
+
+        logger.debug("Enviando prompt a Ollama (%s)...", url)
+
+        try:
+            response = requests.post(url, json=payload, timeout=self.ollama_timeout)
+            response.raise_for_status()
+        except requests.RequestException as exc:
+            logger.error("Error al conectar con Ollama: %s", exc)
+            raise RuntimeError(f"No se pudo conectar con el modelo Ollama: {exc}") from exc
+
+        try:
+            data = response.json()
+        except ValueError as exc:
+            logger.error("Respuesta inválida de Ollama: %s", exc)
+            raise RuntimeError("Respuesta inválida del modelo Ollama") from exc
+
+        if "error" in data:
+            logger.error("Ollama devolvió un error: %s", data["error"])
+            raise RuntimeError(f"Error del modelo Ollama: {data['error']}")
+
+        text = data.get("response", "").strip()
+        if not text:
+            logger.warning("Ollama devolvió respuesta vacía")
+            return ""
+
+        return text
+
+    def _extract_ollama_options(self, args: Dict[str, Any]) -> Dict[str, Any]:
+        """Extraer opciones específicas para Ollama desde los argumentos del request."""
+        options: Dict[str, Any] = {}
+
+        if "temperature" in args:
+            try:
+                options["temperature"] = float(args["temperature"])
+            except (TypeError, ValueError):
+                logger.warning("Valor de temperatura inválido: %s", args["temperature"])
+
+        if "max_tokens" in args:
+            try:
+                # En Ollama, el parámetro equivalente es num_predict
+                options["num_predict"] = int(args["max_tokens"])
+            except (TypeError, ValueError):
+                logger.warning("Valor de max_tokens inválido: %s", args["max_tokens"])
+
+        if "top_p" in args:
+            try:
+                options["top_p"] = float(args["top_p"])
+            except (TypeError, ValueError):
+                logger.warning("Valor de top_p inválido: %s", args["top_p"])
+
+        if "top_k" in args:
+            try:
+                options["top_k"] = int(args["top_k"])
+            except (TypeError, ValueError):
+                logger.warning("Valor de top_k inválido: %s", args["top_k"])
+
+        return options
+
+    def _build_conversational_prompt(
+        self,
+        document: str,
+        analysis_type: str,
+        language: str,
+        context_messages: Optional[List[Dict[str, Any]]] = None,
+    ) -> str:
+        """Construir prompt estructurado para interacción conversacional con capibara6."""
+
+        language = language or "auto"
+        context_messages = context_messages or []
+
+        formatted_context = ""
+        if context_messages:
+            context_lines = ["Contexto de conversación anterior:"]
+            for message in context_messages[-10:]:
+                role = message.get("role", "user")
+                content = message.get("content", "")
+                context_lines.append(f"{role.upper()}: {content}")
+            formatted_context = "\n".join(context_lines) + "\n\n"
+
+        prompt = (
+            "Eres capibara6, un modelo híbrido Transformer-Mamba SSM desarrollado por Anachroni s.coop. "
+            "Actúas como asistente experto en IA responsable, compliance europeo y adopción segura en administraciones públicas. "
+            "Responde de forma clara, estructurada y en el mismo idioma que el usuario cuando sea posible. "
+            "Si el usuario solicita acciones empresariales, ofrece pasos concretos y prudentes."
+        )
+
+        prompt += "\n\n"
+        prompt += formatted_context
+        prompt += "Solicitud actual del usuario:\n"
+        prompt += document
+        prompt += "\n\n"
+        prompt += (
+            f"Tipo de análisis solicitado: {analysis_type}."
+            " Cuando el análisis requiera conclusiones, preséntalas en una lista ordenada y añade recomendaciones prácticas."
+        )
+
+        if language != "auto":
+            prompt += f"\nResponde en el idioma: {language}."
+
+        prompt += "\nAsegúrate de que la respuesta sea concisa, útil y accionable."
+
+        return prompt
+
+    def _build_fallback_analysis(self, document: str, analysis_type: str, language: str) -> str:
+        """Generar una respuesta de respaldo cuando el modelo remoto no está disponible."""
+        token_count = len(document.split()) if document else 0
+        efficiency = 0.0
+        if self.context_window:
+            efficiency = min(100.0, (token_count / self.context_window) * 100)
+
+        fallback = (
+            "⚠️ *Respuesta generada sin conexión al modelo remoto.*\n\n"
+            "# Análisis provisional - capibara6\n\n"
+            f"**Tipo de análisis solicitado**: {analysis_type}\n"
+            f"**Idioma preferido**: {language}\n"
+            f"**Tokens aproximados del mensaje**: {token_count}\n\n"
+            "Por favor, vuelve a intentar la consulta en unos instantes para obtener una respuesta completa del modelo.")
+
+        if self.context_window:
+            fallback += (
+                f"\n\n**Ventana de contexto disponible**: {self.context_window:,} tokens\n"
+                f"**Uso estimado actual**: {efficiency:.2f}%"
+            )
+
+        return fallback
     
     def _initialize_capabilities(self) -> Dict[str, Any]:
         """Inicializar capacidades del servidor MCP"""
@@ -274,48 +456,43 @@ class Capibara6MCPConnector:
             }
     
     async def _analyze_document(self, args: Dict[str, Any]) -> Dict[str, Any]:
-        """Analizar documento usando arquitectura híbrida"""
-        document = args.get("document", "")
+        """Analizar documento usando el modelo remoto a través de Ollama."""
+        document = (args.get("document") or "").strip()
+        if not document:
+            raise ValueError("El parámetro 'document' es obligatorio para analyze_document")
+
         analysis_type = args.get("analysis_type", "general")
         language = args.get("language", "auto")
-        
-        # Simulación del análisis híbrido
-        transformer_analysis = f"Análisis Transformer (70%): {len(document)} tokens procesados"
-        mamba_analysis = f"Análisis Mamba SSM (30%): Secuencia lineal O(n) optimizada"
-        
-        result = f"""
-# Análisis de Documento - capibara6
+        context_messages = args.get("context")
+        options = self._extract_ollama_options(args)
 
-**Tipo de Análisis**: {analysis_type}
-**Idioma**: {language}
-**Tokens Procesados**: {len(document.split())}
+        prompt = self._build_conversational_prompt(document, analysis_type, language, context_messages)
 
-## Resultados del Análisis Híbrido
-
-### Componente Transformer (70%)
-{transformer_analysis}
-
-### Componente Mamba SSM (30%)
-{mamba_analysis}
-
-### Ventana de Contexto
-- **Capacidad**: {self.context_window:,} tokens
-- **Utilizado**: {len(document.split()):,} tokens
-- **Eficiencia**: {len(document.split()) / self.context_window * 100:.2f}%
-
-### Hardware Optimizado
-- **TPU**: {self.tpu_type}
-- **Throughput**: 4,500+ tokens/sec
-- **Latencia**: <120ms
-"""
-        
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": result
+        try:
+            model_response = self._call_ollama(prompt, stream=False, options=options)
+            if model_response:
+                return {
+                    "content": model_response,
+                    "metadata": {
+                        "source": "ollama",
+                        "analysis_type": analysis_type,
+                        "language": language
+                    }
                 }
-            ]
+        except RuntimeError as exc:
+            logger.warning("Fallo al obtener respuesta de Ollama: %s", exc)
+        except Exception as exc:
+            logger.error("Error inesperado en _analyze_document: %s", exc)
+
+        # Fallback en caso de error con el modelo remoto
+        fallback_text = self._build_fallback_analysis(document, analysis_type, language)
+        return {
+            "content": fallback_text,
+            "metadata": {
+                "source": "fallback",
+                "analysis_type": analysis_type,
+                "language": language
+            }
         }
     
     async def _analyze_codebase(self, args: Dict[str, Any]) -> Dict[str, Any]:
