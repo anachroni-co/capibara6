@@ -2329,6 +2329,38 @@
         "documentation": {}
     },
     {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Iterable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Dict",
         "importPath": "typing",
         "description": "typing",
@@ -2338,6 +2370,14 @@
     },
     {
         "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -4065,6 +4105,14 @@
     },
     {
         "label": "asdict",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "dataclass",
         "importPath": "dataclasses",
         "description": "dataclasses",
         "isExtraImport": true,
@@ -6726,6 +6774,30 @@
         "importPath": "traceback",
         "description": "traceback",
         "detail": "traceback",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "TaskClassifier",
+        "importPath": "task_classifier",
+        "description": "task_classifier",
+        "isExtraImport": true,
+        "detail": "task_classifier",
         "documentation": {}
     },
     {
@@ -12720,6 +12792,24 @@
         "documentation": {}
     },
     {
+        "label": "OllamaClient",
+        "kind": 6,
+        "importPath": "backend.ollama_client",
+        "description": "backend.ollama_client",
+        "peekOfCode": "class OllamaClient:\n    \"\"\"Cliente para gestionar peticiones a Ollama con soporte de fallback.\"\"\"\n    def __init__(self, config: Dict[str, Any]):\n        self.config = config\n        self.endpoint = config.get(\"api_settings\", {}).get(\n            \"ollama_endpoint\",\n            os.getenv(\"OLLAMA_ENDPOINT\", \"http://localhost:11434\"),\n        )\n        self.models = config.get(\"models\", {})\n        fallback_cfg = config.get(\"fallback_strategy\", {})",
+        "detail": "backend.ollama_client",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.ollama_client",
+        "description": "backend.ollama_client",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass OllamaClient:\n    \"\"\"Cliente para gestionar peticiones a Ollama con soporte de fallback.\"\"\"\n    def __init__(self, config: Dict[str, Any]):\n        self.config = config\n        self.endpoint = config.get(\"api_settings\", {}).get(\n            \"ollama_endpoint\",\n            os.getenv(\"OLLAMA_ENDPOINT\", \"http://localhost:11434\"),\n        )\n        self.models = config.get(\"models\", {})",
+        "detail": "backend.ollama_client",
+        "documentation": {}
+    },
+    {
         "label": "get_frontend_url",
         "kind": 2,
         "importPath": "backend.production_config",
@@ -13419,6 +13509,24 @@
         "description": "backend.start_system",
         "peekOfCode": "logger = logging.getLogger(__name__)\nclass Capibara6System:\n    \"\"\"Sistema principal de Capibara6.\"\"\"\n    def __init__(self):\n        \"\"\"Inicializa el sistema.\"\"\"\n        self.components = {}\n        self.running = False\n        # Setup logging\n        self.logger = setup_logging(\"backend/logs\", \"INFO\")\n        self.logger.logger.info(\"🚀 Iniciando Sistema Capibara6\")",
         "detail": "backend.start_system",
+        "documentation": {}
+    },
+    {
+        "label": "ClassificationResult",
+        "kind": 6,
+        "importPath": "backend.task_classifier",
+        "description": "backend.task_classifier",
+        "peekOfCode": "class ClassificationResult:\n    \"\"\"Resultado de la clasificación de un prompt.\"\"\"\n    model_tier: str\n    scores: Dict[str, int]\nclass TaskClassifier:\n    \"\"\"Clasificador simple basado en palabras clave y longitud del prompt.\"\"\"\n    COMPLEX_KEYWORDS = (\n        \"análisis\",\n        \"razonamiento\",\n        \"comparación\",",
+        "detail": "backend.task_classifier",
+        "documentation": {}
+    },
+    {
+        "label": "TaskClassifier",
+        "kind": 6,
+        "importPath": "backend.task_classifier",
+        "description": "backend.task_classifier",
+        "peekOfCode": "class TaskClassifier:\n    \"\"\"Clasificador simple basado en palabras clave y longitud del prompt.\"\"\"\n    COMPLEX_KEYWORDS = (\n        \"análisis\",\n        \"razonamiento\",\n        \"comparación\",\n        \"evaluar\",\n        \"estrategia\",\n        \"planificación\",\n        \"investigación\",",
+        "detail": "backend.task_classifier",
         "documentation": {}
     },
     {
