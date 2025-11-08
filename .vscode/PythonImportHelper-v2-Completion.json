@@ -2265,6 +2265,22 @@
         "documentation": {}
     },
     {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Dict",
         "importPath": "typing",
         "description": "typing",
@@ -5045,6 +5061,14 @@
         "documentation": {}
     },
     {
+        "label": "MIMEText",
+        "importPath": "email.mime.text",
+        "description": "email.mime.text",
+        "isExtraImport": true,
+        "detail": "email.mime.text",
+        "documentation": {}
+    },
+    {
         "label": "MIMEMultipart",
         "importPath": "email.mime.multipart",
         "description": "email.mime.multipart",
@@ -5605,6 +5629,30 @@
         "documentation": {}
     },
     {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
         "label": "stream_with_context",
         "importPath": "flask",
         "description": "flask",
@@ -5796,6 +5844,14 @@
         "description": "execution.e2b_integration",
         "isExtraImport": true,
         "detail": "execution.e2b_integration",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
         "documentation": {}
     },
     {
@@ -6477,6 +6533,14 @@
         "documentation": {}
     },
     {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
         "label": "tempfile",
         "kind": 6,
         "isExtraImport": true,
@@ -6580,6 +6644,14 @@
         "description": "models_config",
         "isExtraImport": true,
         "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
         "documentation": {}
     },
     {
@@ -12090,6 +12162,15 @@
         "documentation": {}
     },
     {
+        "label": "MCPServer",
+        "kind": 6,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "class MCPServer:\n    \"\"\"\n    Servidor MCP que integra capibara6 con el protocolo MCP\n    \"\"\"\n    def __init__(self, host: str = \"localhost\", port: int = 3000):\n        self.host = host\n        self.port = port\n        self.connector = Capibara6MCPConnector()\n        self.request_queue = queue.Queue()\n        self.response_queue = queue.Queue()",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
         "label": "get_context",
         "kind": 2,
         "importPath": "backend.mcp_server",
@@ -12297,6 +12378,105 @@
         "documentation": {}
     },
     {
+        "label": "start_mcp_server",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def start_mcp_server():\n    \"\"\"Iniciar servidor MCP en hilo separado\"\"\"\n    loop = asyncio.new_event_loop()\n    asyncio.set_event_loop(loop)\n    loop.run_until_complete(mcp_server.start_server())\nmcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask\napp = Flask(__name__)\nCORS(app)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_initialize",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 1,\n            \"method\": \"initialize\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_list",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_tools_list():\n    \"\"\"Endpoint para listar herramientas MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 2,\n            \"method\": \"tools/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_call",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_tools_call():\n    \"\"\"Endpoint para ejecutar herramienta MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 3),\n            \"method\": \"tools/call\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_list",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_resources_list():\n    \"\"\"Endpoint para listar recursos MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 4,\n            \"method\": \"resources/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_read",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_resources_read():\n    \"\"\"Endpoint para leer recurso MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 5),\n            \"method\": \"resources/read\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_list",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_prompts_list():\n    \"\"\"Endpoint para listar prompts MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 6,\n            \"method\": \"prompts/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_get",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_prompts_get():\n    \"\"\"Endpoint para obtener prompt MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 7),\n            \"method\": \"prompts/get\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_status",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_status():\n    \"\"\"Endpoint para verificar estado del servidor MCP\"\"\"\n    return jsonify({\n        \"status\": \"running\",\n        \"connector\": \"capibara6-mcp-connector\",\n        \"version\": \"1.0.0\",\n        \"capabilities\": mcp_server.connector.capabilities,\n        \"timestamp\": time.time()\n    })\n@app.route('/api/mcp/test', methods=['POST'])",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_test",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_test():\n    \"\"\"Endpoint para probar funcionalidad MCP\"\"\"\n    try:\n        data = request.get_json() or {}\n        test_type = data.get(\"test_type\", \"full\")\n        results = {}\n        if test_type in [\"full\", \"tools\"]:\n            # Test de herramientas\n            tools_request = {\n                \"jsonrpc\": \"2.0\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_documentation",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_documentation():\n    \"\"\"Página de documentación del conector MCP\"\"\"\n    return '''\n    <!DOCTYPE html>\n    <html>\n    <head>\n        <title>capibara6 MCP Connector</title>\n        <meta charset=\"UTF-8\">\n        <style>\n            body { ",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
         "label": "app",
         "kind": 5,
         "importPath": "backend.mcp_server",
@@ -12320,6 +12500,42 @@
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
         "peekOfCode": "TOOLS = {\n    'search_web': {\n        'name': 'Buscar en Web',\n        'description': 'Busca información actualizada en internet',\n        'enabled': False  # Requiere API key\n    },\n    'calculate': {\n        'name': 'Calculadora',\n        'description': 'Realiza cálculos matemáticos precisos',\n        'enabled': True",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass MCPServer:\n    \"\"\"\n    Servidor MCP que integra capibara6 con el protocolo MCP\n    \"\"\"\n    def __init__(self, host: str = \"localhost\", port: int = 3000):\n        self.host = host\n        self.port = port\n        self.connector = Capibara6MCPConnector()\n        self.request_queue = queue.Queue()",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_server",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "mcp_server = MCPServer()\n# Iniciar servidor MCP en hilo separado\ndef start_mcp_server():\n    \"\"\"Iniciar servidor MCP en hilo separado\"\"\"\n    loop = asyncio.new_event_loop()\n    asyncio.set_event_loop(loop)\n    loop.run_until_complete(mcp_server.start_server())\nmcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_thread",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "mcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask\napp = Flask(__name__)\nCORS(app)\n@app.route('/api/mcp/initialize', methods=['POST'])\ndef mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\n@app.route('/api/mcp/initialize', methods=['POST'])\ndef mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 1,\n            \"method\": \"initialize\",",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
@@ -14390,6 +14606,132 @@
         "importPath": "check_env",
         "description": "check_env",
         "peekOfCode": "class Colors:\n    GREEN = '\\033[92m'\n    RED = '\\033[91m'\n    YELLOW = '\\033[93m'\n    BLUE = '\\033[94m'\n    BOLD = '\\033[1m'\n    END = '\\033[0m'\ndef print_header():\n    \"\"\"Imprimir encabezado del script\"\"\"\n    print(f\"{Colors.BLUE}{Colors.BOLD}\")",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "Colors",
+        "kind": 6,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "class Colors:\n    GREEN = '\\033[92m'\n    RED = '\\033[91m'\n    YELLOW = '\\033[93m'\n    BLUE = '\\033[94m'\n    BOLD = '\\033[1m'\n    END = '\\033[0m'\ndef print_header():\n    \"\"\"Imprimir encabezado del script\"\"\"\n    print(f\"{Colors.BLUE}{Colors.BOLD}\")",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "print_header",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def print_header():\n    \"\"\"Imprimir encabezado del script\"\"\"\n    print(f\"{Colors.BLUE}{Colors.BOLD}\")\n    print(\"=\" * 60)\n    print(\"🦫 CAPIBARA6 - VERIFICADOR DE CONFIGURACIÓN\")\n    print(\"=\" * 60)\n    print(f\"{Colors.END}\")\ndef print_section(title):\n    \"\"\"Imprimir título de sección\"\"\"\n    print(f\"\\n{Colors.BOLD}{Colors.YELLOW}📋 {title}{Colors.END}\")",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "print_section",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def print_section(title):\n    \"\"\"Imprimir título de sección\"\"\"\n    print(f\"\\n{Colors.BOLD}{Colors.YELLOW}📋 {title}{Colors.END}\")\n    print(\"-\" * 40)\ndef check_env_var(var_name, required=True, description=\"\"):\n    \"\"\"Verificar si una variable de entorno está configurada\"\"\"\n    value = os.getenv(var_name)\n    if value and value != f\"tu_{var_name.lower()}\" and not value.startswith(\"xxxxxxxx\"):\n        print(f\"✅ {var_name}: {Colors.GREEN}Configurado{Colors.END}\")\n        return True",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_env_var",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_env_var(var_name, required=True, description=\"\"):\n    \"\"\"Verificar si una variable de entorno está configurada\"\"\"\n    value = os.getenv(var_name)\n    if value and value != f\"tu_{var_name.lower()}\" and not value.startswith(\"xxxxxxxx\"):\n        print(f\"✅ {var_name}: {Colors.GREEN}Configurado{Colors.END}\")\n        return True\n    else:\n        status = f\"{Colors.RED}No configurado{Colors.END}\" if required else f\"{Colors.YELLOW}Opcional{Colors.END}\"\n        print(f\"❌ {var_name}: {status}\")\n        if description:",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_smtp",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_smtp():\n    \"\"\"Probar configuración SMTP\"\"\"\n    print_section(\"CONFIGURACIÓN SMTP\")\n    smtp_server = os.getenv('SMTP_SERVER')\n    smtp_port = os.getenv('SMTP_PORT', '587')\n    smtp_user = os.getenv('SMTP_USER')\n    smtp_password = os.getenv('SMTP_PASSWORD')\n    if not all([smtp_server, smtp_user, smtp_password]):\n        print(\"❌ Configuración SMTP incompleta\")\n        return False",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_openai",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_openai():\n    \"\"\"Probar API de OpenAI\"\"\"\n    print_section(\"OPENAI API\")\n    api_key = os.getenv('OPENAI_API_KEY')\n    if not api_key or api_key.startswith('sk-xxxxxxxx'):\n        print(\"❌ OpenAI API Key no configurada\")\n        return False\n    try:\n        headers = {\n            'Authorization': f'Bearer {api_key}',",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_anthropic",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_anthropic():\n    \"\"\"Probar API de Anthropic\"\"\"\n    print_section(\"ANTHROPIC API\")\n    api_key = os.getenv('ANTHROPIC_API_KEY')\n    if not api_key or api_key.startswith('sk-ant-xxxxxxxx'):\n        print(\"❌ Anthropic API Key no configurada\")\n        return False\n    try:\n        headers = {\n            'x-api-key': api_key,",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_google_ai",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_google_ai():\n    \"\"\"Probar API de Google AI\"\"\"\n    print_section(\"GOOGLE AI API\")\n    api_key = os.getenv('GOOGLE_AI_API_KEY')\n    if not api_key or api_key.startswith('AIzaSyxxxxxxxx'):\n        print(\"❌ Google AI API Key no configurada\")\n        return False\n    try:\n        url = f\"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}\"\n        response = requests.get(url, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_huggingface",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_huggingface():\n    \"\"\"Probar API de Hugging Face\"\"\"\n    print_section(\"HUGGING FACE API\")\n    api_key = os.getenv('HUGGINGFACE_API_KEY')\n    if not api_key or api_key.startswith('hf_xxxxxxxx'):\n        print(\"❌ Hugging Face API Key no configurada\")\n        return False\n    try:\n        headers = {'Authorization': f'Bearer {api_key}'}\n        response = requests.get('https://huggingface.co/api/whoami', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_pinecone",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_pinecone():\n    \"\"\"Probar API de Pinecone\"\"\"\n    print_section(\"PINECONE API\")\n    api_key = os.getenv('PINECONE_API_KEY')\n    if not api_key or api_key.startswith('xxxxxxxx-xxxx'):\n        print(\"❌ Pinecone API Key no configurada\")\n        return False\n    try:\n        headers = {'Api-Key': api_key}\n        response = requests.get('https://api.pinecone.io/actions/whoami', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_github",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_github():\n    \"\"\"Probar API de GitHub\"\"\"\n    print_section(\"GITHUB API\")\n    token = os.getenv('GITHUB_TOKEN')\n    if not token or token.startswith('ghp_xxxxxxxx'):\n        print(\"❌ GitHub Token no configurado\")\n        return False\n    try:\n        headers = {'Authorization': f'token {token}'}\n        response = requests.get('https://api.github.com/user', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_required_config",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_required_config():\n    \"\"\"Verificar configuración requerida\"\"\"\n    print_section(\"CONFIGURACIÓN REQUERIDA\")\n    required_vars = [\n        ('SMTP_SERVER', 'Servidor SMTP para emails'),\n        ('SMTP_PORT', 'Puerto SMTP'),\n        ('SMTP_USER', 'Usuario SMTP'),\n        ('SMTP_PASSWORD', 'Contraseña SMTP'),\n        ('FROM_EMAIL', 'Email de origen')\n    ]",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_optional_config",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_optional_config():\n    \"\"\"Verificar configuración opcional\"\"\"\n    print_section(\"CONFIGURACIÓN OPCIONAL\")\n    optional_vars = [\n        ('OPENAI_API_KEY', 'API Key de OpenAI'),\n        ('ANTHROPIC_API_KEY', 'API Key de Anthropic'),\n        ('GOOGLE_AI_API_KEY', 'API Key de Google AI'),\n        ('HUGGINGFACE_API_KEY', 'API Key de Hugging Face'),\n        ('PINECONE_API_KEY', 'API Key de Pinecone'),\n        ('WEAVIATE_URL', 'URL de Weaviate'),",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def main():\n    \"\"\"Función principal\"\"\"\n    print_header()\n    # Verificar que existe el archivo .env\n    if not os.path.exists('.env'):\n        print(f\"{Colors.RED}❌ Archivo .env no encontrado{Colors.END}\")\n        print(\"💡 Copia .env.example a .env y configura tus claves:\")\n        print(\"   cp .env.example .env\")\n        sys.exit(1)\n    print(\"✅ Archivo .env encontrado\")",
         "detail": "check_env",
         "documentation": {}
     },
