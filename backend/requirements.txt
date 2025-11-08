@@ -1,12 +1,8 @@
-<<<<<<< HEAD
 # Framework web
-=======
->>>>>>> f4f2009 (feat: Integrate capibara6 MCP connector and add new endpoints)
 Flask==3.0.0
 flask-cors==4.0.0
 python-dotenv==1.0.0
 gunicorn==21.2.0
-<<<<<<< HEAD
 
 # Base de datos
 psycopg2-binary==2.9.9
@@ -55,8 +51,3 @@ torchaudio>=2.0.0
 soundfile>=0.12.1
 transformers>=4.35.0
 huggingface-hub>=0.19.0
-=======
-requests==2.31.0
-asyncio==3.4.32.0
-
->>>>>>> f4f2009 (feat: Integrate capibara6 MCP connector and add new endpoints)
