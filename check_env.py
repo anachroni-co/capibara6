@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -660,5 +659,4 @@ def main():
     print(f"\n{Colors.BLUE}📚 Para más información, consulta API_KEYS_GUIDE.md{Colors.END}")
 
 if __name__ == '__main__':
->>>>>>> 249cd7d (new files)
     main()
