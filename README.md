@@ -206,3 +206,26 @@ Si tienes problemas:
 ---
 
 **Capibara6** - Tu asistente de IA de confianza 🦫
+## 🔄 Integración de Modelos
+
+Este repositorio ahora incluye una integración completa de múltiples modelos y tecnologías:
+
+### Modelos de Voz Disponibles
+- **Kyutai TTS** (predeterminado): Sistema avanzado basado en Katsu-VITS con:
+  - Control emocional de voz
+  - Clonación de voz
+  - Soporte multilingüe (8+ idiomas)
+  - Mayor calidad de síntesis
+  
+- **Coqui TTS** (legacy): Sistema heredado para compatibilidad
+
+### Optimización de Tokens
+- **TOON (Token-Oriented Object Notation)** integrado en todos los endpoints
+- Reducción de 30-60% en uso de tokens para datos tabulares
+- Compatible con JSON existente
+- Negociación automática de contenido
+
+### Estructura de Backend
+- `backend/`: Archivos principales con Kyutai TTS
+- `backend/integration/`: Archivos de integración de BB
+- `backendModels/`: Réplicas de ambos modelos originales
