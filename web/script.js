@@ -402,41 +402,9 @@ prefersDarkScheme.addEventListener('change', (e) => {
 // Abrir chat desde botones "Comenzar Ahora" / "Probar Ahora"
 // ============================================
 function setupChatButtons() {
-    // Buscar todos los botones que deberían abrir el chat
-    // Buscar por href primero, luego por clases
-    const chatButtons = document.querySelectorAll('a[href="#docs"].btn, a.btn-primary[href="#docs"], a.btn-white[href="#docs"]');
-    
-    chatButtons.forEach(button => {
-        // Verificar si el botón tiene texto relacionado con "Comenzar" o "Probar"
-        // textContent obtiene todo el texto incluyendo el de los hijos (spans, etc.)
-        const buttonText = button.textContent.toLowerCase().trim();
-        const isStartButton = buttonText.includes('comenzar') || 
-                              buttonText.includes('empezar') || 
-                              buttonText.includes('probar') || 
-                              buttonText.includes('try') ||
-                              buttonText.includes('start');
-        
-        // Solo modificar botones que apuntan a #docs y tienen texto relevante
-        // Verificar si ya tiene un listener personalizado para evitar duplicados
-        if (isStartButton && button.getAttribute('href') === '#docs' && !button.dataset.chatButton) {
-            button.dataset.chatButton = 'true'; // Marcar como configurado
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // Abrir el chat si la función está disponible
-                if (typeof window.openChatbot === 'function') {
-                    window.openChatbot();
-                } else {
-                    // Si el chatbot aún no está inicializado, esperar un poco
-                    setTimeout(() => {
-                        if (typeof window.openChatbot === 'function') {
-                            window.openChatbot();
-                        }
-                    }, 500);
-                }
-            });
-        }
-    });
+    // Los botones "Comenzar Ahora" ahora apuntan directamente a chat.html
+    // Esta función se mantiene para compatibilidad pero ya no es necesaria
+    // ya que los botones tienen href="chat.html" en el HTML
 }
 
 // ============================================
