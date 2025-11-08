@@ -2177,6 +2177,46 @@
         "documentation": {}
     },
     {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Dict",
         "importPath": "typing",
         "description": "typing",
@@ -2202,6 +2242,22 @@
     },
     {
         "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -3514,6 +3570,14 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "timedelta",
         "importPath": "datetime",
         "description": "datetime",
@@ -4552,6 +4616,14 @@
         "importPath": "time",
         "description": "time",
         "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
         "documentation": {}
     },
     {
@@ -6397,6 +6469,14 @@
         "documentation": {}
     },
     {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
         "label": "tempfile",
         "kind": 6,
         "isExtraImport": true,
@@ -6503,6 +6583,30 @@
         "documentation": {}
     },
     {
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
         "label": "TrustedHostMiddleware",
         "importPath": "fastapi.middleware.trustedhost",
         "description": "fastapi.middleware.trustedhost",
@@ -6550,6 +6654,15 @@
         "importPath": "traceback",
         "description": "traceback",
         "detail": "traceback",
+        "documentation": {}
+    },
+    {
+        "label": "j#",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "j#",
+        "description": "j#",
+        "detail": "j#",
         "documentation": {}
     },
     {
@@ -11950,6 +12063,33 @@
         "documentation": {}
     },
     {
+        "label": "Capibara6MCPConnector",
+        "kind": 6,
+        "importPath": "backend.mcp_connector",
+        "description": "backend.mcp_connector",
+        "peekOfCode": "class Capibara6MCPConnector:\n    \"\"\"\n    Conector MCP para capibara6 - Sistema de IA híbrido Transformer-Mamba\n    \"\"\"\n    def __init__(self, \n                 tpu_type: str = \"v6e-64\",\n                 context_window: int = 10_000_000,\n                 hybrid_mode: bool = True,\n                 compliance_mode: str = \"eu_public_sector\"):\n        \"\"\"",
+        "detail": "backend.mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.mcp_connector",
+        "description": "backend.mcp_connector",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass Capibara6MCPConnector:\n    \"\"\"\n    Conector MCP para capibara6 - Sistema de IA híbrido Transformer-Mamba\n    \"\"\"\n    def __init__(self, \n                 tpu_type: str = \"v6e-64\",\n                 context_window: int = 10_000_000,\n                 hybrid_mode: bool = True,\n                 compliance_mode: str = \"eu_public_sector\"):",
+        "detail": "backend.mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "MCPServer",
+        "kind": 6,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "class MCPServer:\n    \"\"\"\n    Servidor MCP que integra capibara6 con el protocolo MCP\n    \"\"\"\n    def __init__(self, host: str = \"localhost\", port: int = 3000):\n        self.host = host\n        self.port = port\n        self.connector = Capibara6MCPConnector()\n        self.request_queue = queue.Queue()\n        self.response_queue = queue.Queue()",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
         "label": "get_context",
         "kind": 2,
         "importPath": "backend.mcp_server",
@@ -12058,6 +12198,105 @@
         "documentation": {}
     },
     {
+        "label": "start_mcp_server",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def start_mcp_server():\n    \"\"\"Iniciar servidor MCP en hilo separado\"\"\"\n    loop = asyncio.new_event_loop()\n    asyncio.set_event_loop(loop)\n    loop.run_until_complete(mcp_server.start_server())\nmcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask\napp = Flask(__name__)\nCORS(app)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_initialize",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 1,\n            \"method\": \"initialize\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_list",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_tools_list():\n    \"\"\"Endpoint para listar herramientas MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 2,\n            \"method\": \"tools/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_call",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_tools_call():\n    \"\"\"Endpoint para ejecutar herramienta MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 3),\n            \"method\": \"tools/call\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_list",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_resources_list():\n    \"\"\"Endpoint para listar recursos MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 4,\n            \"method\": \"resources/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_read",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_resources_read():\n    \"\"\"Endpoint para leer recurso MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 5),\n            \"method\": \"resources/read\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_list",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_prompts_list():\n    \"\"\"Endpoint para listar prompts MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 6,\n            \"method\": \"prompts/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_get",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_prompts_get():\n    \"\"\"Endpoint para obtener prompt MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 7),\n            \"method\": \"prompts/get\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_status",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_status():\n    \"\"\"Endpoint para verificar estado del servidor MCP\"\"\"\n    return jsonify({\n        \"status\": \"running\",\n        \"connector\": \"capibara6-mcp-connector\",\n        \"version\": \"1.0.0\",\n        \"capabilities\": mcp_server.connector.capabilities,\n        \"timestamp\": time.time()\n    })\n@app.route('/api/mcp/test', methods=['POST'])",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_test",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_test():\n    \"\"\"Endpoint para probar funcionalidad MCP\"\"\"\n    try:\n        data = request.get_json() or {}\n        test_type = data.get(\"test_type\", \"full\")\n        results = {}\n        if test_type in [\"full\", \"tools\"]:\n            # Test de herramientas\n            tools_request = {\n                \"jsonrpc\": \"2.0\",",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_documentation",
+        "kind": 2,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "def mcp_documentation():\n    \"\"\"Página de documentación del conector MCP\"\"\"\n    return '''\n    <!DOCTYPE html>\n    <html>\n    <head>\n        <title>capibara6 MCP Connector</title>\n        <meta charset=\"UTF-8\">\n        <style>\n            body { ",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
         "label": "app",
         "kind": 5,
         "importPath": "backend.mcp_server",
@@ -12081,6 +12320,42 @@
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
         "peekOfCode": "TOOLS = {\n    'search_web': {\n        'name': 'Buscar en Web',\n        'description': 'Busca información actualizada en internet',\n        'enabled': False  # Requiere API key\n    },\n    'calculate': {\n        'name': 'Calculadora',\n        'description': 'Realiza cálculos matemáticos precisos',\n        'enabled': True",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass MCPServer:\n    \"\"\"\n    Servidor MCP que integra capibara6 con el protocolo MCP\n    \"\"\"\n    def __init__(self, host: str = \"localhost\", port: int = 3000):\n        self.host = host\n        self.port = port\n        self.connector = Capibara6MCPConnector()\n        self.request_queue = queue.Queue()",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_server",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "mcp_server = MCPServer()\n# Iniciar servidor MCP en hilo separado\ndef start_mcp_server():\n    \"\"\"Iniciar servidor MCP en hilo separado\"\"\"\n    loop = asyncio.new_event_loop()\n    asyncio.set_event_loop(loop)\n    loop.run_until_complete(mcp_server.start_server())\nmcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_thread",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "mcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask\napp = Flask(__name__)\nCORS(app)\n@app.route('/api/mcp/initialize', methods=['POST'])\ndef mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\n@app.route('/api/mcp/initialize', methods=['POST'])\ndef mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 1,\n            \"method\": \"initialize\",",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
@@ -12368,16 +12643,97 @@
         "kind": 2,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "def health():\n    \"\"\"Endpoint de health check\"\"\"\n    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})on as e:\n        print(f'Error: {e}')\n        return jsonify({'success': False, 'error': str(e)}), 500\n@app.route('/api/health', methods=['GET'])\ndef health():\n    \"\"\"Endpoint de health check\"\"\"\n    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})\n@app.route('/', methods=['GET'])",
+        "peekOfCode": "def health():\n    \"\"\"Endpoint de health check\"\"\"\n    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})\n# ============================================================================\n# ENDPOINTS MCP (Model Context Protocol)\n# ============================================================================\n@app.route('/api/mcp/status', methods=['GET'])\ndef mcp_status():\n    \"\"\"Estado del conector MCP\"\"\"\n    if not MCP_AVAILABLE:",
         "detail": "backend.server",
         "documentation": {}
     },
     {
-        "label": "health",
+        "label": "mcp_status",
         "kind": 2,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "def health():\n    \"\"\"Endpoint de health check\"\"\"\n    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})\n@app.route('/', methods=['GET'])\ndef index():\n    \"\"\"Página principal\"\"\"\n    return '''\n    <html>\n        <head>\n            <title>capibara6 Backend</title>",
+        "peekOfCode": "def mcp_status():\n    \"\"\"Estado del conector MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'MCP Connector no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    return jsonify({\n        'status': 'running',",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_initialize",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_initialize():\n    \"\"\"Inicializar conexión MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_list",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_tools_list():\n    \"\"\"Listar herramientas MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_call",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_tools_call():\n    \"\"\"Ejecutar herramienta MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        data = request.get_json()\n        if not data:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_list",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_resources_list():\n    \"\"\"Listar recursos MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_read",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_resources_read():\n    \"\"\"Leer recurso MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        data = request.get_json()\n        if not data:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_list",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_prompts_list():\n    \"\"\"Listar prompts MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_get",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_prompts_get():\n    \"\"\"Obtener prompt MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        data = request.get_json()\n        if not data:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_test",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_test():\n    \"\"\"Probar funcionalidad MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'MCP Connector no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        import asyncio",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_documentation",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_documentation():\n    \"\"\"Página de documentación del conector MCP\"\"\"\n    return '''\n    <!DOCTYPE html>\n    <html>\n    <head>\n        <title>capibara6 MCP Connector</title>\n        <meta charset=\"UTF-8\">\n        <style>\n            body { ",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -12395,7 +12751,16 @@
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Habilitar CORS para permitir peticiones desde el frontend\n# Configuración SMTP\nSMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')\nSMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\nSMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Habilitar CORS para permitir peticiones desde el frontend\n# Inicializar conector MCP si está disponible\nmcp_connector = None\nif MCP_AVAILABLE:\n    try:\n        mcp_connector = Capibara6MCPConnector()\n        print(\"✅ Conector MCP inicializado correctamente\")\n    except Exception as e:\n        print(f\"❌ Error inicializando MCP: {e}\")",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_connector",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "mcp_connector = None\nif MCP_AVAILABLE:\n    try:\n        mcp_connector = Capibara6MCPConnector()\n        print(\"✅ Conector MCP inicializado correctamente\")\n    except Exception as e:\n        print(f\"❌ Error inicializando MCP: {e}\")\n        MCP_AVAILABLE = Falseel frontend\n# Configuración SMTP\nSMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -12760,6 +13125,51 @@
         "documentation": {}
     },
     {
+        "label": "start_flask_server",
+        "kind": 2,
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def start_flask_server():\n    \"\"\"Iniciar servidor Flask con MCP integrado\"\"\"\n    print(\"🚀 Iniciando servidor Flask con MCP...\")\n    # Cambiar al directorio del backend\n    backend_dir = Path(__file__).parent\n    os.chdir(backend_dir)\n    # Puerto para Railway (usa variable de entorno PORT)\n    port = int(os.getenv('PORT', 5000))\n    # Iniciar servidor Flask con MCP\n    try:",
+        "detail": "backend.start_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "start_mcp_standalone",
+        "kind": 2,
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def start_mcp_standalone():\n    \"\"\"Iniciar solo el conector MCP (para testing)\"\"\"\n    print(\"🧪 Iniciando conector MCP standalone...\")\n    try:\n        import asyncio\n        from mcp_connector import Capibara6MCPConnector\n        async def test_connector():\n            connector = Capibara6MCPConnector()\n            # Test básico\n            init_request = {",
+        "detail": "backend.start_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "run_tests",
+        "kind": 2,
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def run_tests():\n    \"\"\"Ejecutar tests del conector MCP\"\"\"\n    print(\"🧪 Ejecutando tests del conector MCP...\")\n    try:\n        import subprocess\n        result = subprocess.run([sys.executable, \"test_mcp.py\"], \n                              capture_output=True, text=True, timeout=60)\n        if result.returncode == 0:\n            print(\"✅ Tests completados exitosamente\")\n            print(result.stdout)",
+        "detail": "backend.start_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "show_help",
+        "kind": 2,
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def show_help():\n    \"\"\"Mostrar ayuda\"\"\"\n    print(\"\"\"\n🦫 capibara6 MCP Connector - Script de Inicio\nUso: python start_mcp.py [comando]\nComandos disponibles:\n  server     - Iniciar servidor Flask con MCP integrado (por defecto)\n  standalone - Iniciar solo el conector MCP para testing\n  test       - Ejecutar tests del conector MCP\n  help       - Mostrar esta ayuda",
+        "detail": "backend.start_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def main():\n    \"\"\"Función principal\"\"\"\n    command = sys.argv[1] if len(sys.argv) > 1 else \"server\"\n    print(\"🦫 capibara6 MCP Connector\")\n    print(\"=\" * 40)\n    if command == \"server\":\n        start_flask_server()\n    elif command == \"standalone\":\n        start_mcp_standalone()\n    elif command == \"test\":",
+        "detail": "backend.start_mcp",
+        "documentation": {}
+    },
+    {
         "label": "Capibara6System",
         "kind": 6,
         "importPath": "backend.start_system",
@@ -12793,6 +13203,15 @@
         "description": "backend.start_system",
         "peekOfCode": "logger = logging.getLogger(__name__)\nclass Capibara6System:\n    \"\"\"Sistema principal de Capibara6.\"\"\"\n    def __init__(self):\n        \"\"\"Inicializa el sistema.\"\"\"\n        self.components = {}\n        self.running = False\n        # Setup logging\n        self.logger = setup_logging(\"backend/logs\", \"INFO\")\n        self.logger.logger.info(\"🚀 Iniciando Sistema Capibara6\")",
         "detail": "backend.start_system",
+        "documentation": {}
+    },
+    {
+        "label": "MCPTester",
+        "kind": 6,
+        "importPath": "backend.test_mcp",
+        "description": "backend.test_mcp",
+        "peekOfCode": "class MCPTester:\n    \"\"\"Tester para el conector MCP de capibara6\"\"\"\n    def __init__(self, base_url: str = \"http://localhost:5000\"):\n        self.base_url = base_url\n        self.connector = Capibara6MCPConnector()\n    async def test_direct_connector(self):\n        \"\"\"Probar el conector directamente (sin servidor)\"\"\"\n        print(\"🧪 Probando conector MCP directamente...\")\n        # Test de inicialización\n        init_request = {",
+        "detail": "backend.test_mcp",
         "documentation": {}
     },
     {
