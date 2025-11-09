@@ -2153,6 +2153,46 @@
         "documentation": {}
     },
     {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "List",
         "importPath": "typing",
         "description": "typing",
@@ -2346,6 +2386,22 @@
     },
     {
         "label": "Iterable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -5557,6 +5613,62 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
         "label": "Flask",
         "importPath": "flask",
         "description": "flask",
@@ -6156,6 +6268,38 @@
         "documentation": {}
     },
     {
+        "label": "MODEL_CONFIGS",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "MODEL_CONFIGS",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_MODEL",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "TIMEOUT",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
         "label": "E2BManager",
         "importPath": "execution.e2b_manager",
         "description": "execution.e2b_manager",
@@ -6695,11 +6839,77 @@
         "documentation": {}
     },
     {
-        "label": "Capibara6MCPConnector",
-        "importPath": "mcp_connector",
-        "description": "mcp_connector",
+        "label": "E2BManager",
+        "importPath": "e2b_manager",
+        "description": "e2b_manager",
         "isExtraImport": true,
-        "detail": "mcp_connector",
+        "detail": "e2b_manager",
+        "documentation": {}
+    },
+    {
+        "label": "create_e2b_manager",
+        "importPath": "e2b_manager",
+        "description": "e2b_manager",
+        "isExtraImport": true,
+        "detail": "e2b_manager",
+        "documentation": {}
+    },
+    {
+        "label": "analyze_context",
+        "importPath": "utils",
+        "description": "utils",
+        "isExtraImport": true,
+        "detail": "utils",
+        "documentation": {}
+    },
+    {
+        "label": "understand_query",
+        "importPath": "utils",
+        "description": "utils",
+        "isExtraImport": true,
+        "detail": "utils",
+        "documentation": {}
+    },
+    {
+        "label": "determine_action",
+        "importPath": "utils",
+        "description": "utils",
+        "isExtraImport": true,
+        "detail": "utils",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_relevance",
+        "importPath": "utils",
+        "description": "utils",
+        "isExtraImport": true,
+        "detail": "utils",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib",
+        "description": "matplotlib",
+        "detail": "matplotlib",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManager",
+        "importPath": "toon_utils.format_manager",
+        "description": "toon_utils.format_manager",
+        "isExtraImport": true,
+        "detail": "toon_utils.format_manager",
         "documentation": {}
     },
     {
@@ -6724,6 +6934,31 @@
         "description": "mcp_connector",
         "isExtraImport": true,
         "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "Sandbox",
+        "importPath": "e2b",
+        "description": "e2b",
+        "isExtraImport": true,
+        "detail": "e2b",
+        "documentation": {}
+    },
+    {
+        "label": "platform",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "platform",
+        "description": "platform",
+        "detail": "platform",
         "documentation": {}
     },
     {
@@ -6801,12 +7036,12 @@
         "documentation": {}
     },
     {
-        "label": "j#",
+        "label": "socket",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "j#",
-        "description": "j#",
-        "detail": "j#",
+        "importPath": "socket",
+        "description": "socket",
+        "detail": "socket",
         "documentation": {}
     },
     {
@@ -11847,6 +12082,159 @@
         "documentation": {}
     },
     {
+        "label": "Capibara6E2BIntegration",
+        "kind": 6,
+        "importPath": "backend.capibara6_e2b_integration",
+        "description": "backend.capibara6_e2b_integration",
+        "peekOfCode": "class Capibara6E2BIntegration:\n    \"\"\"\n    Integración de e2b con el sistema Capibara6 para generar VMs rápidas\n    según las necesidades de las tareas clasificadas por CTM.\n    \"\"\"\n    def __init__(self):\n        self.e2b_manager = create_e2b_manager(E2B_API_TOKEN)\n    async def handle_complex_task_with_e2b(self, prompt: str, context: str = \"\") -> Dict[str, Any]:\n        \"\"\"\n        Maneja tareas complejas usando e2b para crear entornos aislados.",
+        "detail": "backend.capibara6_e2b_integration",
+        "documentation": {}
+    },
+    {
+        "label": "process_task",
+        "kind": 2,
+        "importPath": "backend.capibara6_e2b_integration",
+        "description": "backend.capibara6_e2b_integration",
+        "peekOfCode": "def process_task():\n    print(f\"Procesando tarea: {{repr('{prompt}'[:100])}}...\")\n    # Aquí iría la lógica específica para procesar la tarea\n    start_time = time.time()\n    # Detectar el tipo de tarea para decidir si generar visualizaciones\n    task_type = 'general'\n    if any(word in '{prompt}'.lower() for word in ['grafico', 'gráfico', 'gráfico de', 'gráfica', 'visualizar', 'visualización', 'plot', 'chart', 'plotear']):\n        task_type = 'visualization'\n    elif any(word in '{prompt}'.lower() for word in ['datos', 'data', 'tabla', 'análisis', 'dataset', 'csv']):\n        task_type = 'data'",
+        "detail": "backend.capibara6_e2b_integration",
+        "documentation": {}
+    },
+    {
+        "label": "init_e2b_integration",
+        "kind": 2,
+        "importPath": "backend.capibara6_e2b_integration",
+        "description": "backend.capibara6_e2b_integration",
+        "peekOfCode": "def init_e2b_integration():\n    \"\"\"\n    Inicializa la integración de e2b con Capibara6.\n    \"\"\"\n    return Capibara6E2BIntegration()\n# Ejemplo de uso\nasync def main():\n    print(\"Inicializando integración e2b con Capibara6...\")\n    # Inicializar la integración\n    integration = init_e2b_integration()",
+        "detail": "backend.capibara6_e2b_integration",
+        "documentation": {}
+    },
+    {
+        "label": "E2B_API_TOKEN",
+        "kind": 5,
+        "importPath": "backend.capibara6_e2b_integration",
+        "description": "backend.capibara6_e2b_integration",
+        "peekOfCode": "E2B_API_TOKEN = \"e2b_d8df23b5de5214b7bfb4ebe227a308b61a2ae172\"\nclass Capibara6E2BIntegration:\n    \"\"\"\n    Integración de e2b con el sistema Capibara6 para generar VMs rápidas\n    según las necesidades de las tareas clasificadas por CTM.\n    \"\"\"\n    def __init__(self):\n        self.e2b_manager = create_e2b_manager(E2B_API_TOKEN)\n    async def handle_complex_task_with_e2b(self, prompt: str, context: str = \"\") -> Dict[str, Any]:\n        \"\"\"",
+        "detail": "backend.capibara6_e2b_integration",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_gpt_oss_20b",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def proxy_gpt_oss_20b():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        model_config = MODEL_CONFIGS.get('gpt_oss_20b')",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "smart_mcp_analyze",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def smart_mcp_analyze():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        # Análisis inteligente del contexto (misma lógica que en smart_mcp_server)",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "basic_tts",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def basic_tts():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        text = input_data.get('text', '')",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "e2b_process",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def e2b_process():\n    \"\"\"Procesa tareas que requieren entornos aislados usando e2b\"\"\"\n    if not E2B_AVAILABLE:\n        error_response = {'error': 'Integración e2b no disponible'}\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:\n            content, format_type = FormatManager.encode(error_response, 'toon')\n            return Response(content, mimetype='text/plain', status=500)\n        else:\n            return jsonify(error_response), 500",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "get_visualization_file",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def get_visualization_file(filepath):\n    \"\"\"Obtiene un archivo de visualización generado en e2b\"\"\"\n    if not E2B_AVAILABLE:\n        return jsonify({'error': 'Integración e2b no disponible'}), 500\n    try:\n        # Este endpoint sería para servir archivos directamente\n        # Por ahora, simulamos el comportamiento\n        # En una implementación completa, se recuperaría el archivo del sandbox\n        return jsonify({'error': 'Funcionalidad de recuperación de archivos en desarrollo'}), 503\n    except Exception as e:",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "e2b_estimate",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def e2b_estimate():\n    \"\"\"Estima los recursos necesarios para una tarea usando e2b\"\"\"\n    if not E2B_AVAILABLE:\n        error_response = {'error': 'Integración e2b no disponible'}\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:\n            content, format_type = FormatManager.encode(error_response, 'toon')\n            return Response(content, mimetype='text/plain', status=500)\n        else:\n            return jsonify(error_response), 500",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "ai_generate_ctm",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def ai_generate_ctm():\n    \"\"\"Genera texto usando CTM para clasificar la tarea y Ollama local para la generación\"\"\"\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "classify_task_ctm",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def classify_task_ctm(prompt):\n    \"\"\"Implementación de clasificación CTM en Python (equivalente al sistema de Node.js)\"\"\"\n    import re\n    prompt_lower = prompt.lower()\n    # Clasificación basada en características cognitivas (similar al sistema CTM de Node.js)\n    complexity_indicators = {\n        'complex': ['análisis', 'razonamiento', 'comparación', 'evaluar', 'estrategia', 'planificación', \n                   'investigación', 'profundo', 'detalle', 'complejo', 'técnico', 'evaluación', \n                   'interpretación', 'síntesis', 'problema', 'dilema', 'paradigma', 'metodología', \n                   'hipótesis', 'teoría', 'implicaciones', 'consecuencias', 'factores', 'dimensiones'],",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "generate_with_ollama",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def generate_with_ollama(prompt, model_tier):\n    \"\"\"Genera texto usando Ollama local\"\"\"\n    import requests\n    import time\n    # Mapear el tier al modelo real\n    model_mapping = {\n        'fast_response': 'phi3:mini',\n        'balanced': 'mistral', \n        'complex': 'gpt-oss:20b'\n    }",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "health_check",
+        "kind": 2,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "def health_check():\n    return jsonify({\n        'status': 'healthy',\n        'service': 'capibara6_integrated_server',\n        'models': list(MODEL_CONFIGS.keys()),\n        'e2b_available': E2B_AVAILABLE,\n        'toon_support': True\n    })\nif __name__ == '__main__':\n    port = int(os.environ.get('PORT', 5001))",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "app = Flask(__name__)\n# Configurar logging\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n# Inicializar la integración de e2b si está disponible\ne2b_integration = None\nif E2B_AVAILABLE:\n    try:\n        e2b_integration = init_e2b_integration()\n        logger.info(\"Integración e2b inicializada correctamente\")",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "logger = logging.getLogger(__name__)\n# Inicializar la integración de e2b si está disponible\ne2b_integration = None\nif E2B_AVAILABLE:\n    try:\n        e2b_integration = init_e2b_integration()\n        logger.info(\"Integración e2b inicializada correctamente\")\n    except Exception as e:\n        logger.error(f\"Error al inicializar la integración e2b: {e}\")\n        E2B_AVAILABLE = False",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
+        "label": "e2b_integration",
+        "kind": 5,
+        "importPath": "backend.capibara6_integrated_server",
+        "description": "backend.capibara6_integrated_server",
+        "peekOfCode": "e2b_integration = None\nif E2B_AVAILABLE:\n    try:\n        e2b_integration = init_e2b_integration()\n        logger.info(\"Integración e2b inicializada correctamente\")\n    except Exception as e:\n        logger.error(f\"Error al inicializar la integración e2b: {e}\")\n        E2B_AVAILABLE = False\n# Proxy para GPT-OSS-20B\n@app.route('/api/chat', methods=['POST'])",
+        "detail": "backend.capibara6_integrated_server",
+        "documentation": {}
+    },
+    {
         "label": "get_gpt_oss_url",
         "kind": 2,
         "importPath": "backend.config_gptoss",
@@ -11952,6 +12340,42 @@
         "description": "backend.cors_proxy",
         "peekOfCode": "GPTOSS_HEALTH_URL = 'http://34.175.215.109/health'\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check del proxy\"\"\"\n    try:\n        # Verificar conexión con la VM\n        response = requests.get(GPTOSS_HEALTH_URL, timeout=5)\n        vm_status = response.json() if response.ok else {'error': 'VM no disponible'}\n        return jsonify({\n            'status': 'ok',",
         "detail": "backend.cors_proxy",
+        "documentation": {}
+    },
+    {
+        "label": "E2BManager",
+        "kind": 6,
+        "importPath": "backend.e2b_manager",
+        "description": "backend.e2b_manager",
+        "peekOfCode": "class E2BManager:\n    \"\"\"\n    Gestor para la integración de e2b con el sistema Capibara6.\n    Permite crear y gestionar sandboxes/VMs rápidas para tareas específicas.\n    \"\"\"\n    def __init__(self, api_key: Optional[str] = None, config_path: str = \"e2b_config.json\"):\n        \"\"\"\n        Inicializa el gestor e2b.\n        :param api_key: Clave de API de e2b. Si no se proporciona, se leerá de la variable de entorno E2B_API_KEY.\n        :param config_path: Ruta al archivo de configuración de e2b",
+        "detail": "backend.e2b_manager",
+        "documentation": {}
+    },
+    {
+        "label": "create_e2b_manager",
+        "kind": 2,
+        "importPath": "backend.e2b_manager",
+        "description": "backend.e2b_manager",
+        "peekOfCode": "def create_e2b_manager(api_token: str) -> E2BManager:\n    \"\"\"\n    Crea una instancia de E2BManager con la clave API especificada.\n    :param api_token: Token de API de e2b\n    :return: Instancia de E2BManager\n    \"\"\"\n    return E2BManager(api_key=api_token)\n# Ejemplo de uso\nif __name__ == \"__main__\":\n    # Usar la clave API proporcionada",
+        "detail": "backend.e2b_manager",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.e2b_manager",
+        "description": "backend.e2b_manager",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass E2BManager:\n    \"\"\"\n    Gestor para la integración de e2b con el sistema Capibara6.\n    Permite crear y gestionar sandboxes/VMs rápidas para tareas específicas.\n    \"\"\"\n    def __init__(self, api_key: Optional[str] = None, config_path: str = \"e2b_config.json\"):\n        \"\"\"\n        Inicializa el gestor e2b.\n        :param api_key: Clave de API de e2b. Si no se proporciona, se leerá de la variable de entorno E2B_API_KEY.",
+        "detail": "backend.e2b_manager",
+        "documentation": {}
+    },
+    {
+        "label": "result",
+        "kind": 5,
+        "importPath": "backend.e2b_manager",
+        "description": "backend.e2b_manager",
+        "peekOfCode": "result = {\n    \"platform\": platform.platform(),\n    \"python_version\": platform.python_version(),\n    \"message\": \"Sandbox e2b funcionando correctamente\"\n}\nprint(json.dumps(result))\n\"\"\")\n        print(\"Resultado de ejecución Python:\")\n        print(result)\n    # Ejecutar el ejemplo",
+        "detail": "backend.e2b_manager",
         "documentation": {}
     },
     {
@@ -13053,6 +13477,15 @@
         "documentation": {}
     },
     {
+        "label": "choose_port",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def choose_port(preferred: int, extra_candidates: Optional[List[int]] = None) -> int:\n    \"\"\"Seleccionar un puerto disponible a partir de candidatos predefinidos.\"\"\"\n    candidates = [preferred]\n    if extra_candidates:\n        candidates.extend(extra_candidates)\n    # Asegurar candidatos únicos y positivos\n    seen = set()\n    filtered = []\n    for p in candidates:\n        if p and p > 0 and p not in seen:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
         "label": "app",
         "kind": 5,
         "importPath": "backend.server",
@@ -13066,7 +13499,7 @@
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "mcp_connector = None\nif MCP_AVAILABLE:\n    try:\n        mcp_connector = Capibara6MCPConnector()\n        print(\"✅ Conector MCP inicializado correctamente\")\n    except Exception as e:\n        print(f\"❌ Error inicializando MCP: {e}\")\n        MCP_AVAILABLE = Falseel frontend\n# Configuración SMTP\nSMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')",
+        "peekOfCode": "mcp_connector = None\nif MCP_AVAILABLE:\n    try:\n        mcp_connector = Capibara6MCPConnector()\n        print(\"✅ Conector MCP inicializado correctamente\")\n    except Exception as e:\n        print(f\"❌ Error inicializando MCP: {e}\")\n        MCP_AVAILABLE = False\n# Configuración SMTP\nSMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -13536,6 +13969,42 @@
         "description": "backend.test_mcp",
         "peekOfCode": "class MCPTester:\n    \"\"\"Tester para el conector MCP de capibara6\"\"\"\n    def __init__(self, base_url: str = \"http://localhost:5000\"):\n        self.base_url = base_url\n        self.connector = Capibara6MCPConnector()\n    async def test_direct_connector(self):\n        \"\"\"Probar el conector directamente (sin servidor)\"\"\"\n        print(\"🧪 Probando conector MCP directamente...\")\n        # Test de inicialización\n        init_request = {",
         "detail": "backend.test_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "analyze_context",
+        "kind": 2,
+        "importPath": "backend.utils",
+        "description": "backend.utils",
+        "peekOfCode": "def analyze_context(context):\n    \"\"\"Analiza el contexto proporcionado (función auxiliar)\"\"\"\n    if isinstance(context, str):\n        return {\n            'length': len(context),\n            'word_count': len(context.split()),\n            'has_personal_info': 'nombre' in context.lower() or 'usuario' in context.lower(),\n            'context_type': 'text'\n        }\n    return {'type': type(context).__name__}",
+        "detail": "backend.utils",
+        "documentation": {}
+    },
+    {
+        "label": "understand_query",
+        "kind": 2,
+        "importPath": "backend.utils",
+        "description": "backend.utils",
+        "peekOfCode": "def understand_query(query):\n    \"\"\"Entiende la intención de la consulta (función auxiliar)\"\"\"\n    query_lower = query.lower() if isinstance(query, str) else ''\n    intent_analysis = {\n        'is_question': '?' in query or any(word in query_lower for word in ['qué', 'cuál', 'cómo', 'por qué', 'when', 'what', 'how', 'why']),\n        'is_command': any(word in query_lower for word in ['haz', 'crea', 'genera', 'hablemos', 'do', 'create', 'generate', 'let\\'s']),\n        'complexity': 'high' if len(query) > 100 else 'medium' if len(query) > 50 else 'low'\n    }\n    return intent_analysis\ndef determine_action(context, query):",
+        "detail": "backend.utils",
+        "documentation": {}
+    },
+    {
+        "label": "determine_action",
+        "kind": 2,
+        "importPath": "backend.utils",
+        "description": "backend.utils",
+        "peekOfCode": "def determine_action(context, query):\n    \"\"\"Determina la acción recomendada basada en contexto y consulta (función auxiliar)\"\"\"\n    return {\n        'next_step': 'process_query',\n        'requires_context_extension': len(str(context)) < 100,\n        'model_preference': 'context_aware'\n    }\ndef calculate_relevance(context, query):\n    \"\"\"Calcula la relevancia entre contexto y consulta (función auxiliar)\"\"\"\n    if not context or not query:",
+        "detail": "backend.utils",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_relevance",
+        "kind": 2,
+        "importPath": "backend.utils",
+        "description": "backend.utils",
+        "peekOfCode": "def calculate_relevance(context, query):\n    \"\"\"Calcula la relevancia entre contexto y consulta (función auxiliar)\"\"\"\n    if not context or not query:\n        return 0.0\n    context_words = set(str(context).lower().split())\n    query_words = set(str(query).lower().split())\n    if not context_words or not query_words:\n        return 0.0\n    common_words = context_words.intersection(query_words)\n    relevance_score = len(common_words) / len(query_words) if query_words else 0.0",
+        "detail": "backend.utils",
         "documentation": {}
     },
     {
