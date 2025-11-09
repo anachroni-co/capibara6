@@ -145,7 +145,7 @@ def chat_proxy():
     try:
         vm_status = get_vm_status()
         if not vm_status:
-            return jsonify({'error': 'Ollama o modelo gpt-oss:20b no disponible'}), 503
+            return jsonify({'error': 'VM GPT-OSS-20B no disponible'}), 503
         
         data = request.json
         if not data:
@@ -158,17 +158,17 @@ def chat_proxy():
             return jsonify({'error': 'Prompt is required'}), 400
         
         # Construir payload según categoría
-        chat_payload = {'model': OLLAMA_MODEL_NAME, 'prompt': prompt, 'stream': False, 'options': {'temperature': 0.6, 'top_p': 0.85, 'repeat_penalty': 1.3, 'num_predict': 100}}
+        chat_payload = get_category_payload(prompt, category)
         
         response = requests.post(
             GPTOSS_API_URL,
             json=chat_payload,
-            timeout=60
+            timeout=30
         )
         
         if response.status_code == 200:
             result = response.json()
-            result = response.json(); ollama_result = {'content': result.get(.response., .), .token_usage.: get_token_usage(), .server.: .Capibara6 Integrated Server., .model_used.: result.get(.model., OLLAMA_MODEL_NAME), .total_duration.: result.get(.total_duration., 0), .load_duration.: result.get(.load_duration., 0), .sample_count.: result.get(.sample_count., 0), .sample_duration.: result.get(.sample_duration., 0), .prompt_eval_count.: result.get(.prompt_eval_count., 0), .prompt_eval_duration.: result.get(.prompt_eval_duration., 0), .eval_count.: result.get(.eval_count., 0), .eval_duration.: result.get(.eval_duration., 0)}
+            result['token_usage'] = get_token_usage()
             result['server'] = 'Capibara6 Integrated Server'
             return jsonify(result)
         else:
@@ -178,7 +178,7 @@ def chat_proxy():
             }), response.status_code
             
     except requests.exceptions.Timeout:
-        return jsonify({'error': 'Timeout connecting to Ollama'}), 504
+        return jsonify({'error': 'Timeout connecting to VM'}), 504
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -188,7 +188,7 @@ def completion_proxy():
     try:
         vm_status = get_vm_status()
         if not vm_status:
-            return jsonify({'error': 'Ollama o modelo gpt-oss:20b no disponible'}), 503
+            return jsonify({'error': 'VM GPT-OSS-20B no disponible'}), 503
         
         data = request.json
         if not data:
@@ -197,7 +197,7 @@ def completion_proxy():
         response = requests.post(
             GPTOSS_API_URL,
             json=data,
-            timeout=60
+            timeout=30
         )
         
         return Response(
@@ -207,7 +207,7 @@ def completion_proxy():
         )
         
     except requests.exceptions.Timeout:
-        return jsonify({'error': 'Timeout connecting to Ollama'}), 504
+        return jsonify({'error': 'Timeout connecting to VM'}), 504
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

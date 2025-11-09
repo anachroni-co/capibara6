@@ -12,7 +12,7 @@ class CloudConfig:
     
     def __init__(self):
         # E2B Configuration
-        self.e2b_api_key = os.getenv("E2B_API_KEY", "e2b_01ea80c0f5c76ebcac24d99e9136e2975787b918")
+        self.e2b_api_key = os.getenv("E2B_API_KEY", "e2b_aae47b65f16bbf08f0a4ae958046ace75dd0b69e")
         
         # Google Cloud Configuration
         self.gcp_project_id = os.getenv("GCP_PROJECT_ID", "mamba-001")

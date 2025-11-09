@@ -4,7 +4,7 @@
 
 // Configuración del sistema de consenso (comentado por ahora, usar modelo original)
     const CONSENSUS_CONFIG = {
-        serverUrl: 'https://www.capibara6.com/api/consensus/query',
+        serverUrl: 'http://localhost:5001/api/consensus/query',
     fallbackUrl: 'http://34.175.104.187:8080/completion',  // IP actualizada
     enabled: false, // Deshabilitado por ahora
     defaultTemplate: 'general',
@@ -14,7 +14,7 @@
 // Configuración del modelo original
     const MODEL_CONFIG = {
         // Usar proxy de Vercel para evitar problemas de Mixed Content
-        serverUrl: 'https://www.capibara6.com/api/chat',  // Proxy de Vercel
+        serverUrl: 'http://localhost:5001/api/chat',  // Servidor local
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
