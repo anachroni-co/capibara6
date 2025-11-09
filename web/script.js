@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // ============================================
 // Detección de idioma basada en geolocalización
 // ============================================
@@ -424,3 +425,79 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 });
 
+=======
+// script.js - Funciones generales para la plataforma Capibara6
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Capibara6 plataforma cargada');
+    
+    // Inicializar animaciones neuronales
+    if (typeof initNeuralAnimation === 'function') {
+        initNeuralAnimation();
+    }
+});
+
+// Configuración de endpoints
+const API_ENDPOINTS = {
+    // Servidor local con CTM y e2b
+    LOCAL: 'http://localhost:5001/api',
+    
+    // Servicios en la nube (VMs de Google Cloud)
+    CLOUD_CHAT: 'http://34.175.215.109:5001/api',  // Servidor integrado
+    CLOUD_CONSENSUS: 'http://34.175.215.109:5003/api',  // Servidor de consenso
+    CLOUD_TTS: 'http://34.175.215.109:5004/api',  // Servidor TTS
+    CLOUD_MCP: 'http://34.175.215.109:5010/api',  // Servidor MCP inteligente
+    
+    // Endpoint de Vercel (proxy)
+    VERCEL: 'https://your-vercel-deployment.vercel.app/api'
+};
+
+// Función para hacer solicitudes API a los servidores backend
+async function makeApiRequest(endpoint, data, serviceType = 'local') {
+    try {
+        let url;
+        
+        switch(serviceType) {
+            case 'local':
+                url = `${API_ENDPOINTS.LOCAL}/${endpoint}`;
+                break;
+            case 'cloud':
+                // Por defecto usar el servidor integrado en la nube
+                url = `${API_ENDPOINTS.CLOUD_CHAT}/${endpoint}`;
+                break;
+            case 'consensus':
+                url = `${API_ENDPOINTS.CLOUD_CONSENSUS}/${endpoint}`;
+                break;
+            case 'tts':
+                url = `${API_ENDPOINTS.CLOUD_TTS}/${endpoint}`;
+                break;
+            case 'mcp':
+                url = `${API_ENDPOINTS.CLOUD_MCP}/${endpoint}`;
+                break;
+            case 'vercel':
+                url = `${API_ENDPOINTS.VERCEL}/${endpoint}`;
+                break;
+            default:
+                // Por defecto usar servidor local que incluye CTM y e2b
+                url = `${API_ENDPOINTS.LOCAL}/${endpoint}`;
+        }
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('Error en la solicitud API:', error);
+        throw error;
+    }
+}
+>>>>>>> 9532bef (update files)
