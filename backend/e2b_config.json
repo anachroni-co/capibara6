@@ -1,0 +1,17 @@
+{
+  "e2b": {
+    "api_token": "e2b_d8df23b5de5214b7bfb4ebe227a308b61a2ae172",
+    "team_id": "5451071b-8660-47f6-92b3-61b7a497ab65",
+    "email": "marco@anachroni.co",
+    "default_template": "python3",
+    "timeout": 86400,
+    "enabled": true,
+    "limits": {
+      "max_session_length_seconds": 86400,
+      "max_concurrent_sandboxes": 100,
+      "vcpus_per_sandbox": 8,
+      "ram_per_sandbox_gb": 8,
+      "disk_per_sandbox_gb": 20
+    }
+  }
+}
