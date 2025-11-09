@@ -9,7 +9,7 @@ const TTS_CONFIG = {
     enabled: true,
     // Deshabilitar Coqui TTS temporalmente (usar solo Web Speech API)
     useCoquiTTS: false,
-    apiEndpoint: 'https://www.capibara6.com/api/tts/speak',  // Usar dominio correcto con www
+    apiEndpoint: 'http://localhost:5001/api/tts/speak',  // Servidor local
     language: 'es',
     rate: 1.0,      // Velocidad (0.5 - 2.0)
     pitch: 1.0,     // Tono (0 - 2)

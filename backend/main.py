@@ -229,8 +229,10 @@ async def process_query(
         
         # 3. E2B Execution (si hay código)
         e2b_result = None
-        if app.state.e2b_integration and "code" in query.lower():
-            e2b_result = app.state.e2b_integration.execute_query(query)
+        if app.state.e2b_integration:
+            # Ejecutar E2B si hay código en la query o si explícitamente se pide ejecución
+            if "code" in query.lower() or "execute" in query.lower() or "run" in query.lower():
+                e2b_result = app.state.e2b_integration.execute_query(query)
         
         # 4. Cache result
         cache_key = f"query_{hash(query)}"

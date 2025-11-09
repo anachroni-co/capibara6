@@ -36,7 +36,7 @@ class Capibara6ChatGPTOSS {
     
     getBackendUrl() {
         // Usar dominio correcto con SSL válido y www
-        return 'https://www.capibara6.com';
+        return 'http://localhost:5001';
     }
     
     toggleChat() {

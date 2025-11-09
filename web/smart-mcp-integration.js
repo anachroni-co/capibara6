@@ -6,7 +6,7 @@
 
 const SMART_MCP_CONFIG = {
     // Usar el servidor integrado en la VM - HTTPS en producción
-    serverUrl: 'https://www.capibara6.com/api/mcp/analyze',  // Usar dominio correcto con www
+    serverUrl: 'http://localhost:5001/api/mcp/analyze',  // Servidor local
     enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true
