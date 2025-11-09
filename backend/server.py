@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Backend de capibara6 - Servidor Flask para gestión de emails
-"from flask import Flask, request, jsonify
-from flask_cors import CORS
+Backend de capibara6 - Servidor Flask para gestión de emails y endpoints MCP.
+"""
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS  # type: ignore[import-untyped]
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from typing import List, Optional
 import os
-from dotenv import load_dotenv
 import json
+import socket
+from dotenv import load_dotenv
 
 # Importar conector MCP
 try:
@@ -18,8 +22,9 @@ try:
     MCP_AVAILABLE = True
 except ImportError:
     MCP_AVAILABLE = False
-    print("⚠️  MCP Connector no disponible - instalando dependencias...")v
-import j# Cargar variables de entorno
+    print("⚠️  MCP Connector no disponible - instala dependencias opcionales para MCP.")
+
+# Cargar variables de entorno
 load_dotenv()
 
 app = Flask(__name__)
@@ -33,7 +38,7 @@ if MCP_AVAILABLE:
         print("✅ Conector MCP inicializado correctamente")
     except Exception as e:
         print(f"❌ Error inicializando MCP: {e}")
-        MCP_AVAILABLE = Falseel frontend
+        MCP_AVAILABLE = False
 
 # Configuración SMTP
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
@@ -530,7 +535,16 @@ def save_conversation():
         
         return jsonify({
             'success': True,
-         @app.route('/api/save-lead', methods=['POST'])
+            'email_sent': email_sent,
+            'admin_notified': admin_notified,
+            'message': 'Conversación guardada correctamente'
+        })
+    except Exception as e:
+        print(f'Error guardando conversación: {e}')
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/save-lead', methods=['POST'])
 def save_lead():
     """Endpoint para guardar leads empresariales"""
     try:
@@ -1109,7 +1123,10 @@ curl -X POST http://localhost:5000/api/mcp/tools/call \\
         </div>
     </body>
     </html>
-    '''on as e@app.route('/', methods=['GET'])
+    '''
+
+
+@app.route('/', methods=['GET'])
 def index():
     """Página principal"""
     return '''
@@ -1131,7 +1148,7 @@ def index():
             
             <h2>📡 Endpoints Disponibles:</h2>
             <ul>
-                <li>POST /api/save-conversation - Guardar conversacion y enviar email</li>
+                <li>POST /api/save-conversation - Guardar conversación y enviar email</li>
                 <li>POST /api/save-lead - Guardar leads empresariales</li>
                 <li>GET /api/health - Health check</li>
             </ul>
@@ -1162,30 +1179,75 @@ def index():
             </ul>
         </body>
     </html>
-    '''or funcionando correctamente</p>
-       if __name__ == '__main__':
+    '''
+
+
+def _is_port_available(port: int) -> bool:
+    """Verificar si un puerto está disponible para escuchar."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            sock.bind(('0.0.0.0', port))
+        except OSError:
+            return False
+    return True
+
+
+def choose_port(preferred: int, extra_candidates: Optional[List[int]] = None) -> int:
+    """Seleccionar un puerto disponible a partir de candidatos predefinidos."""
+    candidates = [preferred]
+    if extra_candidates:
+        candidates.extend(extra_candidates)
+    # Asegurar candidatos únicos y positivos
+    seen = set()
+    filtered = []
+    for p in candidates:
+        if p and p > 0 and p not in seen:
+            filtered.append(p)
+            seen.add(p)
+
+    for port in filtered:
+        if _is_port_available(port):
+            return port
+
+    # Fallback a un puerto aleatorio asignado por el SO
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind(('0.0.0.0', 0))
+        return sock.getsockname()[1]
+
+
+if __name__ == '__main__':
     ensure_data_dir()
     print('🦫 capibara6 Backend iniciado')
     print(f'📧 Email configurado: {FROM_EMAIL}')
-    
+
     if MCP_AVAILABLE:
         print('✅ Conector MCP disponible')
         print('🔌 Endpoints MCP: /api/mcp/*')
         print('📚 Documentación MCP: /mcp')
     else:
         print('⚠️  Conector MCP no disponible')
-    
-    # Puerto para Railway (usa variable de entorno PORT)
-    port = int(os.getenv('PORT', 5000))
-    print(f'🌐 Servidor iniciado en puerto {port}')
-    print(f'🔗 URL: http://localhost:{port}')
-    
-    app.run(host='0.0.0.0', port=port, debug=False):
-    ensure_data_dir()
-    print('capibara6 Backend iniciado')
-    print(f'Email configurado: {FROM_EMAIL}')
-    
-    # Puerto para Railway (usa variable de entorno PORT)
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+
+    preferred_port = int(os.getenv('PORT', 5000))
+    fallback_env = os.getenv('PORT_FALLBACKS', '')
+    fallback_ports = []
+    if fallback_env:
+        try:
+            fallback_ports = [int(p.strip()) for p in fallback_env.split(',') if p.strip()]
+        except ValueError:
+            print('⚠️  PORT_FALLBACKS contiene valores no numéricos, usando valores por defecto.')
+            fallback_ports = []
+
+    # Añadir algunos candidatos comunes adicionales
+    fallback_ports.extend([5001, 5002, 8000, 8080])
+
+    selected_port = choose_port(preferred_port, fallback_ports)
+
+    if selected_port != preferred_port:
+        print(f'⚠️  Puerto {preferred_port} en uso. Cambiando a {selected_port}.')
+
+    print(f'🌐 Servidor escuchando en puerto {selected_port}')
+    print(f'🔗 URL: http://localhost:{selected_port}')
+
+    app.run(host='0.0.0.0', port=selected_port, debug=False)
 
