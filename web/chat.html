@@ -109,11 +109,75 @@
                     </div>
                 </div>
                 <div class="chat-header-actions">
-                    <!-- Model Indicator Badge -->
-                    <div class="model-badge" id="current-model-badge" title="Modelo activo">
-                        <i data-lucide="cpu" style="width: 16px; height: 16px;"></i>
-                        <span id="current-model-name">Auto</span>
+                    <!-- Model Selector Dropdown -->
+                    <div class="model-selector-wrapper">
+                        <button class="model-badge" id="current-model-badge" title="Seleccionar modelo">
+                            <i data-lucide="cpu" style="width: 16px; height: 16px;"></i>
+                            <span id="current-model-name">Auto</span>
+                            <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+                        </button>
+
+                        <!-- Model Dropdown Menu -->
+                        <div class="model-dropdown" id="model-dropdown">
+                            <div class="model-dropdown-header">
+                                <span>Seleccionar Modelo</span>
+                            </div>
+                            <div class="model-option active" data-model="auto" data-tier="auto">
+                                <div class="model-option-icon">
+                                    <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="model-option-content">
+                                    <div class="model-option-name">Automático</div>
+                                    <div class="model-option-desc">Selección inteligente según la tarea</div>
+                                </div>
+                                <div class="model-option-check">
+                                    <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                                </div>
+                            </div>
+                            <div class="model-dropdown-divider"></div>
+                            <div class="model-option" data-model="phi3:mini" data-tier="fast">
+                                <div class="model-option-icon tier-fast">
+                                    <i data-lucide="zap" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="model-option-content">
+                                    <div class="model-option-name">Phi3 Mini <span class="model-tier-badge tier-fast">Fast</span></div>
+                                    <div class="model-option-desc">Respuestas rápidas y eficientes</div>
+                                </div>
+                                <div class="model-option-check">
+                                    <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                                </div>
+                            </div>
+                            <div class="model-option" data-model="mistral" data-tier="balanced">
+                                <div class="model-option-icon tier-balanced">
+                                    <i data-lucide="activity" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="model-option-content">
+                                    <div class="model-option-name">Mistral <span class="model-tier-badge tier-balanced">Balanced</span></div>
+                                    <div class="model-option-desc">Equilibrio entre velocidad y calidad</div>
+                                </div>
+                                <div class="model-option-check">
+                                    <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                                </div>
+                            </div>
+                            <div class="model-option" data-model="gpt-oss:20b" data-tier="complex">
+                                <div class="model-option-icon tier-complex">
+                                    <i data-lucide="brain" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="model-option-content">
+                                    <div class="model-option-name">GPT-OSS 20B <span class="model-tier-badge tier-complex">Complex</span></div>
+                                    <div class="model-option-desc">Razonamiento complejo y detallado</div>
+                                </div>
+                                <div class="model-option-check">
+                                    <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- n8n Automation Button -->
+                    <button class="btn-icon" id="n8n-automation-btn" title="Automatizaciones n8n">
+                        <i data-lucide="workflow" style="width: 20px; height: 20px;"></i>
+                    </button>
 
                     <button class="btn-icon" id="clear-chat-btn" title="Limpiar conversación">
                         <i data-lucide="trash-2" style="width: 20px; height: 20px;"></i>
@@ -256,6 +320,103 @@
                         <div class="metric-bar">
                             <div class="metric-bar-fill" id="metrics-complex-bar" style="width: 0%; background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- n8n Automation Panel -->
+        <aside class="n8n-automation-panel" id="n8n-automation-panel">
+            <div class="n8n-panel-header">
+                <h3 class="n8n-panel-title">Automatizaciones n8n</h3>
+                <button class="btn-icon" id="close-n8n-panel">
+                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+            <div class="n8n-panel-content">
+                <!-- n8n Connection Status -->
+                <div class="n8n-status-card">
+                    <div class="n8n-status-header">
+                        <div class="n8n-status-indicator" id="n8n-status-indicator">
+                            <span class="status-dot"></span>
+                            <span class="status-text" id="n8n-status-text">Conectando...</span>
+                        </div>
+                        <button class="btn-icon-sm" id="n8n-refresh-btn" title="Actualizar">
+                            <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                        </button>
+                    </div>
+                    <div class="n8n-server-info">
+                        <div class="n8n-info-item">
+                            <span class="n8n-info-label">Servidor:</span>
+                            <span class="n8n-info-value" id="n8n-server-url">-</span>
+                        </div>
+                        <div class="n8n-info-item">
+                            <span class="n8n-info-label">Workflows activos:</span>
+                            <span class="n8n-info-value" id="n8n-workflows-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="n8n-section">
+                    <div class="n8n-section-title">Acciones Rápidas</div>
+                    <div class="n8n-actions-grid">
+                        <button class="n8n-action-btn" id="n8n-trigger-workflow">
+                            <i data-lucide="play" style="width: 20px; height: 20px;"></i>
+                            <span>Ejecutar Workflow</span>
+                        </button>
+                        <button class="n8n-action-btn" id="n8n-view-workflows">
+                            <i data-lucide="list" style="width: 20px; height: 20px;"></i>
+                            <span>Ver Workflows</span>
+                        </button>
+                        <button class="n8n-action-btn" id="n8n-create-workflow">
+                            <i data-lucide="plus-circle" style="width: 20px; height: 20px;"></i>
+                            <span>Crear Workflow</span>
+                        </button>
+                        <button class="n8n-action-btn" id="n8n-open-editor">
+                            <i data-lucide="external-link" style="width: 20px; height: 20px;"></i>
+                            <span>Abrir Editor</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Executions -->
+                <div class="n8n-section">
+                    <div class="n8n-section-title">Ejecuciones Recientes</div>
+                    <div class="n8n-executions-list" id="n8n-executions-list">
+                        <div class="n8n-empty-state">
+                            <i data-lucide="inbox" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                            <p>No hay ejecuciones recientes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integration Settings -->
+                <div class="n8n-section">
+                    <div class="n8n-section-title">Configuración</div>
+                    <div class="n8n-settings-form">
+                        <div class="n8n-form-group">
+                            <label for="n8n-webhook-url">Webhook URL</label>
+                            <input
+                                type="text"
+                                id="n8n-webhook-url"
+                                class="n8n-input"
+                                placeholder="https://n8n.capibara6.com/webhook/..."
+                            />
+                        </div>
+                        <div class="n8n-form-group">
+                            <label for="n8n-api-key">API Key (opcional)</label>
+                            <input
+                                type="password"
+                                id="n8n-api-key"
+                                class="n8n-input"
+                                placeholder="n8n_api_key_..."
+                            />
+                        </div>
+                        <button class="btn-primary" id="n8n-save-config">
+                            <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+                            Guardar Configuración
+                        </button>
                     </div>
                 </div>
             </div>
