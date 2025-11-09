@@ -109,6 +109,12 @@
                     </div>
                 </div>
                 <div class="chat-header-actions">
+                    <!-- Model Indicator Badge -->
+                    <div class="model-badge" id="current-model-badge" title="Modelo activo">
+                        <i data-lucide="cpu" style="width: 16px; height: 16px;"></i>
+                        <span id="current-model-name">Auto</span>
+                    </div>
+
                     <button class="btn-icon" id="clear-chat-btn" title="Limpiar conversación">
                         <i data-lucide="trash-2" style="width: 20px; height: 20px;"></i>
                     </button>
@@ -163,6 +169,98 @@
             </div>
         </div>
 
+        <!-- Model Metrics Panel -->
+        <aside class="model-metrics-panel" id="model-metrics-panel">
+            <div class="metrics-panel-header">
+                <h3 class="metrics-panel-title">Métricas de Modelos</h3>
+                <button class="btn-icon" id="close-metrics-panel">
+                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+            <div class="metrics-panel-content">
+                <!-- Current Model Card -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Modelo Actual</span>
+                    </div>
+                    <div class="metric-value" id="metrics-current-model">Auto</div>
+                    <div class="model-stats-list" style="margin-top: 1rem;">
+                        <div class="model-stat-item">
+                            <span class="model-stat-label">
+                                <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
+                                Tier
+                            </span>
+                            <span class="model-stat-value" id="metrics-tier">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Response Metrics -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Última Respuesta</span>
+                    </div>
+                    <div class="model-stats-list">
+                        <div class="model-stat-item">
+                            <span class="model-stat-label">
+                                <i data-lucide="clock" style="width: 16px; height: 16px;"></i>
+                                Tiempo
+                            </span>
+                            <span class="model-stat-value" id="metrics-response-time">-</span>
+                        </div>
+                        <div class="model-stat-item">
+                            <span class="model-stat-label">
+                                <i data-lucide="type" style="width: 16px; height: 16px;"></i>
+                                Tokens
+                            </span>
+                            <span class="model-stat-value" id="metrics-tokens">-</span>
+                        </div>
+                        <div class="model-stat-item">
+                            <span class="model-stat-label">
+                                <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+                                Velocidad
+                            </span>
+                            <span class="model-stat-value" id="metrics-speed">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model Usage Stats -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Uso de Modelos</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.875rem; color: var(--text-secondary);">Fast</span>
+                            <span style="font-size: 0.875rem; font-weight: 600;" id="metrics-fast-percent">0%</span>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-bar-fill" id="metrics-fast-bar" style="width: 0%; background: linear-gradient(135deg, #10b981 0%, #059669 100%);"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.875rem; color: var(--text-secondary);">Balanced</span>
+                            <span style="font-size: 0.875rem; font-weight: 600;" id="metrics-balanced-percent">0%</span>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-bar-fill" id="metrics-balanced-bar" style="width: 0%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.875rem; color: var(--text-secondary);">Complex</span>
+                            <span style="font-size: 0.875rem; font-weight: 600;" id="metrics-complex-percent">0%</span>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-bar-fill" id="metrics-complex-bar" style="width: 0%; background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
         <!-- Settings Modal -->
         <div class="modal-overlay" id="settings-modal">
             <div class="modal-content">
@@ -210,6 +308,7 @@
     </div>
 
     <script src="config.js"></script>
+    <script src="model-visualization.js"></script>
     <script src="chat-page.js"></script>
     <script>
         // Inicializar iconos de Lucide
