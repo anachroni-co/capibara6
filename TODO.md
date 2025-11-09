@@ -10,11 +10,11 @@
 ## 📊 Progreso General
 
 ```
-[███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 10% Completado
+[█████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 18% Completado
 
-✅ Completadas: 4/40
+✅ Completadas: 7/40
 🔄 En progreso: 0/40
-⏳ Pendientes: 36/40
+⏳ Pendientes: 33/40
 ```
 
 ---
@@ -57,30 +57,38 @@
 ## 🎨 FASE 2: Visualización de Modelos
 
 **Objetivo:** Implementar panel de visualización de modelos activos y respuestas
-**Estado:** ⏳ Pendiente (0/8 completadas)
+**Estado:** 🔄 En progreso (3/8 completadas - 37.5%)
 
 ### Tareas:
 
-- [ ] **2.1** Diseñar componente de modelo activo
-  - **Estado:** ⏳ Pendiente
-  - **Descripción:** Crear badge/chip que muestre modelo usado (phi3, mistral, gpt-oss-20b)
-  - **Ubicación:** Chat header
-  - **Tiempo estimado:** 20 min
+- [x] **2.1** Diseñar componente de modelo activo
+  - **Estado:** ✅ Completado
+  - **Fecha:** 2025-11-09
+  - **Descripción:** Badge clickeable con colores por tier en chat header
+  - **Resultado:** Badge implementado con gradientes y hover effects
+  - **Archivos:** web/chat.html, web/chat-styles.css
+  - **Commit:** 101d873
 
-- [ ] **2.2** Implementar indicador de modelo por mensaje
-  - **Estado:** ⏳ Pendiente
-  - **Descripción:** Badge pequeño en cada mensaje mostrando qué modelo lo generó
-  - **Tiempo estimado:** 15 min
+- [x] **2.2** Implementar indicador de modelo por mensaje
+  - **Estado:** ✅ Completado
+  - **Fecha:** 2025-11-09
+  - **Descripción:** Badge pequeño en cada mensaje con icono y nombre de modelo
+  - **Resultado:** Clase .message-model-badge implementada
+  - **Archivos:** web/chat-styles.css, web/model-visualization.js
+  - **Commit:** 101d873
 
-- [ ] **2.3** Crear panel de métricas de modelo
-  - **Estado:** ⏳ Pendiente
-  - **Descripción:** Panel lateral con métricas en tiempo real
-  - **Métricas:**
-    - Velocidad de respuesta (tokens/s)
-    - Tokens generados
-    - Tiempo de respuesta
-    - Tier usado (fast/balanced/complex)
-  - **Tiempo estimado:** 30 min
+- [x] **2.3** Crear panel de métricas de modelo
+  - **Estado:** ✅ Completado
+  - **Fecha:** 2025-11-09
+  - **Descripción:** Panel lateral deslizable con métricas en tiempo real
+  - **Implementado:**
+    - ✅ Modelo actual y tier
+    - ✅ Tiempo de respuesta
+    - ✅ Tokens generados
+    - ✅ Velocidad (tokens/s)
+    - ✅ Gráficos de uso por tier (fast/balanced/complex)
+  - **Archivos:** web/chat.html (+95 líneas), web/chat-styles.css (+214 líneas), web/model-visualization.js (305 líneas)
+  - **Commit:** 101d873
 
 - [ ] **2.4** Implementar selector manual de modelo
   - **Estado:** ⏳ Pendiente
@@ -667,6 +675,9 @@ CREATE TABLE training_data (
 | 2025-11-09 | Completado PROJECT_STATUS.md | Claude |
 | 2025-11-09 | ✅ Fase 1 completada - Conflictos resueltos | Claude |
 | 2025-11-09 | Actualizado progreso: 10% completado (4/40 tareas) | Claude |
+| 2025-11-09 | 🎨 Fase 2 parcial - Visualización básica de modelos | Claude |
+| 2025-11-09 | Actualizado progreso: 18% completado (7/40 tareas) | Claude |
+| 2025-11-09 | Creado model-visualization.js (305 líneas) | Claude |
 
 ---
 
