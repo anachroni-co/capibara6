@@ -8,11 +8,10 @@ Controla todos los servicios de capibara6: backend, frontend, y componentes E2B
 import subprocess
 import sys
 import os
-import signal
 import time
 import psutil
 import requests
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import logging
 
 # Configurar logging
@@ -74,7 +73,8 @@ class Capibara6ServiceManager:
         processes = []
         for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
             try:
-                for conn in proc.connections():
+                connections = proc.connections()
+                for conn in connections:
                     if conn.laddr and conn.laddr.port == port:
                         processes.append(proc)
                         break
@@ -228,7 +228,7 @@ class Capibara6ServiceManager:
         logger.info("🛑 Deteniendo todos los servicios de capibara6...")
         
         results = {}
-        # Detener en orden inverso (primero backend, luego frontend)
+        # Detener en orden inverso (primero integrated_server, luego backend, finalmente frontend)
         for service_name in ['integrated_server', 'backend', 'frontend']:
             results[service_name] = self.stop_service(service_name)
         
@@ -310,7 +310,7 @@ def main():
     manager = Capibara6ServiceManager()
     
     if len(sys.argv) < 2:
-        print("Uso: python services_manager.py [start|stop|status|restart] [service_name|all]")
+        print("uso: python services_manager.py [start|stop|status|restart] [service_name|all]")
         print("\nComandos disponibles:")
         print("  status                 - Verificar estado de todos los servicios")
         print("  start all              - Iniciar todos los servicios")
