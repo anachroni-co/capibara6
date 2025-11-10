@@ -24,6 +24,21 @@ except ImportError:
     MCP_AVAILABLE = False
     print("⚠️  MCP Connector no disponible - instala dependencias opcionales para MCP.")
 
+# Importar gestor de plantillas n8n
+try:
+    from n8n_templates import (
+        get_templates_catalog,
+        get_recommended_templates,
+        get_template_details,
+        search_templates,
+        download_template_json,
+        import_template
+    )
+    N8N_TEMPLATES_AVAILABLE = True
+except ImportError:
+    N8N_TEMPLATES_AVAILABLE = False
+    print("⚠️  N8N Templates Manager no disponible")
+
 # Cargar variables de entorno
 load_dotenv()
 
