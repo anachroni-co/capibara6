@@ -126,13 +126,15 @@ app.add_middleware(
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
     """Middleware de rate limiting."""
+    global rate_limit_storage
     client_ip = request.client.host
     current_time = time.time()
     
     # Limpiar entradas antiguas (más de 1 minuto)
-    rate_limit_storage = {k: v for k, v in rate_limit_storage.items() 
+    cleaned_storage = {k: v for k, v in rate_limit_storage.items() 
                          if current_time - v['last_request'] < 60}
-    
+    rate_limit_storage.clear()
+    rate_limit_storage.update(cleaned_storage)
     # Verificar límite (100 requests por minuto por IP)
     if client_ip in rate_limit_storage:
         if rate_limit_storage[client_ip]['count'] >= 100:
