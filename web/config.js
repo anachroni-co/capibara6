@@ -2,10 +2,10 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // En desarrollo: 'http://localhost:5000'
+    // En desarrollo: 'http://localhost:5002'
     // En producción: URL de Vercel/Railway con SSL válido
     BACKEND_URL: window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
+        ? 'http://localhost:5002'
         : 'https://www.capibara6.com',
 
     // Endpoints
