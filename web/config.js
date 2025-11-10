@@ -1,9 +1,15 @@
 // Configuración del chatbot capibara6 con GPT-OSS-20B
 
+// Detectar si estamos en localhost o en producción
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// URLs de las VMs de Google Cloud
+const VM_MODELS = 'http://34.12.166.76';      // VM de modelos (bounty)
+const VM_SERVICES = 'http://34.175.136.104';   // VM de servicios (TTS, MCP, N8N)
+
 const CHATBOT_CONFIG = {
-    // URL del backend
-    // Usar servidor local en lugar del dominio
-    BACKEND_URL: 'http://localhost:5001',
+    // URL del backend - cambiar según entorno
+    BACKEND_URL: isLocalhost ? 'http://localhost:5001' : VM_MODELS + ':5001',
 
     // Endpoints
     ENDPOINTS: {
@@ -47,5 +53,11 @@ const CHATBOT_CONFIG = {
         MCP_ENABLED: false,  // Deshabilitado por defecto ya que no está corriendo en el servidor actual
         TTS_ENABLED: true,
         E2B_ENABLED: true
+    },
+
+    // URLs de VMs para servicios externos
+    VMS: {
+        MODELS: VM_MODELS,          // 34.12.166.76 - VM de modelos (bounty)
+        SERVICES: VM_SERVICES       // 34.175.136.104 - VM de servicios
     }
 };
