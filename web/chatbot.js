@@ -17,13 +17,29 @@ async function checkSystemStatus() {
         if (typeof makeApiRequest !== 'undefined') {
             response = await makeApiRequest('health', {}, 'local');
         } else {
-            const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
-                ? CHATBOT_CONFIG.BACKEND_URL 
-                : (window.location.hostname === 'localhost' 
+            // Usar proxy local para evitar problemas CORS
+            try {
+                const localProxyUrl = 'http://localhost:8001/api/proxy';
+                const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
+                    ? CHATBOT_CONFIG.BACKEND_URL 
+                    : 'http://34.12.166.76:5000';  // Servidor en bounty2
+                const proxyResponse = await fetch(localProxyUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target_url: `${backendUrl}/api/health`,
+                        method: 'GET'
+                    })
+                });
+                response = await proxyResponse.json();
+            } catch (proxyError) {
+                // Si falla el proxy, usar conexión directa como fallback
+                const backendUrl = window.location.hostname === 'localhost' 
                     ? 'http://34.12.166.76:5000'  // Servidor en bounty2
-                    : 'https://www.capibara6.com');
-            const healthResponse = await fetch(`${backendUrl}/api/health`);
-            response = await healthResponse.json();
+                    : 'https://www.capibara6.com';
+                const healthResponse = await fetch(`${backendUrl}/api/health`);
+                response = await healthResponse.json();
+            }
         }
         if (response) {
             systemStatus = response;

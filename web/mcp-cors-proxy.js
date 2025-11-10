@@ -14,9 +14,9 @@ class MCPCORSProxy {
      */
     async callMCPTask(taskData) {
         try {
-            // Usar endpoint proxy en el backend Flask para evitar CORS
-            // El proxy en el backend puede hacer solicitudes internas sin problemas de CORS
-            const response = await fetch('/api/mcp/tools/call-proxy', {  // Endpoint proxy en el backend local
+            // Usar endpoint proxy en el servidor proxy local para evitar CORS
+            // El proxy local redirige la solicitud al backend real
+            const response = await fetch('http://localhost:8001/api/mcp/tools/call-proxy', {  // Endpoint proxy en servidor local en puerto 8001
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
