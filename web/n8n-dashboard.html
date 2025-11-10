@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard n8n - Gestión de Workflows Capibara6">
+    <title>n8n Dashboard - Capibara6 | Anachroni</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-dark: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-light: #e5e7eb;
+            --text-muted: #9ca3af;
+            --border: #374151;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .dashboard-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dashboard-title h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .n8n-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #3d3d3d;
+        }
+
+        .search-bar {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .template-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .template-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .template-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .template-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-recommended {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .badge-custom {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .badge-priority {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .badge-difficulty {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c4b5fd;
+        }
+
+        .template-description {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .template-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .template-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .template-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+        }
+
+        .btn-import {
+            background: var(--success);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-import:hover {
+            background: #059669;
+        }
+
+        .btn-download {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+        }
+
+        .btn-download:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            opacity: 0.5;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .modal-close:hover {
+            color: var(--text-light);
+        }
+
+        .use-cases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .use-case-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .requirements {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid var(--danger);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .requirements-title {
+            font-weight: 600;
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+        }
+
+        .requirements-list {
+            list-style: none;
+        }
+
+        .requirements-list li {
+            padding: 0.25rem 0;
+            color: var(--text-muted);
+        }
+
+        .requirements-list li::before {
+            content: "•";
+            color: var(--danger);
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <h1>🔄 n8n Dashboard</h1>
+                <div class="n8n-status" id="n8n-status">
+                    <span class="status-dot"></span>
+                    <span>n8n Activo</span>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='chat.html'">
+                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
+                    Volver al Chat
+                </button>
+                <button class="btn btn-primary" onclick="n8nManager.openN8N()">
+                    <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+                    Abrir n8n
+                </button>
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <i data-lucide="search" class="search-icon" style="width: 20px; height: 20px;"></i>
+            <input
+                type="text"
+                class="search-input"
+                id="search-input"
+                placeholder="Buscar plantillas por nombre, descripción o caso de uso..."
+            >
+        </div>
+
+        <div class="filters" id="filters">
+            <div class="filter-chip active" data-filter="all">Todas</div>
+            <div class="filter-chip" data-filter="recommended">Recomendadas</div>
+            <div class="filter-chip" data-filter="custom">Personalizadas</div>
+            <div class="filter-chip" data-filter="ai-chat">AI Chat</div>
+            <div class="filter-chip" data-filter="rag-knowledge">RAG</div>
+            <div class="filter-chip" data-filter="database-automation">Database</div>
+            <div class="filter-chip" data-filter="webhook-automation">Webhooks</div>
+        </div>
+
+        <div class="templates-grid" id="templates-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando plantillas...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <div class="modal" id="template-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Detalles de Plantilla</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                </button>
+            </div>
+            <div id="modal-body">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="n8n-manager.js"></script>
+    <script>
+        let allTemplates = [];
+        let currentFilter = 'all';
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', async () => {
+            lucide.createIcons();
+            await loadTemplates();
+            setupEventListeners();
+            checkN8NStatus();
+        });
+
+        async function loadTemplates() {
+            try {
+                const recommended = await n8nManager.getRecommended();
+                allTemplates = recommended;
+                renderTemplates(allTemplates);
+            } catch (error) {
+                console.error('Error cargando plantillas:', error);
+                showError('Error cargando plantillas. Por favor, intenta de nuevo.');
+            }
+        }
+
+        function renderTemplates(templates) {
+            const grid = document.getElementById('templates-grid');
+
+            if (templates.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i data-lucide="inbox" style="width: 64px; height: 64px;"></i>
+                        </div>
+                        <p>No se encontraron plantillas</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            grid.innerHTML = templates.map(template => `
+                <div class="template-card" onclick="showTemplateDetails('${template.id}')">
+                    <div class="template-header">
+                        <div>
+                            <div class="template-title">${template.name}</div>
+                        </div>
+                    </div>
+
+                    <div class="template-badges">
+                        ${template.capibara6_integration?.recommended ? '<span class="badge badge-recommended">⭐ Recomendada</span>' : ''}
+                        ${template.capibara6_integration?.custom ? '<span class="badge badge-custom">✨ Custom</span>' : ''}
+                        ${template.capibara6_integration?.priority === 1 ? '<span class="badge badge-priority">Prioridad Alta</span>' : ''}
+                        <span class="badge badge-difficulty">${template.difficulty || 'Media'}</span>
+                    </div>
+
+                    <p class="template-description">${template.description}</p>
+
+                    <div class="template-meta">
+                        <div class="template-meta-item">
+                            <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
+                            <span>${template.estimated_setup_time}</span>
+                        </div>
+                        <div class="template-meta-item">
+                            <i data-lucide="layers" style="width: 12px; height: 12px;"></i>
+                            <span>${template.nodes?.length || 0} nodos</span>
+                        </div>
+                    </div>
+
+                    <div class="template-actions">
+                        <button class="btn btn-sm btn-import" onclick="event.stopPropagation(); importTemplate('${template.id}')">
+                            <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+                            Importar
+                        </button>
+                        <button class="btn btn-sm btn-download" onclick="event.stopPropagation(); downloadTemplate('${template.id}')">
+                            <i data-lucide="file-down" style="width: 14px; height: 14px;"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function setupEventListeners() {
+            // Búsqueda
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', debounce(async (e) => {
+                const query = e.target.value.trim();
+                if (query) {
+                    const results = await n8nManager.searchTemplates(query);
+                    renderTemplates(results);
+                } else {
+                    renderTemplates(allTemplates);
+                }
+            }, 300));
+
+            // Filtros
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    currentFilter = chip.dataset.filter;
+                    filterTemplates();
+                });
+            });
+        }
+
+        function filterTemplates() {
+            let filtered = allTemplates;
+
+            if (currentFilter === 'recommended') {
+                filtered = allTemplates.filter(t => t.capibara6_integration?.recommended);
+            } else if (currentFilter === 'custom') {
+                filtered = allTemplates.filter(t => t.capibara6_integration?.custom);
+            } else if (currentFilter !== 'all') {
+                filtered = allTemplates.filter(t => t.category_id === currentFilter);
+            }
+
+            renderTemplates(filtered);
+        }
+
+        async function showTemplateDetails(templateId) {
+            const modal = document.getElementById('template-modal');
+            const modalBody = document.getElementById('modal-body');
+            const modalTitle = document.getElementById('modal-title');
+
+            try {
+                const template = await n8nManager.getTemplateDetails(templateId);
+
+                modalTitle.textContent = template.name;
+                modalBody.innerHTML = `
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">${template.description}</p>
+
+                    <h3 style="margin: 1.5rem 0 0.5rem;">Casos de Uso</h3>
+                    <div class="use-cases">
+                        ${template.use_cases?.map(uc => `<span class="use-case-tag">${uc}</span>`).join('') || 'No especificados'}
+                    </div>
+
+                    ${template.requires?.length ? `
+                        <div class="requirements">
+                            <div class="requirements-title">⚠️ Requisitos</div>
+                            <ul class="requirements-list">
+                                ${template.requires.map(req => `<li>${req}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+
+                    <h3 style="margin: 1.5rem 0 0.5rem;">Información</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.75rem;">Dificultad</div>
+                            <div style="font-weight: 600;">${template.difficulty || 'Media'}</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.75rem;">Tiempo Setup</div>
+                            <div style="font-weight: 600;">${template.estimated_setup_time}</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-primary" style="flex: 1;" onclick="importTemplate('${template.id}')">
+                            <i data-lucide="download" style="width: 16px; height: 16px;"></i>
+                            Importar a n8n
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadTemplate('${template.id}')">
+                            <i data-lucide="file-down" style="width: 16px; height: 16px;"></i>
+                            Descargar JSON
+                        </button>
+                    </div>
+                `;
+
+                modal.classList.add('active');
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error cargando detalles de la plantilla');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('template-modal').classList.remove('active');
+        }
+
+        async function importTemplate(templateId) {
+            try {
+                const result = await n8nManager.importTemplate(templateId);
+                alert(`✓ Plantilla importada exitosamente!\n\nWorkflow ID: ${result.workflow_id}\n\nAbre n8n para activarla.`);
+                n8nManager.openN8N();
+            } catch (error) {
+                alert(`Error importando plantilla: ${error.message}`);
+            }
+        }
+
+        async function downloadTemplate(templateId) {
+            try {
+                await n8nManager.exportTemplateAsFile(templateId, `${templateId}.json`);
+            } catch (error) {
+                alert(`Error descargando plantilla: ${error.message}`);
+            }
+        }
+
+        async function checkN8NStatus() {
+            const status = await n8nManager.checkN8NStatus();
+            const statusEl = document.getElementById('n8n-status');
+
+            if (!status.available) {
+                statusEl.innerHTML = `
+                    <span class="status-dot" style="background: var(--danger);"></span>
+                    <span>n8n No Disponible</span>
+                `;
+            }
+        }
+
+        function showError(message) {
+            const grid = document.getElementById('templates-grid');
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i data-lucide="alert-circle" style="width: 64px; height: 64px; color: var(--danger);"></i>
+                    </div>
+                    <p>${message}</p>
+                    <button class="btn btn-primary" onclick="loadTemplates()" style="margin-top: 1rem;">
+                        Reintentar
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Cerrar modal al hacer click fuera
+        document.getElementById('template-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'template-modal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
