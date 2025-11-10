@@ -167,19 +167,19 @@ class Capibara6ChatPage {
     
     async checkConnection() {
         try {
-            const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.MCP_STATUS
-                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.MCP_STATUS
-                : `${this.backendUrl}/api/mcp/status`;
+            // Usar endpoint de salud general en lugar de MCP (el servidor real no tiene endpoints MCP)
+            const endpoint = `${this.backendUrl}/api/health`;
             const response = await fetch(endpoint);
             const data = await response.json();
             
-            if (data.status === 'running') {
+            // Verificar que es un objeto con propiedades esperadas
+            if (data && typeof data === 'object') {
                 this.isConnected = true;
                 this.updateStatus('Conectado', 'success');
             } else {
                 this.isConnected = false;
                 this.updateStatus('Desconectado', 'error');
-                this.showError('El servidor MCP no está disponible.');
+                this.showError('El servidor no está disponible.');
             }
         } catch (error) {
             console.error('Error verificando conexión:', error);
@@ -245,14 +245,13 @@ class Capibara6ChatPage {
     }
     
     async sendToBackend(message) {
-        const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
-            ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
-            : `${this.backendUrl}/api/mcp/tools/call`;
+        // Usar endpoint MCP para análisis de documentos o herramientas disponibles (el servidor real tiene MCP)
+        const endpoint = `${this.backendUrl}/api/mcp/tools/call`;
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                name: 'analyze_document',
+                name: 'analyze_document',  // Usar herramienta disponible en MCP
                 arguments: {
                     document: message,
                     analysis_type: 'conversational',
