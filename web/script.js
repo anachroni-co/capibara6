@@ -440,13 +440,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // Configuración de endpoints
 const API_ENDPOINTS = {
     // Servidor local con CTM y e2b
-    LOCAL: 'http://localhost:5001/api',
+    // NOTA: Reemplaza [IP_DE_BOUNTY2] con la IP externa real de la VM bounty2
+    // Para obtenerla, ejecuta: gcloud compute instances describe bounty2 --zone=europe-west4-a --project=mamba-001
+    LOCAL: window.location.hostname === 'localhost' 
+        ? 'http://[IP_DE_BOUNTY2]:5001/api'   // VM bounty2 en europe-west4-a en desarrollo
+        : 'http://localhost:5001/api',       // Local en producción
     
     // Servicios en la nube (VMs de Google Cloud)
-    CLOUD_CHAT: 'http://34.175.215.109:5001/api',  // Servidor integrado
-    CLOUD_CONSENSUS: 'http://34.175.215.109:5003/api',  // Servidor de consenso
-    CLOUD_TTS: 'http://34.175.215.109:5004/api',  // Servidor TTS
-    CLOUD_MCP: 'http://34.175.215.109:5010/api',  // Servidor MCP inteligente
+    CLOUD_CHAT: 'http://34.175.215.109:5000/api',  // Capibara6 Main Server (firewall: tcp:5000)
+    CLOUD_CONSENSUS: 'http://34.175.215.109:5003/api',  // Smart MCP Server (firewall: tcp:5003)
+    CLOUD_TTS: 'http://34.175.215.109:5004/api',  // Servidor TTS (puerto común para TTS)
+    CLOUD_MCP: 'http://34.175.215.109:5010/api',  // Smart MCP Server (firewall: tcp:5010)
     
     // Endpoint de Vercel (proxy)
     VERCEL: 'https://your-vercel-deployment.vercel.app/api'

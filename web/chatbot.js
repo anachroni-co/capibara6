@@ -475,11 +475,13 @@ class Capibara6Chat {
     
     async sendLeadToBackend() {
         try {
+            // IP REAL de la VM principal (según firewall actualizado)
+            // Puerto 5000 está abierto para Capibara6 Main Server según firewall
             const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
                 ? CHATBOT_CONFIG.BACKEND_URL + CHATBOT_CONFIG.ENDPOINTS.SAVE_LEAD
                 : (window.location.hostname === 'localhost' 
-                    ? 'http://localhost:5000/api/save-lead'
-                    : '/api/save-lead');
+                    ? 'http://34.175.215.109:5000/api/save-lead'  // Capibara6 Main Server (firewall: tcp:5000)
+                    : 'http://localhost:5001/api/save-lead');
             
             const leadData = {
                 ...this.leadCaptureState.collectedData,
@@ -706,11 +708,13 @@ class Capibara6Chat {
         
         // Intentar enviar al backend en segundo plano
         try {
+            // IP REAL de la VM principal (según firewall actualizado)
+            // Puerto 5000 está abierto para Capibara6 Main Server según firewall
             const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
                 ? CHATBOT_CONFIG.BACKEND_URL + CHATBOT_CONFIG.ENDPOINTS.SAVE_CONVERSATION
                 : (window.location.hostname === 'localhost' 
-                    ? 'http://localhost:5000/api/save-conversation'
-                    : '/api/save-conversation');
+                    ? 'http://34.175.215.109:5000/api/save-conversation'  // Capibara6 Main Server (firewall: tcp:5000)
+                    : 'http://localhost:5001/api/save-conversation');
             
             console.log('Enviando email al backend:', email);
             console.log('URL del backend:', backendUrl);

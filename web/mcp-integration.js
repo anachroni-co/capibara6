@@ -4,8 +4,12 @@
 // ============================================
 
 const MCP_CONFIG = {
-    serverUrl: 'http://localhost:5003/api/mcp',
-    enabled: false,  // DESACTIVADO temporalmente para debugging
+    // IP REAL de MCP Server (según firewall actualizado)
+    // Puerto 5003 está abierto para Smart MCP Server según firewall
+    serverUrl: window.location.hostname === 'localhost'
+        ? 'http://34.175.215.109:5003/api/mcp'   // Smart MCP Server (firewall: tcp:5003)
+        : 'https://www.capibara6.com/api/mcp',   // Servidor en producción
+    enabled: true,  // ACTIVADO para conexión con VM
     autoAugment: true,  // Aumentar automáticamente con contexto
     defaultContexts: ['company_info', 'current_date']
 };
