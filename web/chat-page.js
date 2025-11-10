@@ -2,11 +2,13 @@
 
 class Capibara6ChatPage {
     constructor() {
+        // IP REAL de la VM principal (según firewall actualizado)
+        // Puerto 5000 está abierto para Capibara6 Main Server según firewall
         this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
             ? CHATBOT_CONFIG.BACKEND_URL
             : (window.location.hostname === 'localhost' 
-                ? 'http://localhost:5000'
-                : 'https://www.capibara6.com');
+                ? 'http://34.175.215.109:5000'  // Capibara6 Main Server (firewall: tcp:5000)
+                : 'https://www.capibara6.com'); // Servidor en producción
         
         this.messages = [];
         this.chats = [];

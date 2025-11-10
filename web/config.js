@@ -4,9 +4,11 @@ const CHATBOT_CONFIG = {
     // URL del backend
     // En desarrollo: 'http://localhost:5002'
     // En producción: URL de Vercel/Railway con SSL válido
+    // IP REAL de la VM principal (según conexión actual a gpt-oss-20b)
+    // Puerto 5000 confirmado como escuchando en esta VM
     BACKEND_URL: window.location.hostname === 'localhost'
-        ? 'http://localhost:5002'
-        : 'https://www.capibara6.com',
+        ? 'http://34.175.136.104:5000'  // Capibara6 Main Server en gpt-oss-20b
+        : 'https://www.capibara6.com',   // Servidor en producción
 
     // Endpoints
     ENDPOINTS: {
