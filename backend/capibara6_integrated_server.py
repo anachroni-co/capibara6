@@ -6,7 +6,7 @@ import requests
 import json
 import os
 from models_config import MODEL_CONFIGS, DEFAULT_MODEL, TIMEOUT
-from toon_utils.format_manager import FormatManager
+from toon_utils.format_manager_ultra_optimized import FormatManagerUltraOptimized
 import logging
 
 import sys
@@ -86,7 +86,7 @@ def proxy_gpt_oss_20b():
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         
         if 'application/toon' in content_type or 'text/plain' in content_type:
-            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')
+            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')
         else:
             input_data = request.get_json()
         
@@ -96,7 +96,7 @@ def proxy_gpt_oss_20b():
             error_response = {'error': 'Modelo GPT-OSS-20B no configurado'}
             
             if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-                content, format_type = FormatManager.encode(error_response, 'toon')
+                content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
                 return Response(content, mimetype='text/plain', status=404)
             else:
                 return jsonify(error_response), 404
@@ -116,7 +116,7 @@ def proxy_gpt_oss_20b():
         
         # Determinar formato de salida para el cliente
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(model_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(model_response, 'toon')
             return Response(
                 content,
                 status=response.status_code,
@@ -135,7 +135,7 @@ def proxy_gpt_oss_20b():
         
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -145,7 +145,7 @@ def proxy_gpt_oss_20b():
         
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -159,7 +159,7 @@ def smart_mcp_analyze():
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         
         if 'application/toon' in content_type or 'text/plain' in content_type:
-            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')
+            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')
         else:
             input_data = request.get_json()
         
@@ -179,7 +179,7 @@ def smart_mcp_analyze():
         
         # Determinar formato de salida
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(analysis_result, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(analysis_result, 'toon')
             return Response(content, mimetype='text/plain')
         else:
             return jsonify(analysis_result)
@@ -190,7 +190,7 @@ def smart_mcp_analyze():
         
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -218,7 +218,7 @@ def basic_tts():
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         
         if 'application/toon' in content_type or 'text/plain' in content_type:
-            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')
+            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')
         else:
             input_data = request.get_json()
         
@@ -233,7 +233,7 @@ def basic_tts():
         
         # Determinar formato de salida
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(result, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(result, 'toon')
             return Response(content, mimetype='text/plain')
         else:
             return jsonify(result)
@@ -244,7 +244,7 @@ def basic_tts():
         
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -257,7 +257,7 @@ def e2b_process():
         error_response = {'error': 'Integración e2b no disponible'}
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -268,7 +268,7 @@ def e2b_process():
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
 
         if 'application/toon' in content_type or 'text/plain' in content_type:
-            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')
+            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')
         else:
             input_data = request.get_json()
 
@@ -278,7 +278,7 @@ def e2b_process():
         if not prompt:
             error_response = {'error': 'Prompt es requerido'}
             if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-                content, format_type = FormatManager.encode(error_response, 'toon')
+                content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
                 return Response(content, mimetype='text/plain', status=400)
             else:
                 return jsonify(error_response), 400
@@ -306,7 +306,7 @@ def e2b_process():
 
         # Determinar formato de salida
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(result, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(result, 'toon')
             return Response(content, mimetype='text/plain')
         else:
             return jsonify(result)
@@ -317,7 +317,7 @@ def e2b_process():
 
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -346,7 +346,7 @@ def e2b_estimate():
         error_response = {'error': 'Integración e2b no disponible'}
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -357,7 +357,7 @@ def e2b_estimate():
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
 
         if 'application/toon' in content_type or 'text/plain' in content_type:
-            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')
+            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')
         else:
             input_data = request.get_json()
 
@@ -366,7 +366,7 @@ def e2b_estimate():
         if not prompt:
             error_response = {'error': 'Prompt es requerido'}
             if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-                content, format_type = FormatManager.encode(error_response, 'toon')
+                content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
                 return Response(content, mimetype='text/plain', status=400)
             else:
                 return jsonify(error_response), 400
@@ -376,7 +376,7 @@ def e2b_estimate():
 
         # Determinar formato de salida
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(resources, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(resources, 'toon')
             return Response(content, mimetype='text/plain')
         else:
             return jsonify(resources)
@@ -387,7 +387,7 @@ def e2b_estimate():
 
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
@@ -402,7 +402,7 @@ def ai_generate_ctm():
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         
         if 'application/toon' in content_type or 'text/plain' in content_type:
-            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')
+            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')
         else:
             input_data = request.get_json()
 
@@ -433,7 +433,7 @@ def ai_generate_ctm():
 
         # Determinar formato de salida
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(result, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(result, 'toon')
             return Response(content, mimetype='text/plain')
         else:
             return jsonify(result)
@@ -444,7 +444,7 @@ def ai_generate_ctm():
 
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
         if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
-            content, format_type = FormatManager.encode(error_response, 'toon')
+            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
             return Response(content, mimetype='text/plain', status=500)
         else:
             return jsonify(error_response), 500
