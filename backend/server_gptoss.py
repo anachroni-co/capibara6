@@ -6,9 +6,11 @@ Backend de capibara6 - Servidor Flask para conectar con GPT-OSS-20B
 
 from flask import Flask, request, jsonify, stream_with_context, Response
 from flask_cors import CORS
+from werkzeug.utils import secure_filename
 import requests
 import json
 import os
+import base64
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -24,10 +26,18 @@ GPT_OSS_TIMEOUT = int(os.getenv('GPT_OSS_TIMEOUT', '60'))
 
 # Archivo para guardar datos
 DATA_FILE = 'user_data/conversations.json'
+UPLOAD_FOLDER = 'user_data/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'doc', 'docx', 'txt', 'csv', 'xlsx', 'xls', 'pptx', 'ppt', 'zip', 'rar'}
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 def ensure_data_dir():
     """Crear directorio de datos si no existe"""
     os.makedirs('user_data', exist_ok=True)
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def allowed_file(filename):
+    """Verificar si el archivo tiene una extensión permitida"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def save_conversation(user_message, ai_response, user_email=None):
     """Guardar conversación en archivo JSON"""
@@ -95,17 +105,51 @@ def call_gpt_oss(prompt, max_tokens=500, temperature=0.7):
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """Endpoint principal para chat con GPT-OSS-20B"""
+    """Endpoint principal para chat con GPT-OSS-20B con soporte para archivos"""
     try:
-        data = request.get_json()
-        
-        user_message = data.get('message', '').strip()
-        user_email = data.get('email', '')
-        max_tokens = data.get('max_tokens', 500)
-        temperature = data.get('temperature', 0.7)
-        
+        # Verificar si es multipart/form-data (con archivos) o JSON
+        files_info = []
+
+        if request.content_type and 'multipart/form-data' in request.content_type:
+            # Procesar archivos si hay
+            if 'files' in request.files:
+                files = request.files.getlist('files')
+                for file in files:
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                        unique_filename = f"{timestamp}_{filename}"
+                        filepath = os.path.join(UPLOAD_FOLDER, unique_filename)
+                        file.save(filepath)
+
+                        files_info.append({
+                            'name': filename,
+                            'size': os.path.getsize(filepath),
+                            'path': filepath
+                        })
+
+            # Obtener datos del formulario
+            user_message = request.form.get('message', '').strip()
+            user_email = request.form.get('email', '')
+            max_tokens = int(request.form.get('max_tokens', 500))
+            temperature = float(request.form.get('temperature', 0.7))
+        else:
+            # Procesar JSON tradicional
+            data = request.get_json()
+            user_message = data.get('message', '').strip()
+            user_email = data.get('email', '')
+            max_tokens = data.get('max_tokens', 500)
+            temperature = data.get('temperature', 0.7)
+
         if not user_message:
             return jsonify({'error': 'Mensaje requerido'}), 400
+
+        # Si hay archivos, agregar información al mensaje
+        if files_info:
+            files_summary = "\n\n[El usuario ha adjuntado los siguientes archivos: " + ", ".join([f['name'] for f in files_info]) + "]"
+            user_message_with_files = user_message + files_summary
+        else:
+            user_message_with_files = user_message
         
         # Crear prompt mejorado y optimizado
         system_prompt = """Eres Capibara6, un asistente de IA especializado en tecnología, programación e inteligencia artificial desarrollado por Anachroni s.coop.
@@ -121,19 +165,25 @@ INSTRUCCIONES CRÍTICAS:
 
 Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mejor manera posible."""
         
-        full_prompt = f"{system_prompt}\n\nUsuario: {user_message}\n\nCapibara6:"
-        
+        full_prompt = f"{system_prompt}\n\nUsuario: {user_message_with_files}\n\nCapibara6:"
+
         # Llamar al modelo
         ai_response = call_gpt_oss(full_prompt, max_tokens, temperature)
-        
+
         # Guardar conversación
         save_conversation(user_message, ai_response, user_email)
-        
-        return jsonify({
+
+        response_data = {
             'response': ai_response,
             'timestamp': datetime.now().isoformat(),
             'model': 'gpt-oss-20b'
-        })
+        }
+
+        # Agregar información de archivos si los hay
+        if files_info:
+            response_data['files'] = files_info
+
+        return jsonify(response_data)
     
     except Exception as e:
         print(f"Error en chat: {e}")
@@ -309,6 +359,6 @@ if __name__ == '__main__':
     print(f'🤖 Modelo: GPT-OSS-20B')
     print(f'🌐 URL del modelo: {GPT_OSS_URL}')
     
-    # Puerto para Railway (usa variable de entorno PORT)
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Puerto 5001 para desarrollo local (el frontend espera este puerto)
+    port = int(os.getenv('PORT', 5001))
+    app.run(host='0.0.0.0', port=port, debug=True)

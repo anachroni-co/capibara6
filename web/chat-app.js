@@ -530,11 +530,14 @@ async function sendMessage() {
     
     // Guardar el último mensaje del usuario para regeneración
     lastUserMessage = content || 'Archivos adjuntos';
-    
+
+    // Guardar copia de los archivos antes de limpiarlos
+    const filesToSend = [...attachedFiles];
+
     // Agregar mensaje del usuario
     console.log('📨 Agregando mensaje del usuario:', messageContent);
     appendMessage('user', messageContent);
-    
+
     // Limpiar input y archivos (con pequeño delay para evitar flash visual)
     setTimeout(() => {
         messageInput.value = '';
@@ -558,7 +561,7 @@ async function sendMessage() {
     
     // Simular respuesta del asistente
     console.log('🎬 Llamando a simulateAssistantResponse con:', lastUserMessage);
-    await simulateAssistantResponse(lastUserMessage);
+    await simulateAssistantResponse(lastUserMessage, filesToSend);
     console.log('✅ simulateAssistantResponse completada');
 }
 
@@ -825,7 +828,7 @@ function addStatsToMessage(messageDiv, stats) {
     });
 }
 
-async function simulateAssistantResponse(userMessage) {
+async function simulateAssistantResponse(userMessage, filesToSend = []) {
     console.log('🤖 simulateAssistantResponse() iniciada con:', userMessage);
     isTyping = true;
     hideTypingIndicator();
@@ -889,20 +892,40 @@ async function simulateAssistantResponse(userMessage) {
         // Crear mensaje vacío para streaming
         streamingMessageDiv = createStreamingMessage();
         streamingTextDiv = streamingMessageDiv.querySelector('.message-text');
-        
-        // Conectar con nuestro backend que se conecta a GPT-OSS-20B
-        const response = await fetch(MODEL_CONFIG.serverUrl, {
+
+        // Preparar datos para enviar
+        let fetchOptions = {
             method: 'POST',
-            headers: {
+            signal: abortController.signal
+        };
+
+        // Si hay archivos adjuntos, usar FormData; sino, usar JSON
+        if (filesToSend.length > 0) {
+            const formData = new FormData();
+            formData.append('message', userMessage);
+            formData.append('max_tokens', MODEL_CONFIG.defaultParams.n_predict);
+            formData.append('temperature', MODEL_CONFIG.defaultParams.temperature);
+
+            // Agregar archivos
+            filesToSend.forEach(file => {
+                formData.append('files', file);
+            });
+
+            fetchOptions.body = formData;
+            // NO establecer Content-Type para FormData, el navegador lo hace automáticamente
+        } else {
+            fetchOptions.headers = {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: userMessage,  // Enviar solo el mensaje del usuario
+            };
+            fetchOptions.body = JSON.stringify({
+                message: userMessage,
                 max_tokens: MODEL_CONFIG.defaultParams.n_predict,
                 temperature: MODEL_CONFIG.defaultParams.temperature
-            }),
-            signal: abortController.signal
-        });
+            });
+        }
+
+        // Conectar con nuestro backend que se conecta a GPT-OSS-20B
+        const response = await fetch(MODEL_CONFIG.serverUrl, fetchOptions);
         
         if (!response.ok) {
             throw new Error(`Error del servidor: ${response.status}`);
