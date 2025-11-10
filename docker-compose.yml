@@ -188,12 +188,66 @@ services:
     networks:
       - capibara6-network
 
+  # n8n para automatización de workflows
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: capibara6-n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://localhost:5678/}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - N8N_USER_MANAGEMENT_DISABLED=false
+      - N8N_LOG_LEVEL=info
+      - N8N_LOG_OUTPUT=console,file
+      - N8N_LOG_FILE_LOCATION=/home/node/.n8n/logs/
+      - N8N_METRICS=true
+      - N8N_METRICS_PREFIX=n8n_
+      # Database: usando SQLite por defecto (se puede migrar a PostgreSQL después)
+      - DB_TYPE=sqlite
+      - DB_SQLITE_VACUUM_ON_STARTUP=true
+      # Timeouts
+      - EXECUTIONS_TIMEOUT=300
+      - EXECUTIONS_TIMEOUT_MAX=600
+      # Queue mode (para múltiples workers)
+      - QUEUE_BULL_REDIS_HOST=redis
+      - QUEUE_BULL_REDIS_PORT=6379
+      - QUEUE_BULL_REDIS_DB=1
+      - EXECUTIONS_MODE=${N8N_EXECUTIONS_MODE:-regular}
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./backend/data/n8n:/data/n8n
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - capibara6-network
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5678/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
 volumes:
   postgres_data:
   timescaledb_data:
   redis_data:
   prometheus_data:
   grafana_data:
+  n8n_data:
 
 networks:
   capibara6-network:
