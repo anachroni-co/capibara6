@@ -8,7 +8,14 @@
       "Bash(git push:*)",
       "Bash(git pull:*)",
       "Bash(chmod:*)",
-      "Bash(bash -n:*)"
+      "Bash(bash -n:*)",
+      "Bash(dos2unix:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(python3:*)",
+      "Bash(./test-scripts.sh)",
+      "Bash(bash test-scripts.sh:*)",
+      "Bash(bash:*)"
     ],
     "deny": [],
     "ask": []
