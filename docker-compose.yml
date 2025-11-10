@@ -35,34 +35,33 @@ services:
           cpus: '1.0'
 
   # API GraphQL
-  capibara6-graphql:
-    build: .
-    container_name: capibara6-graphql
-    ports:
-      - "8001:8001"
-    environment:
-      - ENVIRONMENT=production
-      - DATABASE_URL=postgresql://capibara6:capibara6_password@postgres:5432/capibara6
-      - REDIS_URL=redis://redis:6379/0
-      - GRAPHQL_ENDPOINT=/graphql
-    command: ["python", "-m", "uvicorn", "backend.graphql.main:app", "--host", "0.0.0.0", "--port", "8001"]
-    depends_on:
-      - postgres
-      - redis
-    restart: unless-stopped
-    networks:
-      - capibara6-network
+  # capibara6-graphql:
+  #   build: .
+  #   container_name: capibara6-graphql
+  #   ports:
+  #     - "8001:8001"
+  #   environment:
+  #     - ENVIRONMENT=production
+  #     - DATABASE_URL=postgresql://capibara6:capibara6_password@postgres:5432/capibara6
+  #     - REDIS_URL=redis://redis:6379/0
+  #     - GRAPHQL_ENDPOINT=/graphql
+  #   command: ["python", "-m", "uvicorn", "backend.graphql.main:app", "--host", "0.0.0.0", "--port", "8001"]
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   restart: unless-stopped
+  #   networks:
+  #     - capibara6-network
 
   # Worker de Background
   capibara6-worker:
     build: .
-    container_name: capibara6-worker
     environment:
       - ENVIRONMENT=production
       - DATABASE_URL=postgresql://capibara6:capibara6_password@postgres:5432/capibara6
       - REDIS_URL=redis://redis:6379/0
       - WORKER_TYPE=background
-    command: ["python", "-m", "rq", "worker", "default", "--url", "redis://redis:6379/0"]
+    command: ["rq", "worker", "default", "--url", "redis://redis:6379/0"]
     depends_on:
       - postgres
       - redis
@@ -131,7 +130,6 @@ services:
       - ./backend/deployment/ssl:/etc/nginx/ssl
     depends_on:
       - capibara6-api
-      - capibara6-graphql
     restart: unless-stopped
     networks:
       - capibara6-network

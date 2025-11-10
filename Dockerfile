@@ -1,5 +1,5 @@
 # Dockerfile para Capibara6 - Sistema AI Avanzado
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # Metadatos
 LABEL maintainer="Capibara6 Team"
@@ -11,6 +11,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PIP_NO_CACHE_DIR=1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PYTHONPATH=/app/backend:/app/backend/core
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
