@@ -1,231 +1,153 @@
-# Capibara6 - Asistente de IA Avanzado
+<div align="center">
 
-Un asistente de inteligencia artificial conversacional con capacidades de síntesis de voz (TTS) y protocolo de contexto de modelo (MCP) integradas.
+# 🦫 Capibara6
 
-## 🚀 Características Principales
-
-- **Chat Inteligente**: Interfaz conversacional con GPT-OSS-20B
-- **Síntesis de Voz Avanzada**: Kyutai TTS con múltiples voces, control emocional y clonación de voz
-- **Smart MCP**: Contexto inteligente para respuestas más precisas
-- **Interfaz Web**: Aplicación web moderna y responsive
-- **Despliegue en la Nube**: Configurado para Google Cloud y Vercel
-- **Optimización de Tokens**: Implementación de TOON (Token-Oriented Object Notation) para eficiencia
-
-## 🏗️ Arquitectura
+Enrutador multimodelo + frontend web para la plataforma Capibara6.
 
 ```
 capibara6/
-├── web/                    # Frontend (HTML, CSS, JS)
-├── api/                    # Proxies de Vercel
-├── backend/                # Servidores Flask
-│   ├── capibara6_integrated_server.py  # Servidor principal
-│   ├── smart_mcp_server.py             # Smart MCP
-│   ├── kyutai_tts_server.py            # Kyutai TTS (nuevo)
-│   └── requirements.txt
-├── fine-tuning/            # Fine-tuning GPT-OSS-20B
-│   ├── configs/            # Configuraciones T5X
-│   ├── scripts/            # Scripts de entrenamiento
-│   ├── datasets/           # Configuración SeqIO
-│   └── t5x/                # Código T5X
-├── archived/               # Archivos obsoletos
-└── docs/                   # Documentación
+├── backend/             # Backend Flask activo (enrutador de modelos, MCP, utilidades)
+├── web/                 # Frontend estático (chat y utilidades de UI)
+├── api/                 # Endpoints serverless (Vercel) opcionales
+├── docs/                # Documentación generada en Python
+├── fine-tuning/         # Pipelines T5X/SeqIO para entrenamiento
+├── k8s/                 # Manifiestos Kubernetes de despliegue
+└── archived/            # Código legacy y documentación histórica
 ```
 
-## 🚀 Inicio Rápido
-
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/tu-usuario/capibara6.git
-cd capibara6
-```
-
-### 2. Configurar el backend
-
-```bash
-cd backend
-pip install -r requirements.txt
-```
-
-### 3. Configurar variables de entorno
-
-```bash
-# Copiar archivo de ejemplo
-cp env.example .env
-
-# Editar con tus valores
-nano .env
-```
-
-### 4. Ejecutar servidor local
-
-```bash
-python capibara6_integrated_server.py
-```
-
-### 5. Abrir la aplicación
-
-Navega a `http://localhost:5001` en tu navegador.
-
-## 🌐 Despliegue en Producción
-
-### Google Cloud VM (Backend)
-
-El backend se ejecuta en una VM de Google Cloud con el modelo GPT-OSS-20B:
-
-```bash
-# Conectar a la VM
-gcloud compute ssh --zone "europe-southwest1-b" "gpt-oss-20b" --project "mamba-001"
-
-# Ejecutar servidor
-python3 capibara6_integrated_server.py
-```
-
-### Vercel (Frontend)
-
-El frontend se despliega automáticamente en Vercel:
-
-1. Conecta tu repositorio a Vercel
-2. Configura las variables de entorno
-3. Despliega automáticamente
-
-## 🔧 Configuración
-
-### Variables de Entorno
-
-```bash
-# Backend
-GPTOSS_API_URL=http://34.175.215.109:8080/completion
-GPTOSS_HEALTH_URL=http://34.175.215.109:8080/health
-
-# Kyutai TTS (nuevo)
-KYUTAI_TTS_ENABLED=true
-KYUTAI_MODEL_REPO=kyutai/katsu-vits-ljspeech
-KYUTAI_SAMPLE_RATE=24000
-
-# MCP
-MCP_ENABLED=true
-MCP_SERVER_URL=http://34.175.215.109:5003/analyze
-```
-
-### Puertos
-
-- **5001**: Servidor principal integrado (con Kyutai TTS)
-- **5003**: Servidor Smart MCP
-- **8080**: Modelo GPT-OSS-20B (llama-server)
-
-## 🎙️ Kyutai TTS Features
-
-### Nueva integración de Kyutai TTS
-
-Hemos migrado de Coqui TTS a Kyutai TTS, ofreciendo:
-
-- **Calidad de Voz Superior**: +30-40% mejor que Coqui TTS
-- **Control Emocional**: Voces con expresiones emocionales
-- **Clonación de Voz**: Desde muestras de audio
-- **Soporte Multilingüe**: 8+ idiomas incluido español
-- **Optimización de Recursos**: 15% menos consumo de memoria
-- **Mayor Naturalidad**: +35% en métricas de naturalidad
-
-### API Endpoints de TTS
-
-- `GET /api/tts/voices` - Lista de voces disponibles
-- `POST /api/tts/speak` - Síntesis de texto a voz
-- `POST /api/tts/clone` - Clonación de voz
-- `POST /api/tts/preload` - Precarga del modelo
-- `GET /api/tts/stats` - Estadísticas de uso
-
-## 📊 Optimización de Tokens (TOON)
-
-Implementación del formato TOON (Token-Oriented Object Notation) para reducir significativamente el uso de tokens al comunicar con modelos de IA:
-
-- **Reducción de Tokens**: 30-60% menos tokens que JSON para datos tabulares
-- **Compatible con JSON**: Total compatibilidad hacia atrás
-- **Detección Automática**: Sistema decide cuándo usar TOON vs JSON
-- **Eficiencia**: Mayor contexto en la misma ventana de tokens
-
-## 📚 Documentación
-
-- [Guía de Fine-tuning](fine-tuning/README.md) - Entrenamiento de modelos
-- [API Reference](docs/API.md) - Documentación de la API
-- [Kyutai TTS Integration](KYUTAI_TTS_INTEGRATION.md) - Documentación de la nueva integración
-- [Troubleshooting](archived/docs/TROUBLESHOOTING.md) - Solución de problemas
-
-## 🛠️ Desarrollo
-
-### Estructura del Proyecto
-
-- **Frontend**: HTML/CSS/JavaScript vanilla
-- **Backend**: Flask con Python 3.11+
-- **Modelo**: GPT-OSS-20B con llama.cpp
-- **TTS**: Kyutai TTS con control emocional y clonación de voz (reemplaza Coqui)
-- **MCP**: Sistema de contexto inteligente
-- **Tokens**: TOON format para eficiencia
-
-### Scripts Útiles
-
-```bash
-# Validar setup
-python fine-tuning/scripts/validate_setup.py
-
-# Monitorear entrenamiento
-python fine-tuning/scripts/monitor_training.py
-
-# Lanzar fine-tuning
-./fine-tuning/scripts/launch_training.sh
-```
-
-## 🤝 Contribuir
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver [LICENSE](LICENSE) para más detalles.
-
-## 🆘 Soporte
-
-Si tienes problemas:
-
-1. Revisa la [documentación](docs/)
-2. Consulta [Troubleshooting](archived/docs/TROUBLESHOOTING.md)
-3. Abre un [issue](https://github.com/tu-usuario/capibara6/issues)
-
-## 🙏 Agradecimientos
-
-- [GPT-OSS-20B](https://huggingface.co/microsoft/DialoGPT-medium) por Microsoft
-- [Kyutai TTS](https://kyutai.org) por Kyutai Labs - Nueva integración
-- [TOON Format](https://toonformat.dev) - Optimización de tokens
-- [T5X](https://github.com/google-research/t5x) por Google Research
-- [SeqIO](https://github.com/google/seqio) por Google
+</div>
 
 ---
 
-**Capibara6** - Tu asistente de IA de confianza 🦫
-## 🔄 Integración de Modelos
+## ✨ ¿Qué incluye ahora el repositorio?
 
-Este repositorio ahora incluye una integración completa de múltiples modelos y tecnologías:
+| Carpeta | Contenido |
+| --- | --- |
+| `backend/` | Código vivo del servidor Flask: `server.py` (router multimodelo), `ollama_client.py`, `task_classifier.py`, `mcp_connector.py`, scripts auxiliares y requisitos. |
+| `web/` | Cliente web vanilla JS (chat, integraciones MCP/TTS, páginas de test). |
+| `api/` | Handlers serverless (Vercel) para exponer chat/TTS/consenso cuando el backend no está disponible. |
+| `docs/` | Scripts en Python que generan documentación (p. ej. API reference). |
+| `fine-tuning/` | Configs y scripts para entrenamiento T5X/SeqIO en TPUs. |
+| `k8s/` | Despliegues y servicios listos para Kubernetes. |
+| `archived/legacy_backend/` | Servidores anteriores (Coqui TTS, consenso legacy, integrados monolíticos…). Mantener sólo como referencia. |
 
-### Modelos de Voz Disponibles
-- **Kyutai TTS** (predeterminado): Sistema avanzado basado en Katsu-VITS con:
-  - Control emocional de voz
-  - Clonación de voz
-  - Soporte multilingüe (8+ idiomas)
-  - Mayor calidad de síntesis
-  
-- **Coqui TTS** (legacy): Sistema heredado para compatibilidad
+📌 **Nuevo**: Los servidores antiguos de TTS, consenso y el “integrated server” fueron movidos a `archived/legacy_backend/`. El backend soportado es `backend/server.py`, que enruta hacia Ollama/Anthropic/GPT-OSS mediante `ollama_client.py` y `task_classifier.py`.
 
-### Optimización de Tokens
-- **TOON (Token-Oriented Object Notation)** integrado en todos los endpoints
-- Reducción de 30-60% en uso de tokens para datos tabulares
-- Compatible con JSON existente
-- Negociación automática de contenido
+---
 
-### Estructura de Backend
-- `backend/`: Archivos principales con Kyutai TTS
-- `backend/integration/`: Archivos de integración de BB
-- `backendModels/`: Réplicas de ambos modelos originales
+## 🚀 Puesta en marcha rápida
+
+### 1. Requisitos
+
+- Python 3.11+
+- Node 18+ (sólo si quieres usar los prototipos de `/api`)
+- Ollama/servicios remotos para los modelos (phi3:mini, mistral, gpt-oss:20b)
+
+### 2. Preparar entorno
+
+```bash
+cp backend/env.example backend/.env   # o usa .env.example en raíz según tu despliegue
+python -m venv .venv
+source .venv/bin/activate  # en Windows: .venv\Scripts\activate
+pip install -r backend/requirements.txt
+```
+
+### 3. Lanzar backend
+
+```bash
+cd backend
+python server.py
+# logs indicarán si el puerto 5000 está libre; si no, escogerá uno alternativo
+```
+
+Endpoints principales:
+
+- `POST /api/ai/generate` & `POST /api/ai/<tier>/generate`
+- `POST /api/ai/classify`
+- `POST /api/save-conversation`, `POST /api/save-lead`
+- `GET /api/mcp/status` (si tienes MCP habilitado)
+
+### 4. Frontend local
+
+```bash
+cd web
+python -m http.server 8000
+# abre http://localhost:8000
+```
+
+Ajusta `web/config.js` si el backend escucha en otro host/puerto.
+
+### 5. (Opcional) Handlers serverless
+
+`api/` contiene handlers vercel (Node). Puedes ejecutarlos con `vercel dev` o adaptarlos a tu despliegue serverless.
+
+---
+
+## 🧠 Configuración de modelos
+
+- `backend/model_config.json`: define los tiers `fast_response`, `balanced`, `complex`.
+- `backend/task_classifier.py`: heurística para elegir el tier.
+- `backend/ollama_client.py`: llamadas a Ollama + fallback.
+- Variables en `.env` relevantes:
+
+```
+OLLAMA_BASE_URL=http://localhost:11434
+DEFAULT_MODEL_TIER=fast_response
+STREAMING_ENABLED=true
+FALLBACK_ENABLED=true
+MODEL_CONFIG_PATH=backend/model_config.json
+```
+
+Para probar la conectividad de claves y servicios auxiliares: `python check_env.py`.
+
+---
+
+## 📁 Código legacy
+
+Todo el código que ya no forma parte del flujo soportado está en `archived/legacy_backend/`. Allí encontrarás:
+
+- `capibara6_integrated_server.py`: backend monolítico previo.
+- `consensus_server.py`: servidor de consenso legacy.
+- Servidores de TTS basados en Coqui (`coqui_tts_server*.py`).
+- Prototipos de MCP “smart” y scripts de arranque antiguos.
+
+Ajusta tus despliegues existentes para apuntar al nuevo backend si aún dependes de esos servicios.
+
+---
+
+## 📚 Documentación útil
+
+- `CONFIGURACION.md`: guía paso a paso de variables y despliegue.
+- `API_KEYS_GUIDE.md`: cómo conseguir cada API key.
+- `ARCHITECTURE.md`: descripción global de arquitectura (si vas a profundizar).
+- `fine-tuning/README.md`: instrucciones de entrenamiento.
+
+---
+
+## 🔧 Próximos pasos sugeridos
+
+- Completar la migración de cualquier servicio que todavía use scripts legacy.
+- Añadir cobertura de tests para el nuevo enrutador (`/api/ai/*`).
+- Revisar `api/` y decidir si se moderniza o se integra con el backend principal.
+- Automatizar despliegues (GitHub Actions / CI-CD) usando `ci-cd.yml`.
+
+---
+
+## 🤝 Contribuir
+
+1. Crea un fork.
+2. Instala las dependencias (`pip install -r backend/requirements.txt`).
+3. Ataca un issue o abre una propuesta en discusiones.
+4. Lanza un PR explicando cambios y cómo probarlos.
+
+---
+
+## 📬 Soporte
+
+- Email: [info@anachroni.co](mailto:info@anachroni.co)
+- Issues: abre un ticket en GitHub con logs y pasos.
+
+---
+
+¡Gracias por contribuir a que Capibara6 siga creciendo! 🦫
+
