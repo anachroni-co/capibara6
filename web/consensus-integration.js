@@ -7,7 +7,7 @@ const CONSENSUS_CONFIG = {
     // NOTA: Reemplaza [IP_DE_BOUNTY2] con la IP externa real de la VM bounty2
     // Para obtenerla, ejecuta: gcloud compute instances describe bounty2 --zone=europe-west4-a --project=mamba-001
     serverUrl: window.location.hostname === 'localhost'
-        ? 'http://34.175.215.109:5003/api/mcp/tools/call'  // Smart MCP Server (firewall: tcp:5003)
+        ? 'http://34.175.136.104:5003/api/mcp/tools/call'  // Smart MCP Server (firewall: tcp:5003)
         : 'http://localhost:5001/api/mcp/tools/call',      // Local en producción
     fallbackUrl: 'http://34.175.89.158:8080/completion',
     enabled: true,
@@ -32,7 +32,7 @@ async function loadConsensusConfig() {
         // IP REAL de la VM (según firewall actualizado)
         // Puerto 5003 está abierto para Smart MCP Server según firewall
         const serverBaseUrl = window.location.hostname === 'localhost'
-            ? 'http://34.175.215.109:5003'  // Smart MCP Server (firewall: tcp:5003)
+            ? 'http://34.175.136.104:5003'  // Smart MCP Server (firewall: tcp:5003)
             : 'http://localhost:5001';
             
         const modelsResponse = await fetch(`${serverBaseUrl}/api/mcp/tools/list`);

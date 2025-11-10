@@ -1,8 +1,8 @@
 // Script de prueba para la API GPT-OSS-20B
 // Uso: Abrir DevTools (F12) y ejecutar este script
 
-const API_URL = 'http://34.175.215.109/api/chat';
-const HEALTH_URL = 'http://34.175.215.109/health';
+const API_URL = 'http://34.175.136.104/api/chat';
+const HEALTH_URL = 'http://34.175.136.104/health';
 
 // Función para probar el health check
 async function testHealth() {

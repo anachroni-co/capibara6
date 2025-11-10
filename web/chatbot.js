@@ -480,7 +480,7 @@ class Capibara6Chat {
             const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
                 ? CHATBOT_CONFIG.BACKEND_URL + CHATBOT_CONFIG.ENDPOINTS.SAVE_LEAD
                 : (window.location.hostname === 'localhost' 
-                    ? 'http://34.175.215.109:5000/api/save-lead'  // Capibara6 Main Server (firewall: tcp:5000)
+                    ? 'http://34.175.136.104:5000/api/save-lead'  // Capibara6 Main Server (firewall: tcp:5000)
                     : 'http://localhost:5001/api/save-lead');
             
             const leadData = {
@@ -713,7 +713,7 @@ class Capibara6Chat {
             const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
                 ? CHATBOT_CONFIG.BACKEND_URL + CHATBOT_CONFIG.ENDPOINTS.SAVE_CONVERSATION
                 : (window.location.hostname === 'localhost' 
-                    ? 'http://34.175.215.109:5000/api/save-conversation'  // Capibara6 Main Server (firewall: tcp:5000)
+                    ? 'http://34.175.136.104:5000/api/save-conversation'  // Capibara6 Main Server (firewall: tcp:5000)
                     : 'http://localhost:5001/api/save-conversation');
             
             console.log('Enviando email al backend:', email);

@@ -1,12 +1,12 @@
 // Ejemplo de configuración con IPs reales para desarrollo local
 // ESTE ES UN ARCHIVO DE EJEMPLO - NO SE USA DIRECTAMENTE EN LA APP
 
-// Suponiendo que la IP pública de bounty2 es: 34.175.215.109 (SOLO EJEMPLO)
+// Suponiendo que la IP pública de bounty2 es: 34.175.136.104 (SOLO EJEMPLO)
 // Y que el servidor capibara6_integrated_server está corriendo en el puerto 5001
 
 const EXAMPLE_CHATBOT_CONFIG = {
     // URL del backend - USAR SOLO PARA PRUEBAS LOCALES
-    BACKEND_URL: 'http://34.175.215.109:5001',  // IP REAL de bounty2 con puerto real del servidor
+    BACKEND_URL: 'http://34.175.136.104:5001',  // IP REAL de bounty2 con puerto real del servidor
 
     // Endpoints (no cambian)
     ENDPOINTS: {

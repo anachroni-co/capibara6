@@ -4,7 +4,7 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend en la VM de Capibara6 (usado cuando estamos en localhost)
-    BACKEND_URL: 'http://34.175.215.109:5001',  // IP de la VM de Capibara6 en puerto 5001
+    BACKEND_URL: 'http://34.175.136.104:5001',  // IP de la VM de Capibara6 en puerto 5001
 
     // Endpoints
     ENDPOINTS: {

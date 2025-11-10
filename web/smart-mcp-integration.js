@@ -9,7 +9,7 @@ const SMART_MCP_CONFIG = {
     // Para obtenerla, ejecuta: gcloud compute instances describe bounty2 --zone=europe-west4-a --project=mamba-001
     // Usar el servidor integrado en la VM - Cambiado para desarrollo local
     serverUrl: window.location.hostname === 'localhost' 
-        ? 'http://34.175.215.109:5010/api/mcp/analyze'  // Smart MCP Server (firewall: tcp:5010)
+        ? 'http://34.175.136.104:5010/api/mcp/analyze'  // Smart MCP Server (firewall: tcp:5010)
         : 'https://www.capibara6.com/api/mcp/analyze',   // Servidor en producción
     enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
     timeout: 5000, // 5 segundos máximo para desarrollo
