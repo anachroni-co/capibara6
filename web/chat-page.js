@@ -113,6 +113,32 @@ class Capibara6ChatPage {
         tempSlider.addEventListener('input', (e) => {
             tempValue.textContent = e.target.value;
         });
+
+        // n8n Automation Panel
+        const n8nAutomationBtn = document.getElementById('n8n-automation-btn');
+        const n8nPanel = document.getElementById('n8n-automation-panel');
+        const closeN8nPanel = document.getElementById('close-n8n-panel');
+
+        if (n8nAutomationBtn && n8nPanel) {
+            n8nAutomationBtn.addEventListener('click', () => {
+                n8nPanel.classList.toggle('active');
+            });
+        }
+
+        if (closeN8nPanel && n8nPanel) {
+            closeN8nPanel.addEventListener('click', () => {
+                n8nPanel.classList.remove('active');
+            });
+        }
+
+        // n8n Actions
+        const n8nOpenEditor = document.getElementById('n8n-open-editor');
+        if (n8nOpenEditor) {
+            n8nOpenEditor.addEventListener('click', () => {
+                const n8nURL = window.CONFIG?.N8N_URL || 'http://localhost:5678';
+                window.open(n8nURL, '_blank');
+            });
+        }
     }
     
     toggleSidebar() {

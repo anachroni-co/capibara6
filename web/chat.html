@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b259288 (update chat.html)
 <!DOCTYPE html>
 <html lang="es" data-lang="es">
 <head>
@@ -471,7 +467,9 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="config.js"></script>
+    <script src="n8n-manager.js"></script>
     <script src="model-visualization.js"></script>
     <script src="chat-page.js"></script>
     <script>
@@ -485,67 +483,14 @@
             hour: '2-digit',
             minute: '2-digit'
         });
+
+        // Inicializar n8n Manager
+        if (typeof N8NManager !== 'undefined') {
+            window.n8nManager = new N8NManager({
+                baseURL: window.CONFIG?.API_BASE_URL || 'http://localhost:5000',
+                n8nURL: window.CONFIG?.N8N_URL || 'http://localhost:5678'
+            });
+        }
     </script>
 </body>
 </html>
-<<<<<<< HEAD
-=======
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat - Capibara6 AI Platform</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Librerías de visualización -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-</head>
-<body>
-    <header>
-        <h1>Capibara6 AI Chat</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="chat.html">Chat</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <div id="chat-container">
-            <div id="chat-header">
-                <h3>Chat con Capibara6</h3>
-                <div id="system-status">
-                    <span id="ctm-status" class="status-indicator">CTM: Activo</span>
-                    <span id="e2b-status" class="status-indicator">e2b: <span id="e2b-status-text">Verificando...</span></span>
-                    <span id="model-status" class="status-indicator">Modelo: <span id="model-name">Auto</span></span>
-                </div>
-            </div>
-            <div id="chat-messages"></div>
-            <div id="visualization-container" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
-                <h4>Visualización Generada:</h4>
-                <div id="visualization-content"></div>
-                <!-- Contenedor para gráficos interactivos -->
-                <div id="interactive-visualizations" style="margin-top: 15px; display: none;"></div>
-            </div>
-            <div id="input-area">
-                <input type="text" id="message-input" placeholder="Escribe tu mensaje aquí...">
-                <button id="send-button">Enviar</button>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Capibara6 AI Platform. Todos los derechos reservados.</p>
-    </footer>
-
-    <script src="chatbot.js"></script>
-    <script src="neural-animation.js"></script>
-</body>
-</html>
->>>>>>> 9532bef (update files)
-=======
->>>>>>> b259288 (update chat.html)
