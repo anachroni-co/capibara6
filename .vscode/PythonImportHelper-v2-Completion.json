@@ -2081,6 +2081,342 @@
         "documentation": {}
     },
     {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Optional",
         "importPath": "typing",
         "description": "typing",
@@ -2369,6 +2705,30 @@
         "documentation": {}
     },
     {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Any",
         "importPath": "typing",
         "description": "typing",
@@ -2386,6 +2746,30 @@
     },
     {
         "label": "Iterable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -4867,6 +5251,54 @@
         "documentation": {}
     },
     {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
         "label": "pickle",
         "kind": 6,
         "isExtraImport": true,
@@ -5645,7 +6077,6 @@
         "documentation": {}
     },
     {
-<<<<<<< HEAD
         "label": "Flask",
         "importPath": "flask",
         "description": "flask",
@@ -5670,8 +6101,6 @@
         "documentation": {}
     },
     {
-=======
->>>>>>> f79a885 (add .vscode)
         "label": "Flask",
         "importPath": "flask",
         "description": "flask",
@@ -6303,6 +6732,22 @@
         "documentation": {}
     },
     {
+        "label": "MODELS_CONFIG",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
+        "label": "get_active_models",
+        "importPath": "models_config",
+        "description": "models_config",
+        "isExtraImport": true,
+        "detail": "models_config",
+        "documentation": {}
+    },
+    {
         "label": "E2BManager",
         "importPath": "execution.e2b_manager",
         "description": "execution.e2b_manager",
@@ -6817,6 +7262,14 @@
         "documentation": {}
     },
     {
+        "label": "lru_cache",
+        "importPath": "functools",
+        "description": "functools",
+        "isExtraImport": true,
+        "detail": "functools",
+        "documentation": {}
+    },
+    {
         "label": "logging.handlers",
         "kind": 6,
         "isExtraImport": true,
@@ -6839,6 +7292,166 @@
         "description": "urllib.parse",
         "isExtraImport": true,
         "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoder",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParser",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManager",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoderOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParserOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManagerOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoderUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParserUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManagerUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoderUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParserUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParser",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoder",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManager",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParserOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoderOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManagerOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParserUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoderUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManagerUltraOptimized",
+        "importPath": "toon_utils",
+        "description": "toon_utils",
+        "isExtraImport": true,
+        "detail": "toon_utils",
         "documentation": {}
     },
     {
@@ -6908,11 +7521,11 @@
         "documentation": {}
     },
     {
-        "label": "FormatManager",
-        "importPath": "toon_utils.format_manager",
-        "description": "toon_utils.format_manager",
+        "label": "FormatManagerUltraOptimized",
+        "importPath": "toon_utils.format_manager_ultra_optimized",
+        "description": "toon_utils.format_manager_ultra_optimized",
         "isExtraImport": true,
-        "detail": "toon_utils.format_manager",
+        "detail": "toon_utils.format_manager_ultra_optimized",
         "documentation": {}
     },
     {
@@ -7036,6 +7649,30 @@
         "description": "task_classifier",
         "isExtraImport": true,
         "detail": "task_classifier",
+        "documentation": {}
+    },
+    {
+        "label": "Route",
+        "importPath": "semantic_router",
+        "description": "semantic_router",
+        "isExtraImport": true,
+        "detail": "semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "FastEmbedEncoder",
+        "importPath": "semantic_router.encoders",
+        "description": "semantic_router.encoders",
+        "isExtraImport": true,
+        "detail": "semantic_router.encoders",
+        "documentation": {}
+    },
+    {
+        "label": "SemanticRouter",
+        "importPath": "semantic_router.routers",
+        "description": "semantic_router.routers",
+        "isExtraImport": true,
+        "detail": "semantic_router.routers",
         "documentation": {}
     },
     {
@@ -11842,6 +12479,87 @@
         "documentation": {}
     },
     {
+        "label": "ToonEncoder",
+        "kind": 6,
+        "importPath": "backend.toon_utils.encoder",
+        "description": "backend.toon_utils.encoder",
+        "peekOfCode": "class ToonEncoder:\n    \"\"\"Encoder para formato TOON\"\"\"\n    @staticmethod\n    def encode(data: Union[Dict, List], key: str = None) -> str:\n        \"\"\"\n        Codifica estructuras Python a formato TOON\n        Args:\n            data: Dict o List a codificar\n            key: Nombre opcional para la clave raíz\n        Returns:",
+        "detail": "backend.toon_utils.encoder",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoderOptimized",
+        "kind": 6,
+        "importPath": "backend.toon_utils.encoder_optimized",
+        "description": "backend.toon_utils.encoder_optimized",
+        "peekOfCode": "class ToonEncoderOptimized:\n    \"\"\"Encoder optimizado para formato TOON con menor latencia\"\"\"\n    @staticmethod\n    def encode(data: Union[Dict, List], key: str = None) -> str:\n        \"\"\"\n        Codifica estructuras Python a formato TOON (versión optimizada)\n        \"\"\"\n        if isinstance(data, dict):\n            return ToonEncoderOptimized._encode_dict_optimized(data)\n        elif isinstance(data, list):",
+        "detail": "backend.toon_utils.encoder_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "ToonEncoderUltraOptimized",
+        "kind": 6,
+        "importPath": "backend.toon_utils.encoder_ultra_optimized",
+        "description": "backend.toon_utils.encoder_ultra_optimized",
+        "peekOfCode": "class ToonEncoderUltraOptimized:\n    \"\"\"Encoder ultra optimizado para formato TOON con latencia mínima\"\"\"\n    # Caché para estructuras de datos comunes\n    _structure_cache = {}\n    _encoding_cache = {}\n    @classmethod\n    def encode(cls, data: Union[Dict, List], key: str = None) -> str:\n        \"\"\"\n        Codifica estructuras Python a formato TOON (versión ultra optimizada)\n        \"\"\"",
+        "detail": "backend.toon_utils.encoder_ultra_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManager",
+        "kind": 6,
+        "importPath": "backend.toon_utils.format_manager",
+        "description": "backend.toon_utils.format_manager",
+        "peekOfCode": "class FormatManager:\n    \"\"\"\n    Gestor de formatos que decide automáticamente cuándo usar TOON vs JSON\n    \"\"\"\n    # Constantes\n    MIN_ARRAY_SIZE_FOR_TOON = 5  # Mínimo elementos para considerar TOON\n    MIN_SAVINGS_PERCENT = 20      # Mínimo % de ahorro para recomendar TOON\n    @classmethod\n    def encode(\n        cls,",
+        "detail": "backend.toon_utils.format_manager",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManagerOptimized",
+        "kind": 6,
+        "importPath": "backend.toon_utils.format_manager_optimized",
+        "description": "backend.toon_utils.format_manager_optimized",
+        "peekOfCode": "class FormatManagerOptimized:\n    \"\"\"\n    Gestor de formatos optimizado que decide automáticamente cuándo usar TOON vs JSON\n    con menor latencia que la implementación anterior\n    \"\"\"\n    # Constantes\n    MIN_ARRAY_SIZE_FOR_TOON = 5  # Mínimo elementos para considerar TOON\n    MIN_SAVINGS_PERCENT = 20      # Mínimo % de ahorro para recomendar TOON\n    @classmethod\n    def encode(",
+        "detail": "backend.toon_utils.format_manager_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "FormatManagerUltraOptimized",
+        "kind": 6,
+        "importPath": "backend.toon_utils.format_manager_ultra_optimized",
+        "description": "backend.toon_utils.format_manager_ultra_optimized",
+        "peekOfCode": "class FormatManagerUltraOptimized:\n    \"\"\"\n    Gestor de formatos ultra optimizado que decide automáticamente cuándo usar TOON vs JSON\n    con latencia mínima gracias a mecanismos avanzados de caché\n    \"\"\"\n    # Constantes\n    MIN_ARRAY_SIZE_FOR_TOON = 5  # Mínimo elementos para considerar TOON\n    MIN_SAVINGS_PERCENT = 20      # Mínimo % de ahorro para recomendar TOON\n    # Caché para decisiones y conversiones\n    _conversion_cache = {}",
+        "detail": "backend.toon_utils.format_manager_ultra_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParser",
+        "kind": 6,
+        "importPath": "backend.toon_utils.parser",
+        "description": "backend.toon_utils.parser",
+        "peekOfCode": "class ToonParser:\n    \"\"\"Parser para formato TOON\"\"\"\n    @staticmethod\n    def parse(toon_string: str) -> Union[Dict, List]:\n        \"\"\"\n        Parsea una cadena TOON a estructuras Python\n        Ejemplos:\n            users[2]{id,name,role}:\n              1,Alice,admin\n              2,Bob,user",
+        "detail": "backend.toon_utils.parser",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParserOptimized",
+        "kind": 6,
+        "importPath": "backend.toon_utils.parser_optimized",
+        "description": "backend.toon_utils.parser_optimized",
+        "peekOfCode": "class ToonParserOptimized:\n    \"\"\"Parser optimizado para formato TOON con menor latencia\"\"\"\n    @staticmethod\n    def parse(toon_string: str) -> Union[Dict, List]:\n        \"\"\"\n        Parsea una cadena TOON a estructuras Python (versión optimizada)\n        \"\"\"\n        if not toon_string or not toon_string.strip():\n            return {}\n        lines = [line.strip() for line in toon_string.strip().split('\\n')]",
+        "detail": "backend.toon_utils.parser_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "ToonParserUltraOptimized",
+        "kind": 6,
+        "importPath": "backend.toon_utils.parser_ultra_optimized",
+        "description": "backend.toon_utils.parser_ultra_optimized",
+        "peekOfCode": "class ToonParserUltraOptimized:\n    \"\"\"Parser ultra optimizado para formato TOON con latencia mínima\"\"\"\n    # Caché para resultados de parsing\n    _parsing_cache = {}\n    @classmethod\n    def parse(cls, toon_string: str) -> Union[Dict, List]:\n        \"\"\"\n        Parsea una cadena TOON a estructuras Python (versión ultra optimizada)\n        \"\"\"\n        # Usar caché para strings repetidos",
+        "detail": "backend.toon_utils.parser_ultra_optimized",
+        "documentation": {}
+    },
+    {
         "label": "KyutaiTTS",
         "kind": 6,
         "importPath": "backend.utils.kyutai_tts_impl",
@@ -12085,6 +12803,51 @@
         "documentation": {}
     },
     {
+        "label": "create_test_data",
+        "kind": 2,
+        "importPath": "backend.benchmark_toon",
+        "description": "backend.benchmark_toon",
+        "peekOfCode": "def create_test_data(size):\n    \"\"\"Crea datos de prueba de un tamaño específico\"\"\"\n    return {\n        \"records\": [\n            {\n                \"id\": i,\n                \"name\": f\"Usuario {i}\",\n                \"email\": f\"user{i}@example.com\",\n                \"age\": 20 + (i % 50),\n                \"active\": i % 2 == 0,",
+        "detail": "backend.benchmark_toon",
+        "documentation": {}
+    },
+    {
+        "label": "benchmark_encoder",
+        "kind": 2,
+        "importPath": "backend.benchmark_toon",
+        "description": "backend.benchmark_toon",
+        "peekOfCode": "def benchmark_encoder(encoder_class, data, name):\n    \"\"\"Mide el tiempo de encoding\"\"\"\n    start_time = time.time()\n    encoded = encoder_class.encode(data)\n    end_time = time.time()\n    return end_time - start_time, encoded\ndef benchmark_decoder(parser_class, toon_str, name):\n    \"\"\"Mide el tiempo de decoding\"\"\"\n    start_time = time.time()\n    decoded = parser_class.parse(toon_str)",
+        "detail": "backend.benchmark_toon",
+        "documentation": {}
+    },
+    {
+        "label": "benchmark_decoder",
+        "kind": 2,
+        "importPath": "backend.benchmark_toon",
+        "description": "backend.benchmark_toon",
+        "peekOfCode": "def benchmark_decoder(parser_class, toon_str, name):\n    \"\"\"Mide el tiempo de decoding\"\"\"\n    start_time = time.time()\n    decoded = parser_class.parse(toon_str)\n    end_time = time.time()\n    return end_time - start_time, decoded\ndef benchmark_format_manager(manager_class, data, name):\n    \"\"\"Mide el tiempo de operaciones del FormatManager\"\"\"\n    start_time = time.time()\n    encoded, fmt = manager_class.encode(data, 'auto')",
+        "detail": "backend.benchmark_toon",
+        "documentation": {}
+    },
+    {
+        "label": "benchmark_format_manager",
+        "kind": 2,
+        "importPath": "backend.benchmark_toon",
+        "description": "backend.benchmark_toon",
+        "peekOfCode": "def benchmark_format_manager(manager_class, data, name):\n    \"\"\"Mide el tiempo de operaciones del FormatManager\"\"\"\n    start_time = time.time()\n    encoded, fmt = manager_class.encode(data, 'auto')\n    decoded = manager_class.decode(encoded, fmt)\n    end_time = time.time()\n    return end_time - start_time, encoded, decoded\ndef run_benchmark():\n    \"\"\"Ejecuta el benchmark completo\"\"\"\n    print(\"=\" * 80)",
+        "detail": "backend.benchmark_toon",
+        "documentation": {}
+    },
+    {
+        "label": "run_benchmark",
+        "kind": 2,
+        "importPath": "backend.benchmark_toon",
+        "description": "backend.benchmark_toon",
+        "peekOfCode": "def run_benchmark():\n    \"\"\"Ejecuta el benchmark completo\"\"\"\n    print(\"=\" * 80)\n    print(\"  🚀 BENCHMARK - RENDIMIENTO DE TOON OPTIMIZADO\")\n    print(\"=\" * 80)\n    sizes = [10, 50, 100, 500]  # Diferentes tamaños de datos para probar\n    for size in sizes:\n        print(f\"\\n📊 Datos de prueba: {size} registros\")\n        print(\"-\" * 60)\n        # Crear datos de prueba",
+        "detail": "backend.benchmark_toon",
+        "documentation": {}
+    },
+    {
         "label": "Capibara6E2BIntegration",
         "kind": 6,
         "importPath": "backend.capibara6_e2b_integration",
@@ -12125,7 +12888,7 @@
         "kind": 2,
         "importPath": "backend.capibara6_integrated_server",
         "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def proxy_gpt_oss_20b():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        model_config = MODEL_CONFIGS.get('gpt_oss_20b')",
+        "peekOfCode": "def proxy_gpt_oss_20b():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        model_config = MODEL_CONFIGS.get('gpt_oss_20b')",
         "detail": "backend.capibara6_integrated_server",
         "documentation": {}
     },
@@ -12134,7 +12897,7 @@
         "kind": 2,
         "importPath": "backend.capibara6_integrated_server",
         "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def smart_mcp_analyze():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        # Análisis inteligente del contexto (misma lógica que en smart_mcp_server)",
+        "peekOfCode": "def smart_mcp_analyze():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        # Análisis inteligente del contexto (misma lógica que en smart_mcp_server)",
         "detail": "backend.capibara6_integrated_server",
         "documentation": {}
     },
@@ -12143,7 +12906,7 @@
         "kind": 2,
         "importPath": "backend.capibara6_integrated_server",
         "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def basic_tts():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        text = input_data.get('text', '')",
+        "peekOfCode": "def basic_tts():\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()\n        text = input_data.get('text', '')",
         "detail": "backend.capibara6_integrated_server",
         "documentation": {}
     },
@@ -12152,7 +12915,7 @@
         "kind": 2,
         "importPath": "backend.capibara6_integrated_server",
         "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def e2b_process():\n    \"\"\"Procesa tareas que requieren entornos aislados usando e2b\"\"\"\n    if not E2B_AVAILABLE:\n        error_response = {'error': 'Integración e2b no disponible'}\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:\n            content, format_type = FormatManager.encode(error_response, 'toon')\n            return Response(content, mimetype='text/plain', status=500)\n        else:\n            return jsonify(error_response), 500",
+        "peekOfCode": "def e2b_process():\n    \"\"\"Procesa tareas que requieren entornos aislados usando e2b\"\"\"\n    if not E2B_AVAILABLE:\n        error_response = {'error': 'Integración e2b no disponible'}\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:\n            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')\n            return Response(content, mimetype='text/plain', status=500)\n        else:\n            return jsonify(error_response), 500",
         "detail": "backend.capibara6_integrated_server",
         "documentation": {}
     },
@@ -12170,7 +12933,7 @@
         "kind": 2,
         "importPath": "backend.capibara6_integrated_server",
         "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def e2b_estimate():\n    \"\"\"Estima los recursos necesarios para una tarea usando e2b\"\"\"\n    if not E2B_AVAILABLE:\n        error_response = {'error': 'Integración e2b no disponible'}\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:\n            content, format_type = FormatManager.encode(error_response, 'toon')\n            return Response(content, mimetype='text/plain', status=500)\n        else:\n            return jsonify(error_response), 500",
+        "peekOfCode": "def e2b_estimate():\n    \"\"\"Estima los recursos necesarios para una tarea usando e2b\"\"\"\n    if not E2B_AVAILABLE:\n        error_response = {'error': 'Integración e2b no disponible'}\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:\n            content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')\n            return Response(content, mimetype='text/plain', status=500)\n        else:\n            return jsonify(error_response), 500",
         "detail": "backend.capibara6_integrated_server",
         "documentation": {}
     },
@@ -12179,7 +12942,7 @@
         "kind": 2,
         "importPath": "backend.capibara6_integrated_server",
         "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def ai_generate_ctm():\n    \"\"\"Genera texto usando CTM para clasificar la tarea y Ollama local para la generación\"\"\"\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManager.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()",
+        "peekOfCode": "def ai_generate_ctm():\n    \"\"\"Genera texto usando CTM para clasificar la tarea y Ollama local para la generación\"\"\"\n    try:\n        # Determinar formato de entrada\n        content_type = request.headers.get('Content-Type', 'application/json').lower()\n        preferred_output_format = request.headers.get('Accept', 'application/json').lower()\n        if 'application/toon' in content_type or 'text/plain' in content_type:\n            input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')\n        else:\n            input_data = request.get_json()",
         "detail": "backend.capibara6_integrated_server",
         "documentation": {}
     },
@@ -12343,6 +13106,33 @@
         "description": "backend.cors_proxy",
         "peekOfCode": "GPTOSS_HEALTH_URL = 'http://34.175.215.109/health'\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check del proxy\"\"\"\n    try:\n        # Verificar conexión con la VM\n        response = requests.get(GPTOSS_HEALTH_URL, timeout=5)\n        vm_status = response.json() if response.ok else {'error': 'VM no disponible'}\n        return jsonify({\n            'status': 'ok',",
         "detail": "backend.cors_proxy",
+        "documentation": {}
+    },
+    {
+        "label": "test_data",
+        "kind": 5,
+        "importPath": "backend.debug_toon",
+        "description": "backend.debug_toon",
+        "peekOfCode": "test_data = {\n    \"id\": 1,\n    \"name\": \"Test\",\n    \"values\": [1, 2, 3],  # Este es un array como valor de campo\n    \"nested\": {\"a\": 1, \"b\": 2}\n}\nprint(\"Datos originales:\")\nprint(test_data)\ntoon_str = ToonEncoderUltraOptimized.encode(test_data)\nprint(f\"\\nCodificado en TOON (Ultra):\")",
+        "detail": "backend.debug_toon",
+        "documentation": {}
+    },
+    {
+        "label": "toon_str",
+        "kind": 5,
+        "importPath": "backend.debug_toon",
+        "description": "backend.debug_toon",
+        "peekOfCode": "toon_str = ToonEncoderUltraOptimized.encode(test_data)\nprint(f\"\\nCodificado en TOON (Ultra):\")\nprint(repr(toon_str))\ndecoded = ToonParserUltraOptimized.parse(toon_str)\nprint(f\"\\nDecodificado (Ultra):\")\nprint(decoded)\nprint(f\"\\n¿Son iguales? {test_data == decoded}\")\nprint(f\"¿Tiene el mismo tipo de 'values'? {type(test_data.get('values')) == type(decoded.get('values'))}\")\nprint(f\"¿values es un array en origen? {isinstance(test_data.get('values'), list)}\")\nprint(f\"¿values es un array en destino? {isinstance(decoded.get('values'), list)}\")",
+        "detail": "backend.debug_toon",
+        "documentation": {}
+    },
+    {
+        "label": "decoded",
+        "kind": 5,
+        "importPath": "backend.debug_toon",
+        "description": "backend.debug_toon",
+        "peekOfCode": "decoded = ToonParserUltraOptimized.parse(toon_str)\nprint(f\"\\nDecodificado (Ultra):\")\nprint(decoded)\nprint(f\"\\n¿Son iguales? {test_data == decoded}\")\nprint(f\"¿Tiene el mismo tipo de 'values'? {type(test_data.get('values')) == type(decoded.get('values'))}\")\nprint(f\"¿values es un array en origen? {isinstance(test_data.get('values'), list)}\")\nprint(f\"¿values es un array en destino? {isinstance(decoded.get('values'), list)}\")\nprint(f\"Contenido de 'values' en origen: {test_data.get('values')}\")\nprint(f\"Contenido de 'values' en destino: {decoded.get('values')}\")",
+        "detail": "backend.debug_toon",
         "documentation": {}
     },
     {
@@ -13187,7 +13977,7 @@
         "kind": 5,
         "importPath": "backend.models_config",
         "description": "backend.models_config",
-        "peekOfCode": "MODELS_CONFIG = {\n    'capibara6': {\n        'name': 'Capibara6',\n        'base_model': 'Gemma3-12B',\n        'server_url': 'http://34.175.104.187:8080/completion',  # IP actualizada\n        'type': 'llama_cpp',\n        'hardware': 'GPU',\n        'status': 'active',\n        'priority': 1,\n        'prompt_template': {",
+        "peekOfCode": "MODELS_CONFIG = {\n    # ============================================\n    # MODELOS ACTIVOS (Backend BB)\n    # ============================================\n    'gpt-oss-20b': {\n        'name': 'GPT-OSS-20B',\n        'base_model': 'GPT-OSS-20B',\n        'server_url': 'http://34.175.215.109:8080/completion',  # VM de GPT-OSS\n        'type': 'llama_cpp',\n        'hardware': 'GPU',",
         "detail": "backend.models_config",
         "documentation": {}
     },
@@ -13216,6 +14006,78 @@
         "description": "backend.models_config_updated",
         "peekOfCode": "MODELS_CONFIG = {\n    'capibara6': {\n        'name': 'Capibara6',\n        'base_model': 'Gemma3-12B',\n        'server_url': 'http://34.175.104.187:8080/completion',  # IP actualizada\n        'type': 'llama_cpp',\n        'hardware': 'GPU',\n        'status': 'active',\n        'priority': 1,\n        'prompt_template': {",
         "detail": "backend.models_config_updated",
+        "documentation": {}
+    },
+    {
+        "label": "N8NTemplatesManager",
+        "kind": 6,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "class N8NTemplatesManager:\n    \"\"\"Gestor de plantillas de workflows n8n\"\"\"\n    def __init__(self, templates_dir: str = None):\n        if templates_dir is None:\n            templates_dir = os.path.join(\n                os.path.dirname(__file__),\n                'data/n8n/workflows/templates'\n            )\n        self.templates_dir = Path(templates_dir)\n        self.catalog_file = self.templates_dir / 'catalog.json'",
+        "detail": "backend.n8n_templates",
+        "documentation": {}
+    },
+    {
+        "label": "get_templates_catalog",
+        "kind": 2,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "def get_templates_catalog():\n    \"\"\"Obtiene el catálogo completo\"\"\"\n    return templates_manager.get_catalog()\ndef get_recommended_templates():\n    \"\"\"Obtiene plantillas recomendadas\"\"\"\n    return templates_manager.get_recommended_templates()\ndef get_template_details(template_id: str):\n    \"\"\"Obtiene detalles de una plantilla\"\"\"\n    template = templates_manager.get_template(template_id)\n    if template:",
+        "detail": "backend.n8n_templates",
+        "documentation": {}
+    },
+    {
+        "label": "get_recommended_templates",
+        "kind": 2,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "def get_recommended_templates():\n    \"\"\"Obtiene plantillas recomendadas\"\"\"\n    return templates_manager.get_recommended_templates()\ndef get_template_details(template_id: str):\n    \"\"\"Obtiene detalles de una plantilla\"\"\"\n    template = templates_manager.get_template(template_id)\n    if template:\n        # Añadir información de requisitos\n        template['requirements_details'] = {\n            'apis': [req for req in template.get('requires', []) if 'API' in req],",
+        "detail": "backend.n8n_templates",
+        "documentation": {}
+    },
+    {
+        "label": "get_template_details",
+        "kind": 2,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "def get_template_details(template_id: str):\n    \"\"\"Obtiene detalles de una plantilla\"\"\"\n    template = templates_manager.get_template(template_id)\n    if template:\n        # Añadir información de requisitos\n        template['requirements_details'] = {\n            'apis': [req for req in template.get('requires', []) if 'API' in req],\n            'credentials': [req for req in template.get('requires', []) if 'API' not in req],\n            'integration_endpoints': template.get('capibara6_integration', {}).get('endpoints', [])\n        }",
+        "detail": "backend.n8n_templates",
+        "documentation": {}
+    },
+    {
+        "label": "search_templates",
+        "kind": 2,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "def search_templates(query: str):\n    \"\"\"Busca plantillas\"\"\"\n    return templates_manager.search_templates(query)\ndef download_template_json(template_id: str):\n    \"\"\"Descarga el JSON de una plantilla\"\"\"\n    return templates_manager.download_template(template_id)\ndef import_template(template_id: str, n8n_url: str = None, api_key: str = None):\n    \"\"\"Importa una plantilla a n8n\"\"\"\n    if n8n_url is None:\n        # Intentar detectar la URL de n8n según el entorno",
+        "detail": "backend.n8n_templates",
+        "documentation": {}
+    },
+    {
+        "label": "download_template_json",
+        "kind": 2,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "def download_template_json(template_id: str):\n    \"\"\"Descarga el JSON de una plantilla\"\"\"\n    return templates_manager.download_template(template_id)\ndef import_template(template_id: str, n8n_url: str = None, api_key: str = None):\n    \"\"\"Importa una plantilla a n8n\"\"\"\n    if n8n_url is None:\n        # Intentar detectar la URL de n8n según el entorno\n        n8n_url = os.getenv('N8N_URL', 'http://n8n:5678')\n    return templates_manager.import_template_to_n8n(\n        template_id=template_id,",
+        "detail": "backend.n8n_templates",
+        "documentation": {}
+    },
+    {
+        "label": "import_template",
+        "kind": 2,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "def import_template(template_id: str, n8n_url: str = None, api_key: str = None):\n    \"\"\"Importa una plantilla a n8n\"\"\"\n    if n8n_url is None:\n        # Intentar detectar la URL de n8n según el entorno\n        n8n_url = os.getenv('N8N_URL', 'http://n8n:5678')\n    return templates_manager.import_template_to_n8n(\n        template_id=template_id,\n        n8n_url=n8n_url,\n        api_key=api_key\n    )",
+        "detail": "backend.n8n_templates",
+        "documentation": {}
+    },
+    {
+        "label": "templates_manager",
+        "kind": 5,
+        "importPath": "backend.n8n_templates",
+        "description": "backend.n8n_templates",
+        "peekOfCode": "templates_manager = N8NTemplatesManager()\ndef get_templates_catalog():\n    \"\"\"Obtiene el catálogo completo\"\"\"\n    return templates_manager.get_catalog()\ndef get_recommended_templates():\n    \"\"\"Obtiene plantillas recomendadas\"\"\"\n    return templates_manager.get_recommended_templates()\ndef get_template_details(template_id: str):\n    \"\"\"Obtiene detalles de una plantilla\"\"\"\n    template = templates_manager.get_template(template_id)",
+        "detail": "backend.n8n_templates",
         "documentation": {}
     },
     {
@@ -13279,6 +14141,42 @@
         "description": "backend.production_config",
         "peekOfCode": "OAUTH_CALLBACKS = {\n    'github': f\"{PRODUCTION_CONFIG['auth_server_url']}/auth/callback/github\",\n    'google': f\"{PRODUCTION_CONFIG['auth_server_url']}/auth/callback/google\"\n}\ndef get_frontend_url():\n    \"\"\"Obtiene la URL del frontend según el entorno\"\"\"\n    return os.environ.get('FRONTEND_URL', PRODUCTION_CONFIG['frontend_url'])\ndef get_auth_server_url():\n    \"\"\"Obtiene la URL del servidor de auth según el entorno\"\"\"\n    return os.environ.get('AUTH_SERVER_URL', PRODUCTION_CONFIG['auth_server_url'])",
         "detail": "backend.production_config",
+        "documentation": {}
+    },
+    {
+        "label": "CapibaraModelRouter",
+        "kind": 6,
+        "importPath": "backend.semantic_model_router",
+        "description": "backend.semantic_model_router",
+        "peekOfCode": "class CapibaraModelRouter:\n    \"\"\"Router semántico para seleccionar modelos automáticamente\"\"\"\n    def __init__(self):\n        \"\"\"Inicializa el router con rutas y encoder\"\"\"\n        logger.info(\"🎯 Inicializando Semantic Router...\")\n        # Definir rutas semánticas para diferentes tipos de consultas\n        self.routes = [\n            Route(\n                name=\"programming\",\n                utterances=[",
+        "detail": "backend.semantic_model_router",
+        "documentation": {}
+    },
+    {
+        "label": "get_router",
+        "kind": 2,
+        "importPath": "backend.semantic_model_router",
+        "description": "backend.semantic_model_router",
+        "peekOfCode": "def get_router() -> CapibaraModelRouter:\n    \"\"\"\n    Obtiene la instancia singleton del router\n    Lazy initialization para cargar solo cuando se necesita\n    \"\"\"\n    global _router_instance\n    if _router_instance is None:\n        logger.info(\"🚀 Inicializando Semantic Router por primera vez...\")\n        _router_instance = CapibaraModelRouter()\n    return _router_instance",
+        "detail": "backend.semantic_model_router",
+        "documentation": {}
+    },
+    {
+        "label": "reset_router",
+        "kind": 2,
+        "importPath": "backend.semantic_model_router",
+        "description": "backend.semantic_model_router",
+        "peekOfCode": "def reset_router():\n    \"\"\"Reinicia el router (útil para testing)\"\"\"\n    global _router_instance\n    _router_instance = None\n    logger.info(\"🔄 Router reiniciado\")\n# ============================================\n# TESTING\n# ============================================\nif __name__ == '__main__':\n    # Configurar logging para testing",
+        "detail": "backend.semantic_model_router",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.semantic_model_router",
+        "description": "backend.semantic_model_router",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass CapibaraModelRouter:\n    \"\"\"Router semántico para seleccionar modelos automáticamente\"\"\"\n    def __init__(self):\n        \"\"\"Inicializa el router con rutas y encoder\"\"\"\n        logger.info(\"🎯 Inicializando Semantic Router...\")\n        # Definir rutas semánticas para diferentes tipos de consultas\n        self.routes = [\n            Route(\n                name=\"programming\",",
+        "detail": "backend.semantic_model_router",
         "documentation": {}
     },
     {
@@ -13476,6 +14374,60 @@
         "importPath": "backend.server",
         "description": "backend.server",
         "peekOfCode": "def index():\n    \"\"\"Página principal\"\"\"\n    return '''\n    <html>\n        <head>\n            <title>capibara6 Backend</title>\n            <style>\n                body { font-family: monospace; background: #0a0a0a; color: #00ff00; padding: 40px; }\n                h1 { color: #00ffff; }\n                .status { color: #00ff00; }",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "n8n_templates_catalog",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def n8n_templates_catalog():\n    \"\"\"Obtiene el catálogo completo de plantillas n8n\"\"\"\n    if not N8N_TEMPLATES_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'N8N Templates Manager no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        catalog = get_templates_catalog()",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "n8n_templates_recommended",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def n8n_templates_recommended():\n    \"\"\"Obtiene plantillas recomendadas para Capibara6\"\"\"\n    if not N8N_TEMPLATES_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'N8N Templates Manager no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        templates = get_recommended_templates()",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "n8n_template_details",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def n8n_template_details(template_id: str):\n    \"\"\"Obtiene detalles de una plantilla específica\"\"\"\n    if not N8N_TEMPLATES_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'N8N Templates Manager no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        template = get_template_details(template_id)",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "n8n_templates_search",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def n8n_templates_search():\n    \"\"\"Busca plantillas por palabra clave\"\"\"\n    if not N8N_TEMPLATES_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'N8N Templates Manager no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        if request.method == 'GET':",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "n8n_template_download",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def n8n_template_download(template_id: str):\n    \"\"\"Descarga el JSON de una plantilla\"\"\"\n    if not N8N_TEMPLATES_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'N8N Templates Manager no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        workflow = download_template_json(template_id)",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "n8n_template_import",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def n8n_template_import(template_id: str):\n    \"\"\"Importa una plantilla directamente a n8n\"\"\"\n    if not N8N_TEMPLATES_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'N8N Templates Manager no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        data = request.get_json() or {}",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -13966,12 +14918,219 @@
         "documentation": {}
     },
     {
+        "label": "test_model_connection",
+        "kind": 2,
+        "importPath": "backend.test_bb_connection",
+        "description": "backend.test_bb_connection",
+        "peekOfCode": "def test_model_connection(model_id, config):\n    \"\"\"Prueba la conexión con un modelo específico\"\"\"\n    print(f\"\\n{'='*60}\")\n    print(f\"🧪 Probando: {config['name']}\")\n    print(f\"{'='*60}\")\n    print(f\"URL: {config['server_url']}\")\n    print(f\"Hardware: {config['hardware']}\")\n    print(f\"Status: {config['status']}\")\n    try:\n        # Intentar health check primero",
+        "detail": "backend.test_bb_connection",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "backend.test_bb_connection",
+        "description": "backend.test_bb_connection",
+        "peekOfCode": "def main():\n    print(\"=\"*60)\n    print(\"🔌 Test de Conexión con Backend BB\")\n    print(\"=\"*60)\n    print(f\"\\nProbando conexión con modelos del servidor BB...\")\n    print(f\"IP: 34.175.215.109\")\n    print(f\"Puertos: 8080 (gpt-oss-20b), 8081 (phi), 8082 (mixtral)\")\n    # Obtener modelos activos\n    active_models = get_active_models()\n    if not active_models:",
+        "detail": "backend.test_bb_connection",
+        "documentation": {}
+    },
+    {
         "label": "MCPTester",
         "kind": 6,
         "importPath": "backend.test_mcp",
         "description": "backend.test_mcp",
         "peekOfCode": "class MCPTester:\n    \"\"\"Tester para el conector MCP de capibara6\"\"\"\n    def __init__(self, base_url: str = \"http://localhost:5000\"):\n        self.base_url = base_url\n        self.connector = Capibara6MCPConnector()\n    async def test_direct_connector(self):\n        \"\"\"Probar el conector directamente (sin servidor)\"\"\"\n        print(\"🧪 Probando conector MCP directamente...\")\n        # Test de inicialización\n        init_request = {",
         "detail": "backend.test_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "print_section_header",
+        "kind": 2,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "def print_section_header(title):\n    \"\"\"Imprime un header bonito para cada sección\"\"\"\n    print(\"\\n\" + \"=\" * 70)\n    print(f\"  {title}\")\n    print(\"=\" * 70)\ndef print_query_result(query, decision, index):\n    \"\"\"Imprime el resultado de una query de forma legible\"\"\"\n    print(f\"\\n{index}. Query: \\\"{query}\\\"\")\n    print(f\"   ├─ Ruta detectada: {decision['route_name']}\")\n    print(f\"   ├─ Modelo: {decision['model_id']}\")",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "print_query_result",
+        "kind": 2,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "def print_query_result(query, decision, index):\n    \"\"\"Imprime el resultado de una query de forma legible\"\"\"\n    print(f\"\\n{index}. Query: \\\"{query}\\\"\")\n    print(f\"   ├─ Ruta detectada: {decision['route_name']}\")\n    print(f\"   ├─ Modelo: {decision['model_id']}\")\n    print(f\"   ├─ Confianza: {decision['confidence']:.0%}\")\n    print(f\"   ├─ Fallback: {'Sí' if decision['fallback'] else 'No'}\")\n    print(f\"   └─ Razón: {decision['reasoning']}\")\ndef test_single_query(router, query):\n    \"\"\"Prueba una query individual\"\"\"",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "test_single_query",
+        "kind": 2,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "def test_single_query(router, query):\n    \"\"\"Prueba una query individual\"\"\"\n    result = router.test_query(query)\n    return result['decision']\ndef test_category(router, category_name, queries):\n    \"\"\"Prueba todas las queries de una categoría\"\"\"\n    print_section_header(f\"Categoría: {category_name}\")\n    results = []\n    for idx, query in enumerate(queries, 1):\n        decision = test_single_query(router, query)",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "test_category",
+        "kind": 2,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "def test_category(router, category_name, queries):\n    \"\"\"Prueba todas las queries de una categoría\"\"\"\n    print_section_header(f\"Categoría: {category_name}\")\n    results = []\n    for idx, query in enumerate(queries, 1):\n        decision = test_single_query(router, query)\n        print_query_result(query, decision, idx)\n        results.append({\n            'query': query,\n            'decision': decision",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "generate_statistics",
+        "kind": 2,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "def generate_statistics(all_results):\n    \"\"\"Genera estadísticas de todas las pruebas\"\"\"\n    print_section_header(\"📊 Estadísticas Globales\")\n    total_queries = sum(len(results) for results in all_results.values())\n    # Contar rutas detectadas\n    route_counts = {}\n    model_counts = {}\n    fallback_count = 0\n    for category, results in all_results.items():\n        for result in results:",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "interactive_mode",
+        "kind": 2,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "def interactive_mode(router):\n    \"\"\"Modo interactivo para probar queries manualmente\"\"\"\n    print_section_header(\"🎮 Modo Interactivo\")\n    print(\"\\nEscribe queries para probar el router.\")\n    print(\"Comandos especiales:\")\n    print(\"  • 'quit' o 'exit' - Salir\")\n    print(\"  • 'info' - Ver información del router\")\n    print(\"  • 'routes' - Ver todas las rutas\")\n    print()\n    while True:",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "def main():\n    \"\"\"Función principal\"\"\"\n    print(\"=\" * 70)\n    print(\"  🧪 Test Suite - Semantic Router Capibara6\")\n    print(\"=\" * 70)\n    # Inicializar router\n    print(\"\\n🚀 Inicializando Semantic Router...\")\n    try:\n        router = get_router()\n        print(\"✅ Router inicializado correctamente\")",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "TEST_QUERIES",
+        "kind": 5,
+        "importPath": "backend.test_semantic_router",
+        "description": "backend.test_semantic_router",
+        "peekOfCode": "TEST_QUERIES = {\n    \"Programming\": [\n        \"cómo crear una función en Python\",\n        \"ayúdame con este error de JavaScript\",\n        \"explica qué es un array en programación\",\n        \"cómo hacer un loop for en Java\",\n        \"debug este código HTML\",\n    ],\n    \"Creative Writing\": [\n        \"escribe un cuento sobre un robot que descubre emociones\",",
+        "detail": "backend.test_semantic_router",
+        "documentation": {}
+    },
+    {
+        "label": "print_section",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def print_section(title):\n    \"\"\"Imprime un header para cada sección\"\"\"\n    print(\"\\n\" + \"=\" * 70)\n    print(f\"  {title}\")\n    print(\"=\" * 70)\ndef test_encoding():\n    \"\"\"Test de encoding Python -> TOON\"\"\"\n    print_section(\"Test 1: Encoding Python -> TOON\")\n    # Datos de prueba\n    data = {",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "test_encoding",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def test_encoding():\n    \"\"\"Test de encoding Python -> TOON\"\"\"\n    print_section(\"Test 1: Encoding Python -> TOON\")\n    # Datos de prueba\n    data = {\n        \"users\": [\n            {\"id\": 1, \"name\": \"Alice\", \"role\": \"admin\", \"active\": True},\n            {\"id\": 2, \"name\": \"Bob\", \"role\": \"user\", \"active\": True},\n            {\"id\": 3, \"name\": \"Charlie\", \"role\": \"user\", \"active\": False}\n        ]",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "test_decoding",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def test_decoding(toon_string, original_data):\n    \"\"\"Test de decoding TOON -> Python\"\"\"\n    print_section(\"Test 2: Decoding TOON -> Python\")\n    print(\"\\n📝 Entrada TOON:\")\n    print(toon_string)\n    # Decodear\n    decoded_data = ToonParser.parse(toon_string)\n    print(\"\\n📊 Datos decodificados:\")\n    print(json.dumps(decoded_data, indent=2))\n    # Verificar que coincide con original",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "test_format_manager",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def test_format_manager():\n    \"\"\"Test de FormatManager con auto-detección\"\"\"\n    print_section(\"Test 3: FormatManager - Conversión Automática\")\n    # Datos grandes (beneficio de TOON)\n    large_data = {\n        \"transactions\": [\n            {\"id\": i, \"amount\": 100 + i, \"user_id\": i % 10, \"status\": \"completed\"}\n            for i in range(1, 21)  # 20 transacciones\n        ]\n    }",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "test_roundtrip",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def test_roundtrip():\n    \"\"\"Test de conversión bidireccional (roundtrip)\"\"\"\n    print_section(\"Test 4: Roundtrip - JSON -> TOON -> JSON\")\n    test_cases = [\n        {\n            \"name\": \"Lista de objetos uniformes\",\n            \"data\": {\n                \"items\": [\n                    {\"id\": 1, \"value\": \"A\"},\n                    {\"id\": 2, \"value\": \"B\"},",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "test_edge_cases",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def test_edge_cases():\n    \"\"\"Test de casos especiales\"\"\"\n    print_section(\"Test 5: Casos Especiales\")\n    test_cases = [\n        (\"Lista vacía\", {\"items\": []}),\n        (\"Valores nulos\", {\"data\": [{\"id\": 1, \"value\": None}]}),\n        (\"Strings con comas\", {\"data\": [{\"id\": 1, \"name\": \"Smith, John\"}]}),\n        (\"Números decimales\", {\"data\": [{\"id\": 1, \"price\": 19.99}]}),\n        (\"Booleans\", {\"data\": [{\"id\": 1, \"active\": True, \"verified\": False}]}),\n    ]",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "test_efficiency_benchmark",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def test_efficiency_benchmark():\n    \"\"\"Benchmark de eficiencia con diferentes tamaños de datos\"\"\"\n    print_section(\"Test 6: Benchmark de Eficiencia\")\n    sizes = [5, 10, 20, 50, 100]\n    print(\"\\n📊 Comparación JSON vs TOON (ahorro de espacio):\\n\")\n    print(f\"{'Items':<10} {'JSON':<15} {'TOON':<15} {'Ahorro':<15} {'Recomendado'}\")\n    print(\"-\" * 70)\n    for size in sizes:\n        data = {\n            \"records\": [",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "backend.test_toon",
+        "description": "backend.test_toon",
+        "peekOfCode": "def main():\n    \"\"\"Función principal\"\"\"\n    print(\"=\" * 70)\n    print(\"  🧪 Test Suite - TOON Format Manager\")\n    print(\"=\" * 70)\n    # Test 1: Encoding\n    toon_string, original_data = test_encoding()\n    # Test 2: Decoding\n    decode_success = test_decoding(toon_string, original_data)\n    # Test 3: Format Manager",
+        "detail": "backend.test_toon",
+        "documentation": {}
+    },
+    {
+        "label": "test_consistency",
+        "kind": 2,
+        "importPath": "backend.test_toon_optimized",
+        "description": "backend.test_toon_optimized",
+        "peekOfCode": "def test_consistency():\n    \"\"\"Test para asegurar que las versiones optimizadas producen el mismo resultado que las originales\"\"\"\n    print(\"🔍 Test de consistencia entre versiones...\")\n    test_cases = [\n        # Caso 1: Array simple\n        {\n            \"users\": [\n                {\"id\": 1, \"name\": \"Alice\", \"role\": \"admin\"},\n                {\"id\": 2, \"name\": \"Bob\", \"role\": \"user\"}\n            ]",
+        "detail": "backend.test_toon_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "test_performance_improvement",
+        "kind": 2,
+        "importPath": "backend.test_toon_optimized",
+        "description": "backend.test_toon_optimized",
+        "peekOfCode": "def test_performance_improvement():\n    \"\"\"Test para verificar que las versiones optimizadas son más rápidas\"\"\"\n    print(\"\\n⏱️  Test de mejora de rendimiento...\")\n    import time\n    # Datos grandes para test de rendimiento\n    large_data = {\n        \"records\": [\n            {\"id\": i, \"name\": f\"Usuario {i}\", \"score\": i * 2.5, \"active\": i % 3 == 0}\n            for i in range(100)\n        ]",
+        "detail": "backend.test_toon_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "test_edge_cases",
+        "kind": 2,
+        "importPath": "backend.test_toon_optimized",
+        "description": "backend.test_toon_optimized",
+        "peekOfCode": "def test_edge_cases():\n    \"\"\"Test de casos límite\"\"\"\n    print(\"\\n🔍 Test de casos límite...\")\n    edge_cases = [\n        {},  # Vacío\n        {\"data\": []},  # Array vacío\n        {\"string_with_comma\": \"Smith, John\"},\n        {\"number\": 3.14159},\n        {\"boolean\": True},\n        {\"null_value\": None},",
+        "detail": "backend.test_toon_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "test_caching",
+        "kind": 2,
+        "importPath": "backend.test_toon_optimized",
+        "description": "backend.test_toon_optimized",
+        "peekOfCode": "def test_caching():\n    \"\"\"Test para verificar que el mecanismo de caché funciona correctamente\"\"\"\n    print(\"\\nキャッシング Test de caché...\")\n    import time\n    test_data = {\n        \"records\": [\n            {\"id\": i, \"name\": f\"User{i}\"}\n            for i in range(10)\n        ]\n    }",
+        "detail": "backend.test_toon_optimized",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "backend.test_toon_optimized",
+        "description": "backend.test_toon_optimized",
+        "peekOfCode": "def main():\n    \"\"\"Función principal de test\"\"\"\n    print(\"=\" * 60)\n    print(\"  🧪 TEST DE VERSIONES OPTIMIZADAS DE TOON\")\n    print(\"=\" * 60)\n    tests = [\n        (\"Consistencia\", test_consistency),\n        (\"Rendimiento\", test_performance_improvement),\n        (\"Casos límite\", test_edge_cases),\n        (\"Caché\", test_caching),",
+        "detail": "backend.test_toon_optimized",
         "documentation": {}
     },
     {

@@ -145,7 +145,7 @@ class ToonParser:
         """
         Convierte un valor string a su tipo apropiado
 
-        Soporta: int, float, bool, None, str
+        Soporta: int, float, bool, None, str, list
         """
         value = value.strip()
 
@@ -158,6 +158,45 @@ class ToonParser:
             return True
         if value.lower() == 'false':
             return False
+
+        # Verificar si es un array (comienza con [ y termina con ])
+        if len(value) >= 2 and value.startswith('[') and value.endswith(']'):
+            # Extraer contenido del array
+            inner = value[1:-1].strip()
+            if not inner:
+                return []  # Array vacío
+            # Separar elementos por comas
+            elements = []
+            current = ''
+            bracket_count = 0  # Para manejar arrays anidados
+            in_quotes = False
+            quote_char = None
+
+            for char in inner:
+                if char in ['"', "'"] and not in_quotes:
+                    in_quotes = True
+                    quote_char = char
+                elif char == quote_char and in_quotes:
+                    in_quotes = False
+                    quote_char = None
+                elif char == '[' and not in_quotes:
+                    bracket_count += 1
+                elif char == ']' and not in_quotes:
+                    bracket_count -= 1
+                elif char == ',' and not in_quotes and bracket_count == 0:
+                    elements.append(current.strip())
+                    current = ''
+                    continue
+                current += char
+
+            if current.strip():
+                elements.append(current.strip())
+
+            # Procesar cada elemento del array
+            result = []
+            for elem in elements:
+                result.append(ToonParser._parse_value(elem))
+            return result
 
         # Números
         try:
@@ -172,7 +211,9 @@ class ToonParser:
         # String (remover comillas si las tiene)
         if (value.startswith('"') and value.endswith('"')) or \
            (value.startswith("'") and value.endswith("'")):
-            return value[1:-1]
+            # Remover escapado de comillas internas
+            unescaped_value = value[1:-1].replace('\\"', '"').replace("\\'", "'")
+            return unescaped_value
 
         return value
 
