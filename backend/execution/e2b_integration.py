@@ -294,6 +294,38 @@ class E2BIntegration:
     async def cleanup(self):
         """Limpia recursos"""
         await self.e2b_manager.cleanup()
+    
+    async def execute_query(self, query: str):
+        """
+        Método para ejecutar una query que puede incluir código.
+        Este método se usa cuando el sistema principal detecta que la query
+        contiene contenido que debe ejecutarse en E2B.
+        """
+        # Detectar si la query contiene código
+        if self._contains_code(query):
+            # Si contiene código, ejecutarlo directamente
+            return await self.process_code_request(query)
+        else:
+            # Si no contiene código, no hacer nada
+            return {
+                'success': False,
+                'message': 'No code found to execute',
+                'query': query
+            }
+    
+    def _contains_code(self, query: str) -> bool:
+        """Detecta si una query contiene código para ejecutar."""
+        code_indicators = [
+            'def ', 'class ', 'import ', 'from ', 'print(',
+            'console.log', 'function ', 'var ', 'let ', 'const ',
+            'SELECT ', 'INSERT ', 'UPDATE ', 'DELETE ', 'CREATE ',
+            '```python', '```javascript', '```sql', '```bash',
+            'if __name__ ==', 'for ', 'while ', 'import',
+            '#!', 'pip install', 'npm install'
+        ]
+        
+        query_lower = query.lower()
+        return any(indicator.lower() in query_lower for indicator in code_indicators)
 
 
 # Función de ejemplo para probar la integración
