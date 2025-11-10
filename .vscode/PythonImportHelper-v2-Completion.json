@@ -6813,6 +6813,38 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
         "label": "Flask",
         "importPath": "flask",
         "description": "flask",
@@ -14598,6 +14630,60 @@
         "documentation": {}
     },
     {
+        "label": "mcp_tools_call_proxy",
+        "kind": 2,
+        "importPath": "backend.local_proxy_server",
+        "description": "backend.local_proxy_server",
+        "peekOfCode": "def mcp_tools_call_proxy():\n    \"\"\"Endpoint proxy para herramientas MCP que resuelve problemas CORS\"\"\"\n    try:\n        # Obtener datos de la solicitud original\n        data = request.get_json()\n        # Construir URL del endpoint real\n        target_url = f\"{BACKEND_URL}/api/mcp/tools/call\"\n        # Hacer la solicitud al backend real\n        response = requests.post(\n            target_url,",
+        "detail": "backend.local_proxy_server",
+        "documentation": {}
+    },
+    {
+        "label": "generic_proxy",
+        "kind": 2,
+        "importPath": "backend.local_proxy_server",
+        "description": "backend.local_proxy_server",
+        "peekOfCode": "def generic_proxy():\n    \"\"\"Endpoint proxy genérico\"\"\"\n    try:\n        data = request.get_json()\n        target_url = data.get('target_url')\n        method = data.get('method', 'GET').upper()\n        headers = data.get('headers', {})\n        body = data.get('body', {})\n        if not target_url:\n            return jsonify({'error': 'Target URL is required'}), 400",
+        "detail": "backend.local_proxy_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_proxy",
+        "kind": 2,
+        "importPath": "backend.local_proxy_server",
+        "description": "backend.local_proxy_server",
+        "peekOfCode": "def mcp_proxy():\n    \"\"\"Endpoint específico para proxy MCP\"\"\"\n    try:\n        data = request.get_json()\n        target = data.get('target', '')\n        method = data.get('method', 'GET')\n        body = data.get('body', {})\n        # Si no hay target, usar el backend base\n        if not target:\n            target = f\"{BACKEND_URL}/api/mcp\"",
+        "detail": "backend.local_proxy_server",
+        "documentation": {}
+    },
+    {
+        "label": "health_check",
+        "kind": 2,
+        "importPath": "backend.local_proxy_server",
+        "description": "backend.local_proxy_server",
+        "peekOfCode": "def health_check():\n    return jsonify({\n        'status': 'proxy_ok',\n        'backend_target': BACKEND_URL,\n        'timestamp': json.dumps(str(__import__('datetime').datetime.now()))\n    })\nif __name__ == '__main__':\n    print(\"🚀 Servidor Proxy Local para Capibara6 iniciado\")\n    print(f\"📡 Backend objetivo: {BACKEND_URL}\")\n    print(\"🔌 Endpoints disponibles:\")",
+        "detail": "backend.local_proxy_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.local_proxy_server",
+        "description": "backend.local_proxy_server",
+        "peekOfCode": "app = Flask(__name__)\n# URL del backend real de Capibara6\nBACKEND_URL = 'http://34.12.166.76:5000'\n@app.route('/api/mcp/tools/call-proxy', methods=['POST'])\ndef mcp_tools_call_proxy():\n    \"\"\"Endpoint proxy para herramientas MCP que resuelve problemas CORS\"\"\"\n    try:\n        # Obtener datos de la solicitud original\n        data = request.get_json()\n        # Construir URL del endpoint real",
+        "detail": "backend.local_proxy_server",
+        "documentation": {}
+    },
+    {
+        "label": "BACKEND_URL",
+        "kind": 5,
+        "importPath": "backend.local_proxy_server",
+        "description": "backend.local_proxy_server",
+        "peekOfCode": "BACKEND_URL = 'http://34.12.166.76:5000'\n@app.route('/api/mcp/tools/call-proxy', methods=['POST'])\ndef mcp_tools_call_proxy():\n    \"\"\"Endpoint proxy para herramientas MCP que resuelve problemas CORS\"\"\"\n    try:\n        # Obtener datos de la solicitud original\n        data = request.get_json()\n        # Construir URL del endpoint real\n        target_url = f\"{BACKEND_URL}/api/mcp/tools/call\"\n        # Hacer la solicitud al backend real",
+        "detail": "backend.local_proxy_server",
+        "documentation": {}
+    },
+    {
         "label": "logger",
         "kind": 5,
         "importPath": "backend.main",
@@ -15683,6 +15769,33 @@
         "importPath": "backend.server",
         "description": "backend.server",
         "peekOfCode": "def choose_port(preferred: int, extra_candidates: Optional[List[int]] = None) -> int:\n    \"\"\"Seleccionar un puerto disponible a partir de candidatos predefinidos.\"\"\"\n    candidates = [preferred]\n    if extra_candidates:\n        candidates.extend(extra_candidates)\n    # Asegurar candidatos únicos y positivos\n    seen = set()\n    filtered = []\n    for p in candidates:\n        if p and p > 0 and p not in seen:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_endpoint",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def proxy_endpoint():\n    \"\"\"Endpoint genérico de proxy para evitar problemas CORS\"\"\"\n    try:\n        import requests\n        data = request.get_json()\n        target_url = data.get('target_url')\n        method = data.get('method', 'GET').upper()\n        headers = data.get('headers', {})\n        body = data.get('body', {})\n        if not target_url:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_proxy_endpoint",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_proxy_endpoint():\n    \"\"\"Endpoint específico para proxy MCP que soluciona problemas de CORS\"\"\"\n    try:\n        import requests\n        data = request.get_json()\n        target = data.get('target', '')\n        method = data.get('method', 'GET')\n        body = data.get('body', {})\n        # Hacer la llamada interna al MCP\n        if method.upper() == 'GET':",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_call_proxy",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_tools_call_proxy():\n    \"\"\"Proxy específico para llamadas a herramientas MCP\"\"\"\n    try:\n        import requests\n        data = request.get_json()\n        # Llamar directamente al endpoint MCP interno\n        mcp_call_url = \"http://localhost:5000/api/mcp/tools/call\"\n        response = requests.post(mcp_call_url, json=data, headers={'Content-Type': 'application/json'})\n        return jsonify(response.json()), response.status_code\n    except Exception as e:",
         "detail": "backend.server",
         "documentation": {}
     },

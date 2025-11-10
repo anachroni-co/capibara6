@@ -69,8 +69,8 @@ async function makeApiRequest(endpoint, data, serviceType = 'local') {
         
         // Verificar si es un MCP endpoint que puede necesitar proxy por CORS
         if (endpoint.includes('mcp/tools/call')) {
-            // Usar endpoint proxy para evitar problemas CORS con MCP
-            finalUrl = '/api/mcp/tools/call-proxy';
+            // Usar servidor proxy local para evitar problemas CORS con MCP
+            finalUrl = 'http://localhost:8001/api/mcp/tools/call-proxy';
             method = 'POST';
             body = JSON.stringify({
                 target: url,  // URL original
