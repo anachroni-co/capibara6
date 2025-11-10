@@ -1197,6 +1197,200 @@ def index():
     '''
 
 
+# ===========================================
+# 🔄 N8N TEMPLATES ENDPOINTS
+# ===========================================
+
+@app.route('/api/n8n/templates', methods=['GET'])
+def n8n_templates_catalog():
+    """Obtiene el catálogo completo de plantillas n8n"""
+    if not N8N_TEMPLATES_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'N8N Templates Manager no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+
+    try:
+        catalog = get_templates_catalog()
+        return jsonify({
+            'status': 'success',
+            'catalog': catalog,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
+@app.route('/api/n8n/templates/recommended', methods=['GET'])
+def n8n_templates_recommended():
+    """Obtiene plantillas recomendadas para Capibara6"""
+    if not N8N_TEMPLATES_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'N8N Templates Manager no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+
+    try:
+        templates = get_recommended_templates()
+        return jsonify({
+            'status': 'success',
+            'count': len(templates),
+            'templates': templates,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
+@app.route('/api/n8n/templates/<template_id>', methods=['GET'])
+def n8n_template_details(template_id: str):
+    """Obtiene detalles de una plantilla específica"""
+    if not N8N_TEMPLATES_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'N8N Templates Manager no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+
+    try:
+        template = get_template_details(template_id)
+        if not template:
+            return jsonify({
+                'status': 'not_found',
+                'error': f'Plantilla {template_id} no encontrada',
+                'timestamp': datetime.now().isoformat()
+            }), 404
+
+        return jsonify({
+            'status': 'success',
+            'template': template,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
+@app.route('/api/n8n/templates/search', methods=['GET', 'POST'])
+def n8n_templates_search():
+    """Busca plantillas por palabra clave"""
+    if not N8N_TEMPLATES_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'N8N Templates Manager no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+
+    try:
+        if request.method == 'GET':
+            query = request.args.get('q', '')
+        else:
+            data = request.get_json() or {}
+            query = data.get('query', '')
+
+        if not query:
+            return jsonify({
+                'status': 'error',
+                'error': 'Query parameter required',
+                'timestamp': datetime.now().isoformat()
+            }), 400
+
+        results = search_templates(query)
+        return jsonify({
+            'status': 'success',
+            'query': query,
+            'count': len(results),
+            'results': results,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
+@app.route('/api/n8n/templates/<template_id>/download', methods=['GET'])
+def n8n_template_download(template_id: str):
+    """Descarga el JSON de una plantilla"""
+    if not N8N_TEMPLATES_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'N8N Templates Manager no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+
+    try:
+        workflow = download_template_json(template_id)
+        if not workflow:
+            return jsonify({
+                'status': 'not_found',
+                'error': f'Plantilla {template_id} no encontrada o error al descargar',
+                'timestamp': datetime.now().isoformat()
+            }), 404
+
+        return jsonify({
+            'status': 'success',
+            'template_id': template_id,
+            'workflow': workflow,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
+@app.route('/api/n8n/templates/<template_id>/import', methods=['POST'])
+def n8n_template_import(template_id: str):
+    """Importa una plantilla directamente a n8n"""
+    if not N8N_TEMPLATES_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'error': 'N8N Templates Manager no disponible',
+            'timestamp': datetime.now().isoformat()
+        }), 503
+
+    try:
+        data = request.get_json() or {}
+        n8n_url = data.get('n8n_url') or os.getenv('N8N_URL', 'http://n8n:5678')
+        api_key = data.get('api_key') or os.getenv('N8N_API_KEY')
+
+        result = import_template(
+            template_id=template_id,
+            n8n_url=n8n_url,
+            api_key=api_key
+        )
+
+        status_code = 200 if result.get('success') else 500
+        return jsonify({
+            **result,
+            'timestamp': datetime.now().isoformat()
+        }), status_code
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
+
 def _is_port_available(port: int) -> bool:
     """Verificar si un puerto está disponible para escuchar."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
