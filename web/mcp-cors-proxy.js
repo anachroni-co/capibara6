@@ -1,69 +1,110 @@
 /**
  * Proxy de MCP para evitar problemas de CORS
- * Redirige las llamadas MCP a través del backend local para evitar CORS
+ * Utiliza endpoints proxy en el backend Flask para evitar problemas de CORS
  */
 
 class MCPCORSProxy {
-    constructor(localBackendUrl) {
-        this.localBackendUrl = localBackendUrl || 'http://localhost:8080/proxy/mcp';
+    constructor() {
+        // IP del servidor backend
+        this.backendUrl = 'http://34.12.166.76:5000';
     }
 
     /**
-     * Proxy para la llamada MCP
+     * Proxy para la llamada MCP - Usando endpoint proxy en el backend Flask
      */
     async callMCPTask(taskData) {
         try {
-            // Usar el backend local como proxy para evitar CORS
-            const response = await fetch(`${window.location.origin}/api/mcp-proxy`, {
+            // Usar endpoint proxy en el backend Flask para evitar CORS
+            // El proxy en el backend puede hacer solicitudes internas sin problemas de CORS
+            const response = await fetch('/api/mcp/tools/call-proxy', {  // Endpoint proxy en el backend local
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    target: 'http://34.12.166.76:5000/api/mcp/tools/call',  // URL remota real
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: taskData
-                })
+                body: JSON.stringify(taskData)
             });
 
             if (!response.ok) {
-                throw new Error(`Proxy response failed: ${response.status}`);
+                throw new Error(`MCP Tools Call Proxy failed: ${response.status} - ${response.statusText}`);
             }
 
             return await response.json();
         } catch (error) {
-            console.error('Error en MCP proxy:', error);
-            throw error;
+            console.error('Error en conexión MCP a través del proxy:', error);
+            // Si falla con el proxy, intentar directamente como fallback
+            try {
+                // Intentar con endpoint directo como último recurso
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos timeout
+
+                const directResponse = await fetch('http://34.12.166.76:5000/api/mcp/tools/call', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(taskData),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!directResponse.ok) {
+                    throw new Error(`Direct MCP call failed: ${directResponse.status}`);
+                }
+
+                return await directResponse.json();
+            } catch (directError) {
+                console.error('Error también en conexión directa:', directError);
+                throw error; // Lanzar el error original
+            }
         }
     }
 
     /**
-     * Proxy para el status MCP
+     * Proxy para el status MCP - Usando endpoint proxy en el backend Flask
      */
     async getMCPStatus() {
         try {
-            const response = await fetch(`${window.location.origin}/api/mcp-proxy`, {
+            // Usar endpoint genérico de proxy en el backend
+            const response = await fetch('/api/proxy', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    target: 'http://34.12.166.76:5000/api/mcp/status',  // URL remota real
+                    target_url: 'http://34.12.166.76:5000/api/mcp/status',
                     method: 'GET'
                 })
             });
 
             if (!response.ok) {
-                throw new Error(`MCP Status proxy failed: ${response.status}`);
+                throw new Error(`MCP Status Proxy failed: ${response.status}`);
             }
 
             return await response.json();
         } catch (error) {
-            console.error('Error en MCP Status proxy:', error);
-            throw error;
+            console.error('Error obteniendo estado MCP a través del proxy:', error);
+            // Intentar directamente como fallback
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos timeout
+
+                const directResponse = await fetch('http://34.12.166.76:5000/api/mcp/status', {
+                    method: 'GET',
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!directResponse.ok) {
+                    throw new Error(`Direct MCP status failed: ${directResponse.status}`);
+                }
+
+                return await directResponse.json();
+            } catch (directError) {
+                console.error('Error también en estado MCP directo:', directError);
+                throw error; // Lanzar el error original
+            }
         }
     }
 }

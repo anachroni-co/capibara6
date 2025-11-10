@@ -2081,6 +2081,454 @@
         "documentation": {}
     },
     {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Any",
         "importPath": "typing",
         "description": "typing",
@@ -2458,6 +2906,38 @@
     },
     {
         "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -3970,6 +4450,94 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "timedelta",
         "importPath": "datetime",
         "description": "datetime",
@@ -4576,6 +5144,14 @@
         "documentation": {}
     },
     {
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
         "label": "asdict",
         "importPath": "dataclasses",
         "description": "dataclasses",
@@ -5066,6 +5642,14 @@
         "documentation": {}
     },
     {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
         "label": "defaultdict",
         "importPath": "collections",
         "description": "collections",
@@ -5299,6 +5883,46 @@
         "documentation": {}
     },
     {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
         "label": "pickle",
         "kind": 6,
         "isExtraImport": true,
@@ -5333,6 +5957,14 @@
         "documentation": {}
     },
     {
+        "label": "contextmanager",
+        "importPath": "contextlib",
+        "description": "contextlib",
+        "isExtraImport": true,
+        "detail": "contextlib",
+        "documentation": {}
+    },
+    {
         "label": "asynccontextmanager",
         "importPath": "contextlib",
         "description": "contextlib",
@@ -5347,6 +5979,22 @@
         "importPath": "numpy",
         "description": "numpy",
         "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "SentenceTransformer",
+        "importPath": "sentence_transformers",
+        "description": "sentence_transformers",
+        "isExtraImport": true,
+        "detail": "sentence_transformers",
+        "documentation": {}
+    },
+    {
+        "label": "SentenceTransformer",
+        "importPath": "sentence_transformers",
+        "description": "sentence_transformers",
+        "isExtraImport": true,
+        "detail": "sentence_transformers",
         "documentation": {}
     },
     {
@@ -5438,6 +6086,38 @@
         "documentation": {}
     },
     {
+        "label": "Query",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
         "label": "Depends",
         "importPath": "fastapi",
         "description": "fastapi",
@@ -5459,6 +6139,14 @@
         "description": "fastapi",
         "isExtraImport": true,
         "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "CORSMiddleware",
+        "importPath": "fastapi.middleware.cors",
+        "description": "fastapi.middleware.cors",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.cors",
         "documentation": {}
     },
     {
@@ -7279,6 +7967,78 @@
         "documentation": {}
     },
     {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "semantic_search",
+        "importPath": "rag_utils",
+        "description": "rag_utils",
+        "isExtraImport": true,
+        "detail": "rag_utils",
+        "documentation": {}
+    },
+    {
+        "label": "search_all_collections",
+        "importPath": "rag_utils",
+        "description": "rag_utils",
+        "isExtraImport": true,
+        "detail": "rag_utils",
+        "documentation": {}
+    },
+    {
+        "label": "rag_search",
+        "importPath": "rag_utils",
+        "description": "rag_utils",
+        "isExtraImport": true,
+        "detail": "rag_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_model",
+        "importPath": "rag_utils",
+        "description": "rag_utils",
+        "isExtraImport": true,
+        "detail": "rag_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_pg_connection",
+        "importPath": "rag_utils",
+        "description": "rag_utils",
+        "isExtraImport": true,
+        "detail": "rag_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_chroma_collections",
+        "importPath": "rag_utils",
+        "description": "rag_utils",
+        "isExtraImport": true,
+        "detail": "rag_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_nebula_session",
+        "importPath": "rag_utils",
+        "description": "rag_utils",
+        "isExtraImport": true,
+        "detail": "rag_utils",
+        "documentation": {}
+    },
+    {
         "label": "urlencode",
         "importPath": "urllib.parse",
         "description": "urllib.parse",
@@ -7913,6 +8673,24 @@
         "description": "datasets",
         "isExtraImport": true,
         "detail": "datasets",
+        "documentation": {}
+    },
+    {
+        "label": "http.server",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "http.server",
+        "description": "http.server",
+        "detail": "http.server",
+        "documentation": {}
+    },
+    {
+        "label": "socketserver",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "socketserver",
+        "description": "socketserver",
+        "detail": "socketserver",
         "documentation": {}
     },
     {
@@ -12326,6 +13104,420 @@
         "documentation": {}
     },
     {
+        "label": "AwarenessGate",
+        "kind": 6,
+        "importPath": "backend.core.cag.awareness_gate",
+        "description": "backend.core.cag.awareness_gate",
+        "peekOfCode": "class AwarenessGate:\n    \"\"\"\n    Decide qué fuentes de contexto utilizar basado en análisis de la query.\n    \"\"\"\n    def __init__(self):\n        \"\"\"Inicializa el AwarenessGate.\"\"\"\n        # Patrones para detectar necesidades de contexto\n        self.context_patterns = {\n            'static_cache': [\n                r'\\b(what|qué|qué es|definir|definición)\\b',",
+        "detail": "backend.core.cag.awareness_gate",
+        "documentation": {}
+    },
+    {
+        "label": "create_awareness_gate",
+        "kind": 2,
+        "importPath": "backend.core.cag.awareness_gate",
+        "description": "backend.core.cag.awareness_gate",
+        "peekOfCode": "def create_awareness_gate() -> AwarenessGate:\n    \"\"\"Crea una instancia de AwarenessGate.\"\"\"\n    return AwarenessGate()\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear AwarenessGate\n    gate = create_awareness_gate()\n    # Test queries\n    test_queries = [",
+        "detail": "backend.core.cag.awareness_gate",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.cag.awareness_gate",
+        "description": "backend.core.cag.awareness_gate",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass AwarenessGate:\n    \"\"\"\n    Decide qué fuentes de contexto utilizar basado en análisis de la query.\n    \"\"\"\n    def __init__(self):\n        \"\"\"Inicializa el AwarenessGate.\"\"\"\n        # Patrones para detectar necesidades de contexto\n        self.context_patterns = {\n            'static_cache': [",
+        "detail": "backend.core.cag.awareness_gate",
+        "documentation": {}
+    },
+    {
+        "label": "DynamicContext",
+        "kind": 6,
+        "importPath": "backend.core.cag.dynamic_context",
+        "description": "backend.core.cag.dynamic_context",
+        "peekOfCode": "class DynamicContext:\n    \"\"\"\n    Contexto dinámico que se llenará con ACE.\n    Gestiona contexto evolutivo basado en conversaciones y patrones.\n    \"\"\"\n    def __init__(self, max_context_size: int = 1000, \n                 context_ttl_hours: int = 24):\n        \"\"\"\n        Inicializa el DynamicContext.\n        Args:",
+        "detail": "backend.core.cag.dynamic_context",
+        "documentation": {}
+    },
+    {
+        "label": "create_dynamic_context",
+        "kind": 2,
+        "importPath": "backend.core.cag.dynamic_context",
+        "description": "backend.core.cag.dynamic_context",
+        "peekOfCode": "def create_dynamic_context(max_context_size: int = 1000) -> DynamicContext:\n    \"\"\"Crea una instancia de DynamicContext.\"\"\"\n    return DynamicContext(max_context_size)\n# Filtros predefinidos\ndef relevance_filter(entries: List[Dict[str, Any]], query: str) -> List[Dict[str, Any]]:\n    \"\"\"Filtro de relevancia basado en palabras clave.\"\"\"\n    try:\n        query_words = set(query.lower().split())\n        relevant_entries = []\n        for entry in entries:",
+        "detail": "backend.core.cag.dynamic_context",
+        "documentation": {}
+    },
+    {
+        "label": "relevance_filter",
+        "kind": 2,
+        "importPath": "backend.core.cag.dynamic_context",
+        "description": "backend.core.cag.dynamic_context",
+        "peekOfCode": "def relevance_filter(entries: List[Dict[str, Any]], query: str) -> List[Dict[str, Any]]:\n    \"\"\"Filtro de relevancia basado en palabras clave.\"\"\"\n    try:\n        query_words = set(query.lower().split())\n        relevant_entries = []\n        for entry in entries:\n            content_words = set(entry['content'].lower().split())\n            metadata_words = set()\n            # Incluir palabras de metadata\n            for key, value in entry.get('metadata', {}).items():",
+        "detail": "backend.core.cag.dynamic_context",
+        "documentation": {}
+    },
+    {
+        "label": "recency_filter",
+        "kind": 2,
+        "importPath": "backend.core.cag.dynamic_context",
+        "description": "backend.core.cag.dynamic_context",
+        "peekOfCode": "def recency_filter(entries: List[Dict[str, Any]], query: str) -> List[Dict[str, Any]]:\n    \"\"\"Filtro de recencia (últimas 24 horas).\"\"\"\n    try:\n        cutoff_time = datetime.now() - timedelta(hours=24)\n        return [\n            entry for entry in entries\n            if entry['created_at'] > cutoff_time\n        ]\n    except Exception as e:\n        logger.error(f\"Error en filtro de recencia: {e}\")",
+        "detail": "backend.core.cag.dynamic_context",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.cag.dynamic_context",
+        "description": "backend.core.cag.dynamic_context",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass DynamicContext:\n    \"\"\"\n    Contexto dinámico que se llenará con ACE.\n    Gestiona contexto evolutivo basado en conversaciones y patrones.\n    \"\"\"\n    def __init__(self, max_context_size: int = 1000, \n                 context_ttl_hours: int = 24):\n        \"\"\"\n        Inicializa el DynamicContext.",
+        "detail": "backend.core.cag.dynamic_context",
+        "documentation": {}
+    },
+    {
+        "label": "FullCAG",
+        "kind": 6,
+        "importPath": "backend.core.cag.full_cag",
+        "description": "backend.core.cag.full_cag",
+        "peekOfCode": "class FullCAG:\n    \"\"\"\n    Context-Aware Generation para modelo 120B con límite de 32K tokens.\n    Optimizado para profundidad y completitud.\n    \"\"\"\n    def __init__(self, static_cache=None, dynamic_context=None, \n                 awareness_gate=None, mini_rag=None, full_rag=None,\n                 max_tokens: int = 32000):\n        \"\"\"\n        Inicializa FullCAG.",
+        "detail": "backend.core.cag.full_cag",
+        "documentation": {}
+    },
+    {
+        "label": "create_full_cag",
+        "kind": 2,
+        "importPath": "backend.core.cag.full_cag",
+        "description": "backend.core.cag.full_cag",
+        "peekOfCode": "def create_full_cag(static_cache=None, dynamic_context=None, awareness_gate=None,\n                   mini_rag=None, full_rag=None, max_tokens: int = 32000) -> FullCAG:\n    \"\"\"Crea una instancia de FullCAG.\"\"\"\n    return FullCAG(static_cache, dynamic_context, awareness_gate, \n                  mini_rag, full_rag, max_tokens)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear FullCAG\n    full_cag = create_full_cag()",
+        "detail": "backend.core.cag.full_cag",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.cag.full_cag",
+        "description": "backend.core.cag.full_cag",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass FullCAG:\n    \"\"\"\n    Context-Aware Generation para modelo 120B con límite de 32K tokens.\n    Optimizado para profundidad y completitud.\n    \"\"\"\n    def __init__(self, static_cache=None, dynamic_context=None, \n                 awareness_gate=None, mini_rag=None, full_rag=None,\n                 max_tokens: int = 32000):\n        \"\"\"",
+        "detail": "backend.core.cag.full_cag",
+        "documentation": {}
+    },
+    {
+        "label": "MiniCAG",
+        "kind": 6,
+        "importPath": "backend.core.cag.mini_cag",
+        "description": "backend.core.cag.mini_cag",
+        "peekOfCode": "class MiniCAG:\n    \"\"\"\n    Context-Aware Generation para modelo 20B con límite de 8K tokens.\n    Optimizado para velocidad y eficiencia.\n    \"\"\"\n    def __init__(self, static_cache=None, dynamic_context=None, \n                 awareness_gate=None, max_tokens: int = 8000):\n        \"\"\"\n        Inicializa MiniCAG.\n        Args:",
+        "detail": "backend.core.cag.mini_cag",
+        "documentation": {}
+    },
+    {
+        "label": "create_mini_cag",
+        "kind": 2,
+        "importPath": "backend.core.cag.mini_cag",
+        "description": "backend.core.cag.mini_cag",
+        "peekOfCode": "def create_mini_cag(static_cache=None, dynamic_context=None, \n                   awareness_gate=None, max_tokens: int = 8000) -> MiniCAG:\n    \"\"\"Crea una instancia de MiniCAG.\"\"\"\n    return MiniCAG(static_cache, dynamic_context, awareness_gate, max_tokens)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear MiniCAG\n    mini_cag = create_mini_cag()\n    # Test generación de contexto",
+        "detail": "backend.core.cag.mini_cag",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.cag.mini_cag",
+        "description": "backend.core.cag.mini_cag",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass MiniCAG:\n    \"\"\"\n    Context-Aware Generation para modelo 20B con límite de 8K tokens.\n    Optimizado para velocidad y eficiencia.\n    \"\"\"\n    def __init__(self, static_cache=None, dynamic_context=None, \n                 awareness_gate=None, max_tokens: int = 8000):\n        \"\"\"\n        Inicializa MiniCAG.",
+        "detail": "backend.core.cag.mini_cag",
+        "documentation": {}
+    },
+    {
+        "label": "StaticCache",
+        "kind": 6,
+        "importPath": "backend.core.cag.static_cache",
+        "description": "backend.core.cag.static_cache",
+        "peekOfCode": "class StaticCache:\n    \"\"\"\n    Pre-loaded knowledge base con información estática.\n    Optimizado para recuperación rápida de conocimiento relevante.\n    \"\"\"\n    def __init__(self, knowledge_dir: str = \"backend/data/knowledge_base\"):\n        \"\"\"\n        Inicializa el StaticCache.\n        Args:\n            knowledge_dir: Directorio con archivos de conocimiento",
+        "detail": "backend.core.cag.static_cache",
+        "documentation": {}
+    },
+    {
+        "label": "create_static_cache",
+        "kind": 2,
+        "importPath": "backend.core.cag.static_cache",
+        "description": "backend.core.cag.static_cache",
+        "peekOfCode": "def create_static_cache(knowledge_dir: str = None) -> StaticCache:\n    \"\"\"Crea una instancia de StaticCache.\"\"\"\n    if knowledge_dir is None:\n        knowledge_dir = \"backend/data/knowledge_base\"\n    return StaticCache(knowledge_dir)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear StaticCache\n    cache = create_static_cache()",
+        "detail": "backend.core.cag.static_cache",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.cag.static_cache",
+        "description": "backend.core.cag.static_cache",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass StaticCache:\n    \"\"\"\n    Pre-loaded knowledge base con información estática.\n    Optimizado para recuperación rápida de conocimiento relevante.\n    \"\"\"\n    def __init__(self, knowledge_dir: str = \"backend/data/knowledge_base\"):\n        \"\"\"\n        Inicializa el StaticCache.\n        Args:",
+        "detail": "backend.core.cag.static_cache",
+        "documentation": {}
+    },
+    {
+        "label": "FullRAG",
+        "kind": 6,
+        "importPath": "backend.core.rag.full_rag",
+        "description": "backend.core.rag.full_rag",
+        "peekOfCode": "class FullRAG:\n    \"\"\"\n    Búsqueda profunda guiada por resultados de MiniRAG.\n    Optimizado para completitud y relevancia.\n    \"\"\"\n    def __init__(self, vector_store=None, embedding_model=None, \n                 mini_rag=None, max_results: int = 10, \n                 expansion_factor: float = 2.0):\n        \"\"\"\n        Inicializa FullRAG.",
+        "detail": "backend.core.rag.full_rag",
+        "documentation": {}
+    },
+    {
+        "label": "create_full_rag",
+        "kind": 2,
+        "importPath": "backend.core.rag.full_rag",
+        "description": "backend.core.rag.full_rag",
+        "peekOfCode": "def create_full_rag(vector_store=None, embedding_model=None, mini_rag=None,\n                   max_results: int = 10) -> FullRAG:\n    \"\"\"Crea una instancia de FullRAG.\"\"\"\n    return FullRAG(vector_store, embedding_model, mini_rag, max_results)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear FullRAG\n    full_rag = create_full_rag()\n    # Test búsqueda",
+        "detail": "backend.core.rag.full_rag",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.rag.full_rag",
+        "description": "backend.core.rag.full_rag",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass FullRAG:\n    \"\"\"\n    Búsqueda profunda guiada por resultados de MiniRAG.\n    Optimizado para completitud y relevancia.\n    \"\"\"\n    def __init__(self, vector_store=None, embedding_model=None, \n                 mini_rag=None, max_results: int = 10, \n                 expansion_factor: float = 2.0):\n        \"\"\"",
+        "detail": "backend.core.rag.full_rag",
+        "documentation": {}
+    },
+    {
+        "label": "GuidedSearch",
+        "kind": 6,
+        "importPath": "backend.core.rag.guided_search",
+        "description": "backend.core.rag.guided_search",
+        "peekOfCode": "class GuidedSearch:\n    \"\"\"\n    Coordinación entre MiniRAG y FullRAG para búsqueda optimizada.\n    \"\"\"\n    def __init__(self, mini_rag=None, full_rag=None, \n                 expansion_threshold: float = 0.3):\n        \"\"\"\n        Inicializa GuidedSearch.\n        Args:\n            mini_rag: Instancia de MiniRAG",
+        "detail": "backend.core.rag.guided_search",
+        "documentation": {}
+    },
+    {
+        "label": "create_guided_search",
+        "kind": 2,
+        "importPath": "backend.core.rag.guided_search",
+        "description": "backend.core.rag.guided_search",
+        "peekOfCode": "def create_guided_search(mini_rag=None, full_rag=None, \n                        expansion_threshold: float = 0.3) -> GuidedSearch:\n    \"\"\"Crea una instancia de GuidedSearch.\"\"\"\n    return GuidedSearch(mini_rag, full_rag, expansion_threshold)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear GuidedSearch\n    guided_search = create_guided_search()\n    # Test búsqueda",
+        "detail": "backend.core.rag.guided_search",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.rag.guided_search",
+        "description": "backend.core.rag.guided_search",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass GuidedSearch:\n    \"\"\"\n    Coordinación entre MiniRAG y FullRAG para búsqueda optimizada.\n    \"\"\"\n    def __init__(self, mini_rag=None, full_rag=None, \n                 expansion_threshold: float = 0.3):\n        \"\"\"\n        Inicializa GuidedSearch.\n        Args:",
+        "detail": "backend.core.rag.guided_search",
+        "documentation": {}
+    },
+    {
+        "label": "TimeoutError",
+        "kind": 6,
+        "importPath": "backend.core.rag.mini_rag",
+        "description": "backend.core.rag.mini_rag",
+        "peekOfCode": "class TimeoutError(Exception):\n    \"\"\"Excepción para timeouts.\"\"\"\n    pass\n@contextmanager\ndef timeout(seconds):\n    \"\"\"Context manager para timeout compatible con Windows.\"\"\"\n    if hasattr(signal, 'SIGALRM'):\n        # Unix/Linux/Mac\n        def signal_handler(signum, frame):\n            raise TimeoutError(f\"Operación excedió {seconds} segundos\")",
+        "detail": "backend.core.rag.mini_rag",
+        "documentation": {}
+    },
+    {
+        "label": "MiniRAG",
+        "kind": 6,
+        "importPath": "backend.core.rag.mini_rag",
+        "description": "backend.core.rag.mini_rag",
+        "peekOfCode": "class MiniRAG:\n    \"\"\"\n    Búsqueda rápida superficial con timeout estricto.\n    Optimizado para latencia <50ms.\n    \"\"\"\n    def __init__(self, vector_store=None, embedding_model=None, \n                 timeout_ms: int = 50, max_results: int = 5):\n        \"\"\"\n        Inicializa MiniRAG.\n        Args:",
+        "detail": "backend.core.rag.mini_rag",
+        "documentation": {}
+    },
+    {
+        "label": "timeout",
+        "kind": 2,
+        "importPath": "backend.core.rag.mini_rag",
+        "description": "backend.core.rag.mini_rag",
+        "peekOfCode": "def timeout(seconds):\n    \"\"\"Context manager para timeout compatible con Windows.\"\"\"\n    if hasattr(signal, 'SIGALRM'):\n        # Unix/Linux/Mac\n        def signal_handler(signum, frame):\n            raise TimeoutError(f\"Operación excedió {seconds} segundos\")\n        old_handler = signal.signal(signal.SIGALRM, signal_handler)\n        signal.alarm(int(seconds))\n        try:\n            yield",
+        "detail": "backend.core.rag.mini_rag",
+        "documentation": {}
+    },
+    {
+        "label": "create_mini_rag",
+        "kind": 2,
+        "importPath": "backend.core.rag.mini_rag",
+        "description": "backend.core.rag.mini_rag",
+        "peekOfCode": "def create_mini_rag(vector_store=None, embedding_model=None, \n                   timeout_ms: int = 50) -> MiniRAG:\n    \"\"\"Crea una instancia de MiniRAG.\"\"\"\n    return MiniRAG(vector_store, embedding_model, timeout_ms)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear MiniRAG\n    mini_rag = create_mini_rag()\n    # Test búsqueda",
+        "detail": "backend.core.rag.mini_rag",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.rag.mini_rag",
+        "description": "backend.core.rag.mini_rag",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass TimeoutError(Exception):\n    \"\"\"Excepción para timeouts.\"\"\"\n    pass\n@contextmanager\ndef timeout(seconds):\n    \"\"\"Context manager para timeout compatible con Windows.\"\"\"\n    if hasattr(signal, 'SIGALRM'):\n        # Unix/Linux/Mac\n        def signal_handler(signum, frame):",
+        "detail": "backend.core.rag.mini_rag",
+        "documentation": {}
+    },
+    {
+        "label": "Document",
+        "kind": 6,
+        "importPath": "backend.core.rag.vector_store",
+        "description": "backend.core.rag.vector_store",
+        "peekOfCode": "class Document:\n    \"\"\"Representa un documento en el vector store.\"\"\"\n    def __init__(self, content: str, metadata: Dict[str, Any] = None, doc_id: str = None):\n        \"\"\"\n        Inicializa un documento.\n        Args:\n            content: Contenido del documento\n            metadata: Metadata del documento\n            doc_id: ID único del documento\n        \"\"\"",
+        "detail": "backend.core.rag.vector_store",
+        "documentation": {}
+    },
+    {
+        "label": "VectorStore",
+        "kind": 6,
+        "importPath": "backend.core.rag.vector_store",
+        "description": "backend.core.rag.vector_store",
+        "peekOfCode": "class VectorStore:\n    \"\"\"\n    Wrapper unificado para FAISS y ChromaDB con funcionalidades avanzadas.\n    \"\"\"\n    def __init__(self, store_type: str = \"faiss\", \n                 index_path: str = \"backend/data/vector_store\",\n                 embedding_dim: int = 384):\n        \"\"\"\n        Inicializa el VectorStore.\n        Args:",
+        "detail": "backend.core.rag.vector_store",
+        "documentation": {}
+    },
+    {
+        "label": "create_vector_store",
+        "kind": 2,
+        "importPath": "backend.core.rag.vector_store",
+        "description": "backend.core.rag.vector_store",
+        "peekOfCode": "def create_vector_store(store_type: str = \"faiss\", \n                       index_path: str = None,\n                       embedding_dim: int = 384) -> VectorStore:\n    \"\"\"Crea una instancia de VectorStore.\"\"\"\n    if index_path is None:\n        index_path = \"backend/data/vector_store\"\n    return VectorStore(store_type, index_path, embedding_dim)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)",
+        "detail": "backend.core.rag.vector_store",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.rag.vector_store",
+        "description": "backend.core.rag.vector_store",
+        "peekOfCode": "logger = logging.getLogger(__name__)\ntry:\n    import faiss\n    FAISS_AVAILABLE = True\nexcept ImportError:\n    FAISS_AVAILABLE = False\n    logger.warning(\"FAISS no disponible, usando implementación básica\")\ntry:\n    import chromadb\n    from chromadb.config import Settings",
+        "detail": "backend.core.rag.vector_store",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingModel",
+        "kind": 6,
+        "importPath": "backend.core.embeddings",
+        "description": "backend.core.embeddings",
+        "peekOfCode": "class EmbeddingModel:\n    \"\"\"\n    Modelo de embeddings para análisis de queries y similitud semántica.\n    Incluye caché y optimizaciones para uso en producción.\n    \"\"\"\n    def __init__(self, model_name: str = \"all-MiniLM-L6-v2\", \n                 cache_dir: str = \"backend/data/embeddings_cache\"):\n        \"\"\"\n        Inicializa el modelo de embeddings.\n        Args:",
+        "detail": "backend.core.embeddings",
+        "documentation": {}
+    },
+    {
+        "label": "DomainEmbeddingAnalyzer",
+        "kind": 6,
+        "importPath": "backend.core.embeddings",
+        "description": "backend.core.embeddings",
+        "peekOfCode": "class DomainEmbeddingAnalyzer:\n    \"\"\"\n    Analizador especializado para embeddings de dominios.\n    \"\"\"\n    def __init__(self, embedding_model: EmbeddingModel):\n        \"\"\"\n        Inicializa el analizador con un modelo de embeddings.\n        Args:\n            embedding_model: Instancia de EmbeddingModel\n        \"\"\"",
+        "detail": "backend.core.embeddings",
+        "documentation": {}
+    },
+    {
+        "label": "create_embedding_model",
+        "kind": 2,
+        "importPath": "backend.core.embeddings",
+        "description": "backend.core.embeddings",
+        "peekOfCode": "def create_embedding_model(model_name: str = \"all-MiniLM-L6-v2\") -> EmbeddingModel:\n    \"\"\"Crea una instancia de EmbeddingModel.\"\"\"\n    return EmbeddingModel(model_name)\ndef create_domain_analyzer(embedding_model: EmbeddingModel = None) -> DomainEmbeddingAnalyzer:\n    \"\"\"Crea una instancia de DomainEmbeddingAnalyzer.\"\"\"\n    if embedding_model is None:\n        embedding_model = create_embedding_model()\n    return DomainEmbeddingAnalyzer(embedding_model)\nif __name__ == \"__main__\":\n    # Test básico",
+        "detail": "backend.core.embeddings",
+        "documentation": {}
+    },
+    {
+        "label": "create_domain_analyzer",
+        "kind": 2,
+        "importPath": "backend.core.embeddings",
+        "description": "backend.core.embeddings",
+        "peekOfCode": "def create_domain_analyzer(embedding_model: EmbeddingModel = None) -> DomainEmbeddingAnalyzer:\n    \"\"\"Crea una instancia de DomainEmbeddingAnalyzer.\"\"\"\n    if embedding_model is None:\n        embedding_model = create_embedding_model()\n    return DomainEmbeddingAnalyzer(embedding_model)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear modelo\n    model = create_embedding_model()",
+        "detail": "backend.core.embeddings",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.embeddings",
+        "description": "backend.core.embeddings",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass EmbeddingModel:\n    \"\"\"\n    Modelo de embeddings para análisis de queries y similitud semántica.\n    Incluye caché y optimizaciones para uso en producción.\n    \"\"\"\n    def __init__(self, model_name: str = \"all-MiniLM-L6-v2\", \n                 cache_dir: str = \"backend/data/embeddings_cache\"):\n        \"\"\"\n        Inicializa el modelo de embeddings.",
+        "detail": "backend.core.embeddings",
+        "documentation": {}
+    },
+    {
+        "label": "RouterModel20B",
+        "kind": 6,
+        "importPath": "backend.core.router",
+        "description": "backend.core.router",
+        "peekOfCode": "class RouterModel20B:\n    \"\"\"\n    Router inteligente que decide cuándo escalar de 20B a 120B\n    basado en complejidad y confianza de dominio.\n    \"\"\"\n    def __init__(self, embedding_model_name: str = \"all-MiniLM-L6-v2\"):\n        \"\"\"\n        Inicializa el router con modelo de embeddings y umbrales.\n        Args:\n            embedding_model_name: Nombre del modelo de embeddings a usar",
+        "detail": "backend.core.router",
+        "documentation": {}
+    },
+    {
+        "label": "create_router",
+        "kind": 2,
+        "importPath": "backend.core.router",
+        "description": "backend.core.router",
+        "peekOfCode": "def create_router(complexity_threshold: float = 0.7, \n                 domain_confidence_threshold: float = 0.6) -> RouterModel20B:\n    \"\"\"\n    Crea una instancia del router con umbrales personalizados.\n    Args:\n        complexity_threshold: Umbral de complejidad (0.0-1.0)\n        domain_confidence_threshold: Umbral de confianza de dominio (0.0-1.0)\n    Returns:\n        Instancia de RouterModel20B\n    \"\"\"",
+        "detail": "backend.core.router",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.router",
+        "description": "backend.core.router",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass RouterModel20B:\n    \"\"\"\n    Router inteligente que decide cuándo escalar de 20B a 120B\n    basado en complejidad y confianza de dominio.\n    \"\"\"\n    def __init__(self, embedding_model_name: str = \"all-MiniLM-L6-v2\"):\n        \"\"\"\n        Inicializa el router con modelo de embeddings y umbrales.\n        Args:",
+        "detail": "backend.core.router",
+        "documentation": {}
+    },
+    {
+        "label": "RoutingThresholds",
+        "kind": 6,
+        "importPath": "backend.core.thresholds",
+        "description": "backend.core.thresholds",
+        "peekOfCode": "class RoutingThresholds:\n    \"\"\"\n    Configuración de umbrales para routing inteligente.\n    \"\"\"\n    # Umbrales principales\n    complexity_threshold: float = 0.7\n    domain_confidence_threshold: float = 0.6\n    # Umbrales de latencia\n    max_latency_20b_ms: int = 2000\n    max_latency_120b_ms: int = 10000",
+        "detail": "backend.core.thresholds",
+        "documentation": {}
+    },
+    {
+        "label": "ThresholdManager",
+        "kind": 6,
+        "importPath": "backend.core.thresholds",
+        "description": "backend.core.thresholds",
+        "peekOfCode": "class ThresholdManager:\n    \"\"\"\n    Gestor de umbrales con persistencia y validación.\n    \"\"\"\n    def __init__(self, config_file: str = \"backend/data/thresholds.json\"):\n        \"\"\"\n        Inicializa el gestor de umbrales.\n        Args:\n            config_file: Archivo de configuración JSON\n        \"\"\"",
+        "detail": "backend.core.thresholds",
+        "documentation": {}
+    },
+    {
+        "label": "AdaptiveThresholds",
+        "kind": 6,
+        "importPath": "backend.core.thresholds",
+        "description": "backend.core.thresholds",
+        "peekOfCode": "class AdaptiveThresholds:\n    \"\"\"\n    Sistema de umbrales adaptativos que se ajustan basado en performance.\n    \"\"\"\n    def __init__(self, threshold_manager: ThresholdManager):\n        \"\"\"\n        Inicializa el sistema adaptativo.\n        Args:\n            threshold_manager: Instancia de ThresholdManager\n        \"\"\"",
+        "detail": "backend.core.thresholds",
+        "documentation": {}
+    },
+    {
+        "label": "create_threshold_manager",
+        "kind": 2,
+        "importPath": "backend.core.thresholds",
+        "description": "backend.core.thresholds",
+        "peekOfCode": "def create_threshold_manager(config_file: str = None) -> ThresholdManager:\n    \"\"\"Crea una instancia de ThresholdManager.\"\"\"\n    if config_file is None:\n        config_file = \"backend/data/thresholds.json\"\n    return ThresholdManager(config_file)\ndef create_adaptive_thresholds(threshold_manager: ThresholdManager = None) -> AdaptiveThresholds:\n    \"\"\"Crea una instancia de AdaptiveThresholds.\"\"\"\n    if threshold_manager is None:\n        threshold_manager = create_threshold_manager()\n    return AdaptiveThresholds(threshold_manager)",
+        "detail": "backend.core.thresholds",
+        "documentation": {}
+    },
+    {
+        "label": "create_adaptive_thresholds",
+        "kind": 2,
+        "importPath": "backend.core.thresholds",
+        "description": "backend.core.thresholds",
+        "peekOfCode": "def create_adaptive_thresholds(threshold_manager: ThresholdManager = None) -> AdaptiveThresholds:\n    \"\"\"Crea una instancia de AdaptiveThresholds.\"\"\"\n    if threshold_manager is None:\n        threshold_manager = create_threshold_manager()\n    return AdaptiveThresholds(threshold_manager)\nif __name__ == \"__main__\":\n    # Test básico\n    logging.basicConfig(level=logging.INFO)\n    # Crear gestor de umbrales\n    manager = create_threshold_manager()",
+        "detail": "backend.core.thresholds",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.core.thresholds",
+        "description": "backend.core.thresholds",
+        "peekOfCode": "logger = logging.getLogger(__name__)\n@dataclass\nclass RoutingThresholds:\n    \"\"\"\n    Configuración de umbrales para routing inteligente.\n    \"\"\"\n    # Umbrales principales\n    complexity_threshold: float = 0.7\n    domain_confidence_threshold: float = 0.6\n    # Umbrales de latencia",
+        "detail": "backend.core.thresholds",
+        "documentation": {}
+    },
+    {
         "label": "UserRole",
         "kind": 6,
         "importPath": "backend.deployment.auth",
@@ -12647,6 +13839,60 @@
         "description": "backend.utils.logging_config",
         "peekOfCode": "def setup_logging(log_dir: str = \"backend/logs\", log_level: str = \"INFO\"):\n    \"\"\"\n    Configura el sistema de logging.\n    Args:\n        log_dir: Directorio para logs\n        log_level: Nivel de logging\n    \"\"\"\n    global _logger_instance\n    _logger_instance = Capibara6Logger(log_dir, log_level)\n    return _logger_instance",
         "detail": "backend.utils.logging_config",
+        "documentation": {}
+    },
+    {
+        "label": "SearchRequest",
+        "kind": 6,
+        "importPath": "backend.api_server",
+        "description": "backend.api_server",
+        "peekOfCode": "class SearchRequest(BaseModel):\n    query: str = Field(..., description=\"Texto de búsqueda\", min_length=1)\n    collection_name: Optional[str] = Field(None, description=\"Nombre de la colección (chat_messages, external_chats, social_posts, files)\")\n    n_results: int = Field(5, description=\"Número de resultados\", ge=1, le=50)\nclass RAGSearchRequest(BaseModel):\n    query: str = Field(..., description=\"Pregunta en lenguaje natural\", min_length=1)\n    n_results: int = Field(5, description=\"Resultados por colección\", ge=1, le=20)\n    use_graph: bool = Field(True, description=\"Usar exploración de grafo\")\nclass HybridSearchRequest(BaseModel):\n    query: str = Field(..., description=\"Texto de búsqueda\", min_length=1)",
+        "detail": "backend.api_server",
+        "documentation": {}
+    },
+    {
+        "label": "RAGSearchRequest",
+        "kind": 6,
+        "importPath": "backend.api_server",
+        "description": "backend.api_server",
+        "peekOfCode": "class RAGSearchRequest(BaseModel):\n    query: str = Field(..., description=\"Pregunta en lenguaje natural\", min_length=1)\n    n_results: int = Field(5, description=\"Resultados por colección\", ge=1, le=20)\n    use_graph: bool = Field(True, description=\"Usar exploración de grafo\")\nclass HybridSearchRequest(BaseModel):\n    query: str = Field(..., description=\"Texto de búsqueda\", min_length=1)\n    depth: int = Field(2, description=\"Profundidad de traversal en grafo\", ge=1, le=5)\n    min_similarity: float = Field(0.5, description=\"Similitud mínima\", ge=0.0, le=1.0)\nclass UserCreate(BaseModel):\n    username: str = Field(..., min_length=3, max_length=50)",
+        "detail": "backend.api_server",
+        "documentation": {}
+    },
+    {
+        "label": "HybridSearchRequest",
+        "kind": 6,
+        "importPath": "backend.api_server",
+        "description": "backend.api_server",
+        "peekOfCode": "class HybridSearchRequest(BaseModel):\n    query: str = Field(..., description=\"Texto de búsqueda\", min_length=1)\n    depth: int = Field(2, description=\"Profundidad de traversal en grafo\", ge=1, le=5)\n    min_similarity: float = Field(0.5, description=\"Similitud mínima\", ge=0.0, le=1.0)\nclass UserCreate(BaseModel):\n    username: str = Field(..., min_length=3, max_length=50)\n    email: str = Field(..., pattern=r\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\")\n    password: str = Field(..., min_length=8)\nclass MessageCreate(BaseModel):\n    session_id: str",
+        "detail": "backend.api_server",
+        "documentation": {}
+    },
+    {
+        "label": "UserCreate",
+        "kind": 6,
+        "importPath": "backend.api_server",
+        "description": "backend.api_server",
+        "peekOfCode": "class UserCreate(BaseModel):\n    username: str = Field(..., min_length=3, max_length=50)\n    email: str = Field(..., pattern=r\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\")\n    password: str = Field(..., min_length=8)\nclass MessageCreate(BaseModel):\n    session_id: str\n    content: str = Field(..., min_length=1)\n    message_role: str = Field(..., pattern=\"^(user|assistant)$\")\n# ==========================================\n# ENDPOINTS DE BÚSQUEDA",
+        "detail": "backend.api_server",
+        "documentation": {}
+    },
+    {
+        "label": "MessageCreate",
+        "kind": 6,
+        "importPath": "backend.api_server",
+        "description": "backend.api_server",
+        "peekOfCode": "class MessageCreate(BaseModel):\n    session_id: str\n    content: str = Field(..., min_length=1)\n    message_role: str = Field(..., pattern=\"^(user|assistant)$\")\n# ==========================================\n# ENDPOINTS DE BÚSQUEDA\n# ==========================================\n@app.get(\"/\")\nasync def root():\n    \"\"\"Endpoint raíz con información de la API\"\"\"",
+        "detail": "backend.api_server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.api_server",
+        "description": "backend.api_server",
+        "peekOfCode": "app = FastAPI(\n    title=\"Capibara6 RAG API\",\n    description=\"API REST para búsqueda semántica, RAG y gestión de datos personales\",\n    version=\"1.0.0\"\n)\n# Configurar CORS\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\n        \"http://localhost:3000\",",
+        "detail": "backend.api_server",
         "documentation": {}
     },
     {
@@ -16337,6 +17583,15 @@
         "description": "fine-tuning.t5x.finetuning.tpu_optimizer",
         "peekOfCode": "PERFORMANCE_METRICS = {optimization.performance_metrics}\n\"\"\"\n            # Guardar configuración\n            config_file = os.path.join(self.configs_dir, f\"{optimization.optimization_id}_t5x_config.gin\")\n            with open(config_file, 'w') as f:\n                f.write(config_content)\n            logger.info(f\"Configuración T5X generada: {config_file}\")\n            return config_file\n        except Exception as e:\n            logger.error(f\"Error generando configuración T5X: {e}\")",
         "detail": "fine-tuning.t5x.finetuning.tpu_optimizer",
+        "documentation": {}
+    },
+    {
+        "label": "start_local_server",
+        "kind": 2,
+        "importPath": "web.start_local_test_server",
+        "description": "web.start_local_test_server",
+        "peekOfCode": "def start_local_server():\n    \"\"\"Inicia un servidor local para probar la conexión con la VM real\"\"\"\n    # Directorio web donde están los archivos\n    web_dir = Path(__file__).parent / \"web\"\n    if not web_dir.exists():\n        print(f\"❌ Directorio web no encontrado: {web_dir}\")\n        print(\"Vamos a usar el directorio actual\")\n        web_dir = Path.cwd()\n    print(f\"📁 Usando directorio: {web_dir}\")\n    print(f\"🌐 IP real de la VM: 34.175.136.104\")",
+        "detail": "web.start_local_test_server",
         "documentation": {}
     },
     {

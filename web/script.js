@@ -15,8 +15,8 @@ const API_ENDPOINTS = {
     // NOTA: Reemplaza [IP_DE_BOUNTY2] con la IP externa real de la VM bounty2
     // Para obtenerla, ejecuta: gcloud compute instances describe bounty2 --zone=europe-west4-a --project=mamba-001
     LOCAL: window.location.hostname === 'localhost' 
-        ? 'http://[IP_DE_BOUNTY2]:5001/api'   // VM bounty2 en europe-west4-a en desarrollo
-        : 'http://localhost:5001/api',       // Local en producción
+        ? 'http://34.12.166.76:5000/api'   // VM bounty2 en puerto 5000 donde está corriendo el servidor real
+        : 'http://localhost:5000/api',       // Local en producción
     
     // Servicios en la nube (VMs de Google Cloud)
     CLOUD_CHAT: 'http://34.12.166.76:5000/api',  // Capibara6 Main Server (firewall: tcp:5000)
@@ -58,13 +58,45 @@ async function makeApiRequest(endpoint, data, serviceType = 'local') {
                 url = `${API_ENDPOINTS.LOCAL}/${endpoint}`;
         }
 
-        const response = await fetch(url, {
-            method: 'POST',
+        // Determinar el método HTTP según el endpoint
+        // Manejar endpoints MCP con proxy para evitar problemas de CORS
+        let method = 'POST';
+        let body = null;
+        let finalUrl = url;  // URL final (puede ser la original o una proxy)
+        
+        // Endpoints que solo requieren GET (sin cuerpo)
+        const getOnlyEndpoints = ['health', 'status', 'models'];
+        
+        // Verificar si es un MCP endpoint que puede necesitar proxy por CORS
+        if (endpoint.includes('mcp/tools/call')) {
+            // Usar endpoint proxy para evitar problemas CORS con MCP
+            finalUrl = '/api/mcp/tools/call-proxy';
+            method = 'POST';
+            body = JSON.stringify({
+                target: url,  // URL original
+                method: 'POST',
+                body: data,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        } else if (getOnlyEndpoints.some(ep => endpoint.includes(ep))) {
+            method = 'GET';
+        } else {
+            // Para otros endpoints, usar POST con cuerpo
+            body = JSON.stringify(data);
+        }
+        
+        const fetchOptions = {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
+            }
+        };
+        
+        if (body) {
+            fetchOptions.body = body;
+        }
+        
+        const response = await fetch(finalUrl, fetchOptions);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
