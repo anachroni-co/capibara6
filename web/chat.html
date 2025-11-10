@@ -6,14 +6,29 @@
     <meta name="description" content="Capibara6 - Chat con el modelo híbrido Transformer-Mamba">
     <title>Chat capibara6 - IA Conversacional | Anachroni</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="chat-styles.css">
 </head>
 <body>
+    <header class="top-nav">
+        <div class="top-nav__content">
+            <h1 class="top-nav__title">Capibara6 AI Chat</h1>
+            <nav class="top-nav__menu">
+                <a href="index.html">Inicio</a>
+                <a href="chat.html" aria-current="page">Chat</a>
+            </nav>
+        </div>
+    </header>
+
     <div class="chat-page-wrapper">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -467,11 +482,20 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- Scripts -->
+=======
+    <footer class="page-footer">
+        <p>&copy; 2025 Capibara6 AI Platform. Todos los derechos reservados.</p>
+    </footer>
+
+>>>>>>> 396f6a7 (update files)
     <script src="config.js"></script>
     <script src="n8n-manager.js"></script>
     <script src="model-visualization.js"></script>
     <script src="chat-page.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="neural-animation.js"></script>
     <script>
         // Inicializar iconos de Lucide
         if (typeof lucide !== 'undefined') {

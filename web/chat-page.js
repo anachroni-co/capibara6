@@ -36,25 +36,15 @@ class Capibara6ChatPage {
     }
     
     async init() {
-        // Cargar configuración del usuario
         this.loadUserSettings();
         this.loadUserProfile();
-        
-        // Configurar event listeners
         this.setupEventListeners();
-        
-        // Verificar conexión con el backend
         await this.checkConnection();
-        
-        // Cargar chats guardados
         this.loadChats();
-        
-        // Cargar mensajes del chat actual
         this.loadMessages();
     }
     
     setupEventListeners() {
-        // Enviar mensaje
         this.chatSendBtn.addEventListener('click', () => this.sendMessage());
         this.chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -63,37 +53,28 @@ class Capibara6ChatPage {
             }
         });
         
-        // Auto-resize del textarea
         this.chatInput.addEventListener('input', () => {
             this.chatInput.style.height = 'auto';
             this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 200) + 'px';
         });
         
-        // Sidebar
         this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
         this.sidebarToggleMobile.addEventListener('click', () => this.toggleSidebarMobile());
         this.sidebarOverlay.addEventListener('click', () => this.closeSidebarMobile());
-        
-        // Nuevo chat
         this.newChatBtn.addEventListener('click', () => this.createNewChat());
-        
-        // Limpiar chat
         this.clearChatBtn.addEventListener('click', () => this.clearChat());
         
-        // Perfil
         this.profileMenuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.toggleProfileMenu();
         });
         
-        // Cerrar menú de perfil al hacer clic fuera
         document.addEventListener('click', (e) => {
             if (!this.profileMenu.contains(e.target) && !this.profileMenuBtn.contains(e.target)) {
                 this.profileMenu.classList.remove('active');
             }
         });
         
-        // Configuración
         document.getElementById('profile-settings-btn').addEventListener('click', () => {
             this.openSettings();
             this.profileMenu.classList.remove('active');
@@ -107,7 +88,6 @@ class Capibara6ChatPage {
             this.saveSettings();
         });
         
-        // Temperatura slider
         const tempSlider = document.getElementById('temperature-setting');
         const tempValue = document.getElementById('temperature-value');
         tempSlider.addEventListener('input', (e) => {
@@ -143,11 +123,7 @@ class Capibara6ChatPage {
     
     toggleSidebar() {
         this.sidebarCollapsed = !this.sidebarCollapsed;
-        if (this.sidebarCollapsed) {
-            this.sidebar.classList.add('collapsed');
-        } else {
-            this.sidebar.classList.remove('collapsed');
-        }
+        this.sidebar.classList.toggle('collapsed', this.sidebarCollapsed);
         this.saveUserSettings();
     }
     
@@ -183,9 +159,7 @@ class Capibara6ChatPage {
                 </div>
             </div>
         `;
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
         this.closeSidebarMobile();
     }
     
@@ -203,79 +177,65 @@ class Capibara6ChatPage {
             } else {
                 this.isConnected = false;
                 this.updateStatus('Desconectado', 'error');
-                this.showError('El servidor MCP no está disponible. Por favor, verifica que el backend esté corriendo.');
+                this.showError('El servidor MCP no está disponible.');
             }
         } catch (error) {
             console.error('Error verificando conexión:', error);
             this.isConnected = false;
             this.updateStatus('Error de conexión', 'error');
-            this.showError('No se pudo conectar con el backend. Asegúrate de que el servidor esté corriendo en ' + this.backendUrl);
+            this.showError('No se pudo conectar con el backend en ' + this.backendUrl);
         }
     }
     
     updateStatus(text, type) {
         this.statusText.textContent = text;
         const colors = {
-            'success': '#10b981',
-            'error': '#ef4444',
-            'warning': '#f59e0b',
-            'connecting': '#6366f1'
+            success: '#10b981',
+            error: '#ef4444',
+            warning: '#f59e0b',
+            connecting: '#6366f1'
         };
-        this.statusIndicator.style.background = colors[type] || colors.connecting;
-        this.statusIndicator.style.boxShadow = `0 0 8px ${colors[type] || colors.connecting}`;
+        const color = colors[type] || colors.connecting;
+        this.statusIndicator.style.background = color;
+        this.statusIndicator.style.boxShadow = `0 0 8px ${color}`;
     }
     
     async sendMessage() {
         const message = this.chatInput.value.trim();
         if (!message || this.isProcessing) return;
-        
         if (!this.isConnected) {
-            this.showError('No hay conexión con el servidor. Por favor, verifica tu conexión.');
+            this.showError('No hay conexión con el servidor.');
             return;
         }
         
-        // Crear chat si no existe
         if (!this.currentChatId) {
             this.currentChatId = 'chat_' + Date.now();
             this.saveChats();
         }
         
-        // Agregar mensaje del usuario
         this.addMessage(message, 'user');
         this.chatInput.value = '';
         this.chatInput.style.height = 'auto';
-        
-        // Deshabilitar input mientras se procesa
         this.setProcessing(true);
         
-        // Mostrar indicador de escritura
         const typingIndicator = this.showTypingIndicator();
         
         try {
-            // Enviar mensaje al backend usando MCP
             const response = await this.sendToBackend(message);
-            
-            // Remover indicador de escritura
             this.removeTypingIndicator(typingIndicator);
             
-            // Agregar respuesta del bot
             if (response && response.content) {
                 this.addMessage(response.content, 'bot');
             } else {
                 throw new Error('Respuesta inválida del servidor');
             }
             
-            // Actualizar lista de chats
             this.updateChatInList();
             
         } catch (error) {
             console.error('Error enviando mensaje:', error);
             this.removeTypingIndicator(typingIndicator);
-            this.addMessage(
-                'Lo siento, ocurrió un error al procesar tu mensaje. Por favor, intenta de nuevo.',
-                'bot',
-                true
-            );
+            this.addMessage('Lo siento, ocurrió un error al procesar tu mensaje.', 'bot', true);
             this.showError('Error: ' + error.message);
         } finally {
             this.setProcessing(false);
@@ -283,15 +243,12 @@ class Capibara6ChatPage {
     }
     
     async sendToBackend(message) {
-        // Usar el endpoint MCP tools/call para enviar mensajes al modelo
         const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
             ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.MCP_TOOLS_CALL
             : `${this.backendUrl}/api/mcp/tools/call`;
         const response = await fetch(endpoint, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 name: 'analyze_document',
                 arguments: {
@@ -302,96 +259,83 @@ class Capibara6ChatPage {
             })
         });
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
+        if (data.error) throw new Error(data.error.message || 'Error en la respuesta del servidor');
         
-        // Procesar respuesta MCP
-        if (data.error) {
-            throw new Error(data.error.message || 'Error en la respuesta del servidor');
-        }
+        if (data.result && data.result.content) return { content: data.result.content };
+        if (data.result && typeof data.result === 'string') return { content: data.result };
+        if (data.result && data.result.text) return { content: data.result.text };
         
-        // Extraer contenido de la respuesta
-        if (data.result && data.result.content) {
-            return { content: data.result.content };
-        } else if (data.result && typeof data.result === 'string') {
-            return { content: data.result };
-        } else if (data.result && data.result.text) {
-            return { content: data.result.text };
-        } else {
-            // Respuesta genérica si no hay contenido específico
-            return { 
-                content: 'He recibido tu mensaje. El modelo está procesando tu solicitud. Por favor, ten en cuenta que este es un sistema de demostración y puede requerir configuración adicional del backend para funcionar completamente.'
-            };
-        }
+        return { content: 'He recibido tu mensaje, el modelo está procesando tu solicitud.' };
     }
     
     getConversationContext() {
-        // Obtener los últimos mensajes para contexto
         const recentMessages = this.messages.slice(-10);
         return recentMessages.map(msg => ({
             role: msg.type === 'user' ? 'user' : 'assistant',
             content: msg.text
         }));
     }
+
+    normalizeMessageContent(content) {
+        if (typeof content === 'string') return content;
+        if (Array.isArray(content)) {
+            return content.map(c => this.normalizeMessageContent(c)).join('\n').trim();
+        }
+        if (content && typeof content === 'object') {
+            if (typeof content.text === 'string') return content.text;
+            if (content.text !== undefined) return this.normalizeMessageContent(content.text);
+            return JSON.stringify(content);
+        }
+        if (content == null) return '';
+        return String(content);
+    }
     
     addMessage(text, type, isError = false) {
+        const normalizedText = this.normalizeMessageContent(text);
         const message = {
-            text: text,
-            type: type,
+            text: normalizedText,
+            type,
             timestamp: new Date(),
-            isError: isError
+            isError
         };
         
         this.messages.push(message);
         this.saveMessages();
         
         const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${type}-message`;
-        if (isError) {
-            messageDiv.classList.add('error');
-        }
+        messageDiv.className = `chat-message ${type}-message${isError ? ' error' : ''}`;
         
         const avatar = document.createElement('div');
         avatar.className = 'message-avatar';
         const avatarGradient = document.createElement('div');
         avatarGradient.className = 'avatar-gradient';
-        avatarGradient.innerHTML = type === 'bot' 
+        avatarGradient.innerHTML = type === 'bot'
             ? '<i data-lucide="bot" style="width: 24px; height: 24px;"></i>'
             : '<i data-lucide="user" style="width: 24px; height: 24px;"></i>';
         avatar.appendChild(avatarGradient);
         
         const content = document.createElement('div');
         content.className = 'message-content';
-        
         const textDiv = document.createElement('div');
         textDiv.className = 'message-text';
         const textP = document.createElement('p');
-        textP.textContent = text;
+        textP.textContent = normalizedText;
         textDiv.appendChild(textP);
         content.appendChild(textDiv);
         
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
-        timeDiv.textContent = message.timestamp.toLocaleTimeString('es-ES', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
+        timeDiv.textContent = message.timestamp.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
         content.appendChild(timeDiv);
         
         messageDiv.appendChild(avatar);
         messageDiv.appendChild(content);
         
         this.chatMessages.appendChild(messageDiv);
-        
-        // Inicializar iconos de Lucide
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        
-        // Scroll al final
+        if (typeof lucide !== 'undefined') lucide.createIcons();
         this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
     }
     
@@ -399,11 +343,7 @@ class Capibara6ChatPage {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'typing-indicator';
         typingDiv.id = 'typing-indicator';
-        typingDiv.innerHTML = `
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-        `;
+        typingDiv.innerHTML = `<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>`;
         
         const messageDiv = document.createElement('div');
         messageDiv.className = 'chat-message bot-message';
@@ -415,49 +355,36 @@ class Capibara6ChatPage {
         return messageDiv;
     }
     
-    removeTypingIndicator(typingElement) {
-        if (typingElement && typingElement.parentNode) {
-            typingElement.remove();
-        }
+    removeTypingIndicator(el) {
+        if (el && el.parentNode) el.remove();
     }
     
-    setProcessing(processing) {
-        this.isProcessing = processing;
-        this.chatInput.disabled = processing;
-        this.chatSendBtn.disabled = processing;
-        
-        if (processing) {
-            this.chatSendBtn.innerHTML = '<span>Procesando...</span>';
-        } else {
-            this.chatSendBtn.innerHTML = '<span>Enviar</span><i data-lucide="send" style="width: 20px; height: 20px;"></i>';
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        }
+    setProcessing(state) {
+        this.isProcessing = state;
+        this.chatInput.disabled = state;
+        this.chatSendBtn.disabled = state;
+        this.chatSendBtn.innerHTML = state 
+            ? '<span>Procesando...</span>' 
+            : '<span>Enviar</span><i data-lucide="send" style="width: 20px; height: 20px;"></i>';
+        if (!state && typeof lucide !== 'undefined') lucide.createIcons();
     }
     
     showError(message) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.textContent = message;
-        
-        // Insertar después del header
         const chatMain = document.querySelector('.chat-main-content');
         chatMain.insertBefore(errorDiv, chatMain.children[1]);
-        
-        // Remover después de 5 segundos
-        setTimeout(() => {
-            errorDiv.remove();
-        }, 5000);
+        setTimeout(() => errorDiv.remove(), 5000);
     }
     
     clearChat() {
-        if (confirm('¿Estás seguro de que quieres limpiar toda la conversación?')) {
+        if (confirm('¿Seguro que quieres limpiar toda la conversación?')) {
             this.createNewChat();
         }
     }
     
-    // Gestión de chats
+    // --- Gestión de chats ---
     loadChats() {
         try {
             const saved = localStorage.getItem('capibara6_chats');
@@ -472,27 +399,30 @@ class Capibara6ChatPage {
     
     saveChats() {
         try {
-            if (this.currentChatId) {
-                const chatIndex = this.chats.findIndex(c => c.id === this.currentChatId);
-                const chatData = {
-                    id: this.currentChatId,
-                    title: this.messages[0]?.text?.substring(0, 50) || 'Nueva conversación',
-                    lastMessage: this.messages[this.messages.length - 1]?.text?.substring(0, 100),
-                    timestamp: new Date().toISOString(),
-                    messageCount: this.messages.length
-                };
-                
-                if (chatIndex >= 0) {
-                    this.chats[chatIndex] = chatData;
-                } else {
-                    this.chats.unshift(chatData);
-                }
-                
-                // Mantener solo los últimos 20 chats
-                this.chats = this.chats.slice(0, 20);
-                localStorage.setItem('capibara6_chats', JSON.stringify(this.chats));
-                this.renderChatList();
-            }
+            if (!this.currentChatId) return;
+            
+            const chatIndex = this.chats.findIndex(c => c.id === this.currentChatId);
+            const firstMessage = this.messages[0];
+            const lastMessage = this.messages[this.messages.length - 1];
+            const firstText = firstMessage ? this.normalizeMessageContent(firstMessage) : '';
+            const lastText = lastMessage ? this.normalizeMessageContent(lastMessage) : '';
+            
+            const safeSubstring = (val, len) => typeof val === 'string' ? val.substring(0, len) : '';
+            
+            const chatData = {
+                id: this.currentChatId,
+                title: safeSubstring(firstText, 50) || 'Nueva conversación',
+                lastMessage: safeSubstring(lastText, 100),
+                timestamp: new Date().toISOString(),
+                messageCount: this.messages.length
+            };
+            
+            if (chatIndex >= 0) this.chats[chatIndex] = chatData;
+            else this.chats.unshift(chatData);
+            
+            this.chats = this.chats.slice(0, 20);
+            localStorage.setItem('capibara6_chats', JSON.stringify(this.chats));
+            this.renderChatList();
         } catch (error) {
             console.warn('Error guardando chats:', error);
         }
@@ -500,7 +430,6 @@ class Capibara6ChatPage {
     
     renderChatList() {
         this.chatList.innerHTML = '';
-        
         if (this.chats.length === 0) {
             const emptyDiv = document.createElement('div');
             emptyDiv.className = 'empty-chat-list';
@@ -509,13 +438,10 @@ class Capibara6ChatPage {
             this.chatList.appendChild(emptyDiv);
             return;
         }
-        
         this.chats.forEach(chat => {
             const chatItem = document.createElement('div');
             chatItem.className = 'chat-item';
-            if (chat.id === this.currentChatId) {
-                chatItem.classList.add('active');
-            }
+            if (chat.id === this.currentChatId) chatItem.classList.add('active');
             
             chatItem.innerHTML = `
                 <div class="chat-item-icon">
@@ -524,19 +450,12 @@ class Capibara6ChatPage {
                 <div class="chat-item-content">
                     <div class="chat-item-title">${chat.title}</div>
                     <div class="chat-item-time">${new Date(chat.timestamp).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div>
-                </div>
-            `;
+                </div>`;
             
-            chatItem.addEventListener('click', () => {
-                this.loadChat(chat.id);
-            });
-            
+            chatItem.addEventListener('click', () => this.loadChat(chat.id));
             this.chatList.appendChild(chatItem);
         });
-        
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
     
     updateChatInList() {
@@ -544,24 +463,20 @@ class Capibara6ChatPage {
     }
     
     loadChat(chatId) {
-        // Por ahora, solo actualizamos el ID actual
-        // En una implementación completa, cargaríamos los mensajes del chat
         this.currentChatId = chatId;
         this.renderChatList();
         this.closeSidebarMobile();
     }
     
-    // Configuración
+    // --- Configuración ---
     loadUserSettings() {
         try {
             const settings = localStorage.getItem('capibara6_settings');
             if (settings) {
                 const parsed = JSON.parse(settings);
                 if (parsed.sidebarCollapsed) {
-                    this.sidebarCollapsed = parsed.sidebarCollapsed;
-                    if (this.sidebarCollapsed) {
-                        this.sidebar.classList.add('collapsed');
-                    }
+                    this.sidebarCollapsed = true;
+                    this.sidebar.classList.add('collapsed');
                 }
             }
         } catch (error) {
@@ -571,10 +486,9 @@ class Capibara6ChatPage {
     
     saveUserSettings() {
         try {
-            const settings = {
+            localStorage.setItem('capibara6_settings', JSON.stringify({
                 sidebarCollapsed: this.sidebarCollapsed
-            };
-            localStorage.setItem('capibara6_settings', JSON.stringify(settings));
+            }));
         } catch (error) {
             console.warn('Error guardando configuración:', error);
         }
@@ -585,86 +499,47 @@ class Capibara6ChatPage {
             const profile = localStorage.getItem('capibara6_profile');
             if (profile) {
                 const parsed = JSON.parse(profile);
-                if (parsed.name) {
-                    document.getElementById('user-name').textContent = parsed.name;
-                }
-                if (parsed.email) {
-                    document.getElementById('user-email').textContent = parsed.email;
-                }
+                if (parsed.name) document.getElementById('user-name').textContent = parsed.name;
+                if (parsed.email) document.getElementById('user-email').textContent = parsed.email;
             }
         } catch (error) {
             console.warn('Error cargando perfil:', error);
         }
     }
     
-    openSettings() {
-        this.settingsModal.classList.add('active');
-    }
-    
-    closeSettings() {
-        this.settingsModal.classList.remove('active');
-    }
+    openSettings() { this.settingsModal.classList.add('active'); }
+    closeSettings() { this.settingsModal.classList.remove('active'); }
     
     saveSettings() {
-        // Guardar configuración
         const settings = {
             temperature: document.getElementById('temperature-setting').value,
             maxTokens: document.getElementById('max-tokens-setting').value,
             soundNotifications: document.getElementById('sound-notifications').checked,
             autoScroll: document.getElementById('auto-scroll').checked
         };
-        
+        localStorage.setItem('capibara6_model_settings', JSON.stringify(settings));
+        this.closeSettings();
+    }
+    
+    loadMessages() {
         try {
-            localStorage.setItem('capibara6_chat_settings', JSON.stringify(settings));
-            this.closeSettings();
-            // Mostrar confirmación
-            alert('Configuración guardada correctamente');
+            const saved = localStorage.getItem(`capibara6_messages_${this.currentChatId}`);
+            if (saved) this.messages = JSON.parse(saved);
         } catch (error) {
-            console.error('Error guardando configuración:', error);
-            alert('Error al guardar la configuración');
+            console.warn('Error cargando mensajes:', error);
         }
     }
     
     saveMessages() {
         try {
-            if (this.currentChatId) {
-                const chatData = {
-                    id: this.currentChatId,
-                    messages: this.messages
-                };
-                localStorage.setItem(`capibara6_chat_${this.currentChatId}`, JSON.stringify(chatData));
-            }
+            if (!this.currentChatId) return;
+            localStorage.setItem(`capibara6_messages_${this.currentChatId}`, JSON.stringify(this.messages));
         } catch (error) {
             console.warn('Error guardando mensajes:', error);
         }
     }
-    
-    loadMessages() {
-        try {
-            if (this.currentChatId) {
-                const saved = localStorage.getItem(`capibara6_chat_${this.currentChatId}`);
-                if (saved) {
-                    const chatData = JSON.parse(saved);
-                    this.messages = chatData.messages || [];
-                    
-                    // Renderizar mensajes
-                    this.chatMessages.innerHTML = '';
-                    this.messages.forEach(msg => {
-                        this.addMessage(msg.text, msg.type, msg.isError);
-                    });
-                }
-            }
-        } catch (error) {
-            console.warn('Error cargando mensajes:', error);
-        }
-    }
 }
 
-// Inicializar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new Capibara6ChatPage();
-    });
-} else {
-    new Capibara6ChatPage();
-}
+document.addEventListener('DOMContentLoaded', () => {
+    window.capibara6ChatPage = new Capibara6ChatPage();
+});
