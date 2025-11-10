@@ -69,39 +69,57 @@ def save_conversation(user_message, ai_response, user_email=None):
         json.dump(existing_data, f, indent=2, ensure_ascii=False)
 
 def call_gpt_oss(prompt, max_tokens=500, temperature=0.7):
-    """Llamar al modelo GPT-OSS-20B"""
+    """Llamar al modelo GPT-OSS-20B (con modo demo si no está disponible)"""
+
+    # Modo demo: si la variable de entorno USE_DEMO_MODE está activa
+    use_demo = os.getenv('USE_DEMO_MODE', 'false').lower() == 'true'
+
+    if use_demo:
+        print("⚠️ MODO DEMO: Generando respuesta simulada")
+        return """¡Hola! Soy Capibara6 en modo demo.
+
+El backend está funcionando correctamente, pero el modelo GPT-OSS-20B no está accesible en este momento.
+
+Para activar el modelo real:
+1. Verifica que las VMs de Google Cloud estén encendidas
+2. Asegúrate de que los puertos estén abiertos en el firewall
+3. Configura el archivo .env con las IPs correctas
+4. Desactiva el modo demo quitando USE_DEMO_MODE=true del .env
+
+Esta es una respuesta simulada para probar la funcionalidad del chat. Todas las demás características (subida de archivos, guardado de conversaciones, UI) están funcionando correctamente."""
+
     try:
         payload = {
             "prompt": prompt,
             "n_predict": max_tokens,
             "temperature": temperature,
-            "top_p": 0.9,  # Añadido para mejor diversidad
-            "repeat_penalty": 1.1,  # Reducido para evitar repeticiones excesivas
+            "top_p": 0.9,
+            "repeat_penalty": 1.1,
             "stream": False,
             "stop": ["Usuario:", "Capibara6:", "\n\n", "<|endoftext|>", "</s>", "<|end|>"]
         }
-        
+
         response = requests.post(
             f"{GPT_OSS_URL}/completion",
             json=payload,
             timeout=GPT_OSS_TIMEOUT,
             headers={'Content-Type': 'application/json'}
         )
-        
+
         if response.status_code == 200:
             data = response.json()
             return data.get('content', '').strip()
         else:
             print(f"Error en GPT-OSS: {response.status_code} - {response.text}")
-            return f"Error: No se pudo conectar con el modelo ({response.status_code})"
-            
+            return f"Error: No se pudo conectar con el modelo ({response.status_code}). Activa el modo demo con USE_DEMO_MODE=true en el .env para probar la interfaz."
+
     except requests.exceptions.Timeout:
-        return "Error: Tiempo de espera agotado. El modelo está procesando una petición muy larga."
+        return "Error: Tiempo de espera agotado. El modelo está procesando una petición muy larga. Activa el modo demo con USE_DEMO_MODE=true en el .env para probar la interfaz."
     except requests.exceptions.ConnectionError:
-        return "Error: No se pudo conectar con el modelo GPT-OSS-20B. Verifica que esté funcionando."
+        return "Error: No se pudo conectar con el modelo GPT-OSS-20B. Verifica que esté funcionando o activa el modo demo con USE_DEMO_MODE=true en el .env."
     except Exception as e:
         print(f"Error llamando a GPT-OSS: {e}")
-        return f"Error: {str(e)}"
+        return f"Error: {str(e)}. Activa el modo demo con USE_DEMO_MODE=true en el .env para probar la interfaz."
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
