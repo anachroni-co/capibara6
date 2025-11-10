@@ -1,6 +1,6 @@
 # 🚀 Conexión del Frontend a las VMs Reales - SERVICIOS ACTUALES
 
-## 📊 Servicios Disponibles en VM (IP: 34.175.215.109)
+## 📊 Servicios Disponibles en VM (IP: 34.175.136.104)
 
 Según el análisis del firewall proporcionado, estos son los servicios reales disponibles:
 
@@ -25,7 +25,7 @@ Según el análisis del firewall proporcionado, estos son los servicios reales d
                            ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CAPIBARA6 VM REAL                            │
-│                       34.175.215.109                           │
+│                       34.175.136.104                           │
 ├─────────────────────────────────────────────────────────────────┤
 │  MAIN SERVER (puerto 5000)                                     │
 │  ├─ Chat endpoints                                              │
@@ -55,7 +55,7 @@ Según el análisis del firewall proporcionado, estos son los servicios reales d
 ### Servidores Disponibles
 
 #### 1. Capibara6 Main Server (Recomendado para frontend)
-- **IP**: `34.175.215.109`
+- **IP**: `34.175.136.104`
 - **Puerto**: `5000`
 - **Endpoints**:
   - `POST /api/chat` - Chat principal
@@ -65,7 +65,7 @@ Según el análisis del firewall proporcionado, estos son los servicios reales d
   - `POST /api/mcp/tools/call` - Integración MCP
 
 #### 2. Smart MCP Server (Para contexto y herramientas)
-- **IP**: `34.175.215.109`
+- **IP**: `34.175.136.104`
 - **Puerto**: `5003`
 - **Endpoints**:
   - `GET /api/mcp/status` - Estado del MCP
@@ -73,13 +73,13 @@ Según el análisis del firewall proporcionado, estos son los servicios reales d
   - `GET /api/mcp/tools/list` - Listado de herramientas
 
 #### 3. Smart MCP Server (Puerto Alternativo)
-- **IP**: `34.175.215.109`
+- **IP**: `34.175.136.104`
 - **Puerto**: `5010`
 - **Endpoints**:
   - `POST /api/mcp/analyze` - Análisis inteligente
 
 #### 4. Llama Server (Modelo gpt-oss-20b)
-- **IP**: `34.175.215.109`
+- **IP**: `34.175.136.104`
 - **Puerto**: `8080`
 - **Endpoints**:
   - `POST /completion` - Generación de texto
@@ -90,9 +90,9 @@ Según el análisis del firewall proporcionado, estos son los servicios reales d
 ### Recomendaciones de Uso
 
 #### Para desarrollo local:
-- **Chat principal**: `http://34.175.215.109:5000`
-- **MCP Services**: `http://34.175.215.109:5003`
-- **Llama Server**: `http://34.175.215.109:8080`
+- **Chat principal**: `http://34.175.136.104:5000`
+- **MCP Services**: `http://34.175.136.104:5003`
+- **Llama Server**: `http://34.175.136.104:8080`
 
 #### Ejemplos de conexión:
 
@@ -100,14 +100,14 @@ Según el análisis del firewall proporcionado, estos son los servicios reales d
 // Configuración para desarrollo local
 const DEV_CONFIG = {
     // Servidor principal para chat
-    CHAT_SERVER: 'http://34.175.215.109:5000',  // Capibara6 Main Server
+    CHAT_SERVER: 'http://34.175.136.104:5000',  // Capibara6 Main Server
     
     // Servicios de contexto MCP
-    MCP_SERVER_5003: 'http://34.175.215.109:5003',  // Smart MCP
-    MCP_SERVER_5010: 'http://34.175.215.109:5010',  // Smart MCP (alternativo)
+    MCP_SERVER_5003: 'http://34.175.136.104:5003',  // Smart MCP
+    MCP_SERVER_5010: 'http://34.175.136.104:5010',  // Smart MCP (alternativo)
     
     // Servidor del modelo
-    MODEL_SERVER: 'http://34.175.215.109:8080',   // gpt-oss-20b
+    MODEL_SERVER: 'http://34.175.136.104:8080',   // gpt-oss-20b
 };
 ```
 
@@ -117,21 +117,21 @@ const DEV_CONFIG = {
 
 ```bash
 # Verificar servidor principal
-curl -X POST http://34.175.215.109:5000/api/health
+curl -X POST http://34.175.136.104:5000/api/health
 
 # Verificar MCP en puerto 5003
-curl -X GET http://34.175.215.109:5003/api/mcp/status
+curl -X GET http://34.175.136.104:5003/api/mcp/status
 
 # Verificar MCP en puerto 5010
-curl -X POST http://34.175.215.109:5010/api/mcp/analyze -H 'Content-Type: application/json' -d '{"query":"test"}'
+curl -X POST http://34.175.136.104:5010/api/mcp/analyze -H 'Content-Type: application/json' -d '{"query":"test"}'
 
 # Verificar servidor de modelo
-curl -X GET http://34.175.215.109:8080/health
+curl -X GET http://34.175.136.104:8080/health
 ```
 
 ## 📞 Soporte
 
-- **IP Principal**: `34.175.215.109`
+- **IP Principal**: `34.175.136.104`
 - **Puerto Principal**: `5000` - Capibara6 Main Server
 - **Puerto MCP**: `5003` - Smart MCP Server
 - **Puerto Modelo**: `8080` - gpt-oss-20b

@@ -7,7 +7,7 @@ class Capibara6ChatPage {
         this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
             ? CHATBOT_CONFIG.BACKEND_URL
             : (window.location.hostname === 'localhost' 
-                ? 'http://34.175.215.109:5000'  // Capibara6 Main Server (firewall: tcp:5000)
+                ? 'http://34.12.166.76:5000'  // Capibara6 Main Server (firewall: tcp:5000)
                 : 'https://www.capibara6.com'); // Servidor en producción
         
         this.messages = [];

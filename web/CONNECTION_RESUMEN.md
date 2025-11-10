@@ -6,7 +6,7 @@
 
 Después de revisar el código fuente y la información de firewall proporcionada, se ha identificado la siguiente arquitectura real:
 
-**VM REAL: 34.175.215.109**
+**VM REAL: 34.175.136.104**
 - Servidor principal: **Capibara6 Main Server** - PUERTO: 5000 (abierto según firewall)
 - Servicio MCP: **Smart MCP Server** - PUERTO: 5003 (abierto según firewall)  
 - Servicio MCP alternativo: **Smart MCP Server** - PUERTO: 5010 (abierto según firewall)
@@ -16,11 +16,11 @@ Después de revisar el código fuente y la información de firewall proporcionad
 
 **SE HA COMPLETADO LA ACTUALIZACIÓN** con las IPs y puertos REALES según firewall:
 
-- Archivo `config.js`: Actualizado a `http://34.175.215.109:5000` (firewall: tcp:5000)
-- Archivo `chat-page.js`: Actualizado a `http://34.175.215.109:5000` (firewall: tcp:5000)
-- Archivo `mcp-integration.js`: Actualizado a `http://34.175.215.109:5003` (firewall: tcp:5003)
-- Archivo `smart-mcp-integration.js`: Actualizado a `http://34.175.215.109:5010` (firewall: tcp:5010)
-- Archivo `consensus-integration.js`: Actualizado a `http://34.175.215.109:5003` (firewall: tcp:5003)
+- Archivo `config.js`: Actualizado a `http://34.175.136.104:5000` (firewall: tcp:5000)
+- Archivo `chat-page.js`: Actualizado a `http://34.175.136.104:5000` (firewall: tcp:5000)
+- Archivo `mcp-integration.js`: Actualizado a `http://34.175.136.104:5003` (firewall: tcp:5003)
+- Archivo `smart-mcp-integration.js`: Actualizado a `http://34.175.136.104:5010` (firewall: tcp:5010)
+- Archivo `consensus-integration.js`: Actualizado a `http://34.175.136.104:5003` (firewall: tcp:5003)
 - Archivo `chatbot.js`: Actualizado para SAVE_LEAD y SAVE_CONVERSATION a puerto 5000
 - Archivo `script.js`: Actualizado a puertos reales según firewall
 
@@ -74,7 +74,7 @@ curl -X POST http://[IP_REAL]:[PUERTO]/api/health
 
 ### Capibara6 Main Server (Puerto 5000 - ABIERTO)
 - Puerto: **5000** (según firewall: tcp:5000)
-- IP: `34.175.215.109`
+- IP: `34.175.136.104`
 - Endpoints:
   - `/api/chat` - Chat principal
   - `/api/mcp/status` - Estado MCP
@@ -84,7 +84,7 @@ curl -X POST http://[IP_REAL]:[PUERTO]/api/health
 
 ### Smart MCP Server (Puerto 5003 - ABIERTO)
 - Puerto: **5003** (según firewall: tcp:5003)
-- IP: `34.175.215.109`
+- IP: `34.175.136.104`
 - Endpoints:
   - `/api/mcp/status` - Estado MCP
   - `/api/mcp/tools/call` - Herramientas MCP
@@ -92,14 +92,14 @@ curl -X POST http://[IP_REAL]:[PUERTO]/api/health
 
 ### Smart MCP Server (Puerto 5010 - ABIERTO)
 - Puerto: **5010** (según firewall: tcp:5010)
-- IP: `34.175.215.109`
+- IP: `34.175.136.104`
 - Endpoints:
   - `/api/mcp/analyze` - Análisis inteligente
   - `/api/mcp/status` - Estado MCP
 
 ### Llama Server (gpt-oss-20b) (Puerto 8080 - ABIERTO)
 - Puerto: **8080** (según firewall: tcp:8080)
-- IP: `34.175.215.109`
+- IP: `34.175.136.104`
 - Endpoints:
   - `/health` - Estado del modelo
   - `/completion` - Generación de texto

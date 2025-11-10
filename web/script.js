@@ -447,10 +447,10 @@ const API_ENDPOINTS = {
         : 'http://localhost:5001/api',       // Local en producción
     
     // Servicios en la nube (VMs de Google Cloud)
-    CLOUD_CHAT: 'http://34.175.215.109:5000/api',  // Capibara6 Main Server (firewall: tcp:5000)
-    CLOUD_CONSENSUS: 'http://34.175.215.109:5003/api',  // Smart MCP Server (firewall: tcp:5003)
-    CLOUD_TTS: 'http://34.175.215.109:5004/api',  // Servidor TTS (puerto común para TTS)
-    CLOUD_MCP: 'http://34.175.215.109:5010/api',  // Smart MCP Server (firewall: tcp:5010)
+    CLOUD_CHAT: 'http://34.12.166.76:5000/api',  // Capibara6 Main Server (firewall: tcp:5000)
+    CLOUD_CONSENSUS: 'http://34.175.136.104:5003/api',  // Smart MCP Server (firewall: tcp:5003)
+    CLOUD_TTS: 'http://34.175.136.104:5004/api',  // Servidor TTS (puerto común para TTS)
+    CLOUD_MCP: 'http://34.175.136.104:5010/api',  // Smart MCP Server (firewall: tcp:5010)
     
     // Endpoint de Vercel (proxy)
     VERCEL: 'https://your-vercel-deployment.vercel.app/api'
