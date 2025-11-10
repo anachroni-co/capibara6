@@ -1458,5 +1458,80 @@ if __name__ == '__main__':
     print(f'🌐 Servidor escuchando en puerto {selected_port}')
     print(f'🔗 URL: http://localhost:{selected_port}')
 
+    # ============================================
+    # 🔀 ENDPOINTS DE PROXY CORS - Para evitar problemas de CORS en el frontend
+    # ============================================
+
+    @app.route('/api/proxy', methods=['POST'])
+    def proxy_endpoint():
+        """Endpoint genérico de proxy para evitar problemas CORS"""
+        try:
+            import requests
+            
+            data = request.get_json()
+            target_url = data.get('target_url')
+            method = data.get('method', 'GET').upper()
+            headers = data.get('headers', {})
+            body = data.get('body', {})
+            
+            if not target_url:
+                return jsonify({'error': 'Target URL is required'}), 400
+            
+            # Hacer la solicitud al destino real
+            if method == 'GET':
+                response = requests.get(target_url, headers=headers)
+            elif method == 'POST':
+                response = requests.post(target_url, json=body, headers=headers)
+            elif method == 'PUT':
+                response = requests.put(target_url, json=body, headers=headers)
+            elif method == 'DELETE':
+                response = requests.delete(target_url, headers=headers)
+            else:
+                return jsonify({'error': f'Method {method} not supported'}), 400
+            
+            # Devolver la respuesta
+            return jsonify(response.json()), response.status_code
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+
+    @app.route('/api/mcp-proxy', methods=['POST'])
+    def mcp_proxy_endpoint():
+        """Endpoint específico para proxy MCP que soluciona problemas de CORS"""
+        try:
+            import requests
+            
+            data = request.get_json()
+            target = data.get('target', '')
+            method = data.get('method', 'GET')
+            body = data.get('body', {})
+            
+            # Hacer la llamada interna al MCP
+            if method.upper() == 'GET':
+                response = requests.get(target)
+            elif method.upper() == 'POST':
+                response = requests.post(target, json=body)
+            
+            return jsonify(response.json()), response.status_code
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+
+    @app.route('/api/mcp/tools/call-proxy', methods=['POST'])
+    def mcp_tools_call_proxy():
+        """Proxy específico para llamadas a herramientas MCP"""
+        try:
+            import requests
+            
+            data = request.get_json()
+            
+            # Llamar directamente al endpoint MCP interno
+            mcp_call_url = "http://localhost:5000/api/mcp/tools/call"
+            response = requests.post(mcp_call_url, json=data, headers={'Content-Type': 'application/json'})
+            
+            return jsonify(response.json()), response.status_code
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
     app.run(host='0.0.0.0', port=selected_port, debug=False)
 
