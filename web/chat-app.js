@@ -13,8 +13,12 @@
 
 // Configuración del modelo original
     const MODEL_CONFIG = {
-        // Usar proxy de Vercel para evitar problemas de Mixed Content
-        serverUrl: 'https://www.capibara6.com/api/chat',  // Proxy de Vercel
+        // Obtener la URL del backend desde CHATBOT_CONFIG si está disponible
+        serverUrl: typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG
+            ? CHATBOT_CONFIG.MODEL_CONFIG.serverUrl
+            : (window.location.hostname === 'localhost'
+                ? 'http://localhost:5001/api/chat'  // Puerto correcto para desarrollo
+                : 'http://34.12.166.76:5001/api/chat'), // Puerto correcto para producción
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
