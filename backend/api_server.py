@@ -40,9 +40,11 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:8000",
+        "http://localhost:8001",
         "http://localhost:5001",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
+        "http://127.0.0.1:8001",
         "http://127.0.0.1:5001",
     ],
     allow_credentials=True,
@@ -460,6 +462,8 @@ async def get_embedding_stats():
     """Estadísticas de embeddings"""
     try:
         _, pg_cur = get_pg_connection()
+        collections = get_chroma_collections()
+
         pg_cur.execute("""
             SELECT object_type, COUNT(*), vector_store
             FROM embeddings
@@ -618,8 +622,8 @@ async def startup_event():
     print("  ✅ ChromaDB connected")
     print("  ✅ Nebula Graph connected")
     print("\n🌐 API Endpoints available at:")
-    print("  http://localhost:8000/docs (Swagger UI)")
-    print("  http://localhost:8000/redoc (ReDoc)")
+    print("  http://localhost:8001/docs (Swagger UI)")
+    print("  http://localhost:8001/redoc (ReDoc)")
     print("\n" + "=" * 80 + "\n")
 
 @app.on_event("shutdown")
@@ -638,6 +642,6 @@ if __name__ == "__main__":
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=8000,
+        port=8001,
         log_level="info"
     )

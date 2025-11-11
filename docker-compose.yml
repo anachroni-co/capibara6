@@ -68,6 +68,9 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    # Deshabilitar healthcheck heredado del Dockerfile (workers no exponen HTTP)
+    healthcheck:
+      disable: true
     deploy:
       replicas: 3
 
