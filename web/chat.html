@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Capibara6 - Chat con el modelo híbrido Transformer-Mamba">
+    <title>Chat capibara6 - IA Conversacional | Anachroni</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="chat-styles.css">
+</head>
+<body>
+    <div class="chat-page-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">
+                        <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h2 class="logo-text">capibara6</h2>
+                </div>
+                <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle Sidebar">
+                    <i data-lucide="panel-left-close" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+
+            <!-- New Chat Button -->
+            <div class="sidebar-section">
+                <button class="btn-new-chat" id="new-chat-btn">
+                    <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+                    <span>Nuevo Chat</span>
+                </button>
+            </div>
+
+            <!-- Chat History -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span class="section-title">Conversaciones</span>
+                    <button class="icon-btn-sm" id="refresh-chats-btn" title="Actualizar">
+                        <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+                <div class="chat-list" id="chat-list">
+                    <!-- Los chats se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- User Profile -->
+            <div class="sidebar-footer">
+                <div class="user-profile" id="user-profile">
+                    <div class="user-avatar">
+                        <i data-lucide="user" style="width: 20px; height: 20px;"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name" id="user-name">Usuario</div>
+                        <div class="user-email" id="user-email">usuario@example.com</div>
+                    </div>
+                    <button class="icon-btn-sm" id="profile-menu-btn" title="Menú de perfil">
+                        <i data-lucide="more-vertical" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Menu Dropdown -->
+            <div class="profile-menu" id="profile-menu">
+                <button class="profile-menu-item" id="profile-settings-btn">
+                    <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
+                    <span>Configuración</span>
+                </button>
+                <button class="profile-menu-item" id="profile-theme-btn">
+                    <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+                    <span>Tema</span>
+                </button>
+                <button class="profile-menu-item" id="profile-help-btn">
+                    <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i>
+                    <span>Ayuda</span>
+                </button>
+                <div class="profile-menu-divider"></div>
+                <button class="profile-menu-item text-danger" id="profile-logout-btn">
+                    <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="chat-main-content">
+            <!-- Header -->
+            <header class="chat-header">
+                <div class="chat-header-left">
+                    <button class="btn-icon" id="sidebar-toggle-mobile" aria-label="Toggle Sidebar">
+                        <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+                    </button>
+                    <div class="chat-header-title">
+                        <h1 class="chat-title">capibara6</h1>
+                        <div class="chat-status">
+                            <span class="status-indicator" id="status-indicator"></span>
+                            <span id="status-text">Conectando...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="btn-icon" id="clear-chat-btn" title="Limpiar conversación">
+                        <i data-lucide="trash-2" style="width: 20px; height: 20px;"></i>
+                    </button>
+                    <a href="index.html" class="btn-icon" title="Volver al inicio">
+                        <i data-lucide="home" style="width: 20px; height: 20px;"></i>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages-container" id="chat-messages">
+                <div class="chat-message bot-message">
+                    <div class="message-avatar">
+                        <div class="avatar-gradient">
+                            <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            <p>¡Hola! Soy capibara6, un modelo de IA híbrido Transformer-Mamba. ¿En qué puedo ayudarte hoy?</p>
+                        </div>
+                        <div class="message-time" id="welcome-time"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <div class="input-actions">
+                        <button class="input-action-btn" id="attach-btn" title="Adjuntar archivo">
+                            <i data-lucide="paperclip" style="width: 20px; height: 20px;"></i>
+                        </button>
+                    </div>
+                    <textarea 
+                        id="chat-input" 
+                        class="chat-input" 
+                        placeholder="Escribe tu mensaje aquí... (Shift+Enter para nueva línea)"
+                        rows="1"
+                        autocomplete="off"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="input-action-btn" id="voice-btn" title="Mensaje de voz">
+                            <i data-lucide="mic" style="width: 20px; height: 20px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <button id="chat-send-btn" class="chat-send-btn">
+                    <span>Enviar</span>
+                    <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal-overlay" id="settings-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Configuración</h2>
+                    <button class="modal-close" id="settings-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Modelo</h3>
+                        <div class="setting-item">
+                            <label>Temperatura</label>
+                            <input type="range" min="0" max="2" step="0.1" value="0.7" id="temperature-setting">
+                            <span class="setting-value" id="temperature-value">0.7</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Max Tokens</label>
+                            <input type="number" min="100" max="4000" value="2000" id="max-tokens-setting">
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Interfaz</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="sound-notifications" checked>
+                                Notificaciones de sonido
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="auto-scroll" checked>
+                                Auto-scroll
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="settings-reset-btn">Restablecer</button>
+                    <button class="btn-primary" id="settings-save-btn">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="chat-page.js"></script>
+    <script>
+        // Inicializar iconos de Lucide
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        
+        // Establecer hora del mensaje de bienvenida
+        document.getElementById('welcome-time').textContent = new Date().toLocaleTimeString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+    </script>
+</body>
+</html>
