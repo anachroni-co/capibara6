@@ -17,7 +17,7 @@
         serverUrl: typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG
             ? CHATBOT_CONFIG.MODEL_CONFIG.serverUrl
             : (window.location.hostname === 'localhost'
-                ? 'http://localhost:5001/api/chat'  // Puerto correcto para desarrollo
+                ? 'http://localhost:8001/api/chat'  // Usar proxy local para evitar problemas CORS
                 : 'http://34.12.166.76:5001/api/chat'), // Puerto correcto para producción
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
@@ -1587,15 +1587,13 @@ async function checkServerConnection() {
     try {
         updateServerStatus('connecting', 'Verificando...');
         
-        const response = await fetch(MODEL_CONFIG.serverUrl, {
-            method: 'POST',
+        // Usar endpoint de health check en lugar de hacer una solicitud de chat
+        const healthUrl = `${window.location.hostname === 'localhost' ? 'http://localhost:8001' : 'http://34.12.166.76:5001'}/api/health`;
+        const response = await fetch(healthUrl, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                prompt: '<bos><start_of_turn>user\ntest<end_of_turn>\n<start_of_turn>model\n',
-                n_predict: 1
-            })
+            }
         });
         
         if (response.ok) {

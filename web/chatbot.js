@@ -22,7 +22,7 @@ async function checkSystemStatus() {
                 const localProxyUrl = 'http://localhost:8001/api/proxy';
                 const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
                     ? CHATBOT_CONFIG.BACKEND_URL 
-                    : 'http://34.12.166.76:5001';  // Servidor en bounty2
+                    : 'http://localhost:8001/api/proxy';  // Servidor en bounty2
                 const proxyResponse = await fetch(localProxyUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -35,7 +35,7 @@ async function checkSystemStatus() {
             } catch (proxyError) {
                 // Si falla el proxy, usar conexión directa como fallback
                 const backendUrl = window.location.hostname === 'localhost' 
-                    ? 'http://34.12.166.76:5001'  // Servidor en bounty2
+                    ? 'http://localhost:8001/api/proxy'  // Servidor en bounty2
                     : 'https://www.capibara6.com';
                 const healthResponse = await fetch(`${backendUrl}/api/health`);
                 response = await healthResponse.json();

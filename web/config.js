@@ -2,12 +2,11 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // En desarrollo: 'http://localhost:5001' (puerto correcto según documentación)
+    // En desarrollo: usar proxy local para evitar problemas CORS con backend remoto
     // En producción: IP real del servidor bounty2 puerto 5001
-    // Puerto 5001 es el puerto correcto para el backend Flask según documentación
     BACKEND_URL: window.location.hostname === 'localhost'
-        ? 'http://localhost:5001'  // Puerto correcto para backend Flask (server_gptoss.py) en desarrollo
-        : 'http://34.12.166.76:5001',   // Servidor en producción bounty2 puerto 5001
+        ? 'http://localhost:8001'  // Proxy local para evitar problemas CORS
+        : 'http://34.12.166.76:5001',       // Servidor en producción bounty2 puerto 5001
 
     // Endpoints
     ENDPOINTS: {
@@ -31,7 +30,7 @@ const CHATBOT_CONFIG = {
     // Configuración del modelo GPT-OSS-20B
     MODEL_CONFIG: {
         serverUrl: window.location.hostname === 'localhost'
-            ? 'http://localhost:5001/api/chat'  // Endpoint correcto para desarrollo
+            ? 'http://localhost:8001/api/chat'  // Usar proxy local para evitar problemas CORS
             : 'http://34.12.166.76:5001/api/chat',  // Endpoint correcto para producción
         max_tokens: 100,
         temperature: 0.7,

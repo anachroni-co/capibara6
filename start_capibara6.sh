@@ -3,32 +3,22 @@
 
 echo "🚀 Iniciando sistema Capibara6..."
 
-# Verificar que Ollama esté corriendo
-echo "🔍 Verificando Ollama..."
-if curl -s http://localhost:11434/api/tags > /dev/null; then
-    echo "✅ Ollama está corriendo"
-else
-    echo "❌ Ollama no está corriendo. Iniciando Ollama..."
-    # Ajustar según cómo se inicie Ollama en su sistema
-    # systemctl start ollama (si está instalado como servicio)
-fi
-
-# Iniciar el servidor backend
-echo "🔌 Iniciando servidor backend en puerto 5001..."
+# Iniciar el proxy CORS local en el puerto 8001
+echo "🔌 Iniciando proxy CORS local en puerto 8001..."
 cd backend
-python3 server_gptoss.py > backend.log 2>&1 &
-BACKEND_PID=$!
-echo "📊 Backend iniciado con PID: $BACKEND_PID"
+python3 cors_proxy_local.py > cors_proxy.log 2>&1 &
+PROXY_PID=$!
+echo "🔗 Proxy CORS iniciado con PID: $PROXY_PID"
 
-# Esperar un momento para que el backend inicie
+# Esperar un momento para que el proxy inicie
 sleep 3
 
-# Verificar que el backend esté corriendo
-if curl -s http://localhost:5001/api/health > /dev/null; then
-    echo "✅ Backend está corriendo en el puerto 5001"
+# Verificar que el proxy esté corriendo
+if curl -s http://localhost:8001/ > /dev/null; then
+    echo "✅ Proxy CORS está corriendo en el puerto 8001"
 else
-    echo "❌ Backend no está respondiendo. Revisando logs..."
-    tail -n 20 backend.log
+    echo "❌ Proxy CORS no está respondiendo. Revisando logs..."
+    tail -n 20 cors_proxy.log
     exit 1
 fi
 
@@ -36,9 +26,8 @@ echo ""
 echo "🎉 Capibara6 está listo!"
 echo ""
 echo "🔌 Servicios:"
-echo "   Backend: http://localhost:5001"
-echo "   Health check: http://localhost:5001/api/health"
-echo "   Chat API: http://localhost:5001/api/chat"
+echo "   Proxy CORS local: http://localhost:8001"
+echo "   Backend remoto: http://34.12.166.76:5001"
 echo ""
 echo "🌐 Para iniciar el frontend:"
 echo "   cd web && python3 -m http.server 8000"
@@ -46,4 +35,4 @@ echo "   Luego abrir: http://localhost:8000/chat.html"
 echo ""
 echo "📝 Documentación: FIX_CONNECTION_ISSUE.md"
 echo ""
-echo "PID del backend: $BACKEND_PID (guardar para detenerlo después)"
+echo "PID del proxy CORS: $PROXY_PID (guardar para detenerlo después)"
