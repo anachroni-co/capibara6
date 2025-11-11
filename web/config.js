@@ -2,13 +2,12 @@
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // En desarrollo: 'http://localhost:5002'
-    // En producción: URL de Vercel/Railway con SSL válido
-    // IP REAL de la VM bounty2 donde está corriendo el backend de modelos
-    // Puerto 5000 confirmado como escuchando (capibara6 Backend en 127.0.0.1:5000 y 10.164.0.9:5000)
+    // En desarrollo: 'http://localhost:5001' (puerto correcto según documentación)
+    // En producción: IP real del servidor bounty2 puerto 5001
+    // Puerto 5001 es el puerto correcto para el backend Flask según documentación
     BACKEND_URL: window.location.hostname === 'localhost'
-        ? 'http://34.12.166.76:5000'  // capibara6 Backend de modelos en bounty2 (puerto: 5000)
-        : 'https://www.capibara6.com',   // Servidor en producción
+        ? 'http://localhost:5001'  // Puerto correcto para backend Flask (server_gptoss.py) en desarrollo
+        : 'http://34.12.166.76:5001',   // Servidor en producción bounty2 puerto 5001
 
     // Endpoints
     ENDPOINTS: {
@@ -31,6 +30,9 @@ const CHATBOT_CONFIG = {
 
     // Configuración del modelo GPT-OSS-20B
     MODEL_CONFIG: {
+        serverUrl: window.location.hostname === 'localhost'
+            ? 'http://localhost:5001/api/chat'  // Endpoint correcto para desarrollo
+            : 'http://34.12.166.76:5001/api/chat',  // Endpoint correcto para producción
         max_tokens: 100,
         temperature: 0.7,
         model_name: 'gpt-oss-20b',
