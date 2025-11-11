@@ -90,6 +90,12 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U capibara6"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   # TimescaleDB para métricas
   timescaledb:
@@ -107,6 +113,12 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U capibara6"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   # Redis para caché y colas
   redis:
@@ -120,6 +132,12 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
 
   # Nginx como Load Balancer
   nginx:
@@ -136,6 +154,12 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:80 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Prometheus para métricas
   prometheus:
@@ -156,6 +180,12 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:9090/-/healthy || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # Grafana para dashboards
   grafana:
@@ -175,6 +205,12 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # Jaeger para tracing
   jaeger:
@@ -188,6 +224,12 @@ services:
     restart: unless-stopped
     networks:
       - capibara6-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:16686/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # n8n para automatización de workflows
   n8n:
