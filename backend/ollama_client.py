@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-<<<<<<< HEAD
-"""
-Cliente HTTP para interactuar con Ollama con selección de modelo y fallback.
-"""
-=======
 """Cliente HTTP para interactuar con Ollama con selección de modelo y fallback."""
->>>>>>> feature/rag-infra
 
 from __future__ import annotations
 
@@ -44,15 +38,8 @@ class OllamaClient:
 
         self.default_tier = os.getenv(
             "DEFAULT_MODEL_TIER",
-<<<<<<< HEAD
-            config.get("api_settings", {}).get("default_model", "fast_response")
-            if config
-            else "fast_response",
-        ) or "fast_response"
-=======
             config.get("api_settings", {}).get("default_model", "fast_response"),
         )
->>>>>>> feature/rag-infra
 
     # ------------------------------------------------------------------
     # Public API
@@ -86,13 +73,7 @@ class OllamaClient:
             "token_count": data.get("eval_count"),
         }
 
-<<<<<<< HEAD
-    def generate_with_fallback(
-        self, prompt: str, model_tier: Optional[str] = None, **options: Any
-    ) -> Dict[str, Any]:
-=======
     def generate_with_fallback(self, prompt: str, model_tier: Optional[str] = None, **options: Any) -> Dict[str, Any]:
->>>>>>> feature/rag-infra
         """Generar respuesta con fallback según configuración."""
 
         selected_tier = model_tier or self.default_tier or "fast_response"
@@ -113,13 +94,7 @@ class OllamaClient:
             "error": str(last_error) if last_error else "No se pudo generar respuesta",
         }
 
-<<<<<<< HEAD
-    def stream_with_model(
-        self, prompt: str, model_tier: str, **options: Any
-    ) -> Iterable[str]:
-=======
     def stream_with_model(self, prompt: str, model_tier: str, **options: Any) -> Iterable[str]:
->>>>>>> feature/rag-infra
         """Generar texto en streaming usando un modelo específico."""
 
         model_cfg = self.models.get(model_tier)
@@ -164,29 +139,13 @@ class OllamaClient:
                     if data.get("response"):
                         yield data["response"]
                 except json.JSONDecodeError:
-<<<<<<< HEAD
-                    logger.debug(
-                        "No se pudo parsear buffer final de streaming: %s", buffer
-                    )
-=======
                     logger.debug("No se pudo parsear buffer final de streaming: %s", buffer)
->>>>>>> feature/rag-infra
 
     # ------------------------------------------------------------------
     # Utilidades internas
     # ------------------------------------------------------------------
 
-<<<<<<< HEAD
-    def _build_payload(
-        self,
-        prompt: str,
-        model_cfg: Dict[str, Any],
-        options: Dict[str, Any],
-        stream: bool = False,
-    ) -> Dict[str, Any]:
-=======
     def _build_payload(self, prompt: str, model_cfg: Dict[str, Any], options: Dict[str, Any], stream: bool = False) -> Dict[str, Any]:
->>>>>>> feature/rag-infra
         max_tokens = options.get("max_tokens") or model_cfg.get("max_tokens", 512)
 
         payload: Dict[str, Any] = {

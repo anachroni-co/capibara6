@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-<<<<<<< HEAD
-"""
-Clasificador heurístico de tareas para seleccionar el modelo óptimo.
-"""
-=======
 """Clasificador heurístico de tareas para seleccionar el modelo óptimo."""
->>>>>>> feature/rag-infra
 
 from __future__ import annotations
 
