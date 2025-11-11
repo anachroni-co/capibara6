@@ -4,32 +4,21 @@
 Backend de capibara6 - Servidor Flask para gestión de emails y endpoints MCP.
 """
 
-<<<<<<< HEAD
-from flask import Flask, request, jsonify
-=======
 from flask import Flask, request, jsonify, Response, stream_with_context
->>>>>>> feature/rag-infra
 from flask_cors import CORS  # type: ignore[import-untyped]
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
-<<<<<<< HEAD
-from typing import List, Optional
-=======
 from typing import Any, Dict, List, Optional
->>>>>>> feature/rag-infra
 import os
 import json
 import socket
 from dotenv import load_dotenv
 
-<<<<<<< HEAD
-=======
 from task_classifier import TaskClassifier
 from ollama_client import OllamaClient
 
->>>>>>> feature/rag-infra
 # Importar conector MCP
 try:
     from mcp_connector import Capibara6MCPConnector
@@ -38,32 +27,12 @@ except ImportError:
     MCP_AVAILABLE = False
     print("⚠️  MCP Connector no disponible - instala dependencias opcionales para MCP.")
 
-<<<<<<< HEAD
-# Importar gestor de plantillas n8n
-try:
-    from n8n_templates import (
-        get_templates_catalog,
-        get_recommended_templates,
-        get_template_details,
-        search_templates,
-        download_template_json,
-        import_template
-    )
-    N8N_TEMPLATES_AVAILABLE = True
-except ImportError:
-    N8N_TEMPLATES_AVAILABLE = False
-    print("⚠️  N8N Templates Manager no disponible")
-
-=======
->>>>>>> feature/rag-infra
 # Cargar variables de entorno
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Habilitar CORS para permitir peticiones desde el frontend
 
-<<<<<<< HEAD
-=======
 # Configuración de modelos de IA
 MODEL_CONFIG: Dict[str, Any] = {}
 MODEL_CONFIG_PATH = os.getenv(
@@ -93,7 +62,6 @@ STREAMING_ENABLED = os.getenv(
     str(MODEL_CONFIG.get("api_settings", {}).get("streaming_enabled", True) if MODEL_CONFIG else "true"),
 ).lower() == "true"
 
->>>>>>> feature/rag-infra
 # Inicializar conector MCP si está disponible
 mcp_connector = None
 if MCP_AVAILABLE:
@@ -118,8 +86,6 @@ def ensure_data_dir():
     """Crear directorio de datos si no existe"""
     os.makedirs('user_data', exist_ok=True)
 
-<<<<<<< HEAD
-=======
 
 def extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:
     """Extraer las opciones válidas para generación desde el payload."""
@@ -134,7 +100,6 @@ def extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:
     return options
 
 
->>>>>>> feature/rag-infra
 def save_to_file(data):
     """Guardar datos en archivo JSON"""
     ensure_data_dir()
@@ -679,8 +644,6 @@ def health():
     return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})
 
 # ============================================================================
-<<<<<<< HEAD
-=======
 # ENDPOINTS IA MULTI-MODELO
 # ============================================================================
 
@@ -793,7 +756,6 @@ def ai_generate_specific(model_tier: str):
 
 
 # ============================================================================
->>>>>>> feature/rag-infra
 # ENDPOINTS MCP (Model Context Protocol)
 # ============================================================================
 
@@ -1378,203 +1340,6 @@ def index():
     '''
 
 
-<<<<<<< HEAD
-# ===========================================
-# 🔄 N8N TEMPLATES ENDPOINTS
-# ===========================================
-
-@app.route('/api/n8n/templates', methods=['GET'])
-def n8n_templates_catalog():
-    """Obtiene el catálogo completo de plantillas n8n"""
-    if not N8N_TEMPLATES_AVAILABLE:
-        return jsonify({
-            'status': 'unavailable',
-            'error': 'N8N Templates Manager no disponible',
-            'timestamp': datetime.now().isoformat()
-        }), 503
-
-    try:
-        catalog = get_templates_catalog()
-        return jsonify({
-            'status': 'success',
-            'catalog': catalog,
-            'timestamp': datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-
-@app.route('/api/n8n/templates/recommended', methods=['GET'])
-def n8n_templates_recommended():
-    """Obtiene plantillas recomendadas para Capibara6"""
-    if not N8N_TEMPLATES_AVAILABLE:
-        return jsonify({
-            'status': 'unavailable',
-            'error': 'N8N Templates Manager no disponible',
-            'timestamp': datetime.now().isoformat()
-        }), 503
-
-    try:
-        templates = get_recommended_templates()
-        return jsonify({
-            'status': 'success',
-            'count': len(templates),
-            'templates': templates,
-            'timestamp': datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-
-@app.route('/api/n8n/templates/<template_id>', methods=['GET'])
-def n8n_template_details(template_id: str):
-    """Obtiene detalles de una plantilla específica"""
-    if not N8N_TEMPLATES_AVAILABLE:
-        return jsonify({
-            'status': 'unavailable',
-            'error': 'N8N Templates Manager no disponible',
-            'timestamp': datetime.now().isoformat()
-        }), 503
-
-    try:
-        template = get_template_details(template_id)
-        if not template:
-            return jsonify({
-                'status': 'not_found',
-                'error': f'Plantilla {template_id} no encontrada',
-                'timestamp': datetime.now().isoformat()
-            }), 404
-
-        return jsonify({
-            'status': 'success',
-            'template': template,
-            'timestamp': datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-
-@app.route('/api/n8n/templates/search', methods=['GET', 'POST'])
-def n8n_templates_search():
-    """Busca plantillas por palabra clave"""
-    if not N8N_TEMPLATES_AVAILABLE:
-        return jsonify({
-            'status': 'unavailable',
-            'error': 'N8N Templates Manager no disponible',
-            'timestamp': datetime.now().isoformat()
-        }), 503
-
-    try:
-        if request.method == 'GET':
-            query = request.args.get('q', '')
-        else:
-            data = request.get_json() or {}
-            query = data.get('query', '')
-
-        if not query:
-            return jsonify({
-                'status': 'error',
-                'error': 'Query parameter required',
-                'timestamp': datetime.now().isoformat()
-            }), 400
-
-        results = search_templates(query)
-        return jsonify({
-            'status': 'success',
-            'query': query,
-            'count': len(results),
-            'results': results,
-            'timestamp': datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-
-@app.route('/api/n8n/templates/<template_id>/download', methods=['GET'])
-def n8n_template_download(template_id: str):
-    """Descarga el JSON de una plantilla"""
-    if not N8N_TEMPLATES_AVAILABLE:
-        return jsonify({
-            'status': 'unavailable',
-            'error': 'N8N Templates Manager no disponible',
-            'timestamp': datetime.now().isoformat()
-        }), 503
-
-    try:
-        workflow = download_template_json(template_id)
-        if not workflow:
-            return jsonify({
-                'status': 'not_found',
-                'error': f'Plantilla {template_id} no encontrada o error al descargar',
-                'timestamp': datetime.now().isoformat()
-            }), 404
-
-        return jsonify({
-            'status': 'success',
-            'template_id': template_id,
-            'workflow': workflow,
-            'timestamp': datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-
-@app.route('/api/n8n/templates/<template_id>/import', methods=['POST'])
-def n8n_template_import(template_id: str):
-    """Importa una plantilla directamente a n8n"""
-    if not N8N_TEMPLATES_AVAILABLE:
-        return jsonify({
-            'status': 'unavailable',
-            'error': 'N8N Templates Manager no disponible',
-            'timestamp': datetime.now().isoformat()
-        }), 503
-
-    try:
-        data = request.get_json() or {}
-        n8n_url = data.get('n8n_url') or os.getenv('N8N_URL', 'http://n8n:5678')
-        api_key = data.get('api_key') or os.getenv('N8N_API_KEY')
-
-        result = import_template(
-            template_id=template_id,
-            n8n_url=n8n_url,
-            api_key=api_key
-        )
-
-        status_code = 200 if result.get('success') else 500
-        return jsonify({
-            **result,
-            'timestamp': datetime.now().isoformat()
-        }), status_code
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'error': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
-
-
-=======
->>>>>>> feature/rag-infra
 def _is_port_available(port: int) -> bool:
     """Verificar si un puerto está disponible para escuchar."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -1642,91 +1407,5 @@ if __name__ == '__main__':
     print(f'🌐 Servidor escuchando en puerto {selected_port}')
     print(f'🔗 URL: http://localhost:{selected_port}')
 
-<<<<<<< HEAD
-    # ============================================
-    # 🔀 ENDPOINTS DE PROXY CORS - Para evitar problemas de CORS en el frontend
-    # ============================================
-
-
-@app.route('/api/proxy', methods=['POST'])
-def proxy_endpoint():
-    """Endpoint genérico de proxy para evitar problemas CORS"""
-    try:
-        import requests
-        
-        data = request.get_json()
-        target_url = data.get('target_url')
-        method = data.get('method', 'GET').upper()
-        headers = data.get('headers', {})
-        body = data.get('body', {})
-        
-        if not target_url:
-            return jsonify({'error': 'Target URL is required'}), 400
-        
-        # Hacer la solicitud al destino real
-        if method == 'GET':
-            response = requests.get(target_url, headers=headers)
-        elif method == 'POST':
-            response = requests.post(target_url, json=body, headers=headers)
-        elif method == 'PUT':
-            response = requests.put(target_url, json=body, headers=headers)
-        elif method == 'DELETE':
-            response = requests.delete(target_url, headers=headers)
-        else:
-            return jsonify({'error': f'Method {method} not supported'}), 400
-        
-        # Devolver la respuesta
-        return jsonify(response.json()), response.status_code
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
     app.run(host='0.0.0.0', port=selected_port, debug=False)
 
-
-# ============================================
-# 🔀 ENDPOINTS DE PROXY CORS - Para evitar problemas de CORS en el frontend
-# ============================================
-
-@app.route('/api/mcp-proxy', methods=['POST'])
-def mcp_proxy_endpoint():
-    """Endpoint específico para proxy MCP que soluciona problemas de CORS"""
-    try:
-        import requests
-        
-        data = request.get_json()
-        target = data.get('target', '')
-        method = data.get('method', 'GET')
-        body = data.get('body', {})
-        
-        # Hacer la llamada interna al MCP
-        if method.upper() == 'GET':
-            response = requests.get(target)
-        elif method.upper() == 'POST':
-            response = requests.post(target, json=body)
-        
-        return jsonify(response.json()), response.status_code
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
-@app.route('/api/mcp/tools/call-proxy', methods=['POST'])
-def mcp_tools_call_proxy():
-    """Proxy específico para llamadas a herramientas MCP"""
-    try:
-        import requests
-        
-        data = request.get_json()
-        
-        # Llamar directamente al endpoint MCP interno
-        mcp_call_url = "http://localhost:5000/api/mcp/tools/call"
-        response = requests.post(mcp_call_url, json=data, headers={'Content-Type': 'application/json'})
-        
-        return jsonify(response.json()), response.status_code
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-=======
-    app.run(host='0.0.0.0', port=selected_port, debug=False)
-
->>>>>>> feature/rag-infra

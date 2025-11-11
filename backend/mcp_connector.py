@@ -8,19 +8,13 @@ Integración híbrida Transformer-Mamba con Google TPU v5e/v6e y ARM Axion
 import asyncio
 import json
 import logging
-<<<<<<< HEAD
-=======
 import os
->>>>>>> feature/rag-infra
 from typing import Any, Dict, List, Optional, Union
 from datetime import datetime
 import uuid
 
-<<<<<<< HEAD
-=======
 import requests  # type: ignore[import-untyped]
 
->>>>>>> feature/rag-infra
 # Configuración de logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -34,14 +28,10 @@ class Capibara6MCPConnector:
                  tpu_type: str = "v6e-64",
                  context_window: int = 10_000_000,
                  hybrid_mode: bool = True,
-<<<<<<< HEAD
-                 compliance_mode: str = "eu_public_sector"):
-=======
                  compliance_mode: str = "eu_public_sector",
                  ollama_base_url: Optional[str] = None,
                  ollama_model: Optional[str] = None,
                  ollama_timeout: Optional[float] = None):
->>>>>>> feature/rag-infra
         """
         Inicializar el conector MCP para capibara6
         
@@ -57,10 +47,6 @@ class Capibara6MCPConnector:
         self.compliance_mode = compliance_mode
         self.session_id = str(uuid.uuid4())
         self.capabilities = self._initialize_capabilities()
-<<<<<<< HEAD
-        
-        logger.info(f"Conector MCP capibara6 inicializado - TPU: {tpu_type}, Contexto: {context_window}")
-=======
         self.ollama_base_url = (ollama_base_url or os.getenv("OLLAMA_BASE_URL")
                                 or "http://10.164.0.9:11434")
         self.ollama_model = (ollama_model or os.getenv("OLLAMA_MODEL")
@@ -239,7 +225,6 @@ class Capibara6MCPConnector:
             )
 
         return fallback
->>>>>>> feature/rag-infra
     
     def _initialize_capabilities(self) -> Dict[str, Any]:
         """Inicializar capacidades del servidor MCP"""
@@ -471,50 +456,6 @@ class Capibara6MCPConnector:
             }
     
     async def _analyze_document(self, args: Dict[str, Any]) -> Dict[str, Any]:
-<<<<<<< HEAD
-        """Analizar documento usando arquitectura híbrida"""
-        document = args.get("document", "")
-        analysis_type = args.get("analysis_type", "general")
-        language = args.get("language", "auto")
-        
-        # Simulación del análisis híbrido
-        transformer_analysis = f"Análisis Transformer (70%): {len(document)} tokens procesados"
-        mamba_analysis = f"Análisis Mamba SSM (30%): Secuencia lineal O(n) optimizada"
-        
-        result = f"""
-# Análisis de Documento - capibara6
-
-**Tipo de Análisis**: {analysis_type}
-**Idioma**: {language}
-**Tokens Procesados**: {len(document.split())}
-
-## Resultados del Análisis Híbrido
-
-### Componente Transformer (70%)
-{transformer_analysis}
-
-### Componente Mamba SSM (30%)
-{mamba_analysis}
-
-### Ventana de Contexto
-- **Capacidad**: {self.context_window:,} tokens
-- **Utilizado**: {len(document.split()):,} tokens
-- **Eficiencia**: {len(document.split()) / self.context_window * 100:.2f}%
-
-### Hardware Optimizado
-- **TPU**: {self.tpu_type}
-- **Throughput**: 4,500+ tokens/sec
-- **Latencia**: <120ms
-"""
-        
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": result
-                }
-            ]
-=======
         """Analizar documento usando el modelo remoto a través de Ollama."""
         document = (args.get("document") or "").strip()
         if not document:
@@ -552,7 +493,6 @@ class Capibara6MCPConnector:
                 "analysis_type": analysis_type,
                 "language": language
             }
->>>>>>> feature/rag-infra
         }
     
     async def _analyze_codebase(self, args: Dict[str, Any]) -> Dict[str, Any]:
