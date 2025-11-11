@@ -119,7 +119,10 @@ app.add_middleware(
 
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["*"] if ENVIRONMENT == "development" else ["capibara6.com", "*.capibara6.com"]
+    allowed_hosts=["*"] if ENVIRONMENT == "development" else [
+        "capibara6.com", "*.capibara6.com", "localhost", "127.0.0.1",
+        "capibara6-api", "*.capibara6-network"
+    ]
 )
 
 # Rate limiting middleware
@@ -164,6 +167,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 
 # Endpoints de salud
 @app.get("/health")
+@app.head("/health")
 async def health_check():
     """Health check endpoint."""
     return {

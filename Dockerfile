@@ -17,6 +17,7 @@ ENV PYTHONPATH=/app/backend:/app/backend/core
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
+    wget \
     git \
     libpq-dev \
     libffi-dev \
@@ -48,9 +49,9 @@ USER capibara6
 # Exponer puertos
 EXPOSE 8000 8001 8002
 
-# Health check
+# Health check (usando wget ya que curl puede no estar disponible para no-root user)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8000/health || exit 1
 
 # Comando por defecto
 CMD ["python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
