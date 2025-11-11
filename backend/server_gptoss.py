@@ -16,7 +16,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Habilitar CORS para permitir peticiones desde el frontend
+# Habilitar CORS para permitir peticiones desde localhost y otros orígenes
+CORS(app, origins=[
+    "http://localhost:8000", 
+    "http://127.0.0.1:8000", 
+    "http://localhost:3000", 
+    "http://127.0.0.1:3000",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+    "https://www.capibara6.com",
+    "https://capibara6.com",
+    "http://34.12.166.76:5001",  # Permitir peticiones al mismo origen
+    "http://34.12.166.76:8000",  # Permitir frontend desde la misma VM
+    "http://34.175.136.104:8000"  # Permitir frontend desde la otra VM
+])
 
 # Configuración de la VM GPT-OSS-20B
 GPT_OSS_URL = os.getenv('GPT_OSS_URL', 'http://34.175.215.109:8080')
@@ -309,6 +324,6 @@ if __name__ == '__main__':
     print(f'🤖 Modelo: GPT-OSS-20B')
     print(f'🌐 URL del modelo: {GPT_OSS_URL}')
     
-    # Puerto para Railway (usa variable de entorno PORT)
-    port = int(os.getenv('PORT', 5000))
+    # Puerto para Railway y desarrollo (usa variable de entorno PORT)
+    port = int(os.getenv('PORT', 5001))  # Puerto correcto según documentación
     app.run(host='0.0.0.0', port=port, debug=False)

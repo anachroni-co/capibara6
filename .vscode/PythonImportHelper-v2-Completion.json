@@ -6765,6 +6765,70 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
         "label": "Flask",
         "importPath": "flask",
         "description": "flask",
@@ -7116,6 +7180,22 @@
         "description": "unittest.mock",
         "isExtraImport": true,
         "detail": "unittest.mock",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
         "documentation": {}
     },
     {
@@ -14387,6 +14467,123 @@
         "documentation": {}
     },
     {
+        "label": "proxy_general",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_local",
+        "description": "backend.cors_proxy_local",
+        "peekOfCode": "def proxy_general(endpoint):\n    \"\"\"Proxy para endpoints generales (como 'health')\"\"\"\n    if request.method == 'OPTIONS':\n        # Responder al preflight request\n        response = Response()\n        response.headers.add('Access-Control-Allow-Origin', '*')\n        response.headers.add('Access-Control-Allow-Headers', '*')\n        response.headers.add('Access-Control-Allow-Methods', '*')\n        return response\n    # Sólo permitir ciertos endpoints generales",
+        "detail": "backend.cors_proxy_local",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_api",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_local",
+        "description": "backend.cors_proxy_local",
+        "peekOfCode": "def proxy_api(subpath):\n    \"\"\"Proxy para rutas del API\"\"\"\n    if request.method == 'OPTIONS':\n        # Responder al preflight request\n        response = Response()\n        response.headers.add('Access-Control-Allow-Origin', '*')\n        response.headers.add('Access-Control-Allow-Headers', '*')\n        response.headers.add('Access-Control-Allow-Methods', '*')\n        return response\n    # Determinar el método HTTP original",
+        "detail": "backend.cors_proxy_local",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_chat",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_local",
+        "description": "backend.cors_proxy_local",
+        "peekOfCode": "def proxy_chat():\n    \"\"\"Proxy específico para el endpoint de chat\"\"\"\n    try:\n        # Reenviar petición al backend remoto\n        headers = {key: value for key, value in request.headers if key.lower() not in ['host', 'origin', 'referer']}\n        headers['Host'] = '34.12.166.76:5001'\n        # Forzar la obtención del JSON para manejar correctamente solicitudes con charset\n        try:\n            data = request.get_json(force=True)\n            response = requests.post(",
+        "detail": "backend.cors_proxy_local",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_health",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_local",
+        "description": "backend.cors_proxy_local",
+        "peekOfCode": "def proxy_health():\n    \"\"\"Proxy específico para health check\"\"\"\n    try:\n        response = requests.get(f\"{BACKEND_URL}/api/health\")\n        return Response(\n            response.content,\n            status=response.status_code,\n            headers=dict(response.headers),\n            mimetype=response.headers.get('content-type', 'application/json')\n        )",
+        "detail": "backend.cors_proxy_local",
+        "documentation": {}
+    },
+    {
+        "label": "health_check",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_local",
+        "description": "backend.cors_proxy_local",
+        "peekOfCode": "def health_check():\n    \"\"\"Endpoint para verificar que el proxy está corriendo\"\"\"\n    return jsonify({\n        'status': 'ok',\n        'service': 'capibara6-cors-proxy',\n        'backend_target': BACKEND_URL,\n        'timestamp': __import__('datetime').datetime.now().isoformat()\n    })\nif __name__ == '__main__':\n    print('🚀 Iniciando Proxy CORS local para Capibara6...')",
+        "detail": "backend.cors_proxy_local",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.cors_proxy_local",
+        "description": "backend.cors_proxy_local",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\n# URL del backend remoto (bounty2:5001)\nBACKEND_URL = 'http://34.12.166.76:5001'\n# Proxy para cualquier ruta que comience con /api/\n# Proxy para rutas de health check y otros endpoints comunes\n@app.route('/<endpoint>', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])\ndef proxy_general(endpoint):\n    \"\"\"Proxy para endpoints generales (como 'health')\"\"\"\n    if request.method == 'OPTIONS':",
+        "detail": "backend.cors_proxy_local",
+        "documentation": {}
+    },
+    {
+        "label": "BACKEND_URL",
+        "kind": 5,
+        "importPath": "backend.cors_proxy_local",
+        "description": "backend.cors_proxy_local",
+        "peekOfCode": "BACKEND_URL = 'http://34.12.166.76:5001'\n# Proxy para cualquier ruta que comience con /api/\n# Proxy para rutas de health check y otros endpoints comunes\n@app.route('/<endpoint>', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])\ndef proxy_general(endpoint):\n    \"\"\"Proxy para endpoints generales (como 'health')\"\"\"\n    if request.method == 'OPTIONS':\n        # Responder al preflight request\n        response = Response()\n        response.headers.add('Access-Control-Allow-Origin', '*')",
+        "detail": "backend.cors_proxy_local",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_chat",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_simple",
+        "description": "backend.cors_proxy_simple",
+        "peekOfCode": "def proxy_chat():\n    \"\"\"Proxy específico para el endpoint de chat - versión robusta\"\"\"\n    try:\n        # Obtener el cuerpo de la solicitud como bytes\n        raw_data = request.get_data()\n        # Obtener todos los headers relevantes, manteniendo cuidadosamente solo los necesarios\n        headers = {}\n        for key, value in request.headers:\n            # Mantener headers importantes para el procesamiento\n            if key.lower() not in ['host', 'origin', 'referer', 'content-length', 'connection']:",
+        "detail": "backend.cors_proxy_simple",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_health",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_simple",
+        "description": "backend.cors_proxy_simple",
+        "peekOfCode": "def proxy_health():\n    \"\"\"Proxy para health check\"\"\"\n    try:\n        response = requests.get(f\"{BACKEND_URL}/api/health\")\n        return Response(\n            response.content,\n            status=response.status_code,\n            headers=dict(response.headers)\n        )\n    except requests.exceptions.RequestException as e:",
+        "detail": "backend.cors_proxy_simple",
+        "documentation": {}
+    },
+    {
+        "label": "proxy_all",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_simple",
+        "description": "backend.cors_proxy_simple",
+        "peekOfCode": "def proxy_all(subpath):\n    \"\"\"Proxy general para todas las demás rutas\"\"\"\n    try:\n        # Determinar el método HTTP\n        method = request.method\n        # Obtener headers relevantes\n        headers = {}\n        for key, value in request.headers:\n            if key.lower() not in ['host', 'origin', 'referer', 'content-length']:\n                headers[key] = value",
+        "detail": "backend.cors_proxy_simple",
+        "documentation": {}
+    },
+    {
+        "label": "health_check",
+        "kind": 2,
+        "importPath": "backend.cors_proxy_simple",
+        "description": "backend.cors_proxy_simple",
+        "peekOfCode": "def health_check():\n    \"\"\"Endpoint para verificar que el proxy está corriendo\"\"\"\n    return jsonify({\n        'status': 'ok',\n        'service': 'capibara6-cors-proxy-simplified',\n        'backend_target': BACKEND_URL,\n        'timestamp': __import__('datetime').datetime.now().isoformat()\n    })\nif __name__ == '__main__':\n    print('🚀 Iniciando Proxy CORS local simplificado para Capibara6...')",
+        "detail": "backend.cors_proxy_simple",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.cors_proxy_simple",
+        "description": "backend.cors_proxy_simple",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\n# URL del backend remoto (bounty2:5001)\nBACKEND_URL = 'http://34.12.166.76:5001'\n@app.route('/api/chat', methods=['POST'])\ndef proxy_chat():\n    \"\"\"Proxy específico para el endpoint de chat - versión robusta\"\"\"\n    try:\n        # Obtener el cuerpo de la solicitud como bytes\n        raw_data = request.get_data()",
+        "detail": "backend.cors_proxy_simple",
+        "documentation": {}
+    },
+    {
+        "label": "BACKEND_URL",
+        "kind": 5,
+        "importPath": "backend.cors_proxy_simple",
+        "description": "backend.cors_proxy_simple",
+        "peekOfCode": "BACKEND_URL = 'http://34.12.166.76:5001'\n@app.route('/api/chat', methods=['POST'])\ndef proxy_chat():\n    \"\"\"Proxy específico para el endpoint de chat - versión robusta\"\"\"\n    try:\n        # Obtener el cuerpo de la solicitud como bytes\n        raw_data = request.get_data()\n        # Obtener todos los headers relevantes, manteniendo cuidadosamente solo los necesarios\n        headers = {}\n        for key, value in request.headers:",
+        "detail": "backend.cors_proxy_simple",
+        "documentation": {}
+    },
+    {
         "label": "test_data",
         "kind": 5,
         "importPath": "backend.debug_toon",
@@ -15957,7 +16154,7 @@
         "kind": 5,
         "importPath": "backend.server_gptoss",
         "description": "backend.server_gptoss",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Habilitar CORS para permitir peticiones desde el frontend\n# Configuración de la VM GPT-OSS-20B\nGPT_OSS_URL = os.getenv('GPT_OSS_URL', 'http://34.175.215.109:8080')\nGPT_OSS_TIMEOUT = int(os.getenv('GPT_OSS_TIMEOUT', '60'))\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)",
+        "peekOfCode": "app = Flask(__name__)\n# Habilitar CORS para permitir peticiones desde localhost y otros orígenes\nCORS(app, origins=[\n    \"http://localhost:8000\", \n    \"http://127.0.0.1:8000\", \n    \"http://localhost:3000\", \n    \"http://127.0.0.1:3000\",\n    \"http://localhost:8080\",\n    \"http://127.0.0.1:8080\",\n    \"http://localhost:3001\",",
         "detail": "backend.server_gptoss",
         "documentation": {}
     },
@@ -17975,6 +18172,15 @@
         "description": "check_kyutai_integration_final",
         "peekOfCode": "def check_integration():\n    print(\"🔍 Verificando integración de Kyutai TTS en Capibara6...\")\n    print(\"=\" * 60)\n    # 1. Verificar archivos necesarios\n    print(\"\\n📁 Verificando archivos...\")\n    backend_dir = \"backend\"\n    required_files = [\n        \"capibara6_integrated_server.py\",\n        \"utils/kyutai_tts_impl.py\", \n        \"requirements.txt\"",
         "detail": "check_kyutai_integration_final",
+        "documentation": {}
+    },
+    {
+        "label": "test_proxy",
+        "kind": 2,
+        "importPath": "test_proxy",
+        "description": "test_proxy",
+        "peekOfCode": "def test_proxy():\n    print(\"🔍 Testing CORS Proxy for Capibara6...\")\n    print(\"\")\n    # Probar conexión con el proxy local\n    proxy_url = \"http://localhost:8001\"\n    print(f\"📡 Probando conexión con el proxy local en {proxy_url}...\")\n    try:\n        response = requests.get(proxy_url, timeout=5)\n        if response.status_code == 200:\n            print(\"✅ Proxy está corriendo\")",
+        "detail": "test_proxy",
         "documentation": {}
     }
 ]
