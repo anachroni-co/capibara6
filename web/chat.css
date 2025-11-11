@@ -1,23 +1,34 @@
 /* ============================================
    Tipografía Chat - Más moderna y ligera
    ============================================ */
-.chat-page {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-/* ============================================
-   Chat Page Layout
-   ============================================ */
-.chat-page {
+   .chat-page {
     display: flex;
     height: 100vh;
     overflow: hidden;
-    background: #212121; /* Fondo neutro tipo ChatGPT */
+    background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%);
+    position: relative;
 }
 
+/* Patrón de fondo animado */
+.chat-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+    animation: pulse-bg 10s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes pulse-bg {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
 /* ============================================
    Sidebar
    ============================================ */
