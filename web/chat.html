@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Chat con Capibara6 - IA Conversacional Avanzada">
-    <title>Capibara6 Chat | Anachroni</title>
+    <meta name="description" content="Capibara6 Consensus - Sistema de IA con GPT-OSS 20B (20.9B parámetros)">
+    <title>Capibara6 Consensus | Anachroni</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="chat.css?v=11.0">
+    <link rel="stylesheet" href="chat-consensus.css?v=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -175,40 +176,44 @@
             <div class="empty-state-content">
                 <div class="capibara-logo-large">
                     <h1 class="logo-gradient">capibara6</h1>
+                    <div class="consensus-badge" style="margin-top: 10px;">
+                        <i data-lucide="network" style="width: 14px; height: 14px;"></i>
+                        <span>Consensus System</span>
+                    </div>
                 </div>
                 <h2 class="empty-state-title" data-i18n="chat.empty.title">¿En qué puedo ayudarte hoy?</h2>
-                <p class="empty-state-subtitle" data-i18n="chat.empty.subtitle">Tu asistente de IA avanzado con arquitectura híbrida Transformer-Mamba</p>
+                <p class="empty-state-subtitle" data-i18n="chat.empty.subtitle">Sistema de IA con modelo GPT-OSS 20B (20.9B parámetros) - Powered by Ollama</p>
                 
                 <div class="suggestion-cards">
-                    <button class="suggestion-card" data-prompt="Explícame cómo funciona la arquitectura híbrida Transformer-Mamba">
+                    <button class="suggestion-card" data-prompt="¿Qué es el sistema de Consenso de Capibara6 y cómo funciona?">
                         <i data-lucide="network" style="width: 24px; height: 24px;"></i>
                         <div>
-                            <div class="suggestion-title" data-i18n="chat.suggestion1.title">Arquitectura Híbrida</div>
+                            <div class="suggestion-title" data-i18n="chat.suggestion1.title">Sistema de Consenso</div>
                             <div class="suggestion-text" data-i18n="chat.suggestion1.text">Explícame cómo funciona</div>
                         </div>
                     </button>
-                    
-                    <button class="suggestion-card" data-prompt="¿Qué ventajas tiene usar Google TPU v6e-64 para entrenar modelos?">
+
+                    <button class="suggestion-card" data-prompt="¿Qué características tiene el modelo GPT-OSS 20B?">
                         <i data-lucide="cpu" style="width: 24px; height: 24px;"></i>
                         <div>
-                            <div class="suggestion-title" data-i18n="chat.suggestion2.title">Google TPU</div>
-                            <div class="suggestion-text" data-i18n="chat.suggestion2.text">Ventajas para entrenamiento</div>
+                            <div class="suggestion-title" data-i18n="chat.suggestion2.title">Modelo GPT-OSS 20B</div>
+                            <div class="suggestion-text" data-i18n="chat.suggestion2.text">20.9B parámetros</div>
                         </div>
                     </button>
-                    
-                    <button class="suggestion-card" data-prompt="Ayúdame a escribir código Python para procesar datos con eficiencia">
+
+                    <button class="suggestion-card" data-prompt="Ayúdame a escribir código Python eficiente y bien estructurado">
                         <i data-lucide="terminal" style="width: 24px; height: 24px;"></i>
                         <div>
                             <div class="suggestion-title" data-i18n="chat.suggestion3.title">Programación</div>
                             <div class="suggestion-text" data-i18n="chat.suggestion3.text">Ayuda con código Python</div>
                         </div>
                     </button>
-                    
-                    <button class="suggestion-card" data-prompt="¿Cómo puedo mejorar el rendimiento de mi aplicación web?">
-                        <i data-lucide="gauge" style="width: 24px; height: 24px;"></i>
+
+                    <button class="suggestion-card" data-prompt="¿Qué servicios adicionales ofrece Capibara6? (TTS, MCP, N8N)">
+                        <i data-lucide="sparkles" style="width: 24px; height: 24px;"></i>
                         <div>
-                            <div class="suggestion-title" data-i18n="chat.suggestion4.title">Optimización</div>
-                            <div class="suggestion-text" data-i18n="chat.suggestion4.text">Mejorar rendimiento web</div>
+                            <div class="suggestion-title" data-i18n="chat.suggestion4.title">Servicios</div>
+                            <div class="suggestion-text" data-i18n="chat.suggestion4.text">TTS, MCP y más</div>
                         </div>
                     </button>
                 </div>
@@ -225,21 +230,29 @@
                     <span id="current-chat-title">Nueva Conversación</span>
                 </div>
                 <div class="chat-actions">
+                    <!-- Indicador de modelo activo -->
+                    <div class="active-model-indicator" id="active-model-indicator">
+                        <div class="model-indicator-icon">🦫</div>
+                        <div class="model-indicator-text">
+                            <div class="model-indicator-name">GPT-OSS 20B</div>
+                            <div class="model-indicator-params">20.9B params</div>
+                        </div>
+                    </div>
+                    <!-- Badges de servicios activos -->
+                    <div class="service-badges" id="service-badges-container">
+                        <!-- Se llenarán dinámicamente -->
+                    </div>
                     <!-- Indicador de estado del servidor -->
                     <div class="server-status" id="server-status" title="Estado del servidor">
                         <div class="status-led" id="status-led"></div>
                         <span class="status-text" id="status-text">Desconectado</span>
                     </div>
-                    <!-- Indicador de consenso/modelos -->
-                    <div class="consensus-indicator" id="consensus-indicator" title="Modelos activos en consenso">
-                        <i data-lucide="network" style="width: 16px; height: 16px;"></i>
-                        <span class="consensus-count" id="consensus-count">1</span>
-                    </div>
                     <button class="btn-icon" title="Compartir" data-i18n-title="chat.share">
                         <i data-lucide="link-2" style="width: 20px; height: 20px;"></i>
                     </button>
-                    <button class="btn-icon" title="Configuración" data-i18n-title="chat.settings">
-                        <i data-lucide="sliders-horizontal" style="width: 20px; height: 20px;"></i>
+                    <button class="btn-services-panel" onclick="toggleServicesPanel()" title="Panel de Control">
+                        <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
+                        <span>Control</span>
                     </button>
                 </div>
             </div>
@@ -247,7 +260,7 @@
             <!-- Banner Beta Experimental -->
             <div class="beta-banner">
                 <i data-lucide="flask-conical" style="width: 16px; height: 16px;"></i>
-                <span><strong>Versión Beta Experimental</strong> - Esta aplicación está en desarrollo activo. Pueden ocurrir errores o cambios inesperados.</span>
+                <span><strong>Capibara6 Consensus - Beta</strong> - Sistema de IA con GPT-OSS 20B (20.9B parámetros). En desarrollo activo.</span>
                 <button class="beta-banner-close" onclick="this.parentElement.style.display='none'" title="Cerrar">
                     <i data-lucide="x" style="width: 14px; height: 14px;"></i>
                 </button>
@@ -331,7 +344,8 @@
     <!-- <script src="consensus-integration.js"></script> Pausado: Activar más tarde -->
     <script src="template-profiles.js?v=5.0"></script>
     <script src="rating-system.js?v=5.0"></script>
-           <script src="tts-integration.js?v=18.0"></script>
+    <script src="tts-integration.js?v=18.0"></script>
+    <script src="consensus-ui.js?v=1.0"></script>
     <script src="chat-app.js?v=35.0&t=1736987000"></script>
     <script src="entropy-auto-inject.js?v=5.0"></script>
     <script>
