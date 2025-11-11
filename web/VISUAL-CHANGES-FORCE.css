@@ -1,0 +1,108 @@
+/* FORZAR CAMBIOS VISUALES - CAPIBARA6 */
+
+/* Fondo púrpura SUPER visible */
+body {
+    background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%) !important;
+}
+
+.chat-page {
+    background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%) !important;
+}
+
+/* Banner GIGANTE arriba */
+body::before {
+    content: '🦫 CAPIBARA6 CONSENSUS - Sistema de IA con GPT-OSS 20B (20.9B parámetros) - Sistema Activo 🟢';
+    display: block !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 80px !important;
+    background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%) !important;
+    border-bottom: 5px solid #fbbf24 !important;
+    z-index: 9999 !important;
+    color: white !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 20px !important;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.8) !important;
+    animation: glow-banner 2s infinite !important;
+}
+
+@keyframes glow-banner {
+    0%, 100% { box-shadow: 0 4px 20px rgba(139, 92, 246, 0.8); }
+    50% { box-shadow: 0 8px 40px rgba(251, 191, 36, 1); }
+}
+
+/* Empujar todo el contenido hacia abajo */
+.chat-page,
+.chat-main,
+body > * {
+    margin-top: 80px !important;
+}
+
+/* Logo GIGANTE con gradiente */
+.logo-gradient,
+h1.logo-gradient {
+    font-size: 8rem !important;
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6, #10b981, #fbbf24) !important;
+    background-size: 300% 300% !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: gradient-move 3s infinite !important;
+}
+
+@keyframes gradient-move {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Botón enviar GIGANTE y amarillo */
+.btn-send,
+button[type="submit"],
+.send-button {
+    width: 80px !important;
+    height: 80px !important;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    border-radius: 50% !important;
+    border: 5px solid white !important;
+    color: black !important;
+    font-size: 32px !important;
+    animation: pulse-button 1.5s infinite !important;
+    box-shadow: 0 8px 32px rgba(251, 191, 36, 0.8) !important;
+}
+
+@keyframes pulse-button {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.btn-send:hover {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    transform: scale(1.3) rotate(20deg) !important;
+}
+
+/* Input GRANDE con borde púrpura */
+textarea,
+input[type="text"],
+.message-input {
+    border: 5px solid #8b5cf6 !important;
+    background: rgba(139, 92, 246, 0.1) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    font-size: 18px !important;
+    color: white !important;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.5) !important;
+}
+
+textarea:focus,
+input:focus {
+    border-color: #fbbf24 !important;
+    box-shadow: 0 12px 48px rgba(251, 191, 36, 0.8) !important;
+}
