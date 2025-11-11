@@ -10,6 +10,15 @@
 }
 
 /* Patrón de fondo animado */
+.chat-page {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%);
+    position: relative;
+}
+
+/* Patrón de fondo animado */
 .chat-page::before {
     content: '';
     position: absolute;
@@ -23,6 +32,131 @@
     animation: pulse-bg 10s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
+}
+
+@keyframes pulse-bg {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+/* ============================================
+   BANNER GRANDE CAPIBARA6 CONSENSUS
+   ============================================ */
+.capibara-consensus-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+    border-bottom: 3px solid #fbbf24;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
+    animation: slide-down 0.5s ease-out;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.consensus-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 30px;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.consensus-icon {
+    font-size: 48px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.consensus-text {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.consensus-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: white;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
+                     0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    50% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
+                     0 0 30px rgba(255, 255, 255, 0.8);
+    }
+}
+
+.consensus-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 5px 0 0 0;
+    font-weight: 500;
+}
+
+.consensus-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    font-weight: 600;
+    color: white;
+    font-size: 14px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
+    box-shadow: 0 0 10px #10b981;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.7;
+    }
+}
+
+/* Ajustar layout para el banner */
+.sidebar,
+.chat-main {
+    margin-top: 80px;
+    height: calc(100vh - 80px);
 }
 
 @keyframes pulse-bg {
