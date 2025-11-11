@@ -16,12 +16,8 @@
     <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<link rel="stylesheet" href="VISUAL-CHANGES-FORCE.css"> 
- <link rel="stylesheet" href="chat-styles.css">
- 
+    <link rel="stylesheet" href="chat-styles.css">
 </head>
-<script src="????.js"></script>
-
 <body>
     <header class="top-nav">
         <div class="top-nav__content">
