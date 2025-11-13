@@ -6,10 +6,15 @@
 class RAGIntegration {
     constructor() {
         // Configuración del servicio RAG
-        // IP de rag3 (pendiente de obtener)
-        this.ragBaseURL = window.location.hostname === 'localhost'
-            ? 'http://[IP_RAG3]:8000'  // TODO: Reemplazar con IP real de rag3
-            : 'https://www.capibara6.com/api/rag';
+        // Usar configuración centralizada si está disponible
+        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.VMS?.RAG3?.services?.rag) {
+            this.ragBaseURL = CHATBOT_CONFIG.VMS.RAG3.services.rag;
+        } else {
+            // Fallback para desarrollo local
+            this.ragBaseURL = window.location.hostname === 'localhost'
+                ? 'http://34.105.131.8:8000'  // IP de rag3
+                : 'https://www.capibara6.com/api/rag';
+        }
         
         // Usar API client si está disponible
         this.apiClient = typeof Capibara6API !== 'undefined' 
