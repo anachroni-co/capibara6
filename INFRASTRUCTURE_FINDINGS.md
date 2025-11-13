@@ -157,55 +157,80 @@ RAG_CONFIG = {
 
 ---
 
-## ❌ Servicios NO Encontrados (Búsqueda Exhaustiva)
+## ✅ Servicios Encontrados en VM rag3 (ACTUALIZACIÓN 2025-11-13)
 
-### Milvus Database
-**Búsqueda realizada:**
-- ✅ Archivos Python (.py)
-- ✅ Archivos JavaScript (.js)
-- ✅ Archivos de configuración (.yaml, .json, .env, .cfg)
-- ✅ Docker Compose
-- ✅ Documentación (.md)
-- ✅ Puerto estándar 19530
+### Milvus Vector Database
+**Búsqueda en repositorio:** ❌ No encontrado en código
+**Búsqueda en VM rag3:** ✅ **ENCONTRADO Y ACTIVO**
 
-**Resultado:** ❌ No encontrado en el repositorio
+**Ubicación:** VM rag3 (europe-west2-c)
+**Puerto:** 19530
+**Implementación:** Docker Compose en VM rag3
+**Estado:** ✅ Corriendo (uptime: 3 días)
+**Versión:** v2.3.10
+**Contenedor:** `milvus-standalone`
 
-**Posibilidades:**
-1. Instalado directamente en VM rag3 (fuera del repositorio)
-2. No implementado aún
-3. Reemplazado por FAISS
+**Stack Completo:**
+- Milvus server (puerto 19530, 9091)
+- MinIO object storage (9000-9001)
+- etcd coordination (2379-2380)
 
-### Nebula Graph
-**Búsqueda realizada:**
-- ✅ Archivos Python (.py)
-- ✅ Archivos JavaScript (.js)
-- ✅ Archivos de configuración
-- ✅ Docker Compose
-- ✅ Puertos estándar (9669, 7687)
+**Uso:** Vector database para RAG, búsqueda semántica, embeddings
 
-**Resultado:** ❌ No encontrado en el repositorio
+### Nebula Graph Database
+**Búsqueda en repositorio:** ❌ No encontrado en código
+**Búsqueda en VM rag3:** ✅ **ENCONTRADO Y ACTIVO**
 
-**Posibilidades:**
-1. Instalado directamente en VM rag3
-2. Confundido con otra base de datos de grafos
-3. No implementado
+**Ubicación:** VM rag3 (europe-west2-c)
+**Puerto Principal:** 9669 (query service)
+**Implementación:** Docker Compose en VM rag3 (cluster de 3 nodos)
+**Estado:** ✅ Corriendo (uptime: 3 días)
+**Versión:** v3.1.0
 
-### Servidor "Bridge" Explícito
-**Búsqueda realizada:**
-- ✅ Archivos con nombre "bridge"
-- ✅ Archivos con "proxy" en el nombre
-- ✅ Documentación que mencione "bridge"
+**Arquitectura del Cluster:**
+- 3x nebula-graphd (query service - puerto 9669)
+- 3x nebula-metad (metadata service - puerto 9559)
+- 3x nebula-storaged (storage service - puerto 9779)
+- 1x nebula-graph-studio (UI web - puerto 7001)
 
-**Resultado:** ❌ No encontrado como archivo independiente
+**Uso:** Graph database para relaciones complejas, knowledge graphs
 
-**Análisis:**
-El rol de "bridge" probablemente lo cumple **`backend/server_gptoss.py`** (puerto 5001), que:
-- Recibe requests del frontend
-- Se comunica con MCP para RAG (puerto 5003)
-- Se comunica con TTS para síntesis de voz (puerto 5002)
-- Integra E2B para ejecución de código
-- Maneja autenticación via auth_server (puerto 5004)
-- Coordina consensus si está habilitado (puerto 5005)
+### Servidor "Bridge" - capibara6-api
+**Búsqueda en repositorio:** ❌ No encontrado explícitamente
+**Búsqueda en VM rag3:** ✅ **ENCONTRADO Y ACTIVO**
+
+**Ubicación:** VM rag3 (europe-west2-c)
+**Puerto:** 8000
+**Implementación:** Docker container `capibara6-api`
+**Estado:** ✅ Corriendo (uptime: 2 días)
+**Comando:** `python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000`
+
+**Función del Bridge:**
+- ✅ API principal de integración
+- ✅ Coordina Milvus (vector search)
+- ✅ Coordina Nebula Graph (graph queries)
+- ✅ Orquesta 3x RQ workers para procesamiento asíncrono
+- ✅ Integración con PostgreSQL, TimescaleDB, Redis
+
+**Workers Asociados:**
+- capibara6-worker-1
+- capibara6-worker-2
+- capibara6-worker-3
+
+**Nota sobre repositorio:**
+El código de `capibara6-api` debe estar en un directorio/imagen personalizada. El frontend puede integrarse directamente con este servicio en `http://rag3:8000`
+
+### Rol de server_gptoss.py
+**`backend/server_gptoss.py`** (puerto 5001 en VM bounty2) actúa como **backend secundario** para:
+- Chat directo con GPT-OSS-20B
+- TTS integration
+- Autenticación
+- Consensus multi-modelo
+
+Mientras que **`capibara6-api`** (puerto 8000 en VM rag3) es el **bridge principal** para:
+- RAG con Milvus + Nebula
+- Procesamiento asíncrono
+- Integración completa del stack
 
 **Evidencia:**
 ```javascript
@@ -234,11 +259,24 @@ const CHATBOT_CONFIG = {
 
 **Razón de deshabilitado:** No es accesible públicamente, requiere conexión VPN a la VM
 
-### VM rag3
-**Mencionado en:** `backend/ARCHITECTURE.md`
-**Estado:** 📝 Documentado pero sin detalles de implementación
-**Descripción:** "Servidor con sistema RAG completo"
-**Nota:** No se encontraron detalles de configuración, endpoints o servicios específicos
+### VM rag3 (europe-west2-c)
+**Estado:** ✅ **VERIFICADO Y DOCUMENTADO** (2025-11-13)
+**Descripción:** Sistema RAG completo con vector + graph databases
+**Documentación completa:** Ver `VM_RAG3_COMPLETE_ANALYSIS.md`
+
+**Servicios Principales:**
+- ✅ **Milvus Vector Database** (puerto 19530) - Vector search para RAG
+- ✅ **Nebula Graph Database** (puerto 9669) - Graph database (cluster 3 nodos)
+- ✅ **capibara6-api Bridge** (puerto 8000) - API principal de integración
+- ✅ **PostgreSQL** (puerto 5432) - Base de datos relacional
+- ✅ **TimescaleDB** (puerto 5433) - Time-series data
+- ✅ **Redis** (puerto 6379) - Cache y queue
+- ✅ **N8N** (puerto 5678) - Workflow automation
+- ✅ **Nginx** (puertos 80, 443) - Reverse proxy
+- ✅ **Monitoring Stack** - Grafana (3000), Prometheus (9090), Jaeger (16686)
+
+**Workers:**
+- 3x RQ Workers para procesamiento asíncrono en background
 
 ---
 
@@ -300,78 +338,179 @@ const CHATBOT_CONFIG = {
 
 ---
 
-## 📊 Resumen de Puertos
+## 📊 Resumen de Puertos - Arquitectura Completa
 
+### VM bounty2 (34.12.166.76)
+| Puerto | Servicio | Estado | Descripción |
+|--------|----------|--------|-------------|
+| 5001 | Backend Principal (server_gptoss.py) | ✅ Activo | Chat GPT-OSS-20B |
+| 5004 | Auth Server | ✅ Configurado | OAuth GitHub/Google |
+| 5005 | Consensus Server | ⚠️ Opcional | Multi-modelo |
+| 8000 | FastAPI (main.py) | ⚠️ Alternativo | API E2B |
+
+### VM gpt-oss-20b (34.175.136.104)
+| Puerto | Servicio | Estado | Descripción |
+|--------|----------|--------|-------------|
+| 5002 | TTS Server (Kyutai) | ✅ Activo | Text-to-Speech |
+| 5003 | MCP Server | ⚠️ Opcional | Context & RAG |
+| 5010 | Smart MCP Alternativo | ⚠️ Opcional | RAG selectivo |
+| 5678 | N8N | ⚠️ VPN requerida | Workflows |
+
+### VM rag3 (europe-west2-c) ⭐ NUEVO
+| Puerto | Servicio | Estado | Descripción |
+|--------|----------|--------|-------------|
+| **80** | **Nginx HTTP** | ✅ Activo | Reverse proxy |
+| **443** | **Nginx HTTPS** | ✅ Activo | Reverse proxy SSL |
+| **3000** | **Grafana** | ✅ Activo | Dashboards |
+| **5432** | **PostgreSQL** | ✅ Activo | DB Relacional |
+| **5433** | **TimescaleDB** | ✅ Activo | Time-series |
+| **5678** | **N8N** | ✅ Activo | Workflows |
+| **6379** | **Redis** | ✅ Activo | Cache + Queue |
+| **7001** | **Nebula Studio** | ✅ Activo | Graph UI |
+| **8000** | **capibara6-api (BRIDGE)** | ✅ **ACTIVO** | **API Principal** |
+| **9000-9001** | **MinIO** | ✅ Activo | Object Storage |
+| **9090** | **Prometheus** | ✅ Activo | Metrics |
+| **9091** | **Milvus Metrics** | ✅ Activo | Milvus stats |
+| **9669** | **Nebula Graph Query** | ✅ **ACTIVO** | **Graph DB** |
+| **14268** | **Jaeger Collector** | ✅ Activo | Tracing |
+| **16686** | **Jaeger UI** | ✅ Activo | Tracing UI |
+| **19530** | **Milvus** | ✅ **ACTIVO** | **Vector DB** |
+
+### Puertos Locales (Docker Compose)
 | Puerto | Servicio | Estado | VM |
 |--------|----------|--------|-----|
-| 5001 | Backend Principal (server_gptoss.py) | ✅ Activo | bounty2 |
-| 5002 | TTS Server (Kyutai) | ✅ Activo | gpt-oss-20b |
-| 5003 | MCP Server | ⚠️ Opcional | gpt-oss-20b |
-| 5004 | Auth Server | ✅ Configurado | bounty2 |
-| 5005 | Consensus Server | ⚠️ Opcional | bounty2 |
-| 5010 | Smart MCP Alternativo | ⚠️ Opcional | gpt-oss-20b |
 | 5432 | PostgreSQL | ✅ Docker | Local |
 | 5433 | TimescaleDB | ✅ Docker | Local |
-| 5678 | N8N | ⚠️ VPN requerida | gpt-oss-20b |
 | 6379 | Redis | ✅ Docker | Local |
-| 8000 | FastAPI (main.py) | ⚠️ Alternativo | bounty2 |
 
 ---
 
-## 🎯 Conclusiones
+## 🎯 Conclusiones - ACTUALIZADO 2025-11-13
 
-### Servicios Consolidados Exitosamente ✅
-1. Backend principal claramente definido (puerto 5001)
-2. Servicios especializados con puertos dedicados
-3. Frontend correctamente configurado para usar puertos correctos
-4. Docker Compose con bases de datos fundamentales
+### ✅ Hallazgos Confirmados
 
-### Áreas que Requieren Clarificación ⚠️
-1. **VM rag3:** Necesita documentación detallada de servicios
-2. **Milvus:** No encontrado en código, posible instalación externa
-3. **Nebula Graph:** No encontrado en código
-4. **Bridge Server:** Rol cumplido por server_gptoss.py (necesita confirmación)
+1. **Backend principal** claramente definido (server_gptoss.py en puerto 5001 - VM bounty2)
+2. **Bridge API confirmado** - capibara6-api en puerto 8000 (VM rag3)
+3. **Milvus Vector Database** - ENCONTRADO y activo (puerto 19530 - VM rag3)
+4. **Nebula Graph Database** - ENCONTRADO y activo (puerto 9669 - VM rag3, cluster completo)
+5. **ChromaDB** - NO instalado (Milvus lo reemplaza)
+6. Servicios especializados con puertos dedicados
+7. Frontend correctamente configurado
+8. **Stack de monitoreo completo** en VM rag3 (Grafana, Prometheus, Jaeger)
+
+### 🏗️ Arquitectura Verificada
+
+El sistema Capibara6 utiliza **3 VMs especializadas**:
+
+1. **VM bounty2** - Chat y modelos
+   - Backend GPT-OSS-20B
+   - Auth y Consensus
+
+2. **VM gpt-oss-20b** - Servicios especializados
+   - TTS (Kyutai)
+   - MCP (RAG básico)
+   - N8N
+
+3. **VM rag3** - Sistema RAG completo ⭐
+   - **Milvus** (vector search)
+   - **Nebula Graph** (knowledge graph)
+   - **capibara6-api** (bridge/orquestador)
+   - PostgreSQL + TimescaleDB + Redis
+   - Stack de monitoreo
+   - 3x Workers para procesamiento asíncrono
+
+### ⚠️ Áreas Completadas
+1. ✅ **VM rag3:** Completamente documentada (ver VM_RAG3_COMPLETE_ANALYSIS.md)
+2. ✅ **Milvus:** Encontrado y documentado (VM rag3:19530)
+3. ✅ **Nebula Graph:** Encontrado y documentado (VM rag3:9669)
+4. ✅ **Bridge Server:** Identificado como capibara6-api (VM rag3:8000)
 
 ### Recomendaciones 📝
 
-1. **Si Milvus y Nebula Graph existen en VM rag3:**
-   - Documentar endpoints y configuración
-   - Agregar healthchecks en frontend
-   - Crear scripts de conexión en backend
+1. **Integración Frontend con VM rag3:**
+   - ✅ Documentación completa creada (VM_RAG3_COMPLETE_ANALYSIS.md)
+   - ⏭️ Actualizar `web/config.js` con URLs de capibara6-api
+   - ⏭️ Configurar cliente para Milvus (búsqueda vectorial)
+   - ⏭️ Configurar cliente para Nebula Graph (consultas de grafo)
 
-2. **Si NO existen:**
-   - Considerar si son necesarios para la funcionalidad actual
-   - FAISS está funcionando bien como vector store
-   - PostgreSQL puede manejar relaciones si no se necesita grafo
+2. **Scripts de Gestión:**
+   - ⏭️ Actualizar `check-services.sh` para verificar servicios de VM rag3
+   - ⏭️ Agregar healthchecks para Milvus (19530) y Nebula (9669)
+   - ⏭️ Monitorear estado de workers RQ
 
-3. **Para VM rag3:**
-   - Crear documentación de arquitectura específica
-   - Agregar a `ARCHITECTURE_QUICK_REF.md`
-   - Incluir en scripts de monitoreo
+3. **Documentación de APIs:**
+   - ⏭️ Documentar endpoints de capibara6-api (puerto 8000)
+   - ⏭️ Documentar esquema de Nebula Graph
+   - ⏭️ Documentar colecciones de Milvus
 
-4. **Para el "Bridge":**
-   - Confirmar que server_gptoss.py cumple este rol
-   - O implementar un bridge dedicado si se requiere separación de responsabilidades
-   - Documentar flujo de comunicación entre servicios
+4. **Monitoreo:**
+   - ✅ Grafana ya configurado (puerto 3000)
+   - ✅ Prometheus ya configurado (puerto 9090)
+   - ✅ Jaeger ya configurado (puerto 16686)
+   - ⏭️ Verificar alertas configuradas
+
+5. **Seguridad:**
+   - ⏭️ Verificar que puertos 19530 y 9669 no sean públicos
+   - ⏭️ Configurar autenticación en Milvus y Nebula
+   - ⏭️ Revisar credenciales de PostgreSQL/Redis
 
 ---
 
 ## 📁 Archivos de Referencia
 
+### Documentación Principal
+- **`VM_RAG3_COMPLETE_ANALYSIS.md`** ⭐ NUEVO - Análisis completo de VM rag3
+- `INFRASTRUCTURE_FINDINGS.md` (este archivo) - Hallazgos completos de infraestructura
+- `BACKEND_CONSOLIDATION_PLAN.md` - Plan de consolidación (Fases 1-4 completadas)
+
+### Configuración
 - `web/config.js` - Configuración completa de servicios frontend
 - `backend/config/infrastructure_config.py` - Configuración RAG y vector store
+- `docker-compose.yml` - Bases de datos locales
+
+### Scripts de Gestión (backend/)
+- `start-all-services.sh` - Iniciar servicios principales
+- `start-optional-services.sh` - Iniciar servicios opcionales
+- `stop-all-services.sh` - Detener todos los servicios
+- `check-services.sh` - Verificar estado de servicios
+- `SCRIPTS_README.md` - Documentación completa de scripts
+
+### Herramientas de Diagnóstico
+- `vm_rag3_diagnostic.sh` - Script de diagnóstico automatizado
+- `VM_RAG3_INSTRUCTIONS.md` - Instrucciones para ejecutar diagnóstico
+- `QUICK_VM_RAG3_CHECK.md` - Verificación rápida
+
+### Otros
 - `SERVICES_SETUP.md` - Setup de servicios en VMs
 - `ARCHITECTURE_QUICK_REF.md` - Referencia rápida de arquitectura
-- `docker-compose.yml` - Bases de datos locales
-- `BACKEND_CONSOLIDATION_PLAN.md` - Plan de consolidación (Fases 1-4)
 - `FIXES_ENDPOINTS.md` - Correcciones de endpoints
 
 ---
 
-## 🚀 Próximos Pasos
+## 🚀 Estado Actual y Próximos Pasos
 
-1. **Validar hallazgos** con acceso real a las VMs
-2. **Documentar VM rag3** si existe
-3. **Implementar Fase 4** con los servicios verificados
-4. **Crear scripts de gestión** para servicios confirmados
-5. **Actualizar documentación** con hallazgos validados
+### ✅ Completado (2025-11-13)
+1. ✅ **VM rag3 documentada** - Análisis completo realizado
+2. ✅ **Milvus encontrado** - Puerto 19530, versión v2.3.10
+3. ✅ **Nebula Graph encontrado** - Puerto 9669, cluster de 3 nodos
+4. ✅ **Bridge identificado** - capibara6-api en puerto 8000
+5. ✅ **Fase 4 implementada** - Scripts de gestión creados y documentados
+6. ✅ **Toda la infraestructura mapeada** - 3 VMs con todos sus servicios
+
+### ⏭️ Próximos Pasos Recomendados
+1. **Integrar frontend con VM rag3**
+   - Actualizar `web/config.js` con capibara6-api endpoints
+   - Configurar conexión a Milvus para búsqueda vectorial
+   - Configurar conexión a Nebula Graph para consultas
+
+2. **Mejorar scripts de gestión**
+   - Agregar verificación de servicios remotos en check-services.sh
+   - Crear scripts de conexión a Milvus y Nebula
+
+3. **Documentación de APIs**
+   - Documentar endpoints completos de capibara6-api
+   - Crear guías de uso para Milvus y Nebula Graph
+
+4. **Testing**
+   - Probar integración completa frontend → bridge → databases
+   - Verificar rendimiento del sistema RAG completo
