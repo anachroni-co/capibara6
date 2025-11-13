@@ -2,6 +2,7 @@
 # Servidor integrado principal para el proyecto Capibara6
 
 from flask import Flask, request, jsonify, Response
+from flask_cors import CORS
 import requests
 import json
 import os
@@ -62,6 +63,21 @@ except ImportError as e:
         return min(relevance_score, 1.0)
 
 app = Flask(__name__)
+
+# Configurar CORS para permitir peticiones desde localhost y otros orígenes
+CORS(app, origins=[
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://www.capibara6.com",
+    "https://capibara6.com",
+    "http://34.12.166.76:5001",
+    "http://34.12.166.76:8000",
+    "http://34.175.136.104:8000"
+], supports_credentials=True)
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
