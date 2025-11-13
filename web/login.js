@@ -4,7 +4,7 @@
 
 // Configuración OAuth
 // Desarrollo (localhost)
-const AUTH_SERVER_URL = 'http://localhost:5001';
+const AUTH_SERVER_URL = 'http://localhost:5004';
 
 // Producción (comentado para activar más tarde)
 // const AUTH_SERVER_URL = 'https://api.capibara6.com';

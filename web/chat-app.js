@@ -4,7 +4,7 @@
 
 // Configuración del sistema de consenso (comentado por ahora, usar modelo original)
     const CONSENSUS_CONFIG = {
-        serverUrl: 'http://localhost:5001/api/consensus/query',
+        serverUrl: 'http://localhost:5005/api/consensus/query',
     fallbackUrl: 'http://34.175.104.187:8080/completion',  // IP actualizada
     enabled: false, // Deshabilitado por ahora
     defaultTemplate: 'general',
