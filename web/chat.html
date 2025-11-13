@@ -589,6 +589,12 @@
         </div>
     </div>
     
+    <!-- Cargar configuración del proxy CORS primero -->
+    <script>
+        // Configurar proxy CORS local
+        window.CORS_PROXY_URL = 'http://172.22.134.254:8001';
+        console.log('🔌 Proxy CORS configurado:', window.CORS_PROXY_URL);
+    </script>
     <script src="config.js"></script>
     <!-- Servicios de integración -->
     <script src="tts-integration.js"></script>

@@ -14,24 +14,13 @@
 // Configuración del modelo original
     const MODEL_CONFIG = {
         // Obtener la URL del backend desde CHATBOT_CONFIG si está disponible
-        serverUrl: (() => {
-            // Prioridad 1: Configuración local de VMs si está disponible
-            if (typeof MODEL_CONFIG_LOCAL !== 'undefined') {
-                return MODEL_CONFIG_LOCAL.serverUrl;
-            }
-            // Prioridad 2: CHATBOT_CONFIG con MODEL_CONFIG
-            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG) {
-                return CHATBOT_CONFIG.MODEL_CONFIG.serverUrl;
-            }
-            // Prioridad 3: CHATBOT_CONFIG con BACKEND_URL
-            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL) {
-                return CHATBOT_CONFIG.BACKEND_URL + '/api/chat';
-            }
-            // Fallback: localhost o IP de producción
-            return window.location.hostname === 'localhost'
-                ? 'http://localhost:8001/api/chat'  // Proxy local para evitar CORS
-                : 'http://34.12.166.76:5001/api/chat'; // IP de bounty2 para producción
-        })(),
+        serverUrl: typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG
+            ? CHATBOT_CONFIG.MODEL_CONFIG.serverUrl
+            : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+                    ? `${CHATBOT_CONFIG.BACKEND_URL}/api/chat`
+                    : 'http://34.12.166.76:5001/api/chat')  // VM bounty2 - Backend con Ollama
+                : 'https://www.capibara6.com/api/chat'), // Producción
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
@@ -912,6 +901,7 @@ async function simulateAssistantResponse(userMessage) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json', // Asegurar que siempre pedimos JSON, no formato toon
             },
             body: JSON.stringify({
                 message: userMessage,  // Enviar solo el mensaje del usuario
@@ -925,8 +915,21 @@ async function simulateAssistantResponse(userMessage) {
             throw new Error(`Error del servidor: ${response.status}`);
         }
         
-        // Leer la respuesta JSON de nuestro backend
-        const data = await response.json();
+        // Verificar Content-Type antes de parsear
+        const contentType = response.headers.get('Content-Type') || '';
+        let data;
+        
+        if (contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            // Intentar parsear como JSON con manejo de errores
+            try {
+                data = await response.json();
+            } catch (e) {
+                const textResponse = await response.text();
+                throw new Error(`Error parseando respuesta: ${textResponse.substring(0, 100)}`);
+            }
+        }
         
         if (data.response || data.content) {
             // Simular streaming escribiendo la respuesta caracter por caracter
@@ -1363,6 +1366,53 @@ function saveMessage(role, content) {
     chat.updatedAt = new Date().toISOString();
     
     saveChatsToStorage();
+    
+    // Guardar en RAG si está disponible
+    if (typeof window !== 'undefined' && window.ragIntegration) {
+        window.ragIntegration.saveMessage(role, content, {
+            chat_id: currentChatId,
+            user_id: localStorage.getItem('capibara6_user_id')
+        }).catch(err => {
+            console.warn('⚠️ Error guardando en RAG:', err);
+        });
+    }
+    
+    // Guardar en backend también
+    if (role === 'user' || role === 'assistant') {
+        const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
+            ? CHATBOT_CONFIG.BACKEND_URL 
+            : 'http://34.12.166.76:5001';
+        
+        fetch(`${backendUrl}/api/save-conversation`, {
+            method: 'POST',
+            headers: {
+<<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
+                'Content-Type': 'application/json'
+=======
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
+>>>>>>> Incoming (Background Agent changes)
+=======
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
+>>>>>>> Incoming (Background Agent changes)
+=======
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
+>>>>>>> Incoming (Background Agent changes)
+            },
+            body: JSON.stringify({
+                message: role === 'user' ? content : '',
+                response: role === 'assistant' ? content : '',
+                email: localStorage.getItem('user_email') || '',
+                session_id: currentChatId
+            })
+        }).catch(err => {
+            console.warn('⚠️ Error guardando en backend:', err);
+        });
+    }
 }
 
 function copyMessageContent(content) {
@@ -1601,11 +1651,16 @@ async function checkServerConnection() {
         updateServerStatus('connecting', 'Verificando...');
         
         // Usar endpoint de health check en lugar de hacer una solicitud de chat
-        const healthUrl = `${window.location.hostname === 'localhost' ? 'http://localhost:8001' : 'http://34.12.166.76:5001'}/api/health`;
+        const healthUrl = `${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+                ? CHATBOT_CONFIG.BACKEND_URL
+                : 'http://34.12.166.76:5001')
+            : 'https://www.capibara6.com'}/api/health`;
         const response = await fetch(healthUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json', // Asegurar que siempre pedimos JSON, no formato toon
             }
         });
         

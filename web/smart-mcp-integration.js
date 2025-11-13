@@ -5,13 +5,16 @@
  */
 
 const SMART_MCP_CONFIG = {
-    // NOTA: Reemplaza [IP_DE_BOUNTY2] con la IP externa real de la VM bounty2
-    // Para obtenerla, ejecuta: gcloud compute instances describe bounty2 --zone=europe-west4-a --project=mamba-001
-    // Usar el servidor integrado en la VM - Cambiado para desarrollo local
-    serverUrl: window.location.hostname === 'localhost' 
-        ? 'http://34.175.136.104:5010/api/mcp/analyze'  // Smart MCP Server (firewall: tcp:5010)
-        : 'https://www.capibara6.com/api/mcp/analyze',   // Servidor en producción
-    enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
+    // Usar el backend integrado de bounty2 que incluye MCP
+    // En desarrollo local: usar proxy CORS local (puerto 8001) que conecta a bounty2:5001
+    // En producción: usar Vercel que hace proxy al backend
+    serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:8001/api/mcp/tools/call'  // Proxy CORS local → bounty2:5001
+        : 'https://www.capibara6.com/api/mcp/tools/call',   // Servidor en producción
+    healthUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:8001/api/mcp/status'  // Health check a través del proxy
+        : 'https://www.capibara6.com/api/mcp/status',
+    enabled: true,  // ✅ HABILITADO - Smart MCP integrado en backend de bounty2
     timeout: 5000, // 5 segundos máximo para desarrollo
     fallbackOnError: true
 };
@@ -33,12 +36,23 @@ async function smartMCPAnalyze(userQuery) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), SMART_MCP_CONFIG.timeout);
 
-        const response = await fetch(SMART_MCP_CONFIG.serverUrl, {
+        // Usar la URL configurada (ya incluye el proxy en desarrollo local)
+        const serverUrl = SMART_MCP_CONFIG.serverUrl || 
+            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://localhost:8001/api/mcp/tools/call'
+                : 'https://www.capibara6.com/api/mcp/tools/call');
+
+        const response = await fetch(serverUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query: userQuery }),
+            body: JSON.stringify({ 
+                name: 'analyze_document',
+                arguments: {
+                    query: userQuery
+                }
+            }),
             signal: controller.signal
         });
 
@@ -92,28 +106,19 @@ async function smartMCPAnalyze(userQuery) {
  */
 async function checkSmartMCPHealth() {
     try {
-        // En localhost: conectar a la VM gpt-oss-20b en puerto 5010
-        // En producción: usar proxy de Vercel que conecta a la VM
-        let healthUrl;
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            // Usar la IP de la VM gpt-oss-20b desde config.js si está disponible
-            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.MCP) {
-                // Extraer la IP y puerto base, cambiar el puerto a 5010 para health check
-                const mcpUrl = CHATBOT_CONFIG.SERVICE_URLS.MCP;
-                const urlObj = new URL(mcpUrl);
-                healthUrl = `${urlObj.protocol}//${urlObj.hostname}:5010/health`;
-            } else {
-                // Fallback a la IP hardcodeada de gpt-oss-20b
-                healthUrl = 'http://34.175.136.104:5010/health';
-            }
-        } else {
-            healthUrl = '/api/mcp-health';
-        }
+        // Usar la URL de health configurada (a través del proxy en desarrollo local)
+        const healthUrl = SMART_MCP_CONFIG.healthUrl || 
+            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://localhost:8001/api/mcp/status'
+                : 'https://www.capibara6.com/api/mcp/status');
         
         console.log(`🔍 Verificando Smart MCP en: ${healthUrl}`);
         
         const response = await fetch(healthUrl, {
             method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             signal: AbortSignal.timeout(3000)  // 3 segundos de timeout
         });
 
@@ -124,8 +129,17 @@ async function checkSmartMCPHealth() {
             console.log('📦 Datos MCP:', data);
             
             // Verificar que la respuesta tenga datos válidos
-            if (data && (data.status === 'healthy' || data.service || data.approach)) {
-                console.log('✅ Smart MCP ACTIVO:', data.service || data.approach || 'healthy');
+            // El backend integrado puede devolver diferentes formatos
+            if (data && (
+                data.status === 'healthy' || 
+                data.status === 'running' ||
+                data.status === 'ok' ||
+                data.service || 
+                data.approach ||
+                data.connector ||
+                data.mcp_available === true
+            )) {
+                console.log('✅ Smart MCP ACTIVO:', data.service || data.approach || data.connector || data.status || 'healthy');
                 return true;
             }
         }
