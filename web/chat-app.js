@@ -901,7 +901,6 @@ async function simulateAssistantResponse(userMessage) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json', // Asegurar que siempre pedimos JSON, no formato toon
             },
             body: JSON.stringify({
                 message: userMessage,  // Enviar solo el mensaje del usuario
@@ -915,21 +914,8 @@ async function simulateAssistantResponse(userMessage) {
             throw new Error(`Error del servidor: ${response.status}`);
         }
         
-        // Verificar Content-Type antes de parsear
-        const contentType = response.headers.get('Content-Type') || '';
-        let data;
-        
-        if (contentType.includes('application/json')) {
-            data = await response.json();
-        } else {
-            // Intentar parsear como JSON con manejo de errores
-            try {
-                data = await response.json();
-            } catch (e) {
-                const textResponse = await response.text();
-                throw new Error(`Error parseando respuesta: ${textResponse.substring(0, 100)}`);
-            }
-        }
+        // Leer la respuesta JSON de nuestro backend
+        const data = await response.json();
         
         if (data.response || data.content) {
             // Simular streaming escribiendo la respuesta caracter por caracter
@@ -1366,63 +1352,6 @@ function saveMessage(role, content) {
     chat.updatedAt = new Date().toISOString();
     
     saveChatsToStorage();
-    
-    // Guardar en RAG si está disponible
-    if (typeof window !== 'undefined' && window.ragIntegration) {
-        window.ragIntegration.saveMessage(role, content, {
-            chat_id: currentChatId,
-            user_id: localStorage.getItem('capibara6_user_id')
-        }).catch(err => {
-            console.warn('⚠️ Error guardando en RAG:', err);
-        });
-    }
-    
-    // Guardar en backend también
-    if (role === 'user' || role === 'assistant') {
-        const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
-            ? CHATBOT_CONFIG.BACKEND_URL 
-            : 'http://34.12.166.76:5001';
-        
-        fetch(`${backendUrl}/api/save-conversation`, {
-            method: 'POST',
-            headers: {
-<<<<<<< Current (Your changes)
-<<<<<<< Current (Your changes)
-<<<<<<< Current (Your changes)
-<<<<<<< Current (Your changes)
-<<<<<<< Current (Your changes)
-                'Content-Type': 'application/json'
-=======
-                'Content-Type': 'application/json',
-                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
->>>>>>> Incoming (Background Agent changes)
-=======
-                'Content-Type': 'application/json',
-                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
->>>>>>> Incoming (Background Agent changes)
-=======
-                'Content-Type': 'application/json',
-                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
->>>>>>> Incoming (Background Agent changes)
-=======
-                'Content-Type': 'application/json',
-                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
->>>>>>> Incoming (Background Agent changes)
-=======
-                'Content-Type': 'application/json',
-                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
->>>>>>> Incoming (Background Agent changes)
-            },
-            body: JSON.stringify({
-                message: role === 'user' ? content : '',
-                response: role === 'assistant' ? content : '',
-                email: localStorage.getItem('user_email') || '',
-                session_id: currentChatId
-            })
-        }).catch(err => {
-            console.warn('⚠️ Error guardando en backend:', err);
-        });
-    }
 }
 
 function copyMessageContent(content) {
@@ -1670,7 +1599,6 @@ async function checkServerConnection() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json', // Asegurar que siempre pedimos JSON, no formato toon
             }
         });
         
