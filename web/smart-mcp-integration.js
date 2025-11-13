@@ -6,8 +6,9 @@
 
 const SMART_MCP_CONFIG = {
     // Usar el servidor integrado en la VM - HTTPS en producción
-    serverUrl: 'http://localhost:5001/api/mcp/analyze',  // Servidor local
-    enabled: true,  // ✅ HABILITADO - Smart MCP corriendo en puerto 5010
+    serverUrl: 'http://localhost:5003/api/mcp/augment',  // Endpoint correcto MCP
+    healthUrl: 'http://localhost:5003/api/mcp/health',   // Health check MCP
+    enabled: false,  // ⚠️ DESHABILITADO por defecto - activar solo si MCP server está corriendo
     timeout: 2000, // 2 segundos máximo
     fallbackOnError: true
 };
@@ -88,12 +89,12 @@ async function smartMCPAnalyze(userQuery) {
  */
 async function checkSmartMCPHealth() {
     try {
-        // En localhost: conectar directo a puerto 5010
+        // En localhost: conectar directo a puerto 5003 (MCP Server)
         // En producción: usar proxy de Vercel que conecta a la VM
         const healthUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://localhost:5010/health'
+            ? SMART_MCP_CONFIG.healthUrl
             : '/api/mcp-health';
-        
+
         console.log(`🔍 Verificando Smart MCP en: ${healthUrl}`);
         
         const response = await fetch(healthUrl, {
