@@ -53,7 +53,83 @@ const CHATBOT_CONFIG = {
         MCP_ENABLED: false,  // Deshabilitado por defecto - requiere MCP server en puerto 5003
         TTS_ENABLED: true,   // TTS disponible en VM_SERVICES:5002
         E2B_ENABLED: true,   // E2B integrado en backend
-        N8N_ENABLED: false   // N8N requiere VPN/túnel a VM_SERVICES:5678
+        N8N_ENABLED: false,  // N8N requiere VPN/túnel a VM_SERVICES:5678
+
+        // Configuración detallada por servicio
+        MCP: {
+            enabled: false,
+            url: isLocalhost ? 'http://localhost:5003' : VM_SERVICES + ':5003',
+            endpoints: {
+                AUGMENT: '/api/mcp/augment',
+                CONTEXTS: '/api/mcp/contexts',
+                HEALTH: '/api/mcp/health',
+                CALCULATE: '/api/mcp/calculate',
+                VERIFY: '/api/mcp/verify'
+            },
+            timeout: 5000,
+            note: 'MCP principal - Context & RAG'
+        },
+
+        TTS: {
+            enabled: true,
+            url: isLocalhost ? 'http://localhost:5002' : VM_SERVICES + ':5002',
+            endpoints: {
+                SPEAK: '/tts',
+                VOICES: '/voices',
+                CLONE: '/clone',
+                HEALTH: '/health',
+                PRELOAD: '/preload'
+            },
+            timeout: 10000,
+            note: 'Kyutai TTS - Text to Speech'
+        },
+
+        AUTH: {
+            enabled: true,
+            url: isLocalhost ? 'http://localhost:5004' : VM_MODELS + ':5004',
+            endpoints: {
+                GITHUB: '/auth/github',
+                GOOGLE: '/auth/google',
+                VERIFY: '/auth/verify',
+                LOGOUT: '/auth/logout',
+                CALLBACK_GITHUB: '/auth/callback/github',
+                CALLBACK_GOOGLE: '/auth/callback/google',
+                HEALTH: '/health'
+            },
+            timeout: 10000,
+            note: 'OAuth Authentication - GitHub & Google'
+        },
+
+        CONSENSUS: {
+            enabled: false,
+            url: isLocalhost ? 'http://localhost:5005' : VM_MODELS + ':5005',
+            endpoints: {
+                QUERY: '/api/consensus/query',
+                MODELS: '/api/consensus/models',
+                TEMPLATES: '/api/consensus/templates',
+                CONFIG: '/api/consensus/config',
+                HEALTH: '/api/consensus/health'
+            },
+            timeout: 30000,
+            note: 'Consensus multi-modelo - Combina respuestas de varios modelos'
+        },
+
+        SMART_MCP: {
+            enabled: false,
+            url: isLocalhost ? 'http://localhost:5010' : VM_SERVICES + ':5010',
+            endpoints: {
+                HEALTH: '/health',
+                ANALYZE: '/analyze',
+                UPDATE_DATE: '/update-date'
+            },
+            timeout: 5000,
+            note: 'MCP alternativo - RAG selectivo simplificado'
+        },
+
+        E2B: {
+            enabled: true,
+            note: 'E2B integrado en backend principal (puerto 5001)'
+        }
     },
 
     // URLs de VMs para servicios externos
