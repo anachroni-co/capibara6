@@ -50,9 +50,10 @@ const CHATBOT_CONFIG = {
 
     // Servicios opcionales (configurar si deben usarse o no)
     SERVICES: {
-        MCP_ENABLED: false,  // Deshabilitado por defecto ya que no está corriendo en el servidor actual
-        TTS_ENABLED: true,
-        E2B_ENABLED: true
+        MCP_ENABLED: false,  // Deshabilitado por defecto - requiere MCP server en puerto 5003
+        TTS_ENABLED: true,   // TTS disponible en VM_SERVICES:5002
+        E2B_ENABLED: true,   // E2B integrado en backend
+        N8N_ENABLED: false   // N8N requiere VPN/túnel a VM_SERVICES:5678
     },
 
     // URLs de VMs para servicios externos
