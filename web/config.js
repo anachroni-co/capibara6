@@ -1,50 +1,46 @@
 // Configuración del chatbot capibara6
-// Para desarrollo local, actualiza las IPs en este archivo según VM_SETUP_GUIDE.md
-
-// IPs de las VMs (actualizar según vm_config.json o ejecutando scripts/get_vm_info.py)
-const VM_IPS = {
-    // IP externa de Bounty2 (Ollama + Backend)
-    BOUNTY2_EXTERNAL: '34.12.166.76',  // ACTUALIZAR con IP real
-    // IP externa de gpt-oss-20b (TTS, MCP, N8n, Bridge)
-    GPTOSS_EXTERNAL: '34.175.136.104',  // ACTUALIZAR con IP real
-    // IP externa de rag3 (RAG API)
-    RAG3_EXTERNAL: '',  // ACTUALIZAR con IP real
-};
+// 
+// Arquitectura de VMs:
+// - gpt-oss-20b (34.175.136.104): Servidor principal, MCP, TTS, N8n, Bridge
+// - bounty2 (34.12.166.76): Ollama con modelos (gpt-oss-20B, mixtral, phi-mini3)
+// - rag3: Base de datos RAG
 
 const CHATBOT_CONFIG = {
     // URL del backend
-    // En desarrollo local: conecta a Bounty2 (Backend Flask en puerto 5001)
+    // En desarrollo local: Conectar a VM bounty2 (Backend integrado con Ollama)
     // En producción: URL de Vercel
-    BACKEND_URL: window.location.hostname === 'localhost'
-        ? `http://${VM_IPS.BOUNTY2_EXTERNAL}:5001`  // Backend en Bounty2
+    BACKEND_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://34.12.166.76:5001'  // VM bounty2 - Backend integrado con Ollama
         : 'https://www.capibara6.com',
     
-    // URLs de servicios adicionales (para desarrollo local)
-    SERVICE_URLS: {
-        // Ollama API (en Bounty2)
-        OLLAMA: window.location.hostname === 'localhost'
-            ? `http://${VM_IPS.BOUNTY2_EXTERNAL}:11434`
-            : null,
-        
-        // RAG API (en rag3)
-        RAG_API: window.location.hostname === 'localhost' && VM_IPS.RAG3_EXTERNAL
-            ? `http://${VM_IPS.RAG3_EXTERNAL}:8000`
-            : null,
-        
-        // TTS (en gpt-oss-20b)
-        TTS: window.location.hostname === 'localhost'
-            ? `http://${VM_IPS.GPTOSS_EXTERNAL}:5002`
-            : null,
-        
-        // MCP (en gpt-oss-20b)
-        MCP: window.location.hostname === 'localhost'
-            ? `http://${VM_IPS.GPTOSS_EXTERNAL}:5003`
-            : null,
-        
-        // N8n (en gpt-oss-20b)
-        N8N: window.location.hostname === 'localhost'
-            ? `http://${VM_IPS.GPTOSS_EXTERNAL}:5678`
-            : null,
+    // Configuración de servicios por VM
+    VMS: {
+        // VM gpt-oss-20b: Servicios principales
+        GPT_OSS_20B: {
+            ip: '34.175.136.104',
+            services: {
+                main: 'http://34.175.136.104:5000',      // Servidor principal
+                mcp: 'http://34.175.136.104:5003',        // MCP Server
+                mcpAlt: 'http://34.175.136.104:5010',     // MCP Server alternativo
+                model: 'http://34.175.136.104:8080'       // Llama Server (gpt-oss-20b)
+            }
+        },
+        // VM bounty2: Ollama con modelos
+        BOUNTY2: {
+            ip: '34.12.166.76',
+            services: {
+                ollama: 'http://34.12.166.76:11434',      // Ollama API
+                backend: 'http://34.12.166.76:5001'      // Backend Capibara6 integrado
+            }
+        },
+        // VM rag3: Base de datos RAG
+        RAG3: {
+            ip: null,  // Pendiente de obtener - Ejecutar: gcloud compute instances describe rag3 --zone=europe-west2-c --project=mamba-001 --format="value(networkInterfaces[0].accessConfigs[0].natIP)"
+            services: {
+                rag: null,  // URL completa: http://[IP_RAG3]:8000
+                api: null   // API REST: http://[IP_RAG3]:8000/api
+            }
+        }
     },
     
     // Endpoints
@@ -58,25 +54,13 @@ const CHATBOT_CONFIG = {
         AI_GENERATE: '/api/ai/generate',
         AI_CLASSIFY: '/api/ai/classify',
         CHAT: '/api/chat',
-        CHAT_STREAM: '/api/chat/stream',
         TTS_SPEAK: '/api/tts/speak',
         TTS_VOICES: '/api/tts/voices',
-        TTS_CLONE: '/api/tts/clone',
-        MODELS: '/api/models'
-    },
-    
-    // Configuración del modelo
-    MODEL_CONFIG: {
-        max_tokens: 200,
-        temperature: 0.7,
-        model_name: 'gpt-oss-20b',
-        timeout: 120000 // 2 minutos
+        // Endpoints RAG
+        RAG_SEARCH: '/api/search/rag',
+        RAG_SEMANTIC: '/api/search/semantic',
+        RAG_MESSAGES: '/api/messages',
+        RAG_FILES: '/api/files',
+        RAG_USERS: '/api/users'
     }
 };
-
-// Log de configuración en desarrollo
-if (window.location.hostname === 'localhost') {
-    console.log('🔧 Configuración de desarrollo local activada');
-    console.log('🔗 Backend URL:', CHATBOT_CONFIG.BACKEND_URL);
-    console.log('📡 Servicios disponibles:', CHATBOT_CONFIG.SERVICE_URLS);
-}

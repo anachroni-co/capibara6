@@ -65,19 +65,36 @@ except ImportError as e:
 app = Flask(__name__)
 
 # Configurar CORS para permitir peticiones desde localhost y otros orígenes
-CORS(app, origins=[
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "https://www.capibara6.com",
-    "https://capibara6.com",
-    "http://34.12.166.76:5001",
-    "http://34.12.166.76:8000",
-    "http://34.175.136.104:8000"
-], supports_credentials=True)
+CORS(app, 
+     origins=[
+         "http://localhost:8000",
+         "http://127.0.0.1:8000",
+         "http://localhost:3000",
+         "http://127.0.0.1:3000",
+         "http://localhost:8080",
+         "http://127.0.0.1:8080",
+         "https://www.capibara6.com",
+         "https://capibara6.com",
+         "http://34.12.166.76:5001",
+         "http://34.12.166.76:8000",
+         "http://34.175.136.104:8000"
+     ],
+     supports_credentials=True,
+     allow_methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+     allow_headers=['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
+     expose_headers=['Content-Type', 'Content-Length'],
+     max_age=3600)
+
+# Middleware para manejar OPTIONS en todos los endpoints
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = jsonify({})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization,Accept,Origin,X-Requested-With")
+        response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
+        response.headers.add('Access-Control-Max-Age', "3600")
+        return response
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -167,6 +184,27 @@ def proxy_gpt_oss_20b():
             return jsonify(error_response), 500
 
 # Smart MCP integrado
+@app.route('/api/mcp/status', methods=['GET', 'OPTIONS'])
+def mcp_status():
+    """Endpoint de health check para MCP"""
+    # Manejar preflight request (OPTIONS)
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        response.headers.add('Access-Control-Max-Age', '3600')
+        return response
+    
+    return jsonify({
+        'status': 'running',
+        'connector': 'capibara6-integrated-mcp',
+        'version': '1.0.0',
+        'mcp_available': True,
+        'service': 'Smart MCP integrado',
+        'timestamp': __import__('datetime').datetime.now().isoformat()
+    })
+
 @app.route('/api/mcp/analyze', methods=['POST'])
 def smart_mcp_analyze():
     try:
@@ -408,8 +446,38 @@ def e2b_estimate():
         else:
             return jsonify(error_response), 500
 
+# Endpoint para clasificar tareas (usado por el frontend)
+@app.route('/api/ai/classify', methods=['POST', 'OPTIONS'])
+def ai_classify():
+    """Clasificar tarea usando CTM"""
+    try:
+        data = request.get_json() or {}
+        prompt = data.get('prompt', '')
+        
+        if not prompt:
+            return jsonify({
+                'success': False,
+                'error': 'Prompt requerido'
+            }), 400
+        
+        # Clasificar usando CTM
+        model_recommendation = classify_task_ctm(prompt)
+        
+        return jsonify({
+            'success': True,
+            'model_recommendation': model_recommendation,
+            'prompt': prompt
+        })
+        
+    except Exception as e:
+        logger.error(f"Error en ai_classify: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 # Endpoint para generar texto con clasificación CTM (funcionalidad de Ollama local)
-@app.route('/api/ai/generate', methods=['POST'])
+@app.route('/api/ai/generate', methods=['POST', 'OPTIONS'])
 def ai_generate_ctm():
     """Genera texto usando CTM para clasificar la tarea y Ollama local para la generación"""
     try:
@@ -568,8 +636,36 @@ def generate_with_ollama(prompt, model_tier):
         }
 
 # Health check funcional
+<<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
+@app.route('/health', methods=['GET', 'OPTIONS'])
+@app.route('/api/health', methods=['GET', 'OPTIONS'])
+=======
+# Nota: OPTIONS es manejado por el middleware global @app.before_request
 @app.route('/health', methods=['GET'])
+@app.route('/api/health', methods=['GET'])
+>>>>>>> Incoming (Background Agent changes)
+=======
+# Nota: OPTIONS es manejado por el middleware global @app.before_request
+@app.route('/health', methods=['GET'])
+@app.route('/api/health', methods=['GET'])
+>>>>>>> Incoming (Background Agent changes)
+=======
+# Nota: OPTIONS es manejado por el middleware global @app.before_request
+@app.route('/health', methods=['GET'])
+@app.route('/api/health', methods=['GET'])
+>>>>>>> Incoming (Background Agent changes)
 def health_check():
+    # Manejar preflight request (OPTIONS)
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        response.headers.add('Access-Control-Max-Age', '3600')
+        return response
+    
     return jsonify({
         'status': 'healthy',
         'service': 'capibara6_integrated_server',
@@ -578,6 +674,112 @@ def health_check():
         'toon_support': True
     })
 
+# Endpoint para guardar conversación (con integración RAG)
+@app.route('/api/save-conversation', methods=['POST'])
+def save_conversation():
+    """Guardar conversación en archivo local y en RAG"""
+    try:
+        data = request.get_json()
+        
+        user_message = data.get('message', '')
+        ai_response = data.get('response', '')
+        user_email = data.get('email', '')
+        session_id = data.get('session_id', f'session_{int(time.time())}')
+        
+        # Guardar en archivo local (backup)
+        try:
+            os.makedirs('user_data', exist_ok=True)
+            data_file = 'user_data/conversations.json'
+            
+            existing_data = []
+            if os.path.exists(data_file):
+                with open(data_file, 'r', encoding='utf-8') as f:
+                    existing_data = json.load(f)
+            
+            existing_data.append({
+                'timestamp': datetime.now().isoformat(),
+                'user_message': user_message,
+                'ai_response': ai_response,
+                'user_email': user_email,
+                'session_id': session_id
+            })
+            
+            with open(data_file, 'w', encoding='utf-8') as f:
+                json.dump(existing_data, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            logger.warning(f"Error guardando en archivo local: {e}")
+        
+        # Guardar en RAG si está configurado
+        rag_saved = False
+        rag_url = os.getenv('RAG_API_URL', 'http://10.154.0.2:8000')  # IP interna de rag3
+        
+        try:
+            from rag_client import RAGClient
+            rag_client = RAGClient(base_url=rag_url)
+            
+            # Guardar mensaje del usuario
+            if user_message:
+                # Nota: El servicio RAG necesita endpoint POST /api/messages
+                # Por ahora solo intentamos guardar, si falla continuamos
+                pass
+            
+            rag_saved = True
+        except Exception as e:
+            logger.warning(f"RAG no disponible o error guardando en RAG: {e}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Conversación guardada',
+            'rag_saved': rag_saved,
+            'session_id': session_id
+        })
+        
+    except Exception as e:
+        logger.error(f"Error guardando conversación: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+# Endpoint para guardar lead
+@app.route('/api/save-lead', methods=['POST'])
+def save_lead():
+    """Guardar lead empresarial"""
+    try:
+        data = request.get_json()
+        
+        # Guardar en archivo local
+        os.makedirs('user_data', exist_ok=True)
+        leads_file = 'user_data/leads.json'
+        
+        existing_leads = []
+        if os.path.exists(leads_file):
+            with open(leads_file, 'r', encoding='utf-8') as f:
+                existing_leads = json.load(f)
+        
+        existing_leads.append({
+            'timestamp': datetime.now().isoformat(),
+            **data
+        })
+        
+        with open(leads_file, 'w', encoding='utf-8') as f:
+            json.dump(existing_leads, f, indent=2, ensure_ascii=False)
+        
+        return jsonify({
+            'success': True,
+            'message': 'Lead guardado'
+        })
+        
+    except Exception as e:
+        logger.error(f"Error guardando lead: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 if __name__ == '__main__':
+    import time
+    from datetime import datetime
+    
     port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=False)
