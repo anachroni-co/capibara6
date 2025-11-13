@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script rápido para liberar el puerto 5001
 
-echo "🔍 Buscando procesos en puerto 5001..."
+echo "🔍 Buscando procesos en puerto 5010..."
 
 PORT_PID=$(lsof -ti:5001 2>/dev/null)
 
