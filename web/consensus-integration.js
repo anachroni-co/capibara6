@@ -4,9 +4,9 @@
 
 // Configuración del sistema de consenso
 const CONSENSUS_CONFIG = {
-    serverUrl: 'http://localhost:5002/api/consensus/query',
+    serverUrl: 'http://localhost:5005/api/consensus/query',
     fallbackUrl: 'http://34.175.89.158:8080/completion',
-    enabled: true,
+    enabled: false,  // Deshabilitado por defecto - activar manualmente
     defaultTemplate: 'general',
     selectedModels: ['capibara6', 'oss-120b']
 };
@@ -25,21 +25,21 @@ let consensusEnabled = true;
 async function loadConsensusConfig() {
     try {
         // Cargar modelos disponibles
-        const modelsResponse = await fetch('http://localhost:5002/api/consensus/models');
+        const modelsResponse = await fetch('http://localhost:5005/api/consensus/models');
         if (modelsResponse.ok) {
             const modelsData = await modelsResponse.json();
             availableModels = modelsData.models_list || [];
         }
-        
+
         // Cargar plantillas disponibles
-        const templatesResponse = await fetch('http://localhost:5002/api/consensus/templates');
+        const templatesResponse = await fetch('http://localhost:5005/api/consensus/templates');
         if (templatesResponse.ok) {
             const templatesData = await templatesResponse.json();
             availableTemplates = Object.keys(templatesData);
         }
-        
+
         // Cargar configuración del consenso
-        const configResponse = await fetch('http://localhost:5002/api/consensus/config');
+        const configResponse = await fetch('http://localhost:5005/api/consensus/config');
         if (configResponse.ok) {
             const configData = await configResponse.json();
             consensusEnabled = configData.enabled;
