@@ -10,10 +10,14 @@ GET http://localhost:8001/api/n8n/templates/recommended 404 (NOT FOUND)
 POST http://localhost:8001/api/ai/generate 404 (NOT FOUND)
 ```
 
-**Causa**: El navegador está ejecutando archivos JavaScript antiguos en caché que NO existen en el repositorio actual:
-- `n8n-manager.js` - ❌ NO EXISTE en el repo
-- `chat-page.js` - ❌ NO EXISTE en el repo
-- Referencias a puerto 8001 - ❌ NO CONFIGURADO en el frontend actual
+**Causa Confirmada**: El navegador está cargando archivos JavaScript **desde un servidor remoto en `http://localhost:8000/`** que tiene una **versión antigua** del proyecto:
+
+- `http://localhost:8000/chat-page.js` - ❌ NO EXISTE en el repo actual
+- `http://localhost:8000/n8n-manager.js` - ❌ NO EXISTE en el repo actual
+
+Estos archivos antiguos hacen peticiones al puerto 8001 (un proxy CORS obsoleto), causando los errores 404.
+
+**NO es un problema de caché del navegador** - Es un problema del **servidor remoto** que está sirviendo archivos obsoletos.
 
 ## ✅ Configuración de Puertos Correcta
 
@@ -253,5 +257,24 @@ const SMART_MCP_CONFIG = {
 
 ---
 
-**Última actualización**: 2025-11-13
-**Estado**: ✅ Configuración correcta en repositorio
+## 🔄 Actualización: Servidor Remoto con Archivos Antiguos
+
+**Después de investigación adicional**, se confirmó que los errores **NO son causados por caché del navegador**, sino por un **servidor remoto** en `localhost:8000` que está sirviendo archivos JavaScript obsoletos (`chat-page.js`, `n8n-manager.js`).
+
+**Ver guía completa**: [`ACTUALIZAR_SERVIDOR_WEB.md`](./ACTUALIZAR_SERVIDOR_WEB.md)
+
+**Solución rápida**:
+```bash
+# Servir archivos actualizados desde este repositorio
+cd /home/user/capibara6/web
+python3 -m http.server 8000
+
+# Limpiar caché del navegador: Ctrl + Shift + R
+# Recargar: http://localhost:8000/chat.html
+```
+
+---
+
+**Última actualización**: 2025-11-14
+**Estado**: ⚠️ Servidor remoto requiere actualización de archivos
+**Repositorio**: ✅ Configuración correcta
