@@ -14,11 +14,24 @@
 // Configuración del modelo original
     const MODEL_CONFIG = {
         // Obtener la URL del backend desde CHATBOT_CONFIG si está disponible
-        serverUrl: typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG
-            ? CHATBOT_CONFIG.MODEL_CONFIG.serverUrl
-            : (window.location.hostname === 'localhost'
-                ? 'http://localhost:8001/api/chat'  // Usar proxy local para evitar problemas CORS
-                : 'http://34.12.166.76:5001/api/chat'), // Puerto correcto para producción
+        serverUrl: (() => {
+            // Prioridad 1: Configuración local de VMs si está disponible
+            if (typeof MODEL_CONFIG_LOCAL !== 'undefined') {
+                return MODEL_CONFIG_LOCAL.serverUrl;
+            }
+            // Prioridad 2: CHATBOT_CONFIG con MODEL_CONFIG
+            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG) {
+                return CHATBOT_CONFIG.MODEL_CONFIG.serverUrl;
+            }
+            // Prioridad 3: CHATBOT_CONFIG con BACKEND_URL
+            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL) {
+                return CHATBOT_CONFIG.BACKEND_URL + '/api/chat';
+            }
+            // Fallback: localhost o IP de producción
+            return window.location.hostname === 'localhost'
+                ? 'http://localhost:8001/api/chat'  // Proxy local para evitar CORS
+                : 'http://34.12.166.76:5001/api/chat'; // IP de bounty2 para producción
+        })(),
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas

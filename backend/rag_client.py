@@ -37,10 +37,13 @@ class RAGClient:
             max_retries: Número máximo de reintentos
             enable_toon: Habilitar optimización TOON para reducir tokens
         """
-        self.base_url = base_url or os.getenv(
-            "RAG_API_URL",
-            "http://10.154.0.2:8000"  # IP interna de RAG3 en GCloud
+        # IP interna de RAG3 en GCloud (actualizar según vm_config.json)
+        # Para obtener la IP correcta, ejecuta: python3 scripts/get_vm_info.py
+        default_rag_url = os.getenv(
+            "RAG3_IP_INTERNAL",
+            os.getenv("RAG_API_URL", "http://10.154.0.2:8000")  # IP interna por defecto
         )
+        self.base_url = base_url or default_rag_url
         self.timeout = timeout
         self.enable_toon = enable_toon
 
