@@ -297,13 +297,13 @@ if __name__ == '__main__':
     for model_id in info['models_list']:
         config = get_model_config(model_id)
         print(f"  • {config['name']} ({config['hardware']})")
-    
-    print(f"\n🌐 Servidor ejecutándose en: http://localhost:5002")
+
+    print(f"\n🌐 Servidor ejecutándose en: http://localhost:5005")
     print("📋 Endpoints disponibles:")
     print("  • POST /api/consensus/query - Consulta con consenso")
     print("  • GET  /api/consensus/models - Información de modelos")
     print("  • GET  /api/consensus/templates - Plantillas de prompts")
     print("  • GET  /api/consensus/config - Configuración del consenso")
     print("  • GET  /api/consensus/health - Health check")
-    
-    app.run(host='0.0.0.0', port=5002, debug=True)
+
+    app.run(host='0.0.0.0', port=5005, debug=True)

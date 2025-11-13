@@ -294,6 +294,6 @@ if __name__ == '__main__':
     print("      export GOOGLE_CLIENT_ID='tu_client_id'")
     print("      export GOOGLE_CLIENT_SECRET='tu_client_secret'")
     print("      export JWT_SECRET='tu_jwt_secret'")
-    print("\n🌐 Servidor ejecutándose en: http://localhost:5001")
-    
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    print("\n🌐 Servidor ejecutándose en: http://localhost:5004")
+
+    app.run(host='0.0.0.0', port=5004, debug=True)
