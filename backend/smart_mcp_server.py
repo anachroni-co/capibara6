@@ -1,6 +1,14 @@
 """
 Smart MCP Server - Versión mejorada basada en estándares reales
 Selectivo, ligero y efectivo para Capibara6
+
+Puerto: 5010 (Alternativo)
+Servidor principal MCP: mcp_server.py (Puerto 5003)
+
+Este servidor ofrece una implementación alternativa de MCP con:
+- Base de conocimiento verificada sobre Capibara6
+- Selective RAG (contexto solo cuando es necesario)
+- Endpoints simplificados (/health, /analyze)
 """
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -195,5 +203,11 @@ if __name__ == '__main__':
     print("📊 Enfoque: Selective RAG (Retrieval-Augmented Generation)")
     print("✅ Contexto SOLO cuando es necesario")
     print("🎯 Ligero y efectivo para Capibara6")
+    print("\n🌐 Servidor ejecutándose en: http://localhost:5010")
+    print("📋 Endpoints disponibles:")
+    print("  • GET  /health - Health check")
+    print("  • POST /analyze - Analizar query con RAG selectivo")
+    print("  • POST /update-date - Actualizar fecha actual")
+    print("\n💡 Servidor principal MCP disponible en puerto 5003")
     app.run(host='0.0.0.0', port=5010, debug=True)
 

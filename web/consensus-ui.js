@@ -444,14 +444,18 @@ async function checkAllServicesStatus() {
     // Verificar Ollama
     await checkServiceStatus('ollama', 'http://34.12.166.76:11434/api/tags');
 
-    // Verificar TTS
-    await checkServiceStatus('tts', 'http://34.175.136.104:5002/health');
+    // Verificar TTS (solo si está habilitado)
+    if (window.CHATBOT_CONFIG?.SERVICES?.TTS_ENABLED !== false) {
+        await checkServiceStatus('tts', 'http://34.175.136.104:5002/health');
+    }
 
-    // Verificar MCP
-    await checkServiceStatus('mcp', 'http://34.175.136.104:5003/health');
+    // Verificar MCP (solo si está habilitado)
+    if (window.CHATBOT_CONFIG?.SERVICES?.MCP_ENABLED) {
+        await checkServiceStatus('mcp', 'http://34.175.136.104:5003/api/mcp/health');
+    }
 
-    // Verificar N8N
-    await checkServiceStatus('n8n', 'http://34.175.136.104:5678');
+    // N8N deshabilitado por defecto - requiere VPN/túnel
+    // await checkServiceStatus('n8n', 'http://34.175.136.104:5678/healthz');
 
     updateServiceBadges();
 }
