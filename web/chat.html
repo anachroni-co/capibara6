@@ -29,12 +29,18 @@
                 </button>
             </div>
 
-            <!-- New Chat Button -->
+            <!-- Actions Section -->
             <div class="sidebar-section">
                 <button class="btn-new-chat" id="new-chat-btn">
                     <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
                     <span>Nuevo Chat</span>
                 </button>
+                <div class="sidebar-actions">
+                    <button class="btn-sidebar-action" id="create-project-btn" title="Crear Proyecto">
+                        <i data-lucide="folder-plus" style="width: 18px; height: 18px;"></i>
+                        <span>Crear Proyecto</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Chat History -->
@@ -47,6 +53,25 @@
                 </div>
                 <div class="chat-list" id="chat-list">
                     <!-- Los chats se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Widget N8n -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span class="section-title">Workflows</span>
+                    <button class="icon-btn-sm" id="n8n-dashboard-btn" title="Abrir Dashboard N8n">
+                        <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+                <div class="n8n-widget" id="n8n-widget">
+                    <div class="n8n-status" id="n8n-status">
+                        <span class="status-dot"></span>
+                        <span>Cargando...</span>
+                    </div>
+                    <div class="n8n-workflows-list" id="n8n-workflows-list">
+                        <!-- Workflows activos se cargarán aquí -->
+                    </div>
                 </div>
             </div>
 
@@ -68,10 +93,15 @@
 
             <!-- Profile Menu Dropdown -->
             <div class="profile-menu" id="profile-menu">
+                <button class="profile-menu-item" id="profile-account-btn">
+                    <i data-lucide="user-circle" style="width: 18px; height: 18px;"></i>
+                    <span>Mi Cuenta</span>
+                </button>
                 <button class="profile-menu-item" id="profile-settings-btn">
                     <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
                     <span>Configuración</span>
                 </button>
+                <div class="profile-menu-divider"></div>
                 <button class="profile-menu-item" id="profile-theme-btn">
                     <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
                     <span>Tema</span>
@@ -91,6 +121,44 @@
         <!-- Sidebar Overlay (Mobile) -->
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
+        <!-- Panel RAG (colapsable) -->
+        <aside class="rag-panel" id="rag-panel">
+            <div class="rag-panel-header">
+                <h3>🔍 Búsqueda RAG</h3>
+                <button class="btn-icon" id="rag-panel-close">
+                    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                </button>
+            </div>
+            <div class="rag-panel-content">
+                <div class="rag-search-box">
+                    <input type="text" id="rag-search-input" placeholder="Buscar en conocimiento..." class="rag-search-input">
+                    <button id="rag-search-btn" class="rag-search-btn">
+                        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+                <div class="rag-search-options">
+                    <label>
+                        <input type="radio" name="rag-search-type" value="rag" checked>
+                        RAG Completo
+                    </label>
+                    <label>
+                        <input type="radio" name="rag-search-type" value="semantic">
+                        Semántica
+                    </label>
+                    <label>
+                        <input type="radio" name="rag-search-type" value="all">
+                        Todas
+                    </label>
+                </div>
+                <div class="rag-results" id="rag-results">
+                    <div class="rag-empty-state">
+                        <i data-lucide="search" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                        <p>Realiza una búsqueda para ver resultados</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
         <!-- Main Content -->
         <div class="chat-main-content">
             <!-- Header -->
@@ -104,10 +172,30 @@
                         <div class="chat-status">
                             <span class="status-indicator" id="status-indicator"></span>
                             <span id="status-text">Conectando...</span>
+                            <!-- Indicador MCP -->
+                            <span class="mcp-indicator" id="mcp-indicator" title="MCP Contexto Inteligente" style="display: none;">
+                                <i data-lucide="brain" style="width: 16px; height: 16px;"></i>
+                                <span id="mcp-status-text">MCP</span>
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="chat-header-actions">
+                    <!-- Controles TTS -->
+                    <div class="tts-controls" id="tts-controls" style="display: none;">
+                        <button class="btn-icon" id="tts-play-btn" title="Reproducir voz">
+                            <i data-lucide="play" style="width: 18px; height: 18px;"></i>
+                        </button>
+                        <button class="btn-icon" id="tts-pause-btn" title="Pausar" style="display: none;">
+                            <i data-lucide="pause" style="width: 18px; height: 18px;"></i>
+                        </button>
+                        <button class="btn-icon" id="tts-stop-btn" title="Detener" style="display: none;">
+                            <i data-lucide="square" style="width: 18px; height: 18px;"></i>
+                        </button>
+                        <input type="range" id="tts-speed" min="0.5" max="2" step="0.1" value="1" 
+                               title="Velocidad" class="tts-speed-slider">
+                        <span class="tts-speed-value" id="tts-speed-value">1.0x</span>
+                    </div>
                     <button class="btn-icon" id="clear-chat-btn" title="Limpiar conversación">
                         <i data-lucide="trash-2" style="width: 20px; height: 20px;"></i>
                     </button>
@@ -138,6 +226,9 @@
             <div class="chat-input-container">
                 <div class="chat-input-wrapper">
                     <div class="input-actions">
+                        <button class="input-action-btn" id="rag-search-btn-sidebar" title="Buscar en RAG">
+                            <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                        </button>
                         <button class="input-action-btn" id="attach-btn" title="Adjuntar archivo">
                             <i data-lucide="paperclip" style="width: 20px; height: 20px;"></i>
                         </button>
@@ -159,6 +250,296 @@
                     <span>Enviar</span>
                     <i data-lucide="send" style="width: 20px; height: 20px;"></i>
                 </button>
+            </div>
+        </div>
+
+        <!-- Create Project Modal -->
+        <div class="modal-overlay" id="create-project-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Crear Nuevo Proyecto</h2>
+                    <button class="modal-close" id="create-project-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="project-name">Nombre del Proyecto</label>
+                        <input type="text" id="project-name" class="form-input" placeholder="Mi Proyecto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-description">Descripción (opcional)</label>
+                        <textarea id="project-description" class="form-textarea" rows="3" placeholder="Describe tu proyecto..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="project-include-current-chat">
+                            Incluir chat actual en el proyecto
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="create-project-cancel-btn">Cancelar</button>
+                    <button class="btn-primary" id="create-project-submit-btn">Crear Proyecto</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Select Project Modal (Simple) -->
+        <div class="modal-overlay" id="select-project-modal">
+            <div class="modal-content modal-small">
+                <div class="modal-header">
+                    <h2>Añadir a Proyecto</h2>
+                    <button class="modal-close" id="select-project-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-description">Selecciona un proyecto:</p>
+                    <div class="projects-list" id="projects-list">
+                        <!-- Los proyectos se cargarán dinámicamente -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="select-project-cancel-btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Select Chat to Merge Modal (Simple) -->
+        <div class="modal-overlay" id="select-chat-merge-modal">
+            <div class="modal-content modal-small">
+                <div class="modal-header">
+                    <h2>Unir con otro Chat</h2>
+                    <button class="modal-close" id="select-chat-merge-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-description">Selecciona el chat con el que unir:</p>
+                    <div class="chats-selection-list" id="chats-merge-list">
+                        <!-- Los chats se cargarán dinámicamente -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="select-chat-merge-cancel-btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Modal -->
+        <div class="modal-overlay" id="account-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Mi Cuenta</h2>
+                    <button class="modal-close" id="account-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Tabs de navegación -->
+                    <div class="account-tabs">
+                        <button class="account-tab active" data-tab="profile">
+                            <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+                            Perfil
+                        </button>
+                        <button class="account-tab" data-tab="digital-twin">
+                            <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                            Gemelo Digital
+                        </button>
+                    </div>
+
+                    <!-- Tab: Perfil -->
+                    <div class="account-tab-content active" id="tab-profile">
+                        <div class="account-section">
+                            <div class="account-avatar-large">
+                                <div class="user-avatar-large">
+                                    <i data-lucide="user" style="width: 48px; height: 48px;"></i>
+                                </div>
+                                <button class="btn-change-avatar">Cambiar foto</button>
+                            </div>
+                            <div class="form-group">
+                                <label for="account-name">Nombre</label>
+                                <input type="text" id="account-name" class="form-input" value="Usuario">
+                            </div>
+                            <div class="form-group">
+                                <label for="account-email">Email</label>
+                                <input type="email" id="account-email" class="form-input" value="usuario@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="account-company">Empresa (opcional)</label>
+                                <input type="text" id="account-company" class="form-input" placeholder="Nombre de la empresa">
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h3>Seguridad</h3>
+                            <button class="btn-secondary btn-full" id="change-password-btn">
+                                <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
+                                Cambiar Contraseña
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Gemelo Digital -->
+                    <div class="account-tab-content" id="tab-digital-twin">
+                        <div class="digital-twin-section">
+                            <div class="digital-twin-header">
+                                <div class="digital-twin-info">
+                                    <h3>Gemelo Digital</h3>
+                                    <p class="digital-twin-description">Importa tus datos de redes sociales para crear un gemelo digital que aprenda tu estilo de escritura y personalidad.</p>
+                                </div>
+                                <div class="digital-twin-status" id="digital-twin-status">
+                                    <span class="status-badge" id="twin-status-badge">No iniciado</span>
+                                </div>
+                            </div>
+
+                            <!-- Progreso del gemelo -->
+                            <div class="twin-progress-section" id="twin-progress-section" style="display: none;">
+                                <div class="progress-header">
+                                    <span>Progreso de creación</span>
+                                    <span class="progress-percentage" id="twin-progress-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="twin-progress-bar"></div>
+                                </div>
+                                <div class="progress-steps" id="twin-progress-steps">
+                                    <!-- Pasos se añadirán dinámicamente -->
+                                </div>
+                            </div>
+
+                            <!-- Importadores de redes sociales -->
+                            <div class="social-importers">
+                                <h4>Importar Datos</h4>
+                                <div class="social-cards-grid">
+                                    <!-- Twitter/X -->
+                                    <div class="social-card" data-platform="twitter">
+                                        <div class="social-card-header">
+                                            <div class="social-icon twitter">
+                                                <i data-lucide="twitter" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>Twitter / X</h5>
+                                                <span class="social-status" id="twitter-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Tweets, respuestas y bio</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="twitter">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="twitter-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+
+                                    <!-- LinkedIn -->
+                                    <div class="social-card" data-platform="linkedin">
+                                        <div class="social-card-header">
+                                            <div class="social-icon linkedin">
+                                                <i data-lucide="linkedin" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>LinkedIn</h5>
+                                                <span class="social-status" id="linkedin-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Posts, artículos y perfil profesional</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="linkedin">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="linkedin-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Instagram -->
+                                    <div class="social-card" data-platform="instagram">
+                                        <div class="social-card-header">
+                                            <div class="social-icon instagram">
+                                                <i data-lucide="instagram" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>Instagram</h5>
+                                                <span class="social-status" id="instagram-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Captions de posts y comentarios</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="instagram">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="instagram-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+
+                                    <!-- GitHub -->
+                                    <div class="social-card" data-platform="github">
+                                        <div class="social-card-header">
+                                            <div class="social-icon github">
+                                                <i data-lucide="github" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>GitHub</h5>
+                                                <span class="social-status" id="github-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Repositorios, commits e issues</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="github">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="github-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Perfil del Gemelo Digital -->
+                            <div class="twin-profile-section" id="twin-profile-section" style="display: none;">
+                                <h4>Perfil Generado</h4>
+                                <div class="twin-profile-card">
+                                    <div class="twin-profile-header">
+                                        <div class="twin-avatar">
+                                            <i data-lucide="sparkles" style="width: 32px; height: 32px;"></i>
+                                        </div>
+                                        <div class="twin-info">
+                                            <h5 id="twin-name">Mi Gemelo Digital</h5>
+                                            <span class="twin-date" id="twin-created-date">Creado el --</span>
+                                        </div>
+                                    </div>
+                                    <div class="twin-stats">
+                                        <div class="twin-stat">
+                                            <span class="stat-value" id="twin-messages-count">0</span>
+                                            <span class="stat-label">Mensajes analizados</span>
+                                        </div>
+                                        <div class="twin-stat">
+                                            <span class="stat-value" id="twin-platforms-count">0</span>
+                                            <span class="stat-label">Plataformas</span>
+                                        </div>
+                                    </div>
+                                    <div class="twin-personality" id="twin-personality">
+                                        <!-- Análisis de personalidad se mostrará aquí -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botón para generar gemelo -->
+                            <div class="twin-actions">
+                                <button class="btn-primary btn-full" id="generate-twin-btn" disabled>
+                                    <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                                    Generar Gemelo Digital
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="account-cancel-btn">Cancelar</button>
+                    <button class="btn-primary" id="account-save-btn">Guardar Cambios</button>
+                </div>
             </div>
         </div>
 
@@ -209,6 +590,13 @@
     </div>
     
     <script src="config.js"></script>
+    <!-- Servicios de integración -->
+    <script src="tts-integration.js"></script>
+    <script src="smart-mcp-integration.js"></script>
+    <script src="rag-api-client.js"></script>
+    <script src="n8n-manager.js"></script>
+    <script src="model-visualization.js"></script>
+    <script src="entropy-monitor.js"></script>
     <script src="chat-page.js"></script>
     <script>
         // Inicializar iconos de Lucide

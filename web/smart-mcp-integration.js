@@ -92,11 +92,23 @@ async function smartMCPAnalyze(userQuery) {
  */
 async function checkSmartMCPHealth() {
     try {
-        // En localhost: conectar directo a puerto 5010
+        // En localhost: conectar a la VM gpt-oss-20b en puerto 5010
         // En producción: usar proxy de Vercel que conecta a la VM
-        const healthUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://localhost:5010/health'
-            : '/api/mcp-health';
+        let healthUrl;
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            // Usar la IP de la VM gpt-oss-20b desde config.js si está disponible
+            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.MCP) {
+                // Extraer la IP y puerto base, cambiar el puerto a 5010 para health check
+                const mcpUrl = CHATBOT_CONFIG.SERVICE_URLS.MCP;
+                const urlObj = new URL(mcpUrl);
+                healthUrl = `${urlObj.protocol}//${urlObj.hostname}:5010/health`;
+            } else {
+                // Fallback a la IP hardcodeada de gpt-oss-20b
+                healthUrl = 'http://34.175.136.104:5010/health';
+            }
+        } else {
+            healthUrl = '/api/mcp-health';
+        }
         
         console.log(`🔍 Verificando Smart MCP en: ${healthUrl}`);
         
