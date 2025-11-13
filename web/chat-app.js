@@ -1389,7 +1389,17 @@ function saveMessage(role, content) {
 <<<<<<< Current (Your changes)
 <<<<<<< Current (Your changes)
 <<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
                 'Content-Type': 'application/json'
+=======
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
+>>>>>>> Incoming (Background Agent changes)
+=======
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon
+>>>>>>> Incoming (Background Agent changes)
 =======
                 'Content-Type': 'application/json',
                 'Accept': 'application/json' // Asegurar que siempre pedimos JSON, no formato toon

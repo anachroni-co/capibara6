@@ -2,13 +2,10 @@
 
 class Capibara6ChatPage {
     constructor() {
-        // Usar CHATBOT_CONFIG si está disponible, sino usar configuración por defecto
-        // Para desarrollo local: bounty2:5001 (Backend integrado con Ollama)
-        // Para producción: Vercel proxy
-        this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+        this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
             ? CHATBOT_CONFIG.BACKEND_URL
-            : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://34.12.166.76:5001'  // VM bounty2 - Backend integrado con Ollama
+            : (window.location.hostname === 'localhost' 
+                ? 'http://localhost:5000'
                 : 'https://www.capibara6.com');
         
         this.messages = [];
@@ -268,81 +265,78 @@ class Capibara6ChatPage {
     
     async checkConnection() {
         try {
-<<<<<<< Current (Your changes)
-            const classifyEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
-                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
-                : `${this.backendUrl}/api/ai/classify`;
-
-            const response = await fetch(classifyEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json', // Asegurar que siempre pedimos JSON, no formato toon
-                },
-                body: JSON.stringify({ prompt: 'ping' })
-            });
-
-            if (response.ok) {
-                this.isConnected = true;
-                this.updateStatus('Conectado', 'success');
-                return;
-            }
-
-            // Fallback al health check clásico
-            const healthEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.HEALTH
-                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.HEALTH
-                : `${this.backendUrl}/api/health`;
-
-            const healthResponse = await fetch(healthEndpoint, {
-                headers: {
-                    'Accept': 'application/json', // Asegurar que siempre pedimos JSON, no formato toon
-                }
-            });
-            if (healthResponse.ok) {
-                this.isConnected = true;
-                this.updateStatus('Conectado', 'success');
-=======
             // Asegurar que tenemos la URL correcta del backend
             const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
                 ? CHATBOT_CONFIG.BACKEND_URL
                 : this.backendUrl;
-            
-            console.log('🔍 Verificando conexión en:', backendUrl);
-            
+
             // Función helper para crear timeout compatible
             const createTimeoutSignal = (ms) => {
                 const controller = new AbortController();
                 setTimeout(() => controller.abort(), ms);
                 return controller.signal;
             };
-            
-            // Lista de endpoints a probar (en orden de preferencia)
-            const endpointsToTry = [
-                { path: '/api/health', method: 'GET', body: null },
-                { path: '/health', method: 'GET', body: null },
-                { path: '/', method: 'GET', body: null }
-            ];
-            
+
+            // Lista de endpoints a probar (en orden de preferencia, con lógica de CHATBOT_CONFIG)
+            const endpointsToTry = [];
+
+            // 1. Endpoint de classify (tu preferencia)
+            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS?.AI_CLASSIFY) {
+                endpointsToTry.push({
+                    path: CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY,
+                    method: 'POST',
+                    body: { prompt: 'ping' },
+                    description: 'AI Classify'
+                });
+            } else {
+                endpointsToTry.push({
+                    path: '/api/ai/classify',
+                    method: 'POST',
+                    body: { prompt: 'ping' },
+                    description: 'AI Classify (fallback)'
+                });
+            }
+
+            // 2. Endpoint de health (tu fallback)
+            if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS?.HEALTH) {
+                endpointsToTry.push({
+                    path: CHATBOT_CONFIG.ENDPOINTS.HEALTH,
+                    method: 'GET',
+                    body: null,
+                    description: 'Health (config)'
+                });
+            } else {
+                endpointsToTry.push({
+                    path: '/api/health',
+                    method: 'GET',
+                    body: null,
+                    description: 'Health (fallback 1)'
+                });
+            }
+
+            // 3. Health alternativo y root (del Incoming, para robustez)
+            endpointsToTry.push(
+                { path: '/health', method: 'GET', body: null, description: 'Health (fallback 2)' },
+                { path: '/', method: 'GET', body: null, description: 'Root' }
+            );
+
             // Intentar cada endpoint
             for (const endpoint of endpointsToTry) {
                 const fullUrl = `${backendUrl}${endpoint.path}`;
-                console.log(`🔍 Intentando: ${endpoint.method} ${fullUrl}`);
-                
+                console.log(`🔍 Intentando: ${endpoint.method} ${fullUrl} (${endpoint.description})`);
                 try {
                     const fetchOptions = {
                         method: endpoint.method,
                         headers: {
                             'Content-Type': 'application/json',
+                            'Accept': 'application/json'  // ✅ Tu mejora: forzar JSON
                         },
                         signal: createTimeoutSignal(5000)
                     };
-                    
                     if (endpoint.body) {
                         fetchOptions.body = JSON.stringify(endpoint.body);
                     }
-                    
                     const response = await fetch(fullUrl, fetchOptions);
-                    
                     if (response.ok || response.status === 200) {
                         const responseData = await response.json().catch(() => ({}));
                         console.log('✅ Backend conectado:', responseData);
@@ -350,16 +344,15 @@ class Capibara6ChatPage {
                         this.updateStatus('Conectado', 'success');
                         return;
                     } else {
-                        console.warn(`⚠️ ${endpoint.path} respondió con status ${response.status}`);
+                        console.warn(`⚠️ ${endpoint.description} respondió con status ${response.status}`);
                     }
                 } catch (endpointError) {
-                    console.warn(`⚠️ ${endpoint.path} falló:`, endpointError.message);
-                    // Continuar con el siguiente endpoint
+                    console.warn(`⚠️ ${endpoint.description} falló:`, endpointError.message);
                     continue;
                 }
             }
-            
-            // Si todos los endpoints fallan, verificar si es el proxy
+
+            // Si todos los endpoints fallan, diagnóstico avanzado (tu lógica)
             if (backendUrl.includes('localhost:8001')) {
                 console.log('🔍 Verificando si el proxy CORS está corriendo...');
                 try {
@@ -367,7 +360,6 @@ class Capibara6ChatPage {
                         method: 'GET',
                         signal: createTimeoutSignal(3000)
                     });
-                    
                     if (proxyCheck.ok) {
                         const proxyData = await proxyCheck.json().catch(() => ({}));
                         console.log('✅ Proxy CORS está corriendo:', proxyData);
@@ -376,26 +368,22 @@ class Capibara6ChatPage {
                         this.showError('El proxy CORS no está respondiendo. Inicia el proxy con: python3 backend/cors_proxy_simple.py');
                     }
                 } catch (proxyError) {
-                    this.showError('El proxy CORS no está corriendo. Inicia el proxy con:\n\npython3 backend/cors_proxy_simple.py\n\nO verifica que esté escuchando en localhost:8001');
+                    this.showError('El proxy CORS no está corriendo. Inicia el proxy con:\npython3 backend/cors_proxy_simple.py\nO verifica que esté escuchando en localhost:8001');
                 }
             }
-            
+
             // Si todos fallan
             this.isConnected = false;
             this.updateStatus('Desconectado', 'error');
             this.showError('No se pudo conectar con el backend. Verifica:\n1. Que el servidor esté corriendo\n2. Que el proxy CORS esté activo (si usas localhost:8001)\n3. Que el firewall permita conexiones');
-            
+
         } catch (error) {
             console.error('❌ Error verificando conexión:', error);
-            
-            // Obtener la URL que se intentó usar
             const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
                 ? CHATBOT_CONFIG.BACKEND_URL
                 : this.backendUrl;
-            
             console.error('📍 Backend URL intentada:', backendUrl);
-            
-            // Verificar tipo de error
+
             if (error.name === 'AbortError' || error.message?.includes('aborted')) {
                 this.isConnected = false;
                 this.updateStatus('Timeout', 'error');
@@ -403,25 +391,21 @@ class Capibara6ChatPage {
             } else if (error.name === 'TypeError' && (error.message.includes('Failed to fetch') || error.message.includes('NetworkError'))) {
                 this.isConnected = false;
                 this.updateStatus('Error de conexión', 'error');
-                
-                let errorMsg = `No se pudo conectar con el backend en ${backendUrl}.\n\n`;
-                
+                let errorMsg = `No se pudo conectar con el backend en ${backendUrl}.\n`;
                 if (backendUrl.includes('localhost:8001')) {
-                    errorMsg += 'El proxy CORS no está corriendo o no puede conectar con el backend remoto.\n\n';
+                    errorMsg += 'El proxy CORS no está corriendo o no puede conectar con el backend remoto.\n';
                     errorMsg += 'Para iniciar el proxy:\n';
-                    errorMsg += 'python3 backend/cors_proxy_simple.py\n\n';
+                    errorMsg += 'python3 backend/cors_proxy_simple.py\n';
                     errorMsg += 'Verifica también que el backend remoto esté activo en 34.12.166.76:5001';
                 } else {
                     errorMsg += 'Posibles causas:\n';
                     errorMsg += '1. El servidor no está corriendo\n';
                     errorMsg += '2. El firewall bloquea la conexión\n';
                     errorMsg += '3. La URL es incorrecta\n';
-                    errorMsg += '4. Error de CORS\n\n';
+                    errorMsg += '4. Error de CORS\n';
                     errorMsg += 'Verifica la configuración en config.js';
                 }
-                
                 this.showError(errorMsg);
->>>>>>> Incoming (Background Agent changes)
             } else {
                 this.isConnected = false;
                 this.updateStatus('Error de conexión', 'error');
@@ -513,7 +497,6 @@ class Capibara6ChatPage {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json', // Asegurar que siempre pedimos JSON, no formato toon
             },
             body: JSON.stringify({
                 prompt: message,
@@ -523,33 +506,7 @@ class Capibara6ChatPage {
             })
         });
 
-        // Verificar el Content-Type de la respuesta antes de parsear
-        const contentType = response.headers.get('Content-Type') || '';
-        
-        let data;
-        if (contentType.includes('application/json')) {
-            // Respuesta es JSON
-            data = await response.json();
-        } else if (contentType.includes('text/plain') || contentType.includes('application/toon')) {
-            // Respuesta es formato toon - intentar parsear como texto primero
-            const textResponse = await response.text();
-            try {
-                // Intentar parsear como JSON primero (por si acaso)
-                data = JSON.parse(textResponse);
-            } catch (e) {
-                // Si no es JSON, es formato toon - devolver error informativo
-                throw new Error('El servidor devolvió formato TOON. Por favor, asegúrate de que el servidor esté configurado para devolver JSON.');
-            }
-        } else {
-            // Intentar parsear como JSON por defecto
-            try {
-                data = await response.json();
-            } catch (e) {
-                // Si falla, intentar como texto
-                const textResponse = await response.text();
-                throw new Error(`Error parseando respuesta del servidor: ${textResponse.substring(0, 100)}`);
-            }
-        }
+        const data = await response.json();
 
         if (!response.ok || !data.success) {
             throw new Error(data.error || `HTTP error! status: ${response.status}`);
