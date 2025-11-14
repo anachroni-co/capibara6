@@ -116,3 +116,20 @@ spec:
     targetPort: 3000
     protocol: TCP
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: n8n-service
+  namespace: capibara6
+  labels:
+    app: capibara6-n8n
+spec:
+  selector:
+    app: capibara6-n8n
+  ports:
+  - name: http
+    port: 5678
+    targetPort: 5678
+    protocol: TCP
+  type: ClusterIP

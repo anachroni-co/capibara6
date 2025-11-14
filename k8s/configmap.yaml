@@ -17,3 +17,6 @@ data:
   BATCH_SIZE: "32"
   RATE_LIMIT_REQUESTS: "100"
   RATE_LIMIT_WINDOW: "60"
+  # n8n Configuration
+  N8N_WEBHOOK_URL: "https://n8n.capibara6.com/"
+  N8N_EXECUTIONS_MODE: "regular"

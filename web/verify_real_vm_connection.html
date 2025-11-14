@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Conexión a VM Real</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover:not(:disabled) {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Verificación de Conexión a VM Real</h1>
+        <p>IP de la VM: <strong id="vm-ip">34.175.136.104</strong></p>
+        <p>Puertos a verificar: 5000 (Main Server), 8000 (potencial servicio)</p>
+        
+        <div id="status-checks">
+            <div class="status info" id="initial-status">ℹ️  IP de la VM: 34.175.136.104 - Puerto 5000 confirmado como escuchando internamente - Puerto 8000 detectado como LISTEN en la VM</div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button id="btn-check-all">🔍 Verificar Todos los Servicios</button>
+            <button id="btn-check-main">🧪 Verificar Servidor Principal (5000)</button>
+            <button id="btn-check-alt">📡 Verificar Servicio Alternativo (8000)</button>
+        </div>
+        
+        <div id="results" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        const VM_IP = '34.175.136.104';
+        const resultsDiv = document.getElementById('results');
+        
+        function addResult(message, type = 'info') {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `status ${type}`;
+            resultDiv.textContent = message;
+            resultsDiv.appendChild(resultDiv);
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        async function checkConnection(url, serviceName) {
+            const startTime = Date.now();
+            
+            try {
+                addResult(`⏳ Verificando ${serviceName} en: ${url}`, 'warning');
+                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 segundos de timeout
+                
+                const response = await fetch(url, {
+                    method: 'GET',
+                    signal: controller.signal,
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                clearTimeout(timeoutId);
+                const responseTime = Date.now() - startTime;
+                
+                if (response.ok || response.status === 405) { // 405 es común para endpoints POST-only
+                    try {
+                        const data = await response.json();
+                        addResult(`✅ ${serviceName} ACCESIBLE - ${response.status} (${responseTime}ms)`, 'success');
+                        console.log(`${serviceName} response:`, data);
+                    } catch (jsonError) {
+                        // Si no es JSON, mostrar como texto
+                        const text = await response.text();
+                        addResult(`✅ ${serviceName} ACCESIBLE - ${response.status} (${responseTime}ms) - Texto recibido`, 'success');
+                    }
+                    return true;
+                } else if (response.status === 404) {
+                    addResult(`⚠️  ${serviceName} SERVIDOR EXISTE pero endpoint no encontrado (${responseTime}ms)`, 'warning');
+                    return true; // Existe aunque no tenga ese endpoint
+                } else {
+                    addResult(`⚠️  ${serviceName} RESPONDIÓ CON CÓDIGO: ${response.status} (${responseTime}ms)`, 'warning');
+                    return false;
+                }
+            } catch (error) {
+                clearTimeout(timeoutId);
+                const responseTime = Date.now() - startTime;
+                
+                if (error.name === 'AbortError') {
+                    addResult(`⏰ ${serviceName} SIN RESPUESTA - Timeout después de ${responseTime}ms`, 'error');
+                } else {
+                    addResult(`❌ ${serviceName} ERROR DE CONEXIÓN: ${error.message} (${responseTime}ms)`, 'error');
+                }
+                return false;
+            }
+        }
+        
+        async function checkMainServer() {
+            return await checkConnection(`http://${VM_IP}:5000/`, 'Servidor Principal (5000)');
+        }
+        
+        async function checkAltService() {
+            return await checkConnection(`http://${VM_IP}:8000/`, 'Servicio en puerto 8000');
+        }
+        
+        async function checkAllServices() {
+            addResult('🔍 Iniciando verificación de todos los servicios...', 'info');
+            
+            let successes = 0;
+            const total = 2;
+            
+            if (await checkMainServer()) successes++;
+            if (await checkAltService()) successes++;
+            
+            if (successes > 0) {
+                addResult(`🎉 RESULTADO: ${successes}/${total} servicios accesibles`, 'success');
+            } else {
+                addResult(`💥 NINGÚN servicio accesible`, 'error');
+            }
+        }
+        
+        // Asociar eventos a los botones
+        document.getElementById('btn-check-all').addEventListener('click', checkAllServices);
+        document.getElementById('btn-check-main').addEventListener('click', checkMainServer);
+        document.getElementById('btn-check-alt').addEventListener('click', checkAltService);
+    </script>
+</body>
+</html>

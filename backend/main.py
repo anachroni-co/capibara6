@@ -119,20 +119,25 @@ app.add_middleware(
 
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["*"] if ENVIRONMENT == "development" else ["capibara6.com", "*.capibara6.com"]
+    allowed_hosts=["*"] if ENVIRONMENT == "development" else [
+        "capibara6.com", "*.capibara6.com", "localhost", "127.0.0.1",
+        "capibara6-api", "*.capibara6-network"
+    ]
 )
 
 # Rate limiting middleware
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
     """Middleware de rate limiting."""
+    global rate_limit_storage
     client_ip = request.client.host
     current_time = time.time()
     
     # Limpiar entradas antiguas (más de 1 minuto)
-    rate_limit_storage = {k: v for k, v in rate_limit_storage.items() 
+    cleaned_storage = {k: v for k, v in rate_limit_storage.items() 
                          if current_time - v['last_request'] < 60}
-    
+    rate_limit_storage.clear()
+    rate_limit_storage.update(cleaned_storage)
     # Verificar límite (100 requests por minuto por IP)
     if client_ip in rate_limit_storage:
         if rate_limit_storage[client_ip]['count'] >= 100:
@@ -162,6 +167,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 
 # Endpoints de salud
 @app.get("/health")
+@app.head("/health")
 async def health_check():
     """Health check endpoint."""
     return {
@@ -227,20 +233,10 @@ async def process_query(
         if app.state.ace_integration:
             ace_result = app.state.ace_integration.process_query(query)
         
-        # 3. E2B Execution (usando sugerencias del router o detección directa)
+        # 3. E2B Execution (si hay código)
         e2b_result = None
-        if app.state.e2b_integration:
-            # Verificar si el router sugiere ejecución de código o si hay indicios directos
-            if (routing_result and routing_result.get('code_related', False)) or \
-               "code" in query.lower() or "execute" in query.lower() or "run" in query.lower():
-                
-                # Si el router sugirió un template E2B específico, usarlo
-                template_suggestion = routing_result.get('e2b_template_suggestion', 'default') if routing_result else 'default'
-                
-                e2b_result = await app.state.e2b_integration.process_code_request(
-                    code=query,
-                    template_id=template_suggestion
-                )
+        if app.state.e2b_integration and "code" in query.lower():
+            e2b_result = app.state.e2b_integration.execute_query(query)
         
         # 4. Cache result
         cache_key = f"query_{hash(query)}"
@@ -388,42 +384,6 @@ async def clear_cache(current_user: dict = Depends(get_current_user)):
     return {"message": "Cache cleared successfully"}
 
 # Background tasks
-
-@app.post(f"{API_PREFIX}/e2b/execute")
-async def execute_e2b_code(
-    request: Dict[str, Any],
-    current_user: dict = Depends(get_current_user)
-):
-    """Endpoint para ejecutar código en sandbox E2B."""
-    try:
-        code = request.get("code", "")
-        language = request.get("language", "python")
-        template_id = request.get("template", "default")
-
-        if not code:
-            raise HTTPException(status_code=400, detail="Code is required")
-
-        if not app.state.e2b_integration:
-            raise HTTPException(status_code=503, detail="E2B integration not available")
-
-        # Ejecutar código usando el template especificado
-        result = await app.state.e2b_integration.process_code_request(
-            code=code,
-            template_id=template_id
-        )
-
-        return {
-            "success": result.get("success", False),
-            "output": result.get("logs", {}).get("stdout", []),
-            "errors": result.get("logs", {}).get("stderr", []),
-            "execution_time": result.get("execution_time", 0),
-            "template_used": result.get("template_used", template_id),
-            "timestamp": datetime.now().isoformat()
-        }
-
-    except Exception as e:
-        logger.error(f"Error ejecutando código E2B: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
 async def log_query_metrics(metrics_data: Dict[str, Any]):
     """Registra métricas de query en background."""
     try:

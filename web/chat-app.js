@@ -4,7 +4,7 @@
 
 // Configuración del sistema de consenso (comentado por ahora, usar modelo original)
     const CONSENSUS_CONFIG = {
-        serverUrl: 'http://localhost:5005/api/consensus/query',
+        serverUrl: 'https://www.capibara6.com/api/consensus/query',
     fallbackUrl: 'http://34.175.104.187:8080/completion',  // IP actualizada
     enabled: false, // Deshabilitado por ahora
     defaultTemplate: 'general',
@@ -13,8 +13,14 @@
 
 // Configuración del modelo original
     const MODEL_CONFIG = {
-        // Usar proxy de Vercel para evitar problemas de Mixed Content
-        serverUrl: 'http://localhost:5001/api/chat',  // Servidor local
+        // Obtener la URL del backend desde CHATBOT_CONFIG si está disponible
+        serverUrl: typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG
+            ? CHATBOT_CONFIG.MODEL_CONFIG.serverUrl
+            : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+                    ? `${CHATBOT_CONFIG.BACKEND_URL}/api/chat`
+                    : 'http://34.12.166.76:5001/api/chat')  // VM bounty2 - Backend con Ollama
+                : 'https://www.capibara6.com/api/chat'), // Producción
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
@@ -530,14 +536,11 @@ async function sendMessage() {
     
     // Guardar el último mensaje del usuario para regeneración
     lastUserMessage = content || 'Archivos adjuntos';
-
-    // Guardar copia de los archivos antes de limpiarlos
-    const filesToSend = [...attachedFiles];
-
+    
     // Agregar mensaje del usuario
     console.log('📨 Agregando mensaje del usuario:', messageContent);
     appendMessage('user', messageContent);
-
+    
     // Limpiar input y archivos (con pequeño delay para evitar flash visual)
     setTimeout(() => {
         messageInput.value = '';
@@ -561,7 +564,7 @@ async function sendMessage() {
     
     // Simular respuesta del asistente
     console.log('🎬 Llamando a simulateAssistantResponse con:', lastUserMessage);
-    await simulateAssistantResponse(lastUserMessage, filesToSend);
+    await simulateAssistantResponse(lastUserMessage);
     console.log('✅ simulateAssistantResponse completada');
 }
 
@@ -828,7 +831,7 @@ function addStatsToMessage(messageDiv, stats) {
     });
 }
 
-async function simulateAssistantResponse(userMessage, filesToSend = []) {
+async function simulateAssistantResponse(userMessage) {
     console.log('🤖 simulateAssistantResponse() iniciada con:', userMessage);
     isTyping = true;
     hideTypingIndicator();
@@ -892,40 +895,20 @@ async function simulateAssistantResponse(userMessage, filesToSend = []) {
         // Crear mensaje vacío para streaming
         streamingMessageDiv = createStreamingMessage();
         streamingTextDiv = streamingMessageDiv.querySelector('.message-text');
-
-        // Preparar datos para enviar
-        let fetchOptions = {
+        
+        // Conectar con nuestro backend que se conecta a GPT-OSS-20B
+        const response = await fetch(MODEL_CONFIG.serverUrl, {
             method: 'POST',
-            signal: abortController.signal
-        };
-
-        // Si hay archivos adjuntos, usar FormData; sino, usar JSON
-        if (filesToSend.length > 0) {
-            const formData = new FormData();
-            formData.append('message', userMessage);
-            formData.append('max_tokens', MODEL_CONFIG.defaultParams.n_predict);
-            formData.append('temperature', MODEL_CONFIG.defaultParams.temperature);
-
-            // Agregar archivos
-            filesToSend.forEach(file => {
-                formData.append('files', file);
-            });
-
-            fetchOptions.body = formData;
-            // NO establecer Content-Type para FormData, el navegador lo hace automáticamente
-        } else {
-            fetchOptions.headers = {
+            headers: {
                 'Content-Type': 'application/json',
-            };
-            fetchOptions.body = JSON.stringify({
-                message: userMessage,
+            },
+            body: JSON.stringify({
+                message: userMessage,  // Enviar solo el mensaje del usuario
                 max_tokens: MODEL_CONFIG.defaultParams.n_predict,
                 temperature: MODEL_CONFIG.defaultParams.temperature
-            });
-        }
-
-        // Conectar con nuestro backend que se conecta a GPT-OSS-20B
-        const response = await fetch(MODEL_CONFIG.serverUrl, fetchOptions);
+            }),
+            signal: abortController.signal
+        });
         
         if (!response.ok) {
             throw new Error(`Error del servidor: ${response.status}`);
@@ -1606,15 +1589,17 @@ async function checkServerConnection() {
     try {
         updateServerStatus('connecting', 'Verificando...');
         
-        const response = await fetch(MODEL_CONFIG.serverUrl, {
-            method: 'POST',
+        // Usar endpoint de health check en lugar de hacer una solicitud de chat
+        const healthUrl = `${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+                ? CHATBOT_CONFIG.BACKEND_URL
+                : 'http://34.12.166.76:5001')
+            : 'https://www.capibara6.com'}/api/health`;
+        const response = await fetch(healthUrl, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                prompt: '<bos><start_of_turn>user\ntest<end_of_turn>\n<start_of_turn>model\n',
-                n_predict: 1
-            })
+            }
         });
         
         if (response.ok) {
