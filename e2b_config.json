@@ -1,6 +1,6 @@
 {
   "e2b": {
-    "api_token": "${E2B_API_KEY}",
+    "api_token": "e2b_d8df23b5de5214b7bfb4ebe227a308b61a2ae172",
     "default_template": "python3",
     "timeout": 180,
     "enabled": true

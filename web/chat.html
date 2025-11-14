@@ -3,404 +3,612 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Capibara6 Consensus - Sistema de IA con GPT-OSS 20B (20.9B parámetros)">
-    <title>Capibara6 Consensus | Anachroni</title>
+    <meta name="description" content="Capibara6 - Chat con el modelo híbrido Transformer-Mamba">
+    <title>Chat capibara6 - IA Conversacional | Anachroni</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="chat.css?v=11.0">
-    <link rel="stylesheet" href="chat-consensus.css?v=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Marked.js para renderizar Markdown -->
-    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
-    <!-- Highlight.js para syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="chat-styles.css">
 </head>
-<body class="chat-page">
-    <!-- Barra lateral -->
-    <aside id="sidebar" class="sidebar hidden">
-        <div class="sidebar-header">
-            <a href="index.html" class="sidebar-logo">
-                <h1 class="logo-gradient">capibara6</h1>
-            </a>
-            <button id="new-chat-btn" class="btn-new-chat">
-                <i data-lucide="edit-3" style="width: 20px; height: 20px;"></i>
-                <span data-i18n="chat.new">Nueva Conversación</span>
-            </button>
-        </div>
-
-        <div class="sidebar-content">
-            <!-- Información del usuario -->
-            <div id="user-info" class="user-info" style="display: none;">
-                <img src="" alt="Avatar" class="user-avatar">
-                <div class="user-details">
-                    <span class="user-name">Usuario</span>
-                    <span class="user-provider">provider</span>
+<body>
+    <div class="chat-page-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">
+                        <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h2 class="logo-text">capibara6</h2>
                 </div>
-            </div>
-            
-            <!-- Tabs para Conversaciones / Agentes -->
-            <div class="sidebar-tabs">
-                <button class="sidebar-tab active" data-tab="chats">
-                    <i data-lucide="messages-square" style="width: 16px; height: 16px;"></i>
-                    <span data-i18n="sidebar.chats">Chats</span>
-                </button>
-                <button class="sidebar-tab" data-tab="agents">
-                    <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
-                    <span data-i18n="sidebar.agents">Agentes</span>
+                <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle Sidebar">
+                    <i data-lucide="panel-left-close" style="width: 20px; height: 20px;"></i>
                 </button>
             </div>
 
-            <!-- Tab: Conversaciones -->
-            <div id="tab-chats" class="tab-content active">
-                <div class="sidebar-section">
-                    <h3 class="sidebar-section-title" data-i18n="chat.today">Hoy</h3>
-                    <div id="chats-today" class="chat-list">
-                        <!-- Se llenarán dinámicamente -->
-                    </div>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3 class="sidebar-section-title" data-i18n="chat.previous">Anteriores</h3>
-                    <div id="chats-previous" class="chat-list">
-                        <!-- Se llenarán dinámicamente -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab: Agentes -->
-            <div id="tab-agents" class="tab-content">
-                <div class="agents-header">
-                    <button id="create-agent-btn" class="btn-create-agent">
-                        <i data-lucide="wand-2" style="width: 18px; height: 18px;"></i>
-                        <span data-i18n="agents.create">Crear Agente</span>
+            <!-- Actions Section -->
+            <div class="sidebar-section">
+                <button class="btn-new-chat" id="new-chat-btn">
+                    <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+                    <span>Nuevo Chat</span>
+                </button>
+                <div class="sidebar-actions">
+                    <button class="btn-sidebar-action" id="create-project-btn" title="Crear Proyecto">
+                        <i data-lucide="folder-plus" style="width: 18px; height: 18px;"></i>
+                        <span>Crear Proyecto</span>
                     </button>
                 </div>
-                <div id="agents-list" class="agents-list">
-                    <!-- Se llenarán dinámicamente -->
+            </div>
+
+            <!-- Chat History -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span class="section-title">Conversaciones</span>
+                    <button class="icon-btn-sm" id="refresh-chats-btn" title="Actualizar">
+                        <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+                <div class="chat-list" id="chat-list">
+                    <!-- Los chats se cargarán dinámicamente -->
                 </div>
             </div>
-        </div>
 
-        <div class="sidebar-footer">
-            <button class="sidebar-user-btn">
-                <div class="user-avatar">
-                    <i data-lucide="circle-user" style="width: 20px; height: 20px;"></i>
+            <!-- Widget N8n -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span class="section-title">Workflows</span>
+                    <button class="icon-btn-sm" id="n8n-dashboard-btn" title="Abrir Dashboard N8n">
+                        <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+                    </button>
                 </div>
-                <div class="user-info">
-                    <div class="user-name">Usuario</div>
-                    <div class="user-plan">Plan Gratuito</div>
+                <div class="n8n-widget" id="n8n-widget">
+                    <div class="n8n-status" id="n8n-status">
+                        <span class="status-dot"></span>
+                        <span>Cargando...</span>
+                    </div>
+                    <div class="n8n-workflows-list" id="n8n-workflows-list">
+                        <!-- Workflows activos se cargarán aquí -->
+                    </div>
                 </div>
-                <i data-lucide="chevron-up" style="width: 20px; height: 20px;"></i>
-            </button>
-        </div>
-    </aside>
-
-    <!-- Overlay para cerrar sidebar al hacer click fuera -->
-    <div id="sidebar-overlay" class="sidebar-overlay"></div>
-
-    <!-- Botón para mostrar/ocultar sidebar en móvil -->
-    <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle Sidebar">
-        <i data-lucide="panel-left" style="width: 24px; height: 24px;"></i>
-    </button>
-
-    <!-- Área principal del chat -->
-    <main class="chat-main">
-        <!-- Sidebar de plantillas -->
-        <aside class="templates-sidebar">
-            <div class="sidebar-header">
-                <i data-lucide="settings-2" style="width: 18px; height: 18px;"></i>
-                <h3>Plantillas</h3>
             </div>
-            <div class="template-list">
-                <button class="template-item" data-template="conservador">
-                    <span class="template-emoji">🛡️</span>
-                    <span class="template-name">Conservador</span>
-                </button>
-                <button class="template-item active" data-template="balanceado">
-                    <span class="template-emoji">⚖️</span>
-                    <span class="template-name">Balanceado</span>
-                </button>
-                <button class="template-item" data-template="creativo">
-                    <span class="template-emoji">🎨</span>
-                    <span class="template-name">Creativo</span>
-                </button>
-                <button class="template-item" data-template="preciso">
-                    <span class="template-emoji">🎯</span>
-                    <span class="template-name">Preciso</span>
-                </button>
-                <button class="template-item" data-template="conversacional">
-                    <span class="template-emoji">💬</span>
-                    <span class="template-name">Conversacional</span>
-                </button>
-                <button class="template-item" data-template="tecnico">
-                    <span class="template-emoji">🔧</span>
-                    <span class="template-name">Técnico</span>
-                </button>
-                <button class="template-item" data-template="conciso">
-                    <span class="template-emoji">⚡</span>
-                    <span class="template-name">Conciso</span>
-                </button>
-                <button class="template-item" data-template="detallado">
-                    <span class="template-emoji">📚</span>
-                    <span class="template-name">Detallado</span>
-                </button>
-                <button class="template-item" data-template="experimental">
-                    <span class="template-emoji">🧪</span>
-                    <span class="template-name">Experimental</span>
-                </button>
-                <button class="template-item" data-template="gemma_optimizado">
-                    <span class="template-emoji">✨</span>
-                    <span class="template-name">Capibara6 Optimizado</span>
-                </button>
-            </div>
+
+            <!-- User Profile -->
             <div class="sidebar-footer">
-                <button id="show-template-stats-sidebar" class="btn-stats-sidebar" title="Ver estadísticas">
-                    <i data-lucide="bar-chart-3" style="width: 16px; height: 16px;"></i>
-                    <span>Estadísticas</span>
-                </button>
+                <div class="user-profile" id="user-profile">
+                    <div class="user-avatar">
+                        <i data-lucide="user" style="width: 20px; height: 20px;"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name" id="user-name">Usuario</div>
+                        <div class="user-email" id="user-email">usuario@example.com</div>
+                    </div>
+                    <button class="icon-btn-sm" id="profile-menu-btn" title="Menú de perfil">
+                        <i data-lucide="more-vertical" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
             </div>
-            <div id="template-description-sidebar" class="template-description-sidebar">
-                Equilibrio entre coherencia y creatividad
+
+            <!-- Profile Menu Dropdown -->
+            <div class="profile-menu" id="profile-menu">
+                <button class="profile-menu-item" id="profile-account-btn">
+                    <i data-lucide="user-circle" style="width: 18px; height: 18px;"></i>
+                    <span>Mi Cuenta</span>
+                </button>
+                <button class="profile-menu-item" id="profile-settings-btn">
+                    <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
+                    <span>Configuración</span>
+                </button>
+                <div class="profile-menu-divider"></div>
+                <button class="profile-menu-item" id="profile-theme-btn">
+                    <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+                    <span>Tema</span>
+                </button>
+                <button class="profile-menu-item" id="profile-help-btn">
+                    <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i>
+                    <span>Ayuda</span>
+                </button>
+                <div class="profile-menu-divider"></div>
+                <button class="profile-menu-item text-danger" id="profile-logout-btn">
+                    <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
             </div>
         </aside>
 
-        <!-- Contenedor del contenido del chat -->
-        <div class="chat-content-wrapper">
-        <!-- Vista vacía (sin conversación seleccionada) -->
-        <div id="empty-state" class="empty-state">
-            <div class="empty-state-content">
-                <div class="capibara-logo-large">
-                    <h1 class="logo-gradient">capibara6</h1>
-                    <div class="consensus-badge" style="margin-top: 10px;">
-                        <i data-lucide="network" style="width: 14px; height: 14px;"></i>
-                        <span>Consensus System</span>
-                    </div>
-                </div>
-                <h2 class="empty-state-title" data-i18n="chat.empty.title">¿En qué puedo ayudarte hoy?</h2>
-                <p class="empty-state-subtitle" data-i18n="chat.empty.subtitle">Sistema de IA con modelo GPT-OSS 20B (20.9B parámetros) - Powered by Ollama</p>
-                
-                <div class="suggestion-cards">
-                    <button class="suggestion-card" data-prompt="¿Qué es el sistema de Consenso de Capibara6 y cómo funciona?">
-                        <i data-lucide="network" style="width: 24px; height: 24px;"></i>
-                        <div>
-                            <div class="suggestion-title" data-i18n="chat.suggestion1.title">Sistema de Consenso</div>
-                            <div class="suggestion-text" data-i18n="chat.suggestion1.text">Explícame cómo funciona</div>
-                        </div>
-                    </button>
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-                    <button class="suggestion-card" data-prompt="¿Qué características tiene el modelo GPT-OSS 20B?">
-                        <i data-lucide="cpu" style="width: 24px; height: 24px;"></i>
-                        <div>
-                            <div class="suggestion-title" data-i18n="chat.suggestion2.title">Modelo GPT-OSS 20B</div>
-                            <div class="suggestion-text" data-i18n="chat.suggestion2.text">20.9B parámetros</div>
-                        </div>
-                    </button>
-
-                    <button class="suggestion-card" data-prompt="Ayúdame a escribir código Python eficiente y bien estructurado">
-                        <i data-lucide="terminal" style="width: 24px; height: 24px;"></i>
-                        <div>
-                            <div class="suggestion-title" data-i18n="chat.suggestion3.title">Programación</div>
-                            <div class="suggestion-text" data-i18n="chat.suggestion3.text">Ayuda con código Python</div>
-                        </div>
-                    </button>
-
-                    <button class="suggestion-card" data-prompt="¿Qué servicios adicionales ofrece Capibara6? (TTS, MCP, N8N)">
-                        <i data-lucide="sparkles" style="width: 24px; height: 24px;"></i>
-                        <div>
-                            <div class="suggestion-title" data-i18n="chat.suggestion4.title">Servicios</div>
-                            <div class="suggestion-text" data-i18n="chat.suggestion4.text">TTS, MCP y más</div>
-                        </div>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Área de conversación -->
-        <div id="chat-area" class="chat-area" style="display: none;">
-            <div class="chat-header">
-                <button id="sidebar-toggle-header" class="btn-icon">
-                    <i data-lucide="panel-left" style="width: 20px; height: 20px;"></i>
-                </button>
-                <div class="chat-title">
-                    <span id="current-chat-title">Nueva Conversación</span>
-                </div>
-                <div class="chat-actions">
-                    <!-- Indicador de modelo activo -->
-                    <div class="active-model-indicator" id="active-model-indicator">
-                        <div class="model-indicator-icon">🦫</div>
-                        <div class="model-indicator-text">
-                            <div class="model-indicator-name">GPT-OSS 20B</div>
-                            <div class="model-indicator-params">20.9B params</div>
-                        </div>
-                    </div>
-                    <!-- Badges de servicios activos -->
-                    <div class="service-badges" id="service-badges-container">
-                        <!-- Se llenarán dinámicamente -->
-                    </div>
-                    <!-- Indicador de estado del servidor -->
-                    <div class="server-status" id="server-status" title="Estado del servidor">
-                        <div class="status-led" id="status-led"></div>
-                        <span class="status-text" id="status-text">Desconectado</span>
-                    </div>
-                    <button class="btn-icon" title="Compartir" data-i18n-title="chat.share">
-                        <i data-lucide="link-2" style="width: 20px; height: 20px;"></i>
-                    </button>
-                    <button class="btn-services-panel" onclick="toggleServicesPanel()" title="Panel de Control">
-                        <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
-                        <span>Control</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Banner Beta Experimental -->
-            <div class="beta-banner">
-                <i data-lucide="flask-conical" style="width: 16px; height: 16px;"></i>
-                <span><strong>Capibara6 Consensus - Beta</strong> - Sistema de IA con GPT-OSS 20B (20.9B parámetros). En desarrollo activo.</span>
-                <button class="beta-banner-close" onclick="this.parentElement.style.display='none'" title="Cerrar">
-                    <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+        <!-- Panel RAG (colapsable) -->
+        <aside class="rag-panel" id="rag-panel">
+            <div class="rag-panel-header">
+                <h3>🔍 Búsqueda RAG</h3>
+                <button class="btn-icon" id="rag-panel-close">
+                    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
                 </button>
             </div>
+            <div class="rag-panel-content">
+                <div class="rag-search-box">
+                    <input type="text" id="rag-search-input" placeholder="Buscar en conocimiento..." class="rag-search-input">
+                    <button id="rag-search-btn" class="rag-search-btn">
+                        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+                <div class="rag-search-options">
+                    <label>
+                        <input type="radio" name="rag-search-type" value="rag" checked>
+                        RAG Completo
+                    </label>
+                    <label>
+                        <input type="radio" name="rag-search-type" value="semantic">
+                        Semántica
+                    </label>
+                    <label>
+                        <input type="radio" name="rag-search-type" value="all">
+                        Todas
+                    </label>
+                </div>
+                <div class="rag-results" id="rag-results">
+                    <div class="rag-empty-state">
+                        <i data-lucide="search" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                        <p>Realiza una búsqueda para ver resultados</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-            <div id="messages-container" class="messages-container">
-                <!-- Los mensajes se agregarán aquí dinámicamente -->
+        <!-- Main Content -->
+        <div class="chat-main-content">
+            <!-- Header -->
+            <header class="chat-header">
+                <div class="chat-header-left">
+                    <button class="btn-icon" id="sidebar-toggle-mobile" aria-label="Toggle Sidebar">
+                        <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+                    </button>
+                    <div class="chat-header-title">
+                        <h1 class="chat-title">capibara6</h1>
+                        <div class="chat-status">
+                            <span class="status-indicator" id="status-indicator"></span>
+                            <span id="status-text">Conectando...</span>
+                            <!-- Indicador MCP -->
+                            <span class="mcp-indicator" id="mcp-indicator" title="MCP Contexto Inteligente" style="display: none;">
+                                <i data-lucide="brain" style="width: 16px; height: 16px;"></i>
+                                <span id="mcp-status-text">MCP</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <!-- Controles TTS -->
+                    <div class="tts-controls" id="tts-controls" style="display: none;">
+                        <button class="btn-icon" id="tts-play-btn" title="Reproducir voz">
+                            <i data-lucide="play" style="width: 18px; height: 18px;"></i>
+                        </button>
+                        <button class="btn-icon" id="tts-pause-btn" title="Pausar" style="display: none;">
+                            <i data-lucide="pause" style="width: 18px; height: 18px;"></i>
+                        </button>
+                        <button class="btn-icon" id="tts-stop-btn" title="Detener" style="display: none;">
+                            <i data-lucide="square" style="width: 18px; height: 18px;"></i>
+                        </button>
+                        <input type="range" id="tts-speed" min="0.5" max="2" step="0.1" value="1" 
+                               title="Velocidad" class="tts-speed-slider">
+                        <span class="tts-speed-value" id="tts-speed-value">1.0x</span>
+                    </div>
+                    <button class="btn-icon" id="clear-chat-btn" title="Limpiar conversación">
+                        <i data-lucide="trash-2" style="width: 20px; height: 20px;"></i>
+                    </button>
+                    <a href="index.html" class="btn-icon" title="Volver al inicio">
+                        <i data-lucide="home" style="width: 20px; height: 20px;"></i>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages-container" id="chat-messages">
+                <div class="chat-message bot-message">
+                    <div class="message-avatar">
+                        <div class="avatar-gradient">
+                            <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            <p>¡Hola! Soy capibara6, un modelo de IA híbrido Transformer-Mamba. ¿En qué puedo ayudarte hoy?</p>
+                        </div>
+                        <div class="message-time" id="welcome-time"></div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Área de input -->
+            <!-- Input Area -->
             <div class="chat-input-container">
-                <!-- Archivos adjuntos -->
-                <div id="attachments-preview" class="attachments-preview" style="display: none;"></div>
-                
                 <div class="chat-input-wrapper">
-                    <button id="attach-btn" class="btn-icon" title="Adjuntar archivo" data-i18n-title="chat.attach">
-                        <i data-lucide="plus-circle" style="width: 20px; height: 20px;"></i>
-                    </button>
-                    <input type="file" id="file-input" style="display: none;" multiple accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xlsx,.xls,.pptx,.ppt,.zip,.rar">
-                    
+                    <div class="input-actions">
+                        <button class="input-action-btn" id="rag-search-btn-sidebar" title="Buscar en RAG">
+                            <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                        </button>
+                        <button class="input-action-btn" id="attach-btn" title="Adjuntar archivo">
+                            <i data-lucide="paperclip" style="width: 20px; height: 20px;"></i>
+                        </button>
+                    </div>
                     <textarea 
-                        id="message-input" 
-                        class="message-input" 
-                        placeholder="Escribe tu mensaje aquí..."
-                        data-i18n-placeholder="chat.input.placeholder"
+                        id="chat-input" 
+                        class="chat-input" 
+                        placeholder="Escribe tu mensaje aquí... (Shift+Enter para nueva línea)"
                         rows="1"
+                        autocomplete="off"
                     ></textarea>
-                    
-                    <button id="send-btn" class="btn-send" disabled>
-                        <i data-lucide="arrow-up" style="width: 20px; height: 20px;"></i>
+                    <div class="input-actions">
+                        <button class="input-action-btn" id="voice-btn" title="Mensaje de voz">
+                            <i data-lucide="mic" style="width: 20px; height: 20px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <button id="chat-send-btn" class="chat-send-btn">
+                    <span>Enviar</span>
+                    <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Create Project Modal -->
+        <div class="modal-overlay" id="create-project-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Crear Nuevo Proyecto</h2>
+                    <button class="modal-close" id="create-project-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
                     </button>
                 </div>
-                <div class="chat-input-footer">
-                    <span class="input-hint" data-i18n="chat.input.hint">
-                        Capibara6 puede cometer errores. Considera verificar información importante.
-                    </span>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="project-name">Nombre del Proyecto</label>
+                        <input type="text" id="project-name" class="form-input" placeholder="Mi Proyecto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-description">Descripción (opcional)</label>
+                        <textarea id="project-description" class="form-textarea" rows="3" placeholder="Describe tu proyecto..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="project-include-current-chat">
+                            Incluir chat actual en el proyecto
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="create-project-cancel-btn">Cancelar</button>
+                    <button class="btn-primary" id="create-project-submit-btn">Crear Proyecto</button>
                 </div>
             </div>
         </div>
-        </div> <!-- Cierre de chat-content-wrapper -->
-    </main>
 
-    <!-- Modal de configuración -->
-    <div id="settings-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-i18n="settings.title">Configuración</h2>
-                <button class="modal-close" onclick="closeSettingsModal()">
-                    <i data-lucide="x-circle" style="width: 24px; height: 24px;"></i>
-                </button>
+        <!-- Select Project Modal (Simple) -->
+        <div class="modal-overlay" id="select-project-modal">
+            <div class="modal-content modal-small">
+                <div class="modal-header">
+                    <h2>Añadir a Proyecto</h2>
+                    <button class="modal-close" id="select-project-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-description">Selecciona un proyecto:</p>
+                    <div class="projects-list" id="projects-list">
+                        <!-- Los proyectos se cargarán dinámicamente -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="select-project-cancel-btn">Cancelar</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="setting-group">
-                    <label class="setting-label" data-i18n="settings.model">Modelo</label>
-                    <select class="setting-select">
-                        <option value="capibara6">Capibara6 (Estándar)</option>
-                        <option value="capibara6-fast">Capibara6 Fast</option>
-                        <option value="capibara6-advanced">Capibara6 Advanced</option>
-                    </select>
+        </div>
+
+        <!-- Select Chat to Merge Modal (Simple) -->
+        <div class="modal-overlay" id="select-chat-merge-modal">
+            <div class="modal-content modal-small">
+                <div class="modal-header">
+                    <h2>Unir con otro Chat</h2>
+                    <button class="modal-close" id="select-chat-merge-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
                 </div>
-                <div class="setting-group">
-                    <label class="setting-label" data-i18n="settings.temperature">Temperatura (Creatividad)</label>
-                    <input type="range" class="setting-range" min="0" max="1" step="0.1" value="0.7">
-                    <span class="setting-value">0.7</span>
+                <div class="modal-body">
+                    <p class="modal-description">Selecciona el chat con el que unir:</p>
+                    <div class="chats-selection-list" id="chats-merge-list">
+                        <!-- Los chats se cargarán dinámicamente -->
+                    </div>
                 </div>
-                <div class="setting-group">
-                    <label class="setting-label" data-i18n="settings.language">Idioma</label>
-                    <select class="setting-select" id="language-select">
-                        <option value="es">Español</option>
-                        <option value="en">English</option>
-                    </select>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="select-chat-merge-cancel-btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Modal -->
+        <div class="modal-overlay" id="account-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Mi Cuenta</h2>
+                    <button class="modal-close" id="account-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Tabs de navegación -->
+                    <div class="account-tabs">
+                        <button class="account-tab active" data-tab="profile">
+                            <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+                            Perfil
+                        </button>
+                        <button class="account-tab" data-tab="digital-twin">
+                            <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                            Gemelo Digital
+                        </button>
+                    </div>
+
+                    <!-- Tab: Perfil -->
+                    <div class="account-tab-content active" id="tab-profile">
+                        <div class="account-section">
+                            <div class="account-avatar-large">
+                                <div class="user-avatar-large">
+                                    <i data-lucide="user" style="width: 48px; height: 48px;"></i>
+                                </div>
+                                <button class="btn-change-avatar">Cambiar foto</button>
+                            </div>
+                            <div class="form-group">
+                                <label for="account-name">Nombre</label>
+                                <input type="text" id="account-name" class="form-input" value="Usuario">
+                            </div>
+                            <div class="form-group">
+                                <label for="account-email">Email</label>
+                                <input type="email" id="account-email" class="form-input" value="usuario@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="account-company">Empresa (opcional)</label>
+                                <input type="text" id="account-company" class="form-input" placeholder="Nombre de la empresa">
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h3>Seguridad</h3>
+                            <button class="btn-secondary btn-full" id="change-password-btn">
+                                <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
+                                Cambiar Contraseña
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Gemelo Digital -->
+                    <div class="account-tab-content" id="tab-digital-twin">
+                        <div class="digital-twin-section">
+                            <div class="digital-twin-header">
+                                <div class="digital-twin-info">
+                                    <h3>Gemelo Digital</h3>
+                                    <p class="digital-twin-description">Importa tus datos de redes sociales para crear un gemelo digital que aprenda tu estilo de escritura y personalidad.</p>
+                                </div>
+                                <div class="digital-twin-status" id="digital-twin-status">
+                                    <span class="status-badge" id="twin-status-badge">No iniciado</span>
+                                </div>
+                            </div>
+
+                            <!-- Progreso del gemelo -->
+                            <div class="twin-progress-section" id="twin-progress-section" style="display: none;">
+                                <div class="progress-header">
+                                    <span>Progreso de creación</span>
+                                    <span class="progress-percentage" id="twin-progress-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="twin-progress-bar"></div>
+                                </div>
+                                <div class="progress-steps" id="twin-progress-steps">
+                                    <!-- Pasos se añadirán dinámicamente -->
+                                </div>
+                            </div>
+
+                            <!-- Importadores de redes sociales -->
+                            <div class="social-importers">
+                                <h4>Importar Datos</h4>
+                                <div class="social-cards-grid">
+                                    <!-- Twitter/X -->
+                                    <div class="social-card" data-platform="twitter">
+                                        <div class="social-card-header">
+                                            <div class="social-icon twitter">
+                                                <i data-lucide="twitter" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>Twitter / X</h5>
+                                                <span class="social-status" id="twitter-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Tweets, respuestas y bio</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="twitter">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="twitter-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+
+                                    <!-- LinkedIn -->
+                                    <div class="social-card" data-platform="linkedin">
+                                        <div class="social-card-header">
+                                            <div class="social-icon linkedin">
+                                                <i data-lucide="linkedin" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>LinkedIn</h5>
+                                                <span class="social-status" id="linkedin-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Posts, artículos y perfil profesional</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="linkedin">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="linkedin-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Instagram -->
+                                    <div class="social-card" data-platform="instagram">
+                                        <div class="social-card-header">
+                                            <div class="social-icon instagram">
+                                                <i data-lucide="instagram" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>Instagram</h5>
+                                                <span class="social-status" id="instagram-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Captions de posts y comentarios</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="instagram">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="instagram-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+
+                                    <!-- GitHub -->
+                                    <div class="social-card" data-platform="github">
+                                        <div class="social-card-header">
+                                            <div class="social-icon github">
+                                                <i data-lucide="github" style="width: 24px; height: 24px;"></i>
+                                            </div>
+                                            <div class="social-card-info">
+                                                <h5>GitHub</h5>
+                                                <span class="social-status" id="github-status">No importado</span>
+                                            </div>
+                                        </div>
+                                        <p class="social-card-desc">Repositorios, commits e issues</p>
+                                        <div class="social-card-actions">
+                                            <button class="btn-social-import" data-platform="github">
+                                                <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                                                Importar
+                                            </button>
+                                            <input type="file" id="github-file-input" accept=".json,.csv" style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Perfil del Gemelo Digital -->
+                            <div class="twin-profile-section" id="twin-profile-section" style="display: none;">
+                                <h4>Perfil Generado</h4>
+                                <div class="twin-profile-card">
+                                    <div class="twin-profile-header">
+                                        <div class="twin-avatar">
+                                            <i data-lucide="sparkles" style="width: 32px; height: 32px;"></i>
+                                        </div>
+                                        <div class="twin-info">
+                                            <h5 id="twin-name">Mi Gemelo Digital</h5>
+                                            <span class="twin-date" id="twin-created-date">Creado el --</span>
+                                        </div>
+                                    </div>
+                                    <div class="twin-stats">
+                                        <div class="twin-stat">
+                                            <span class="stat-value" id="twin-messages-count">0</span>
+                                            <span class="stat-label">Mensajes analizados</span>
+                                        </div>
+                                        <div class="twin-stat">
+                                            <span class="stat-value" id="twin-platforms-count">0</span>
+                                            <span class="stat-label">Plataformas</span>
+                                        </div>
+                                    </div>
+                                    <div class="twin-personality" id="twin-personality">
+                                        <!-- Análisis de personalidad se mostrará aquí -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botón para generar gemelo -->
+                            <div class="twin-actions">
+                                <button class="btn-primary btn-full" id="generate-twin-btn" disabled>
+                                    <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                                    Generar Gemelo Digital
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="account-cancel-btn">Cancelar</button>
+                    <button class="btn-primary" id="account-save-btn">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal-overlay" id="settings-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Configuración</h2>
+                    <button class="modal-close" id="settings-modal-close">
+                        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Modelo</h3>
+                        <div class="setting-item">
+                            <label>Temperatura</label>
+                            <input type="range" min="0" max="2" step="0.1" value="0.7" id="temperature-setting">
+                            <span class="setting-value" id="temperature-value">0.7</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Max Tokens</label>
+                            <input type="number" min="100" max="4000" value="2000" id="max-tokens-setting">
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Interfaz</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="sound-notifications" checked>
+                                Notificaciones de sonido
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="auto-scroll" checked>
+                                Auto-scroll
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="settings-reset-btn">Restablecer</button>
+                    <button class="btn-primary" id="settings-save-btn">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="translations.js?v=5.0"></script>
-    <script src="entropy-monitor.js?v=5.0"></script>
-    <!-- <script src="mcp-integration.js"></script> MCP v1 (reemplazado por Smart MCP v2) -->
-    <script src="smart-mcp-integration.js?v=11.0"></script>
-    <!-- <script src="consensus-integration.js"></script> Pausado: Activar más tarde -->
-    <script src="template-profiles.js?v=5.0"></script>
-    <script src="rating-system.js?v=5.0"></script>
-    <script src="tts-integration.js?v=18.0"></script>
-    <script src="consensus-ui.js?v=1.0"></script>
-    <script src="chat-app.js?v=35.0&t=1736987000"></script>
-    <script src="entropy-auto-inject.js?v=5.0"></script>
+    
+    <script src="config.js"></script>
+    <!-- Servicios de integración -->
+    <script src="tts-integration.js"></script>
+    <script src="smart-mcp-integration.js"></script>
+    <script src="rag-api-client.js"></script>
+    <script src="n8n-manager.js"></script>
+    <script src="model-visualization.js"></script>
+    <script src="entropy-monitor.js"></script>
+    <script src="chat-page.js"></script>
     <script>
-        // Verificación de carga de módulos
-        console.log('🔍 Verificando módulos cargados...');
-        console.log('✓ Lucide:', typeof lucide);
-        console.log('✓ Marked:', typeof marked);
-        console.log('✓ Template Profiles:', typeof window.TEMPLATE_PROFILES);
-        console.log('✓ Rating System:', typeof window.showRatingModal);
-        console.log('✓ Smart MCP:', typeof window.smartMCPAnalyze);
-
         // Inicializar iconos de Lucide
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
-            console.log('✅ Iconos de Lucide inicializados');
-        } else {
-            console.error('❌ Lucide no cargado');
         }
-
-        // Manejar clics en plantillas del sidebar
-        document.addEventListener('DOMContentLoaded', () => {
-            const templateButtons = document.querySelectorAll('.template-item');
-            const descriptionSidebar = document.getElementById('template-description-sidebar');
-            
-            templateButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Remover clase active de todos
-                    templateButtons.forEach(btn => btn.classList.remove('active'));
-                    // Agregar clase active al clickeado
-                    button.classList.add('active');
-                    
-                    // Aplicar plantilla
-                    const templateId = button.getAttribute('data-template');
-                    if (window.applyTemplate) {
-                        window.applyTemplate(templateId);
-                    }
-                    
-                    // Actualizar descripción
-                    if (window.TEMPLATE_PROFILES && window.TEMPLATE_PROFILES[templateId]) {
-                        descriptionSidebar.textContent = window.TEMPLATE_PROFILES[templateId].description;
-                    }
-                });
-            });
-
-            // Botón de estadísticas en sidebar
-            const statsBtn = document.getElementById('show-template-stats-sidebar');
-            if (statsBtn) {
-                statsBtn.addEventListener('click', () => {
-                    if (window.showDetailedStats) {
-                        window.showDetailedStats();
-                    }
-                });
-            }
+        
+        // Establecer hora del mensaje de bienvenida
+        document.getElementById('welcome-time').textContent = new Date().toLocaleTimeString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
         });
     </script>
 </body>
 </html>
-

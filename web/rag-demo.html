@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capibara6 - RAG Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .search-box button:hover {
+            transform: translateY(-2px);
+        }
+
+        .search-box button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .options {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .result-item {
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-type {
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .result-similarity {
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .result-content {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .result-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #fee;
+            border-left: 4px solid #f00;
+            padding: 15px;
+            border-radius: 5px;
+            color: #c00;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-indicator.online {
+            background: #4caf50;
+        }
+
+        .status-indicator.offline {
+            background: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Capibara6 RAG System</h1>
+            <p>Búsqueda semántica inteligente con Vector DB + Grafo + PostgreSQL</p>
+            <p style="margin-top: 10px;">
+                <span class="status-indicator online" id="statusIndicator"></span>
+                <span id="statusText">Conectando...</span>
+            </p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <!-- Las estadísticas se cargarán aquí -->
+        </div>
+
+        <div class="search-section">
+            <h2>Búsqueda Inteligente</h2>
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Escribe tu pregunta o búsqueda... (ej: embeddings y vectores en IA)"
+                />
+                <button id="searchBtn">Buscar</button>
+            </div>
+
+            <div class="options">
+                <label>
+                    <input type="radio" name="searchType" value="rag" checked />
+                    RAG Completo (Vector + Grafo + DB)
+                </label>
+                <label>
+                    <input type="radio" name="searchType" value="semantic" />
+                    Búsqueda Semántica Simple
+                </label>
+                <label>
+                    <input type="radio" name="searchType" value="all" />
+                    Todas las Colecciones
+                </label>
+            </div>
+
+            <div class="options">
+                <label>
+                    Resultados:
+                    <select id="nResults">
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </label>
+                <label>
+                    <input type="checkbox" id="useGraph" checked />
+                    Exploración de grafo
+                </label>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <h2>Resultados</h2>
+            <div id="resultsContainer"></div>
+        </div>
+    </div>
+
+    <script src="rag-api-client.js"></script>
+    <script>
+        // Inicializar API client
+        const api = new Capibara6API('http://localhost:8001');
+
+        // Referencias a elementos
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const statsGrid = document.getElementById('statsGrid');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+
+        // Verificar conexión al cargar
+        async function checkConnection() {
+            try {
+                await api.healthCheck();
+                statusIndicator.className = 'status-indicator online';
+                statusText.textContent = 'API Conectada';
+                await loadStats();
+            } catch (error) {
+                statusIndicator.className = 'status-indicator offline';
+                statusText.textContent = 'API No Disponible';
+                console.error('API no disponible:', error);
+            }
+        }
+
+        // Cargar estadísticas
+        async function loadStats() {
+            try {
+                const data = await api.getStats();
+                const stats = data.stats;
+
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <h3>Usuarios</h3>
+                        <div class="value">${stats.users || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Mensajes de Chat</h3>
+                        <div class="value">${stats.chat_messages || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Chats Externos</h3>
+                        <div class="value">${stats.external_chats || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Posts Sociales</h3>
+                        <div class="value">${stats.social_posts || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Archivos</h3>
+                        <div class="value">${stats.files || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Embeddings</h3>
+                        <div class="value">${stats.embeddings || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Storage Usado</h3>
+                        <div class="value">${stats.storage?.used_mb || 0} MB</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Uso de Storage</h3>
+                        <div class="value">${stats.storage?.usage_percent || 0}%</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
+
+        // Realizar búsqueda
+        async function performSearch() {
+            const query = searchInput.value.trim();
+            if (!query) {
+                alert('Por favor ingresa una búsqueda');
+                return;
+            }
+
+            const searchType = document.querySelector('input[name="searchType"]:checked').value;
+            const nResults = parseInt(document.getElementById('nResults').value);
+            const useGraph = document.getElementById('useGraph').checked;
+
+            // Mostrar loading
+            resultsSection.classList.add('show');
+            resultsContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>Buscando...</p></div>';
+
+            searchBtn.disabled = true;
+
+            try {
+                let data;
+
+                switch (searchType) {
+                    case 'rag':
+                        data = await api.ragSearch(query, nResults, useGraph);
+                        displayRAGResults(data);
+                        break;
+                    case 'semantic':
+                        data = await api.semanticSearch(query, null, nResults);
+                        displaySemanticResults(data);
+                        break;
+                    case 'all':
+                        data = await api.searchAll(query, nResults);
+                        displayAllResults(data);
+                        break;
+                }
+            } catch (error) {
+                resultsContainer.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            } finally {
+                searchBtn.disabled = false;
+            }
+        }
+
+        // Mostrar resultados RAG
+        function displayRAGResults(data) {
+            let html = `<p><strong>Query:</strong> ${data.query}</p>`;
+            html += `<p><strong>Total resultados:</strong> ${data.summary.total_results}</p>`;
+            html += `<p><strong>Similitud máxima:</strong> ${(data.summary.top_similarity * 100).toFixed(1)}%</p>`;
+            html += '<hr style="margin: 20px 0;">';
+
+            // Agrupar todos los resultados
+            const allResults = [];
+            for (const [collName, results] of Object.entries(data.results)) {
+                for (const result of results) {
+                    allResults.push({
+                        collection: collName,
+                        ...result
+                    });
+                }
+            }
+
+            // Ordenar por similitud
+            allResults.sort((a, b) => b.similarity - a.similarity);
+
+            if (allResults.length === 0) {
+                html += '<p>No se encontraron resultados.</p>';
+            } else {
+                allResults.forEach((result, idx) => {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-header">
+                                <span class="result-type">${result.collection}</span>
+                                <span class="result-similarity">${(result.similarity * 100).toFixed(1)}% similar</span>
+                            </div>
+                            <div class="result-content">${result.document}</div>
+                            <div class="result-meta">
+                                ${result.full_data?.user?.username ? `👤 ${result.full_data.user.username}` : ''}
+                                ${result.full_data?.created_at ? ` • 📅 ${new Date(result.full_data.created_at).toLocaleDateString()}` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            resultsContainer.innerHTML = html;
+        }
+
+        // Mostrar resultados semánticos
+        function displaySemanticResults(data) {
+            let html = `<p><strong>Query:</strong> ${data.query}</p>`;
+            html += `<p><strong>Total resultados:</strong> ${data.total_results}</p>`;
+            html += '<hr style="margin: 20px 0;">';
+
+            if (data.results.length === 0) {
+                html += '<p>No se encontraron resultados.</p>';
+            } else {
+                data.results.forEach(result => {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-header">
+                                <span class="result-type">${result.collection}</span>
+                                <span class="result-similarity">${(result.similarity * 100).toFixed(1)}% similar</span>
+                            </div>
+                            <div class="result-content">${result.document}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            resultsContainer.innerHTML = html;
+        }
+
+        // Mostrar resultados de todas las colecciones
+        function displayAllResults(data) {
+            let html = `<p><strong>Query:</strong> ${data.query}</p>`;
+            html += `<p><strong>Total resultados:</strong> ${data.total_results}</p>`;
+            html += `<p><strong>Colecciones:</strong> ${data.collections.join(', ')}</p>`;
+            html += '<hr style="margin: 20px 0;">';
+
+            for (const [collName, results] of Object.entries(data.results)) {
+                html += `<h3 style="margin-top: 20px;">${collName} (${results.length})</h3>`;
+
+                results.forEach(result => {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-header">
+                                <span class="result-type">${result.collection}</span>
+                                <span class="result-similarity">${(result.similarity * 100).toFixed(1)}% similar</span>
+                            </div>
+                            <div class="result-content">${result.document}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            resultsContainer.innerHTML = html;
+        }
+
+        // Event listeners
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Inicializar
+        checkConnection();
+    </script>
+</body>
+</html>

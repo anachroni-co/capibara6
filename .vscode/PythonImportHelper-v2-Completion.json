@@ -1,11 +1,11 @@
 [
     {
-        "label": "os",
+        "label": "asyncio",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
         "documentation": {}
     },
     {
@@ -18,12 +18,198 @@
         "documentation": {}
     },
     {
-        "label": "secrets",
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "Capibara6MCPConnector",
+        "importPath": "mcp_connector",
+        "description": "mcp_connector",
+        "isExtraImport": true,
+        "detail": "mcp_connector",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "secrets",
-        "description": "secrets",
-        "detail": "secrets",
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Iterable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "uuid",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uuid",
+        "description": "uuid",
+        "detail": "uuid",
         "documentation": {}
     },
     {
@@ -36,19 +222,12 @@
         "documentation": {}
     },
     {
-        "label": "urlencode",
-        "importPath": "urllib.parse",
-        "description": "urllib.parse",
+        "label": "sys",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "urllib.parse",
-        "documentation": {}
-    },
-    {
-        "label": "parse_qs",
-        "importPath": "urllib.parse",
-        "description": "urllib.parse",
-        "isExtraImport": true,
-        "detail": "urllib.parse",
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
         "documentation": {}
     },
     {
@@ -68,23 +247,7 @@
         "documentation": {}
     },
     {
-        "label": "redirect",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
         "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "session",
         "importPath": "flask",
         "description": "flask",
         "isExtraImport": true,
@@ -117,278 +280,6 @@
     },
     {
         "label": "Response",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "send_file",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "send_file",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "send_file",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Response",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
         "importPath": "flask",
         "description": "flask",
         "isExtraImport": true,
@@ -404,86 +295,6 @@
         "documentation": {}
     },
     {
-        "label": "Response",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
         "label": "CORS",
         "importPath": "flask_cors",
         "description": "flask_cors",
@@ -500,276 +311,21 @@
         "documentation": {}
     },
     {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "jwt",
+        "label": "threading",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "jwt",
-        "description": "jwt",
-        "detail": "jwt",
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
         "documentation": {}
     },
     {
-        "label": "datetime",
+        "label": "queue",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "datetime",
-        "description": "datetime",
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "datetime",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "timedelta",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "datetime",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "datetime",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "datetime",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "datetime",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "datetime",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "datetime",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
-        "label": "sys",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "sys",
-        "description": "sys",
-        "detail": "sys",
-        "documentation": {}
-    },
-    {
-        "label": "tempfile",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "tempfile",
-        "description": "tempfile",
-        "detail": "tempfile",
-        "documentation": {}
-    },
-    {
-        "label": "base64",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "base64",
-        "description": "base64",
-        "detail": "base64",
-        "documentation": {}
-    },
-    {
-        "label": "io",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "io",
-        "description": "io",
-        "detail": "io",
-        "documentation": {}
-    },
-    {
-        "label": "re",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "re",
-        "description": "re",
-        "detail": "re",
-        "documentation": {}
-    },
-    {
-        "label": "Path",
-        "importPath": "pathlib",
-        "description": "pathlib",
-        "isExtraImport": true,
-        "detail": "pathlib",
-        "documentation": {}
-    },
-    {
-        "label": "Path",
-        "importPath": "pathlib",
-        "description": "pathlib",
-        "isExtraImport": true,
-        "detail": "pathlib",
-        "documentation": {}
-    },
-    {
-        "label": "Path",
-        "importPath": "pathlib",
-        "description": "pathlib",
-        "isExtraImport": true,
-        "detail": "pathlib",
-        "documentation": {}
-    },
-    {
-        "label": "asyncio",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "asyncio",
-        "description": "asyncio",
-        "detail": "asyncio",
-        "documentation": {}
-    },
-    {
-        "label": "aiohttp",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "aiohttp",
-        "description": "aiohttp",
-        "detail": "aiohttp",
+        "importPath": "queue",
+        "description": "queue",
+        "detail": "queue",
         "documentation": {}
     },
     {
@@ -782,165 +338,35 @@
         "documentation": {}
     },
     {
-        "label": "Dict",
-        "importPath": "typing",
-        "description": "typing",
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
         "isExtraImport": true,
-        "detail": "typing",
+        "detail": "__future__",
         "documentation": {}
     },
     {
-        "label": "List",
-        "importPath": "typing",
-        "description": "typing",
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
         "isExtraImport": true,
-        "detail": "typing",
+        "detail": "__future__",
         "documentation": {}
     },
     {
-        "label": "Any",
-        "importPath": "typing",
-        "description": "typing",
+        "label": "TaskClassifier",
+        "importPath": "task_classifier",
+        "description": "task_classifier",
         "isExtraImport": true,
-        "detail": "typing",
+        "detail": "task_classifier",
         "documentation": {}
     },
     {
-        "label": "Optional",
-        "importPath": "typing",
-        "description": "typing",
+        "label": "TaskClassifier",
+        "importPath": "task_classifier",
+        "description": "task_classifier",
         "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Dict",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "List",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Any",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Optional",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Dict",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "List",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Any",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "MODELS_CONFIG",
-        "importPath": "models_config",
-        "description": "models_config",
-        "isExtraImport": true,
-        "detail": "models_config",
-        "documentation": {}
-    },
-    {
-        "label": "CONSENSUS_CONFIG",
-        "importPath": "models_config",
-        "description": "models_config",
-        "isExtraImport": true,
-        "detail": "models_config",
-        "documentation": {}
-    },
-    {
-        "label": "PROMPT_TEMPLATES",
-        "importPath": "models_config",
-        "description": "models_config",
-        "isExtraImport": true,
-        "detail": "models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_active_models",
-        "importPath": "models_config",
-        "description": "models_config",
-        "isExtraImport": true,
-        "detail": "models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_model_config",
-        "importPath": "models_config",
-        "description": "models_config",
-        "isExtraImport": true,
-        "detail": "models_config",
-        "documentation": {}
-    },
-    {
-        "label": "format_prompt",
-        "importPath": "models_config",
-        "description": "models_config",
-        "isExtraImport": true,
-        "detail": "models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_system_info",
-        "importPath": "models_config",
-        "description": "models_config",
-        "isExtraImport": true,
-        "detail": "models_config",
-        "documentation": {}
-    },
-    {
-        "label": "torch",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "torch",
-        "description": "torch",
-        "detail": "torch",
-        "documentation": {}
-    },
-    {
-        "label": "traceback",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "traceback",
-        "description": "traceback",
-        "detail": "traceback",
+        "detail": "task_classifier",
         "documentation": {}
     },
     {
@@ -1009,11 +435,11 @@
         "documentation": {}
     },
     {
-        "label": "MIMEMultipart",
-        "importPath": "email.mime.multipart",
-        "description": "email.mime.multipart",
+        "label": "MIMEText",
+        "importPath": "email.mime.text",
+        "description": "email.mime.text",
         "isExtraImport": true,
-        "detail": "email.mime.multipart",
+        "detail": "email.mime.text",
         "documentation": {}
     },
     {
@@ -1030,6 +456,31 @@
         "description": "email.mime.multipart",
         "isExtraImport": true,
         "detail": "email.mime.multipart",
+        "documentation": {}
+    },
+    {
+        "label": "MIMEMultipart",
+        "importPath": "email.mime.multipart",
+        "description": "email.mime.multipart",
+        "isExtraImport": true,
+        "detail": "email.mime.multipart",
+        "documentation": {}
+    },
+    {
+        "label": "socket",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "socket",
+        "description": "socket",
+        "detail": "socket",
+        "documentation": {}
+    },
+    {
+        "label": "OllamaClient",
+        "importPath": "ollama_client",
+        "description": "ollama_client",
+        "isExtraImport": true,
+        "detail": "ollama_client",
         "documentation": {}
     },
     {
@@ -1042,945 +493,171 @@
         "documentation": {}
     },
     {
-        "label": "get_gpt_oss_url",
-        "importPath": "config_gptoss",
-        "description": "config_gptoss",
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
         "isExtraImport": true,
-        "detail": "config_gptoss",
+        "detail": "pathlib",
         "documentation": {}
     },
     {
-        "label": "get_server_port",
-        "importPath": "config_gptoss",
-        "description": "config_gptoss",
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
         "isExtraImport": true,
-        "detail": "config_gptoss",
+        "detail": "dataclasses",
         "documentation": {}
     },
     {
-        "label": "generate_jwt_token",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def generate_jwt_token(user_data):\n    \"\"\"Genera un token JWT para el usuario\"\"\"\n    payload = {\n        'user_id': user_data['id'],\n        'email': user_data['email'],\n        'name': user_data['name'],\n        'provider': user_data['provider'],\n        'exp': datetime.utcnow() + timedelta(days=7),\n        'iat': datetime.utcnow()\n    }",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "verify_jwt_token",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def verify_jwt_token(token):\n    \"\"\"Verifica y decodifica un token JWT\"\"\"\n    try:\n        payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])\n        return payload\n    except jwt.ExpiredSignatureError:\n        return None\n    except jwt.InvalidTokenError:\n        return None\ndef get_user_from_github(token):",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "get_user_from_github",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def get_user_from_github(token):\n    \"\"\"Obtiene información del usuario desde GitHub\"\"\"\n    headers = {'Authorization': f'token {token}'}\n    response = requests.get(OAUTH_CONFIG['github']['user_url'], headers=headers)\n    if response.status_code == 200:\n        user_data = response.json()\n        return {\n            'id': f\"github_{user_data['id']}\",\n            'name': user_data['name'] or user_data['login'],\n            'email': user_data.get('email', ''),",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "get_user_from_google",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def get_user_from_google(token):\n    \"\"\"Obtiene información del usuario desde Google\"\"\"\n    headers = {'Authorization': f'Bearer {token}'}\n    response = requests.get(OAUTH_CONFIG['google']['user_url'], headers=headers)\n    if response.status_code == 200:\n        user_data = response.json()\n        return {\n            'id': f\"google_{user_data['id']}\",\n            'name': user_data['name'],\n            'email': user_data['email'],",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "github_auth",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def github_auth():\n    \"\"\"Inicia el flujo de autenticación con GitHub\"\"\"\n    state = secrets.token_urlsafe(32)\n    session['oauth_state'] = state\n    params = {\n        'client_id': OAUTH_CONFIG['github']['client_id'],\n        'redirect_uri': f\"{request.host_url}auth/callback/github\",\n        'scope': 'user:email',\n        'state': state\n    }",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "google_auth",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def google_auth():\n    \"\"\"Inicia el flujo de autenticación con Google\"\"\"\n    state = secrets.token_urlsafe(32)\n    session['oauth_state'] = state\n    params = {\n        'client_id': OAUTH_CONFIG['google']['client_id'],\n        'redirect_uri': f\"{request.host_url}auth/callback/google\",\n        'response_type': 'code',\n        'scope': 'openid email profile',\n        'state': state",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "github_callback",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def github_callback():\n    \"\"\"Maneja el callback de GitHub\"\"\"\n    code = request.args.get('code')\n    state = request.args.get('state')\n    # Verificar state\n    if state != session.get('oauth_state'):\n        return jsonify({'error': 'Invalid state parameter'}), 400\n    # Intercambiar código por token\n    token_data = {\n        'client_id': OAUTH_CONFIG['github']['client_id'],",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "google_callback",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def google_callback():\n    \"\"\"Maneja el callback de Google\"\"\"\n    code = request.args.get('code')\n    state = request.args.get('state')\n    # Verificar state\n    if state != session.get('oauth_state'):\n        return jsonify({'error': 'Invalid state parameter'}), 400\n    # Intercambiar código por token\n    token_data = {\n        'client_id': OAUTH_CONFIG['google']['client_id'],",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "verify_token",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def verify_token():\n    \"\"\"Verifica un token JWT\"\"\"\n    data = request.get_json()\n    token = data.get('token')\n    if not token:\n        return jsonify({'error': 'No token provided'}), 400\n    payload = verify_jwt_token(token)\n    if payload:\n        return jsonify({\n            'valid': True,",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "logout",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def logout():\n    \"\"\"Cierra la sesión del usuario\"\"\"\n    # En un sistema real, aquí invalidarías el token\n    return jsonify({'message': 'Logged out successfully'})\n@app.route('/health')\ndef health_check():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'capibara6-auth',",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "health_check",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def health_check():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'capibara6-auth',\n        'timestamp': datetime.utcnow().isoformat()\n    })\n# ============================================\n# Error Handlers\n# ============================================",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "not_found",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def not_found(error):\n    return jsonify({'error': 'Endpoint not found'}), 404\n@app.errorhandler(500)\ndef internal_error(error):\n    return jsonify({'error': 'Internal server error'}), 500\n# ============================================\n# Main\n# ============================================\nif __name__ == '__main__':\n    print(\"🚀 Iniciando servidor de autenticación Capibara6...\")",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "internal_error",
-        "kind": 2,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "def internal_error(error):\n    return jsonify({'error': 'Internal server error'}), 500\n# ============================================\n# Main\n# ============================================\nif __name__ == '__main__':\n    print(\"🚀 Iniciando servidor de autenticación Capibara6...\")\n    print(\"📋 Configuración:\")\n    print(f\"   - GitHub Client ID: {'✅ Configurado' if OAUTH_CONFIG['github']['client_id'] != 'your_github_client_id' else '❌ No configurado'}\")\n    print(f\"   - Google Client ID: {'✅ Configurado' if OAUTH_CONFIG['google']['client_id'] != 'your_google_client_id' else '❌ No configurado'}\")",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "app = Flask(__name__)\napp.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))\n# Configuración CORS - Desarrollo (localhost)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# Configuración CORS - Producción (comentado para activar más tarde)\n# CORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'https://capibara6.com', 'http://capibara6.com'])\n# Configuración OAuth\nOAUTH_CONFIG = {\n    'github': {\n        'client_id': os.environ.get('GITHUB_CLIENT_ID', 'your_github_client_id'),",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "app.secret_key",
-        "kind": 5,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))\n# Configuración CORS - Desarrollo (localhost)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# Configuración CORS - Producción (comentado para activar más tarde)\n# CORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'https://capibara6.com', 'http://capibara6.com'])\n# Configuración OAuth\nOAUTH_CONFIG = {\n    'github': {\n        'client_id': os.environ.get('GITHUB_CLIENT_ID', 'your_github_client_id'),\n        'client_secret': os.environ.get('GITHUB_CLIENT_SECRET', 'your_github_client_secret'),",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "OAUTH_CONFIG",
-        "kind": 5,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "OAUTH_CONFIG = {\n    'github': {\n        'client_id': os.environ.get('GITHUB_CLIENT_ID', 'your_github_client_id'),\n        'client_secret': os.environ.get('GITHUB_CLIENT_SECRET', 'your_github_client_secret'),\n        'authorize_url': 'https://github.com/login/oauth/authorize',\n        'token_url': 'https://github.com/login/oauth/access_token',\n        'user_url': 'https://api.github.com/user'\n    },\n    'google': {\n        'client_id': os.environ.get('GOOGLE_CLIENT_ID', 'your_google_client_id'),",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "JWT_SECRET",
-        "kind": 5,
-        "importPath": "backend.auth_server",
-        "description": "backend.auth_server",
-        "peekOfCode": "JWT_SECRET = os.environ.get('JWT_SECRET', secrets.token_hex(32))\n# ============================================\n# Utility Functions\n# ============================================\ndef generate_jwt_token(user_data):\n    \"\"\"Genera un token JWT para el usuario\"\"\"\n    payload = {\n        'user_id': user_data['id'],\n        'email': user_data['email'],\n        'name': user_data['name'],",
-        "detail": "backend.auth_server",
-        "documentation": {}
-    },
-    {
-        "label": "analyze_message_for_context",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def analyze_message_for_context(message):\n    \"\"\"Analiza el mensaje para determinar si necesita contexto adicional\"\"\"\n    message_lower = message.lower()\n    for category, trigger_info in CONTEXT_TRIGGERS.items():\n        for pattern in trigger_info['patterns']:\n            if re.search(pattern, message_lower):\n                return trigger_info['context']()\n    return None\ndef enhance_message_with_context(message):\n    \"\"\"Mejora el mensaje con contexto relevante si es necesario\"\"\"",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "enhance_message_with_context",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def enhance_message_with_context(message):\n    \"\"\"Mejora el mensaje con contexto relevante si es necesario\"\"\"\n    context = analyze_message_for_context(message)\n    if context:\n        enhanced_message = f\"{context}\\n\\nPregunta del usuario: {message}\"\n        return enhanced_message\n    return message\n# ============================================\n# ENDPOINTS GPT-OSS-20B\n# ============================================",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def health():\n    \"\"\"Health check del servidor integrado\"\"\"\n    try:\n        # Verificar conexión con la VM\n        response = requests.get(GPTOSS_HEALTH_URL, timeout=5)\n        vm_status = response.json() if response.ok else {'error': 'VM no disponible'}\n        return jsonify({\n            'status': 'ok',\n            'server': 'Capibara6 Integrated Server',\n            'components': {",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "chat_proxy",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def chat_proxy():\n    \"\"\"Proxy para las peticiones de chat con Smart MCP\"\"\"\n    # Manejar preflight OPTIONS\n    if request.method == 'OPTIONS':\n        response = Response()\n        response.headers.add('Access-Control-Allow-Origin', '*')\n        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')\n        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')\n        return response\n    try:",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def models():\n    \"\"\"Información de modelos disponibles\"\"\"\n    return jsonify({\n        'models': [{\n            'id': 'gpt-oss-20b',\n            'name': 'GPT-OSS-20B',\n            'description': 'Modelo de 20B parámetros ejecutándose en Google Cloud VM',\n            'features': ['Smart MCP Context', 'Multilingual', 'High Performance']\n        }]\n    })",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "mcp_analyze",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def mcp_analyze():\n    \"\"\"Analizar mensaje para contexto MCP\"\"\"\n    try:\n        data = request.get_json()\n        message = data.get('message', '')\n        context = analyze_message_for_context(message)\n        return jsonify({\n            'needs_context': context is not None,\n            'context': context,\n            'enhanced_message': enhance_message_with_context(message)",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "mcp_context",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def mcp_context():\n    \"\"\"Obtener información de contexto disponible\"\"\"\n    return jsonify({\n        'knowledge_base': KNOWLEDGE_BASE,\n        'triggers': list(CONTEXT_TRIGGERS.keys()),\n        'status': 'active'\n    })\n# ============================================\n# ENDPOINTS TTS\n# ============================================",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "tts_voices",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def tts_voices():\n    \"\"\"Obtener voces disponibles\"\"\"\n    return jsonify({\n        'voices': PREDEFINED_VOICES,\n        'config': COQUI_CONFIG,\n        'status': 'active'\n    })\n@app.route('/api/tts/speak', methods=['POST'])\ndef tts_speak():\n    \"\"\"Generar audio TTS (simulado - requiere instalación de Coqui)\"\"\"",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "tts_speak",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def tts_speak():\n    \"\"\"Generar audio TTS (simulado - requiere instalación de Coqui)\"\"\"\n    try:\n        data = request.get_json()\n        text = data.get('text', '')\n        voice = data.get('voice', 'sofia')\n        if not text:\n            return jsonify({'error': 'No se proporcionó texto'}), 400\n        if voice not in PREDEFINED_VOICES:\n            return jsonify({'error': 'Voz no encontrada'}), 400",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "tts_clone",
-        "kind": 2,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "def tts_clone():\n    \"\"\"Clonar voz desde audio (simulado)\"\"\"\n    try:\n        data = request.get_json()\n        audio_data = data.get('audio_data', '')\n        voice_name = data.get('voice_name', 'cloned_voice')\n        if not audio_data:\n            return jsonify({'error': 'No se proporcionó audio'}), 400\n        # Simular clonación de voz\n        return jsonify({",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins='*')  # Permitir conexiones desde cualquier origen\n# ============================================\n# CONFIGURACIÓN GPT-OSS-20B (Local en la VM)\n# ============================================\nGPTOSS_API_URL = 'http://localhost:8080/completion'  # Modelo local en la VM\nGPTOSS_HEALTH_URL = 'http://localhost:8080/health'\n# ============================================\n# CONFIGURACIÓN MCP (Smart Context)\n# ============================================",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "GPTOSS_API_URL",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "GPTOSS_API_URL = 'http://localhost:8080/completion'  # Modelo local en la VM\nGPTOSS_HEALTH_URL = 'http://localhost:8080/health'\n# ============================================\n# CONFIGURACIÓN MCP (Smart Context)\n# ============================================\nKNOWLEDGE_BASE = {\n    \"identity\": {\n        \"name\": \"Capibara6\",\n        \"creator\": \"Anachroni s.coop\",\n        \"status\": \"Producción\",",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "GPTOSS_HEALTH_URL",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "GPTOSS_HEALTH_URL = 'http://localhost:8080/health'\n# ============================================\n# CONFIGURACIÓN MCP (Smart Context)\n# ============================================\nKNOWLEDGE_BASE = {\n    \"identity\": {\n        \"name\": \"Capibara6\",\n        \"creator\": \"Anachroni s.coop\",\n        \"status\": \"Producción\",\n        \"type\": \"Modelo de lenguaje GPT-OSS-20B\",",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "KNOWLEDGE_BASE",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "KNOWLEDGE_BASE = {\n    \"identity\": {\n        \"name\": \"Capibara6\",\n        \"creator\": \"Anachroni s.coop\",\n        \"status\": \"Producción\",\n        \"type\": \"Modelo de lenguaje GPT-OSS-20B\",\n        \"hardware\": \"Google Cloud VM en europe-southwest1-b\",\n        \"website\": \"https://capibara6.com\",\n        \"email\": \"info@anachroni.co\"\n    },",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "CONTEXT_TRIGGERS",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "CONTEXT_TRIGGERS = {\n    \"identity\": {\n        \"patterns\": [\n            r'\\b(quién|quien|que|qué)\\s+(eres|soy|es)\\b',\n            r'\\b(cómo|como)\\s+(te\\s+llamas|se\\s+llama)\\b',\n            r'\\b(tu|tú)\\s+(nombre|identidad)\\b',\n            r'\\bcapibara\\b',\n            r'\\bcreo|creador|desarrollador\\b',\n            r'\\bquién\\s+te\\s+(creó|creo|hizo|desarrollo)\\b',\n            r'\\b(tu|tú)\\s+nombre\\b'",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "COQUI_CONFIG",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "COQUI_CONFIG = {\n    'model_name': 'tts_models/multilingual/multi-dataset/xtts_v2',\n    'sample_rate': 24000,\n    'max_chars': 3000,\n    'speed': 1.0,\n    'language': 'es',\n}\nVOICES_DIR = Path(__file__).parent / 'voices_reference'\nVOICES_DIR.mkdir(exist_ok=True)\nPREDEFINED_VOICES = {",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "VOICES_DIR",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "VOICES_DIR = Path(__file__).parent / 'voices_reference'\nVOICES_DIR.mkdir(exist_ok=True)\nPREDEFINED_VOICES = {\n    'sofia': {\n        'name': 'Sofía',\n        'gender': 'female',\n        'description': 'Voz femenina cálida y profesional',\n        'language': 'es',\n        'speaker_embedding': 'Claribel Dervla',\n    },",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "PREDEFINED_VOICES",
-        "kind": 5,
-        "importPath": "backend.capibara6_integrated_server",
-        "description": "backend.capibara6_integrated_server",
-        "peekOfCode": "PREDEFINED_VOICES = {\n    'sofia': {\n        'name': 'Sofía',\n        'gender': 'female',\n        'description': 'Voz femenina cálida y profesional',\n        'language': 'es',\n        'speaker_embedding': 'Claribel Dervla',\n    },\n    'ana': {\n        'name': 'Ana',",
-        "detail": "backend.capibara6_integrated_server",
-        "documentation": {}
-    },
-    {
-        "label": "get_gpt_oss_url",
-        "kind": 2,
-        "importPath": "backend.config_gptoss",
-        "description": "backend.config_gptoss",
-        "peekOfCode": "def get_gpt_oss_url():\n    \"\"\"Obtener URL del modelo GPT-OSS\"\"\"\n    return os.getenv('GPT_OSS_URL', GPT_OSS_CONFIG['url'])\ndef get_gpt_oss_timeout():\n    \"\"\"Obtener timeout para GPT-OSS\"\"\"\n    return int(os.getenv('GPT_OSS_TIMEOUT', GPT_OSS_CONFIG['timeout']))\ndef get_server_port():\n    \"\"\"Obtener puerto del servidor\"\"\"\n    return int(os.getenv('PORT', SERVER_CONFIG['port']))\nif __name__ == '__main__':",
-        "detail": "backend.config_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "get_gpt_oss_timeout",
-        "kind": 2,
-        "importPath": "backend.config_gptoss",
-        "description": "backend.config_gptoss",
-        "peekOfCode": "def get_gpt_oss_timeout():\n    \"\"\"Obtener timeout para GPT-OSS\"\"\"\n    return int(os.getenv('GPT_OSS_TIMEOUT', GPT_OSS_CONFIG['timeout']))\ndef get_server_port():\n    \"\"\"Obtener puerto del servidor\"\"\"\n    return int(os.getenv('PORT', SERVER_CONFIG['port']))\nif __name__ == '__main__':\n    print(\"🤖 Configuración GPT-OSS-20B:\")\n    print(f\"   URL: {get_gpt_oss_url()}\")\n    print(f\"   Timeout: {get_gpt_oss_timeout()}s\")",
-        "detail": "backend.config_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "get_server_port",
-        "kind": 2,
-        "importPath": "backend.config_gptoss",
-        "description": "backend.config_gptoss",
-        "peekOfCode": "def get_server_port():\n    \"\"\"Obtener puerto del servidor\"\"\"\n    return int(os.getenv('PORT', SERVER_CONFIG['port']))\nif __name__ == '__main__':\n    print(\"🤖 Configuración GPT-OSS-20B:\")\n    print(f\"   URL: {get_gpt_oss_url()}\")\n    print(f\"   Timeout: {get_gpt_oss_timeout()}s\")\n    print(f\"   Puerto: {get_server_port()}\")\n    print(f\"   Orígenes CORS: {CORS_CONFIG['allowed_origins']}\")",
-        "detail": "backend.config_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "GPT_OSS_CONFIG",
-        "kind": 5,
-        "importPath": "backend.config_gptoss",
-        "description": "backend.config_gptoss",
-        "peekOfCode": "GPT_OSS_CONFIG = {\n    'url': 'http://34.175.215.109:8080',\n    'timeout': 60,\n    'max_tokens': 1000,\n    'temperature': 0.7,\n    'model_name': 'gpt-oss-20b'\n}\n# Configuración del servidor Flask\nSERVER_CONFIG = {\n    'host': '0.0.0.0',",
-        "detail": "backend.config_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "SERVER_CONFIG",
-        "kind": 5,
-        "importPath": "backend.config_gptoss",
-        "description": "backend.config_gptoss",
-        "peekOfCode": "SERVER_CONFIG = {\n    'host': '0.0.0.0',\n    'port': int(os.getenv('PORT', 5000)),\n    'debug': False\n}\n# Configuración CORS\nCORS_CONFIG = {\n    'allowed_origins': [\n        'http://localhost:8000',\n        'http://127.0.0.1:8000',",
-        "detail": "backend.config_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "CORS_CONFIG",
-        "kind": 5,
-        "importPath": "backend.config_gptoss",
-        "description": "backend.config_gptoss",
-        "peekOfCode": "CORS_CONFIG = {\n    'allowed_origins': [\n        'http://localhost:8000',\n        'http://127.0.0.1:8000',\n        'https://capibara6.com',\n        'http://capibara6.com'\n    ]\n}\ndef get_gpt_oss_url():\n    \"\"\"Obtener URL del modelo GPT-OSS\"\"\"",
-        "detail": "backend.config_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "ModelConsensus",
+        "label": "Capibara6MCPConnector",
         "kind": 6,
-        "importPath": "backend.consensus_server",
-        "description": "backend.consensus_server",
-        "peekOfCode": "class ModelConsensus:\n    def __init__(self):\n        self.active_models = get_active_models()\n        self.consensus_config = CONSENSUS_CONFIG\n    async def query_model(self, session: aiohttp.ClientSession, model_id: str, \n                         prompt: str, template_id: str = 'general') -> Dict[str, Any]:\n        \"\"\"Consulta un modelo específico\"\"\"\n        model_config = get_model_config(model_id)\n        if not model_config:\n            return {'error': f'Modelo {model_id} no encontrado'}",
-        "detail": "backend.consensus_server",
+        "importPath": "backend.mcp_connector",
+        "description": "backend.mcp_connector",
+        "peekOfCode": "class Capibara6MCPConnector:\n    \"\"\"\n    Conector MCP para capibara6 - Sistema de IA híbrido Transformer-Mamba\n    \"\"\"\n    def __init__(self, \n                 tpu_type: str = \"v6e-64\",\n                 context_window: int = 10_000_000,\n                 hybrid_mode: bool = True,\n                 compliance_mode: str = \"eu_public_sector\",\n                 ollama_base_url: Optional[str] = None,",
+        "detail": "backend.mcp_connector",
         "documentation": {}
     },
     {
-        "label": "get_models",
-        "kind": 2,
-        "importPath": "backend.consensus_server",
-        "description": "backend.consensus_server",
-        "peekOfCode": "def get_models():\n    \"\"\"Obtiene información de los modelos disponibles\"\"\"\n    try:\n        info = get_system_info()\n        return jsonify(info)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/consensus/templates', methods=['GET'])\ndef get_templates():\n    \"\"\"Obtiene las plantillas de prompts disponibles\"\"\"",
-        "detail": "backend.consensus_server",
-        "documentation": {}
-    },
-    {
-        "label": "get_templates",
-        "kind": 2,
-        "importPath": "backend.consensus_server",
-        "description": "backend.consensus_server",
-        "peekOfCode": "def get_templates():\n    \"\"\"Obtiene las plantillas de prompts disponibles\"\"\"\n    try:\n        return jsonify(PROMPT_TEMPLATES)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/consensus/config', methods=['GET'])\ndef get_config():\n    \"\"\"Obtiene la configuración del consenso\"\"\"\n    try:",
-        "detail": "backend.consensus_server",
-        "documentation": {}
-    },
-    {
-        "label": "get_config",
-        "kind": 2,
-        "importPath": "backend.consensus_server",
-        "description": "backend.consensus_server",
-        "peekOfCode": "def get_config():\n    \"\"\"Obtiene la configuración del consenso\"\"\"\n    try:\n        return jsonify(CONSENSUS_CONFIG)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/consensus/health', methods=['GET'])\nasync def health_check():\n    \"\"\"Health check del sistema de consenso\"\"\"\n    try:",
-        "detail": "backend.consensus_server",
-        "documentation": {}
-    },
-    {
-        "label": "app",
+        "label": "logger",
         "kind": 5,
-        "importPath": "backend.consensus_server",
-        "description": "backend.consensus_server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# ============================================\n# CLASE DE CONSENSO\n# ============================================\nclass ModelConsensus:\n    def __init__(self):\n        self.active_models = get_active_models()\n        self.consensus_config = CONSENSUS_CONFIG\n    async def query_model(self, session: aiohttp.ClientSession, model_id: str, ",
-        "detail": "backend.consensus_server",
+        "importPath": "backend.mcp_connector",
+        "description": "backend.mcp_connector",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass Capibara6MCPConnector:\n    \"\"\"\n    Conector MCP para capibara6 - Sistema de IA híbrido Transformer-Mamba\n    \"\"\"\n    def __init__(self, \n                 tpu_type: str = \"v6e-64\",\n                 context_window: int = 10_000_000,\n                 hybrid_mode: bool = True,\n                 compliance_mode: str = \"eu_public_sector\",",
+        "detail": "backend.mcp_connector",
         "documentation": {}
     },
     {
-        "label": "consensus",
-        "kind": 5,
-        "importPath": "backend.consensus_server",
-        "description": "backend.consensus_server",
-        "peekOfCode": "consensus = ModelConsensus()\n# ============================================\n# RUTAS API\n# ============================================\n@app.route('/api/consensus/query', methods=['POST'])\nasync def query_consensus():\n    \"\"\"Endpoint principal para consultas con consenso\"\"\"\n    try:\n        data = request.get_json()\n        prompt = data.get('prompt', '')",
-        "detail": "backend.consensus_server",
-        "documentation": {}
-    },
-    {
-        "label": "load_coqui_model",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "def load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")\n    _model_loading = True\n    try:\n        print(f\"📦 Cargando modelo XTTS v2...\")",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "health_check",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "def health_check():\n    \"\"\"Health check endpoint\"\"\"\n    try:\n        tts = load_coqui_model()\n        return jsonify({\n            'status': 'healthy',\n            'model': 'xtts_v2',\n            'service': 'coqui-tts',\n            'features': ['voice_cloning', 'multilingual', 'custom_voices'],\n            'predefined_voices': len(PREDEFINED_VOICES),",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "list_voices",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "def list_voices():\n    \"\"\"Lista todas las voces disponibles (predefinidas + clonadas)\"\"\"\n    try:\n        voices = {\n            'predefined': PREDEFINED_VOICES,\n            'custom': {\n                voice_id: {\n                    'name': info['name'],\n                    'created_at': info.get('created_at', 'unknown')\n                }",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "clone_voice",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "def clone_voice():\n    \"\"\"\n    Clona una voz desde un archivo de audio\n    Espera: multipart/form-data con 'audio' y 'name'\n    \"\"\"\n    try:\n        if 'audio' not in request.files:\n            return jsonify({\n                'status': 'error',\n                'error': 'No se encontró archivo de audio'",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "synthesize",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "def synthesize():\n    \"\"\"\n    Genera audio TTS\n    Body: {\n        \"text\": \"texto a sintetizar\",\n        \"language\": \"es\" (opcional),\n        \"voice_id\": \"sofia\" (opcional, predefinida o clonada)\n    }\n    \"\"\"\n    if request.method == 'OPTIONS':",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "test_voice",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "def test_voice():\n    \"\"\"\n    Prueba una voz con una frase de ejemplo\n    Body: {\"voice_id\": \"sofia\"}\n    \"\"\"\n    try:\n        data = request.get_json(force=True)\n        voice_id = data.get('voice_id', 'sofia')\n        # Texto de prueba\n        test_texts = {",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins='*')\n# Configuración del modelo\nCOQUI_CONFIG = {\n    'model_name': 'tts_models/multilingual/multi-dataset/xtts_v2',\n    'sample_rate': 24000,\n    'max_chars': 3000,\n    'speed': 1.0,\n    'language': 'es',  # Español por defecto\n}",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "COQUI_CONFIG",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "COQUI_CONFIG = {\n    'model_name': 'tts_models/multilingual/multi-dataset/xtts_v2',\n    'sample_rate': 24000,\n    'max_chars': 3000,\n    'speed': 1.0,\n    'language': 'es',  # Español por defecto\n}\n# Directorio para voces de referencia\nVOICES_DIR = Path(__file__).parent / 'voices_reference'\nVOICES_DIR.mkdir(exist_ok=True)",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "VOICES_DIR",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "VOICES_DIR = Path(__file__).parent / 'voices_reference'\nVOICES_DIR.mkdir(exist_ok=True)\n# Voces predefinidas (speaker embeddings de XTTS v2)\nPREDEFINED_VOICES = {\n    'sofia': {\n        'name': 'Sofía',\n        'gender': 'female',\n        'description': 'Voz femenina cálida y profesional',\n        'language': 'es',\n        'speaker_embedding': 'Claribel Dervla',  # Speaker de XTTS v2",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "PREDEFINED_VOICES",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "PREDEFINED_VOICES = {\n    'sofia': {\n        'name': 'Sofía',\n        'gender': 'female',\n        'description': 'Voz femenina cálida y profesional',\n        'language': 'es',\n        'speaker_embedding': 'Claribel Dervla',  # Speaker de XTTS v2\n    },\n    'ana': {\n        'name': 'Ana',",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "_tts_model",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "_tts_model = None\n_model_loading = False\n_custom_voices = {}  # Voces clonadas por usuarios\ndef load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "_model_loading",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "_model_loading = False\n_custom_voices = {}  # Voces clonadas por usuarios\ndef load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")\n    _model_loading = True",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "_custom_voices",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server",
-        "description": "backend.coqui_tts_server",
-        "peekOfCode": "_custom_voices = {}  # Voces clonadas por usuarios\ndef load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")\n    _model_loading = True\n    try:",
-        "detail": "backend.coqui_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "load_coqui_model",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "def load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")\n    _model_loading = True\n    try:\n        print(f\"📦 Cargando modelo XTTS v2...\")",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "health_check",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "def health_check():\n    \"\"\"Health check endpoint\"\"\"\n    try:\n        tts = load_coqui_model()\n        return jsonify({\n            'status': 'healthy',\n            'model': 'xtts_v2',\n            'service': 'coqui-tts',\n            'features': ['voice_cloning', 'multilingual', 'custom_voices'],\n            'predefined_voices': len(PREDEFINED_VOICES),",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "list_voices",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "def list_voices():\n    \"\"\"Lista todas las voces disponibles (predefinidas + clonadas)\"\"\"\n    try:\n        voices = {\n            'predefined': PREDEFINED_VOICES,\n            'custom': {\n                voice_id: {\n                    'name': info['name'],\n                    'created_at': info.get('created_at', 'unknown')\n                }",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "clone_voice",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "def clone_voice():\n    \"\"\"\n    Clona una voz desde un archivo de audio\n    Espera: multipart/form-data con 'audio' y 'name'\n    \"\"\"\n    try:\n        if 'audio' not in request.files:\n            return jsonify({\n                'status': 'error',\n                'error': 'No se encontró archivo de audio'",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "synthesize",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "def synthesize():\n    \"\"\"\n    Genera audio TTS\n    Body: {\n        \"text\": \"texto a sintetizar\",\n        \"language\": \"es\" (opcional),\n        \"voice_id\": \"sofia\" (opcional, predefinida o clonada)\n    }\n    \"\"\"\n    if request.method == 'OPTIONS':",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "test_voice",
-        "kind": 2,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "def test_voice():\n    \"\"\"\n    Prueba una voz con una frase de ejemplo\n    Body: {\"voice_id\": \"sofia\"}\n    \"\"\"\n    try:\n        data = request.get_json(force=True)\n        voice_id = data.get('voice_id', 'sofia')\n        # Texto de prueba\n        test_texts = {",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins='*')\n# Configuración del modelo\nCOQUI_CONFIG = {\n    'model_name': 'tts_models/multilingual/multi-dataset/xtts_v2',\n    'sample_rate': 24000,\n    'max_chars': 3000,\n    'speed': 1.0,\n    'language': 'es',  # Español por defecto\n}",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "COQUI_CONFIG",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "COQUI_CONFIG = {\n    'model_name': 'tts_models/multilingual/multi-dataset/xtts_v2',\n    'sample_rate': 24000,\n    'max_chars': 3000,\n    'speed': 1.0,\n    'language': 'es',  # Español por defecto\n}\n# Directorio para voces de referencia\nVOICES_DIR = Path(__file__).parent / 'voices_reference'\nVOICES_DIR.mkdir(exist_ok=True)",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "VOICES_DIR",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "VOICES_DIR = Path(__file__).parent / 'voices_reference'\nVOICES_DIR.mkdir(exist_ok=True)\n# Voces predefinidas (speaker embeddings de XTTS v2)\nPREDEFINED_VOICES = {\n    'sofia': {\n        'name': 'Sofía',\n        'gender': 'female',\n        'description': 'Voz femenina cálida y profesional',\n        'language': 'es',\n        'speaker_embedding': 'Claribel Dervla',  # Speaker de XTTS v2",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "PREDEFINED_VOICES",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "PREDEFINED_VOICES = {\n    'sofia': {\n        'name': 'Sofía',\n        'gender': 'female',\n        'description': 'Voz femenina cálida y profesional',\n        'language': 'es',\n        'speaker_embedding': 'Claribel Dervla',  # Speaker de XTTS v2\n    },\n    'ana': {\n        'name': 'Ana',",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "_tts_model",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "_tts_model = None\n_model_loading = False\n_custom_voices = {}  # Voces clonadas por usuarios\ndef load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "_model_loading",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "_model_loading = False\n_custom_voices = {}  # Voces clonadas por usuarios\ndef load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")\n    _model_loading = True",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "_custom_voices",
-        "kind": 5,
-        "importPath": "backend.coqui_tts_server_cloning",
-        "description": "backend.coqui_tts_server_cloning",
-        "peekOfCode": "_custom_voices = {}  # Voces clonadas por usuarios\ndef load_coqui_model():\n    \"\"\"Carga el modelo Coqui TTS\"\"\"\n    global _tts_model, _model_loading\n    if _tts_model is not None:\n        return _tts_model\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose\")\n    _model_loading = True\n    try:",
-        "detail": "backend.coqui_tts_server_cloning",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.cors_proxy",
-        "description": "backend.cors_proxy",
-        "peekOfCode": "def health():\n    \"\"\"Health check del proxy\"\"\"\n    try:\n        # Verificar conexión con la VM\n        response = requests.get(GPTOSS_HEALTH_URL, timeout=5)\n        vm_status = response.json() if response.ok else {'error': 'VM no disponible'}\n        return jsonify({\n            'status': 'ok',\n            'proxy': 'CORS Proxy funcionando',\n            'vm_status': vm_status,",
-        "detail": "backend.cors_proxy",
-        "documentation": {}
-    },
-    {
-        "label": "chat_proxy",
-        "kind": 2,
-        "importPath": "backend.cors_proxy",
-        "description": "backend.cors_proxy",
-        "peekOfCode": "def chat_proxy():\n    \"\"\"Proxy para las peticiones de chat\"\"\"\n    # Manejar preflight OPTIONS\n    if request.method == 'OPTIONS':\n        response = Response()\n        response.headers.add('Access-Control-Allow-Origin', '*')\n        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')\n        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')\n        return response\n    try:",
-        "detail": "backend.cors_proxy",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "kind": 2,
-        "importPath": "backend.cors_proxy",
-        "description": "backend.cors_proxy",
-        "peekOfCode": "def models():\n    \"\"\"Información de modelos disponibles\"\"\"\n    return jsonify({\n        'models': [{\n            'id': 'gpt-oss-20b',\n            'name': 'GPT-OSS-20B',\n            'description': 'Modelo de 20B parámetros ejecutándose en Google Cloud VM'\n        }]\n    })\nif __name__ == '__main__':",
-        "detail": "backend.cors_proxy",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.cors_proxy",
-        "description": "backend.cors_proxy",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000'])\n# URL de la VM GPT-OSS-20B\nGPTOSS_API_URL = 'http://34.175.215.109/api/chat'\nGPTOSS_HEALTH_URL = 'http://34.175.215.109/health'\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check del proxy\"\"\"\n    try:\n        # Verificar conexión con la VM",
-        "detail": "backend.cors_proxy",
-        "documentation": {}
-    },
-    {
-        "label": "GPTOSS_API_URL",
-        "kind": 5,
-        "importPath": "backend.cors_proxy",
-        "description": "backend.cors_proxy",
-        "peekOfCode": "GPTOSS_API_URL = 'http://34.175.215.109/api/chat'\nGPTOSS_HEALTH_URL = 'http://34.175.215.109/health'\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check del proxy\"\"\"\n    try:\n        # Verificar conexión con la VM\n        response = requests.get(GPTOSS_HEALTH_URL, timeout=5)\n        vm_status = response.json() if response.ok else {'error': 'VM no disponible'}\n        return jsonify({",
-        "detail": "backend.cors_proxy",
-        "documentation": {}
-    },
-    {
-        "label": "GPTOSS_HEALTH_URL",
-        "kind": 5,
-        "importPath": "backend.cors_proxy",
-        "description": "backend.cors_proxy",
-        "peekOfCode": "GPTOSS_HEALTH_URL = 'http://34.175.215.109/health'\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check del proxy\"\"\"\n    try:\n        # Verificar conexión con la VM\n        response = requests.get(GPTOSS_HEALTH_URL, timeout=5)\n        vm_status = response.json() if response.ok else {'error': 'VM no disponible'}\n        return jsonify({\n            'status': 'ok',",
-        "detail": "backend.cors_proxy",
-        "documentation": {}
-    },
-    {
-        "label": "load_model",
-        "kind": 2,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "def load_model():\n    \"\"\"Carga el modelo Kyutai TTS con manejo de errores robusto\"\"\"\n    global _model_cache, _model_loading\n    if _model_cache is not None:\n        return _model_cache\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose en otro thread\")\n    _model_loading = True\n    try:\n        print(f\"📦 Cargando modelo Kyutai: {KYUTAI_CONFIG['model_repo']}\")",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "synthesize_audio",
-        "kind": 2,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "def synthesize_audio(text, language='es'):\n    \"\"\"Sintetiza texto a audio con Kyutai\"\"\"\n    try:\n        # Limitar caracteres\n        if len(text) > KYUTAI_CONFIG['max_chars']:\n            print(f\"⚠️ Texto truncado de {len(text)} a {KYUTAI_CONFIG['max_chars']} caracteres\")\n            text = text[:KYUTAI_CONFIG['max_chars']]\n        print(f\"🎙️ Sintetizando: {len(text)} caracteres, idioma={language}\")\n        # Cargar modelo\n        model = load_model()",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "def health():\n    \"\"\"Health check endpoint\"\"\"\n    try:\n        device = 'cuda' if torch.cuda.is_available() else 'cpu'\n        gpu_name = torch.cuda.get_device_name(0) if torch.cuda.is_available() else None\n        model_loaded = _model_cache is not None\n        return jsonify({\n            'service': 'kyutai-tts',\n            'status': 'healthy',\n            'model': KYUTAI_CONFIG['model_repo'],",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "tts",
-        "kind": 2,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "def tts():\n    \"\"\"Endpoint principal de TTS\"\"\"\n    try:\n        # Obtener datos del request\n        data = request.get_json()\n        if not data:\n            return jsonify({'error': 'No JSON data provided'}), 400\n        text = data.get('text', '')\n        language = data.get('language', 'es')\n        if not text:",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "preload",
-        "kind": 2,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "def preload():\n    \"\"\"Pre-cargar modelo (útil para warmup)\"\"\"\n    try:\n        model = load_model()\n        return jsonify({\n            'status': 'success',\n            'message': 'Modelo cargado exitosamente',\n            'device': 'cuda' if torch.cuda.is_available() else 'cpu'\n        })\n    except Exception as e:",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=[\n    'http://localhost:5500',\n    'http://127.0.0.1:5500',\n    'http://localhost:8000',\n    'http://127.0.0.1:8000',\n    'https://capibara6.vercel.app',\n    'https://capibara6-kpdtkkw9k-anachroni.vercel.app',\n    'https://*.vercel.app',\n    '*'",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "KYUTAI_CONFIG",
-        "kind": 5,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "KYUTAI_CONFIG = {\n    'model_repo': 'kyutai/tts-1b-en_es',  # Modelo 1B multilingüe\n    'sample_rate': 24000,\n    'temperature': 0.7,\n    'top_p': 0.9,\n    'max_chars': 3000,\n}\n# Cache del modelo\n_model_cache = None\n_model_loading = False",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "_model_cache",
-        "kind": 5,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "_model_cache = None\n_model_loading = False\ndef load_model():\n    \"\"\"Carga el modelo Kyutai TTS con manejo de errores robusto\"\"\"\n    global _model_cache, _model_loading\n    if _model_cache is not None:\n        return _model_cache\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose en otro thread\")\n    _model_loading = True",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "_model_loading",
-        "kind": 5,
-        "importPath": "backend.kyutai_tts_server",
-        "description": "backend.kyutai_tts_server",
-        "peekOfCode": "_model_loading = False\ndef load_model():\n    \"\"\"Carga el modelo Kyutai TTS con manejo de errores robusto\"\"\"\n    global _model_cache, _model_loading\n    if _model_cache is not None:\n        return _model_cache\n    if _model_loading:\n        raise Exception(\"Modelo ya está cargándose en otro thread\")\n    _model_loading = True\n    try:",
-        "detail": "backend.kyutai_tts_server",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.kyutai_tts_server_simple",
-        "description": "backend.kyutai_tts_server_simple",
-        "peekOfCode": "def health():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'service': 'tts-fallback-server',\n        'status': 'healthy',\n        'mode': 'fallback',\n        'message': 'Kyutai TTS API en investigación - usando Web Speech API en frontend'\n    })\n@app.route('/tts', methods=['POST'])\ndef tts():",
-        "detail": "backend.kyutai_tts_server_simple",
-        "documentation": {}
-    },
-    {
-        "label": "tts",
-        "kind": 2,
-        "importPath": "backend.kyutai_tts_server_simple",
-        "description": "backend.kyutai_tts_server_simple",
-        "peekOfCode": "def tts():\n    \"\"\"Endpoint que devuelve fallback para usar Web Speech API\"\"\"\n    try:\n        data = request.get_json()\n        text = data.get('text', '')\n        language = data.get('language', 'es')\n        if not text:\n            return jsonify({'error': 'Text is required'}), 400\n        print(f\"📝 Request TTS: {len(text)} chars, lang={language}\")\n        print(f\"⚠️  Devolviendo fallback - frontend usará Web Speech API\")",
-        "detail": "backend.kyutai_tts_server_simple",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.kyutai_tts_server_simple",
-        "description": "backend.kyutai_tts_server_simple",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins='*')\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'service': 'tts-fallback-server',\n        'status': 'healthy',\n        'mode': 'fallback',\n        'message': 'Kyutai TTS API en investigación - usando Web Speech API en frontend'",
-        "detail": "backend.kyutai_tts_server_simple",
-        "documentation": {}
-    },
-    {
-        "label": "get_context",
-        "kind": 2,
+        "label": "MCPServer",
+        "kind": 6,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def get_context(context_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene contexto específico\"\"\"\n    source = CONTEXT_SOURCES.get(context_id)\n    if not source:\n        return {'error': f'Contexto {context_id} no encontrado'}\n    data = source['data']\n    # Si es función, ejecutarla\n    if callable(data):\n        data = data()\n    return {",
+        "peekOfCode": "class MCPServer:\n    \"\"\"\n    Servidor MCP que integra capibara6 con el protocolo MCP\n    \"\"\"\n    def __init__(self, host: str = \"localhost\", port: int = 3000):\n        self.host = host\n        self.port = port\n        self.connector = Capibara6MCPConnector()\n        self.request_queue = queue.Queue()\n        self.response_queue = queue.Queue()",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "get_all_contexts",
+        "label": "start_mcp_server",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def get_all_contexts() -> Dict[str, Any]:\n    \"\"\"Obtiene todos los contextos disponibles\"\"\"\n    contexts = {}\n    for context_id, source in CONTEXT_SOURCES.items():\n        data = source['data']\n        if callable(data):\n            data = data()\n        contexts[context_id] = data\n    return contexts\ndef calculate(expression: str) -> Dict[str, Any]:",
+        "peekOfCode": "def start_mcp_server():\n    \"\"\"Iniciar servidor MCP en hilo separado\"\"\"\n    loop = asyncio.new_event_loop()\n    asyncio.set_event_loop(loop)\n    loop.run_until_complete(mcp_server.start_server())\nmcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask\napp = Flask(__name__)\nCORS(app)",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "calculate",
+        "label": "mcp_initialize",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def calculate(expression: str) -> Dict[str, Any]:\n    \"\"\"Calcula una expresión matemática de forma segura\"\"\"\n    try:\n        # Evaluar de forma segura (sin exec/eval de Python directo)\n        # Solo permitir operaciones matemáticas básicas\n        allowed_chars = set('0123456789+-*/().% ')\n        if not all(c in allowed_chars for c in expression):\n            return {'error': 'Expresión contiene caracteres no permitidos'}\n        result = eval(expression, {\"__builtins__\": {}}, {})\n        return {",
+        "peekOfCode": "def mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 1,\n            \"method\": \"initialize\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "verify_fact",
+        "label": "mcp_tools_list",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def verify_fact(claim: str, category: str = 'general') -> Dict[str, Any]:\n    \"\"\"Verifica un hecho contra los contextos disponibles\"\"\"\n    # Por ahora, solo verifica contra los contextos locales\n    all_contexts = get_all_contexts()\n    # Buscar en los contextos si hay información relacionada\n    relevant_info = []\n    claim_lower = claim.lower()\n    for context_id, data in all_contexts.items():\n        data_str = json.dumps(data).lower()\n        if any(word in data_str for word in claim_lower.split()):",
+        "peekOfCode": "def mcp_tools_list():\n    \"\"\"Endpoint para listar herramientas MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 2,\n            \"method\": \"tools/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "augment_prompt_with_context",
+        "label": "mcp_tools_call",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def augment_prompt_with_context(prompt: str, contexts: List[str] = None) -> str:\n    \"\"\"Aumenta el prompt con contexto relevante de forma concisa\"\"\"\n    if contexts is None:\n        contexts = ['company_info', 'current_date']\n    # Construir contexto conciso\n    facts = []\n    for context_id in contexts:\n        ctx = get_context(context_id)\n        if 'error' not in ctx:\n            data = ctx['data']",
+        "peekOfCode": "def mcp_tools_call():\n    \"\"\"Endpoint para ejecutar herramienta MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 3),\n            \"method\": \"tools/call\",",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "list_contexts",
+        "label": "mcp_resources_list",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def list_contexts():\n    \"\"\"Lista todos los contextos disponibles\"\"\"\n    try:\n        contexts_list = []\n        for context_id, source in CONTEXT_SOURCES.items():\n            contexts_list.append({\n                'id': context_id,\n                'name': source['name'],\n                'description': source['description']\n            })",
+        "peekOfCode": "def mcp_resources_list():\n    \"\"\"Endpoint para listar recursos MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 4,\n            \"method\": \"resources/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "get_context_endpoint",
+        "label": "mcp_resources_read",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def get_context_endpoint(context_id):\n    \"\"\"Obtiene un contexto específico\"\"\"\n    try:\n        context = get_context(context_id)\n        return jsonify(context)\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n@app.route('/api/mcp/augment', methods=['POST'])\ndef augment_prompt():\n    \"\"\"Aumenta un prompt con contexto relevante\"\"\"",
+        "peekOfCode": "def mcp_resources_read():\n    \"\"\"Endpoint para leer recurso MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 5),\n            \"method\": \"resources/read\",",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "augment_prompt",
+        "label": "mcp_prompts_list",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def augment_prompt():\n    \"\"\"Aumenta un prompt con contexto relevante\"\"\"\n    try:\n        data = request.get_json()\n        prompt = data.get('prompt', '')\n        contexts = data.get('contexts')  # Lista opcional de contextos\n        if not prompt:\n            return jsonify({'error': 'Prompt requerido'}), 400\n        augmented = augment_prompt_with_context(prompt, contexts)\n        return jsonify({",
+        "peekOfCode": "def mcp_prompts_list():\n    \"\"\"Endpoint para listar prompts MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 6,\n            \"method\": \"prompts/list\",\n            \"params\": request.get_json() or {}\n        }\n        response = mcp_server.process_request(request_data)",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "list_tools",
+        "label": "mcp_prompts_get",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def list_tools():\n    \"\"\"Lista herramientas MCP disponibles\"\"\"\n    try:\n        tools_list = []\n        for tool_id, tool_info in TOOLS.items():\n            tools_list.append({\n                'id': tool_id,\n                'name': tool_info['name'],\n                'description': tool_info['description'],\n                'enabled': tool_info['enabled']",
+        "peekOfCode": "def mcp_prompts_get():\n    \"\"\"Endpoint para obtener prompt MCP\"\"\"\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({\"error\": \"Datos requeridos\"}), 400\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": data.get(\"id\", 7),\n            \"method\": \"prompts/get\",",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "calculate_endpoint",
+        "label": "mcp_status",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def calculate_endpoint():\n    \"\"\"Realiza un cálculo matemático\"\"\"\n    try:\n        data = request.get_json()\n        expression = data.get('expression', '')\n        if not expression:\n            return jsonify({'error': 'Expresión requerida'}), 400\n        result = calculate(expression)\n        return jsonify(result)\n    except Exception as e:",
+        "peekOfCode": "def mcp_status():\n    \"\"\"Endpoint para verificar estado del servidor MCP\"\"\"\n    return jsonify({\n        \"status\": \"running\",\n        \"connector\": \"capibara6-mcp-connector\",\n        \"version\": \"1.0.0\",\n        \"capabilities\": mcp_server.connector.capabilities,\n        \"timestamp\": time.time()\n    })\n@app.route('/api/mcp/test', methods=['POST'])",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "verify_fact_endpoint",
+        "label": "mcp_test",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def verify_fact_endpoint():\n    \"\"\"Verifica un hecho\"\"\"\n    try:\n        data = request.get_json()\n        claim = data.get('claim', '')\n        category = data.get('category', 'general')\n        if not claim:\n            return jsonify({'error': 'Claim requerido'}), 400\n        result = verify_fact(claim, category)\n        return jsonify(result)",
+        "peekOfCode": "def mcp_test():\n    \"\"\"Endpoint para probar funcionalidad MCP\"\"\"\n    try:\n        data = request.get_json() or {}\n        test_type = data.get(\"test_type\", \"full\")\n        results = {}\n        if test_type in [\"full\", \"tools\"]:\n            # Test de herramientas\n            tools_request = {\n                \"jsonrpc\": \"2.0\",",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "health_check",
+        "label": "mcp_documentation",
         "kind": 2,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "def health_check():\n    \"\"\"Health check del servidor MCP\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'capibara6-mcp',\n        'contexts_available': len(CONTEXT_SOURCES),\n        'tools_available': len([t for t in TOOLS.values() if t['enabled']]),\n        'timestamp': datetime.datetime.now().isoformat()\n    })\n# ============================================",
+        "peekOfCode": "def mcp_documentation():\n    \"\"\"Página de documentación del conector MCP\"\"\"\n    return '''\n    <!DOCTYPE html>\n    <html>\n    <head>\n        <title>capibara6 MCP Connector</title>\n        <meta charset=\"UTF-8\">\n        <style>\n            body { ",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass MCPServer:\n    \"\"\"\n    Servidor MCP que integra capibara6 con el protocolo MCP\n    \"\"\"\n    def __init__(self, host: str = \"localhost\", port: int = 3000):\n        self.host = host\n        self.port = port\n        self.connector = Capibara6MCPConnector()\n        self.request_queue = queue.Queue()",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_server",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "mcp_server = MCPServer()\n# Iniciar servidor MCP en hilo separado\ndef start_mcp_server():\n    \"\"\"Iniciar servidor MCP en hilo separado\"\"\"\n    loop = asyncio.new_event_loop()\n    asyncio.set_event_loop(loop)\n    loop.run_until_complete(mcp_server.start_server())\nmcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask",
+        "detail": "backend.mcp_server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_thread",
+        "kind": 5,
+        "importPath": "backend.mcp_server",
+        "description": "backend.mcp_server",
+        "peekOfCode": "mcp_thread = threading.Thread(target=start_mcp_server, daemon=True)\nmcp_thread.start()\n# Integración con Flask\napp = Flask(__name__)\nCORS(app)\n@app.route('/api/mcp/initialize', methods=['POST'])\ndef mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
@@ -1989,206 +666,26 @@
         "kind": 5,
         "importPath": "backend.mcp_server",
         "description": "backend.mcp_server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=['http://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://127.0.0.1:5500'])\n# ============================================\n# CONTEXTOS DISPONIBLES\n# ============================================\nCONTEXT_SOURCES = {\n    'company_info': {\n        'name': 'Información de la Empresa',\n        'description': 'Datos sobre Anachroni s.coop y Capibara6',\n        'data': {",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\n@app.route('/api/mcp/initialize', methods=['POST'])\ndef mcp_initialize():\n    \"\"\"Endpoint para inicializar conexión MCP\"\"\"\n    try:\n        request_data = {\n            \"jsonrpc\": \"2.0\",\n            \"id\": 1,\n            \"method\": \"initialize\",",
         "detail": "backend.mcp_server",
         "documentation": {}
     },
     {
-        "label": "CONTEXT_SOURCES",
+        "label": "OllamaClient",
+        "kind": 6,
+        "importPath": "backend.ollama_client",
+        "description": "backend.ollama_client",
+        "peekOfCode": "class OllamaClient:\n    \"\"\"Cliente para gestionar peticiones a Ollama con soporte de fallback.\"\"\"\n    def __init__(self, config: Dict[str, Any]):\n        self.config = config\n        self.endpoint = config.get(\"api_settings\", {}).get(\n            \"ollama_endpoint\",\n            os.getenv(\"OLLAMA_ENDPOINT\", \"http://localhost:11434\"),\n        )\n        self.models = config.get(\"models\", {})\n        fallback_cfg = config.get(\"fallback_strategy\", {})",
+        "detail": "backend.ollama_client",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
         "kind": 5,
-        "importPath": "backend.mcp_server",
-        "description": "backend.mcp_server",
-        "peekOfCode": "CONTEXT_SOURCES = {\n    'company_info': {\n        'name': 'Información de la Empresa',\n        'description': 'Datos sobre Anachroni s.coop y Capibara6',\n        'data': {\n            'company_name': 'Anachroni s.coop',\n            'product_name': 'Capibara6',\n            'product_type': 'Sistema de consenso de IA',\n            'status': 'Beta',\n            'models': ['Capibara6 (Gemma3-12B)', 'OSS-120B (TPU-v5e-64)'],",
-        "detail": "backend.mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "TOOLS",
-        "kind": 5,
-        "importPath": "backend.mcp_server",
-        "description": "backend.mcp_server",
-        "peekOfCode": "TOOLS = {\n    'search_web': {\n        'name': 'Buscar en Web',\n        'description': 'Busca información actualizada en internet',\n        'enabled': False  # Requiere API key\n    },\n    'calculate': {\n        'name': 'Calculadora',\n        'description': 'Realiza cálculos matemáticos precisos',\n        'enabled': True",
-        "detail": "backend.mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.mcp_server_robusto",
-        "description": "backend.mcp_server_robusto",
-        "peekOfCode": "def health():\n    \"\"\"Health check\"\"\"\n    print(\"✅ Health check recibido\")\n    return jsonify({\n        'status': 'healthy',\n        'service': 'smart-mcp',\n        'port': 5010,\n        'version': 'robusto'\n    })\n@app.route('/analyze', methods=['POST', 'OPTIONS'])",
-        "detail": "backend.mcp_server_robusto",
-        "documentation": {}
-    },
-    {
-        "label": "analyze",
-        "kind": 2,
-        "importPath": "backend.mcp_server_robusto",
-        "description": "backend.mcp_server_robusto",
-        "peekOfCode": "def analyze():\n    \"\"\"Analiza query\"\"\"\n    # Manejar OPTIONS\n    if request.method == 'OPTIONS':\n        print(\"✓ OPTIONS request\")\n        return '', 204\n    print(\"\\n\" + \"=\"*50)\n    print(\"📥 Request POST recibido en /analyze\")\n    print(\"=\"*50)\n    try:",
-        "detail": "backend.mcp_server_robusto",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.mcp_server_robusto",
-        "description": "backend.mcp_server_robusto",
-        "peekOfCode": "app = Flask(__name__)\n# CORS muy permisivo\nCORS(app, \n     origins='*',\n     methods=['GET', 'POST', 'OPTIONS'],\n     allow_headers=['Content-Type'])\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check\"\"\"\n    print(\"✅ Health check recibido\")",
-        "detail": "backend.mcp_server_robusto",
-        "documentation": {}
-    },
-    {
-        "label": "get_active_models",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_active_models() -> List[str]:\n    \"\"\"Obtiene la lista de modelos activos\"\"\"\n    return [model_id for model_id, config in MODELS_CONFIG.items() \n            if config['status'] == 'active']\ndef get_model_config(model_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene la configuración de un modelo específico\"\"\"\n    return MODELS_CONFIG.get(model_id, {})\ndef get_prompt_template(template_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene una plantilla de prompt específica\"\"\"\n    return PROMPT_TEMPLATES.get(template_id, {})",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_model_config",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_model_config(model_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene la configuración de un modelo específico\"\"\"\n    return MODELS_CONFIG.get(model_id, {})\ndef get_prompt_template(template_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene una plantilla de prompt específica\"\"\"\n    return PROMPT_TEMPLATES.get(template_id, {})\ndef get_available_templates() -> List[str]:\n    \"\"\"Obtiene la lista de plantillas disponibles\"\"\"\n    return list(PROMPT_TEMPLATES.keys())\ndef get_models_for_template(template_id: str) -> List[str]:",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_prompt_template",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_prompt_template(template_id: str) -> Dict[str, Any]:\n    \"\"\"Obtiene una plantilla de prompt específica\"\"\"\n    return PROMPT_TEMPLATES.get(template_id, {})\ndef get_available_templates() -> List[str]:\n    \"\"\"Obtiene la lista de plantillas disponibles\"\"\"\n    return list(PROMPT_TEMPLATES.keys())\ndef get_models_for_template(template_id: str) -> List[str]:\n    \"\"\"Obtiene los modelos recomendados para una plantilla\"\"\"\n    template = get_prompt_template(template_id)\n    return template.get('models', [])",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_available_templates",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_available_templates() -> List[str]:\n    \"\"\"Obtiene la lista de plantillas disponibles\"\"\"\n    return list(PROMPT_TEMPLATES.keys())\ndef get_models_for_template(template_id: str) -> List[str]:\n    \"\"\"Obtiene los modelos recomendados para una plantilla\"\"\"\n    template = get_prompt_template(template_id)\n    return template.get('models', [])\ndef format_prompt(model_id: str, template_id: str, user_prompt: str) -> str:\n    \"\"\"Formatea un prompt usando la plantilla y configuración del modelo\"\"\"\n    model_config = get_model_config(model_id)",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_models_for_template",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_models_for_template(template_id: str) -> List[str]:\n    \"\"\"Obtiene los modelos recomendados para una plantilla\"\"\"\n    template = get_prompt_template(template_id)\n    return template.get('models', [])\ndef format_prompt(model_id: str, template_id: str, user_prompt: str) -> str:\n    \"\"\"Formatea un prompt usando la plantilla y configuración del modelo\"\"\"\n    model_config = get_model_config(model_id)\n    template = get_prompt_template(template_id)\n    if not model_config or not template:\n        return user_prompt",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "format_prompt",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def format_prompt(model_id: str, template_id: str, user_prompt: str) -> str:\n    \"\"\"Formatea un prompt usando la plantilla y configuración del modelo\"\"\"\n    model_config = get_model_config(model_id)\n    template = get_prompt_template(template_id)\n    if not model_config or not template:\n        return user_prompt\n    # Obtener el template del modelo\n    model_template = model_config.get('prompt_template', {})\n    system_prompt = template.get('system_prompt', model_template.get('system', ''))\n    # Formatear según el tipo de modelo",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_development_config",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_development_config():\n    \"\"\"Configuración para desarrollo local\"\"\"\n    return {\n        'models': {\n            'capibara6': {\n                **MODELS_CONFIG['capibara6'],\n                'server_url': 'http://localhost:8080/completion'\n            },\n            'oss-120b': {\n                **MODELS_CONFIG['oss-120b'],",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_production_config",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_production_config():\n    \"\"\"Configuración para producción\"\"\"\n    return {\n        'models': MODELS_CONFIG,\n        'consensus': CONSENSUS_CONFIG\n    }\n# ============================================\n# INFORMACIÓN DEL SISTEMA\n# ============================================\ndef get_system_info():",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_system_info",
-        "kind": 2,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "def get_system_info():\n    \"\"\"Obtiene información del sistema de modelos\"\"\"\n    active_models = get_active_models()\n    return {\n        'total_models': len(MODELS_CONFIG),\n        'active_models': len(active_models),\n        'models_list': active_models,\n        'consensus_enabled': CONSENSUS_CONFIG['enabled'],\n        'available_templates': get_available_templates(),\n        'hardware_info': {",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "MODELS_CONFIG",
-        "kind": 5,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "MODELS_CONFIG = {\n    'capibara6': {\n        'name': 'Capibara6',\n        'base_model': 'Gemma3-12B',\n        'server_url': 'http://34.175.104.187:8080/completion',  # IP actualizada\n        'type': 'llama_cpp',\n        'hardware': 'GPU',\n        'status': 'active',\n        'priority': 1,\n        'prompt_template': {",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "PROMPT_TEMPLATES",
-        "kind": 5,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "PROMPT_TEMPLATES = {\n    'general': {\n        'name': 'General',\n        'description': 'Conversación general y preguntas abiertas',\n        'system_prompt': 'Eres un asistente útil y preciso. Responde de manera clara y concisa.',\n        'models': ['capibara6', 'oss-120b']\n    },\n    'coding': {\n        'name': 'Programación',\n        'description': 'Ayuda con código, debugging y desarrollo',",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "CONSENSUS_CONFIG",
-        "kind": 5,
-        "importPath": "backend.models_config",
-        "description": "backend.models_config",
-        "peekOfCode": "CONSENSUS_CONFIG = {\n    'enabled': True,\n    'min_models': 2,\n    'max_models': 3,\n    'voting_method': 'weighted',  # 'simple', 'weighted', 'confidence'\n    'model_weights': {\n        'capibara6': 0.6,  # Peso mayor para respuestas rápidas\n        'oss-120b': 0.4    # Peso menor pero mayor calidad\n    },\n    'fallback_model': 'capibara6',  # Modelo de respaldo si falla el consenso",
-        "detail": "backend.models_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_frontend_url",
-        "kind": 2,
-        "importPath": "backend.production_config",
-        "description": "backend.production_config",
-        "peekOfCode": "def get_frontend_url():\n    \"\"\"Obtiene la URL del frontend según el entorno\"\"\"\n    return os.environ.get('FRONTEND_URL', PRODUCTION_CONFIG['frontend_url'])\ndef get_auth_server_url():\n    \"\"\"Obtiene la URL del servidor de auth según el entorno\"\"\"\n    return os.environ.get('AUTH_SERVER_URL', PRODUCTION_CONFIG['auth_server_url'])\ndef get_allowed_origins():\n    \"\"\"Obtiene los orígenes permitidos según el entorno\"\"\"\n    return os.environ.get('ALLOWED_ORIGINS', PRODUCTION_CONFIG['allowed_origins'])\nif __name__ == '__main__':",
-        "detail": "backend.production_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_auth_server_url",
-        "kind": 2,
-        "importPath": "backend.production_config",
-        "description": "backend.production_config",
-        "peekOfCode": "def get_auth_server_url():\n    \"\"\"Obtiene la URL del servidor de auth según el entorno\"\"\"\n    return os.environ.get('AUTH_SERVER_URL', PRODUCTION_CONFIG['auth_server_url'])\ndef get_allowed_origins():\n    \"\"\"Obtiene los orígenes permitidos según el entorno\"\"\"\n    return os.environ.get('ALLOWED_ORIGINS', PRODUCTION_CONFIG['allowed_origins'])\nif __name__ == '__main__':\n    print(\"🌐 Configuración de Producción:\")\n    print(f\"   Frontend URL: {get_frontend_url()}\")\n    print(f\"   Auth Server URL: {get_auth_server_url()}\")",
-        "detail": "backend.production_config",
-        "documentation": {}
-    },
-    {
-        "label": "get_allowed_origins",
-        "kind": 2,
-        "importPath": "backend.production_config",
-        "description": "backend.production_config",
-        "peekOfCode": "def get_allowed_origins():\n    \"\"\"Obtiene los orígenes permitidos según el entorno\"\"\"\n    return os.environ.get('ALLOWED_ORIGINS', PRODUCTION_CONFIG['allowed_origins'])\nif __name__ == '__main__':\n    print(\"🌐 Configuración de Producción:\")\n    print(f\"   Frontend URL: {get_frontend_url()}\")\n    print(f\"   Auth Server URL: {get_auth_server_url()}\")\n    print(f\"   GitHub Callback: {OAUTH_CALLBACKS['github']}\")\n    print(f\"   Google Callback: {OAUTH_CALLBACKS['google']}\")\n    print(f\"   Allowed Origins: {get_allowed_origins()}\")",
-        "detail": "backend.production_config",
-        "documentation": {}
-    },
-    {
-        "label": "PRODUCTION_CONFIG",
-        "kind": 5,
-        "importPath": "backend.production_config",
-        "description": "backend.production_config",
-        "peekOfCode": "PRODUCTION_CONFIG = {\n    'frontend_url': 'https://capibara6.com',\n    'auth_server_url': 'https://api.capibara6.com',  # Cambiar por tu dominio del servidor de auth\n    'allowed_origins': [\n        'https://capibara6.com',\n        'http://capibara6.com',  # Para desarrollo\n        'http://localhost:8000',  # Para desarrollo local\n        'http://127.0.0.1:8000'   # Para desarrollo local\n    ]\n}",
-        "detail": "backend.production_config",
-        "documentation": {}
-    },
-    {
-        "label": "OAUTH_CALLBACKS",
-        "kind": 5,
-        "importPath": "backend.production_config",
-        "description": "backend.production_config",
-        "peekOfCode": "OAUTH_CALLBACKS = {\n    'github': f\"{PRODUCTION_CONFIG['auth_server_url']}/auth/callback/github\",\n    'google': f\"{PRODUCTION_CONFIG['auth_server_url']}/auth/callback/google\"\n}\ndef get_frontend_url():\n    \"\"\"Obtiene la URL del frontend según el entorno\"\"\"\n    return os.environ.get('FRONTEND_URL', PRODUCTION_CONFIG['frontend_url'])\ndef get_auth_server_url():\n    \"\"\"Obtiene la URL del servidor de auth según el entorno\"\"\"\n    return os.environ.get('AUTH_SERVER_URL', PRODUCTION_CONFIG['auth_server_url'])",
-        "detail": "backend.production_config",
+        "importPath": "backend.ollama_client",
+        "description": "backend.ollama_client",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass OllamaClient:\n    \"\"\"Cliente para gestionar peticiones a Ollama con soporte de fallback.\"\"\"\n    def __init__(self, config: Dict[str, Any]):\n        self.config = config\n        self.endpoint = config.get(\"api_settings\", {}).get(\n            \"ollama_endpoint\",\n            os.getenv(\"OLLAMA_ENDPOINT\", \"http://localhost:11434\"),\n        )\n        self.models = config.get(\"models\", {})",
+        "detail": "backend.ollama_client",
         "documentation": {}
     },
     {
@@ -2205,7 +702,16 @@
         "kind": 2,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "def ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):\n        try:",
+        "peekOfCode": "def ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"Extraer las opciones válidas para generación desde el payload.\"\"\"\n    option_keys = (\"max_tokens\", \"temperature\", \"top_p\", \"top_k\", \"timeout\", \"stop\")\n    options: Dict[str, Any] = {key: payload[key] for key in option_keys if payload.get(key) is not None}\n    context = payload.get(\"context\") or payload.get(\"messages\")\n    if context:\n        options[\"context\"] = context",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "extract_generation_options",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"Extraer las opciones válidas para generación desde el payload.\"\"\"\n    option_keys = (\"max_tokens\", \"temperature\", \"top_p\", \"top_k\", \"timeout\", \"stop\")\n    options: Dict[str, Any] = {key: payload[key] for key in option_keys if payload.get(key) is not None}\n    context = payload.get(\"context\") or payload.get(\"messages\")\n    if context:\n        options[\"context\"] = context\n    return options\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -2228,6 +734,33 @@
         "documentation": {}
     },
     {
+        "label": "save_lead_to_file",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def save_lead_to_file(lead_data):\n    \"\"\"Guardar lead en archivo JSON\"\"\"\n    ensure_data_dir()\n    leads_file = 'user_data/leads.json'\n    # Leer leads existentes\n    existing_leads = []\n    if os.path.exists(leads_file):\n        try:\n            with open(leads_file, 'r', encoding='utf-8') as f:\n                existing_leads = json.load(f)",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "send_lead_confirmation_email",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def send_lead_confirmation_email(lead_data):\n    \"\"\"Enviar email de confirmación al lead\"\"\"\n    try:\n        msg = MIMEMultipart('alternative')\n        msg['Subject'] = '¡Gracias por tu interés en capibara6! - Anachroni'\n        msg['From'] = FROM_EMAIL\n        msg['To'] = lead_data['email']\n        # Contenido del email\n        text_content = f\"\"\"\n¡Hola {lead_data['full_name']}!",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "send_lead_notification_to_admin",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def send_lead_notification_to_admin(lead_data):\n    \"\"\"Enviar notificación al admin con datos del lead\"\"\"\n    try:\n        msg = MIMEMultipart('alternative')\n        msg['Subject'] = f'🔥 NUEVO LEAD: {lead_data[\"company_name\"]} - {lead_data[\"contact_type\"]}'\n        msg['From'] = FROM_EMAIL\n        msg['To'] = FROM_EMAIL\n        # Preparar contenido\n        text_content = f\"\"\"\nNUEVO LEAD EMPRESARIAL - CAPIBARA6",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
         "label": "send_notification_to_admin",
         "kind": 2,
         "importPath": "backend.server",
@@ -2246,11 +779,137 @@
         "documentation": {}
     },
     {
+        "label": "save_lead",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def save_lead():\n    \"\"\"Endpoint para guardar leads empresariales\"\"\"\n    try:\n        data = request.get_json()\n        # Validar datos requeridos\n        required_fields = ['contactType', 'companyName', 'fullName', 'email']\n        for field in required_fields:\n            if not data.get(field):\n                return jsonify({'success': False, 'error': f'Campo requerido: {field}'}), 400\n        # Preparar datos del lead",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
         "label": "health",
         "kind": 2,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "def health():\n    \"\"\"Endpoint de health check\"\"\"\n    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})\n@app.route('/', methods=['GET'])\ndef index():\n    \"\"\"Página principal\"\"\"\n    return '''\n    <html>\n        <head>\n            <title>capibara6 Backend</title>",
+        "peekOfCode": "def health():\n    \"\"\"Endpoint de health check\"\"\"\n    return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})\n# ============================================================================\n# ENDPOINTS IA MULTI-MODELO\n# ============================================================================\n@app.route('/api/ai/generate', methods=['POST'])\ndef ai_generate():\n    \"\"\"Generar texto seleccionando el modelo adecuado de forma automática.\"\"\"\n    if not (AI_ROUTER_AVAILABLE and ollama_router):",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "ai_generate",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def ai_generate():\n    \"\"\"Generar texto seleccionando el modelo adecuado de forma automática.\"\"\"\n    if not (AI_ROUTER_AVAILABLE and ollama_router):\n        return jsonify({'success': False, 'error': 'Router de modelos no disponible'}), 503\n    data = request.get_json() or {}\n    prompt = (data.get('prompt') or '').strip()\n    if not prompt:\n        return jsonify({'success': False, 'error': 'Prompt requerido'}), 400\n    model_preference = data.get('modelPreference') or data.get('model_preference') or DEFAULT_MODEL_TIER\n    streaming_requested = bool(data.get('streaming', False)) and STREAMING_ENABLED",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "ai_classify",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def ai_classify():\n    \"\"\"Clasificar un prompt sin ejecutarlo.\"\"\"\n    data = request.get_json() or {}\n    prompt = (data.get('prompt') or '').strip()\n    if not prompt:\n        return jsonify({'error': 'Prompt requerido'}), 400\n    classification = TaskClassifier.classify(prompt)\n    model_cfg = MODEL_CONFIG.get('models', {}).get(classification.model_tier, {})\n    scores = classification.scores\n    ordered_scores = sorted(scores.values(), reverse=True)",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "ai_generate_specific",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def ai_generate_specific(model_tier: str):\n    \"\"\"Generar texto forzando un tier/modelo específico.\"\"\"\n    if not (AI_ROUTER_AVAILABLE and ollama_router):\n        return jsonify({'success': False, 'error': 'Router de modelos no disponible'}), 503\n    data = request.get_json() or {}\n    prompt = (data.get('prompt') or '').strip()\n    if not prompt:\n        return jsonify({'success': False, 'error': 'Prompt requerido'}), 400\n    options = extract_generation_options(data)\n    try:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_status",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_status():\n    \"\"\"Estado del conector MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'MCP Connector no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    return jsonify({\n        'status': 'running',",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_initialize",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_initialize():\n    \"\"\"Inicializar conexión MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_list",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_tools_list():\n    \"\"\"Listar herramientas MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_tools_call",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_tools_call():\n    \"\"\"Ejecutar herramienta MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        data = request.get_json()\n        if not data:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_list",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_resources_list():\n    \"\"\"Listar recursos MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_resources_read",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_resources_read():\n    \"\"\"Leer recurso MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        data = request.get_json()\n        if not data:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_list",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_prompts_list():\n    \"\"\"Listar prompts MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        request_data = {\n            \"jsonrpc\": \"2.0\",",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_prompts_get",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_prompts_get():\n    \"\"\"Obtener prompt MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({'error': 'MCP Connector no disponible'}), 503\n    try:\n        import asyncio\n        loop = asyncio.new_event_loop()\n        asyncio.set_event_loop(loop)\n        data = request.get_json()\n        if not data:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_test",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_test():\n    \"\"\"Probar funcionalidad MCP\"\"\"\n    if not MCP_AVAILABLE:\n        return jsonify({\n            'status': 'unavailable',\n            'error': 'MCP Connector no disponible',\n            'timestamp': datetime.now().isoformat()\n        }), 503\n    try:\n        import asyncio",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_documentation",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def mcp_documentation():\n    \"\"\"Página de documentación del conector MCP\"\"\"\n    return '''\n    <!DOCTYPE html>\n    <html>\n    <head>\n        <title>capibara6 MCP Connector</title>\n        <meta charset=\"UTF-8\">\n        <style>\n            body { ",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -2264,11 +923,65 @@
         "documentation": {}
     },
     {
+        "label": "choose_port",
+        "kind": 2,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "def choose_port(preferred: int, extra_candidates: Optional[List[int]] = None) -> int:\n    \"\"\"Seleccionar un puerto disponible a partir de candidatos predefinidos.\"\"\"\n    candidates = [preferred]\n    if extra_candidates:\n        candidates.extend(extra_candidates)\n    # Asegurar candidatos únicos y positivos\n    seen = set()\n    filtered = []\n    for p in candidates:\n        if p and p > 0 and p not in seen:",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
         "label": "app",
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Habilitar CORS para permitir peticiones desde el frontend\n# Configuración SMTP\nSMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')\nSMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\nSMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Habilitar CORS para permitir peticiones desde el frontend\n# Configuración de modelos de IA\nMODEL_CONFIG: Dict[str, Any] = {}\nMODEL_CONFIG_PATH = os.getenv(\n    \"MODEL_CONFIG_PATH\",\n    os.path.join(os.path.dirname(__file__), \"model_config.json\"),\n)\nollama_router: Optional[OllamaClient] = None\nAI_ROUTER_AVAILABLE = False",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "MODEL_CONFIG_PATH",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "MODEL_CONFIG_PATH = os.getenv(\n    \"MODEL_CONFIG_PATH\",\n    os.path.join(os.path.dirname(__file__), \"model_config.json\"),\n)\nollama_router: Optional[OllamaClient] = None\nAI_ROUTER_AVAILABLE = False\ntry:\n    with open(MODEL_CONFIG_PATH, \"r\", encoding=\"utf-8\") as config_file:\n        MODEL_CONFIG = json.load(config_file)\n    ollama_router = OllamaClient(MODEL_CONFIG)",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "AI_ROUTER_AVAILABLE",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "AI_ROUTER_AVAILABLE = False\ntry:\n    with open(MODEL_CONFIG_PATH, \"r\", encoding=\"utf-8\") as config_file:\n        MODEL_CONFIG = json.load(config_file)\n    ollama_router = OllamaClient(MODEL_CONFIG)\n    AI_ROUTER_AVAILABLE = True\n    print(\"✅ Configuración de modelos cargada correctamente\")\nexcept FileNotFoundError:\n    print(f\"⚠️ Archivo de configuración de modelos no encontrado: {MODEL_CONFIG_PATH}\")\nexcept Exception as exc:  # noqa: BLE001 - queremos avisar y continuar",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_MODEL_TIER",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "DEFAULT_MODEL_TIER = os.getenv(\n    \"DEFAULT_MODEL_TIER\",\n    (MODEL_CONFIG.get(\"api_settings\", {}).get(\"default_model\") if MODEL_CONFIG else \"fast_response\"),\n) or \"fast_response\"\nSTREAMING_ENABLED = os.getenv(\n    \"STREAMING_ENABLED\",\n    str(MODEL_CONFIG.get(\"api_settings\", {}).get(\"streaming_enabled\", True) if MODEL_CONFIG else \"true\"),\n).lower() == \"true\"\n# Inicializar conector MCP si está disponible\nmcp_connector = None",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "STREAMING_ENABLED",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "STREAMING_ENABLED = os.getenv(\n    \"STREAMING_ENABLED\",\n    str(MODEL_CONFIG.get(\"api_settings\", {}).get(\"streaming_enabled\", True) if MODEL_CONFIG else \"true\"),\n).lower() == \"true\"\n# Inicializar conector MCP si está disponible\nmcp_connector = None\nif MCP_AVAILABLE:\n    try:\n        mcp_connector = Capibara6MCPConnector()\n        print(\"✅ Conector MCP inicializado correctamente\")",
+        "detail": "backend.server",
+        "documentation": {}
+    },
+    {
+        "label": "mcp_connector",
+        "kind": 5,
+        "importPath": "backend.server",
+        "description": "backend.server",
+        "peekOfCode": "mcp_connector = None\nif MCP_AVAILABLE:\n    try:\n        mcp_connector = Capibara6MCPConnector()\n        print(\"✅ Conector MCP inicializado correctamente\")\n    except Exception as e:\n        print(f\"❌ Error inicializando MCP: {e}\")\n        MCP_AVAILABLE = False\n# Configuración SMTP\nSMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -2286,7 +999,7 @@
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\nSMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):",
+        "peekOfCode": "SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))\nSMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -2295,7 +1008,7 @@
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "SMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"",
+        "peekOfCode": "SMTP_USER = os.getenv('SMTP_USER', 'info@anachroni.co')\nSMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"Extraer las opciones válidas para generación desde el payload.\"\"\"",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -2304,7 +1017,7 @@
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "SMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()",
+        "peekOfCode": "SMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')\nFROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"Extraer las opciones válidas para generación desde el payload.\"\"\"\n    option_keys = (\"max_tokens\", \"temperature\", \"top_p\", \"top_k\", \"timeout\", \"stop\")",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -2313,7 +1026,7 @@
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "FROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes",
+        "peekOfCode": "FROM_EMAIL = os.getenv('FROM_EMAIL', 'info@anachroni.co')\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"Extraer las opciones válidas para generación desde el payload.\"\"\"\n    option_keys = (\"max_tokens\", \"temperature\", \"top_p\", \"top_k\", \"timeout\", \"stop\")\n    options: Dict[str, Any] = {key: payload[key] for key in option_keys if payload.get(key) is not None}",
         "detail": "backend.server",
         "documentation": {}
     },
@@ -2322,314 +1035,71 @@
         "kind": 5,
         "importPath": "backend.server",
         "description": "backend.server",
-        "peekOfCode": "DATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_to_file(data):\n    \"\"\"Guardar datos en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):",
+        "peekOfCode": "DATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef extract_generation_options(payload: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"Extraer las opciones válidas para generación desde el payload.\"\"\"\n    option_keys = (\"max_tokens\", \"temperature\", \"top_p\", \"top_k\", \"timeout\", \"stop\")\n    options: Dict[str, Any] = {key: payload[key] for key in option_keys if payload.get(key) is not None}\n    context = payload.get(\"context\") or payload.get(\"messages\")\n    if context:",
         "detail": "backend.server",
         "documentation": {}
     },
     {
-        "label": "ensure_data_dir",
+        "label": "start_flask_server",
         "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_conversation(user_message, ai_response, user_email=None):\n    \"\"\"Guardar conversación en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):\n        try:",
-        "detail": "backend.server_gptoss",
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def start_flask_server():\n    \"\"\"Iniciar servidor Flask con MCP integrado\"\"\"\n    print(\"🚀 Iniciando servidor Flask con MCP...\")\n    # Cambiar al directorio del backend\n    backend_dir = Path(__file__).parent\n    os.chdir(backend_dir)\n    # Puerto para Railway (usa variable de entorno PORT)\n    port = int(os.getenv('PORT', 5000))\n    # Iniciar servidor Flask con MCP\n    try:",
+        "detail": "backend.start_mcp",
         "documentation": {}
     },
     {
-        "label": "save_conversation",
+        "label": "start_mcp_standalone",
         "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def save_conversation(user_message, ai_response, user_email=None):\n    \"\"\"Guardar conversación en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):\n        try:\n            with open(DATA_FILE, 'r', encoding='utf-8') as f:\n                existing_data = json.load(f)\n        except:",
-        "detail": "backend.server_gptoss",
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def start_mcp_standalone():\n    \"\"\"Iniciar solo el conector MCP (para testing)\"\"\"\n    print(\"🧪 Iniciando conector MCP standalone...\")\n    try:\n        import asyncio\n        from mcp_connector import Capibara6MCPConnector\n        async def test_connector():\n            connector = Capibara6MCPConnector()\n            # Test básico\n            init_request = {",
+        "detail": "backend.start_mcp",
         "documentation": {}
     },
     {
-        "label": "call_gpt_oss",
+        "label": "run_tests",
         "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def call_gpt_oss(prompt, max_tokens=500, temperature=0.7):\n    \"\"\"Llamar al modelo GPT-OSS-20B\"\"\"\n    try:\n        payload = {\n            \"prompt\": prompt,\n            \"n_predict\": max_tokens,\n            \"temperature\": temperature,\n            \"stream\": False,\n            \"stop\": [\"</s>\", \"<|end|>\", \"<|endoftext|>\"]\n        }",
-        "detail": "backend.server_gptoss",
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def run_tests():\n    \"\"\"Ejecutar tests del conector MCP\"\"\"\n    print(\"🧪 Ejecutando tests del conector MCP...\")\n    try:\n        import subprocess\n        result = subprocess.run([sys.executable, \"test_mcp.py\"], \n                              capture_output=True, text=True, timeout=60)\n        if result.returncode == 0:\n            print(\"✅ Tests completados exitosamente\")\n            print(result.stdout)",
+        "detail": "backend.start_mcp",
         "documentation": {}
     },
     {
-        "label": "chat",
+        "label": "show_help",
         "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def chat():\n    \"\"\"Endpoint principal para chat con GPT-OSS-20B\"\"\"\n    try:\n        data = request.get_json()\n        user_message = data.get('message', '').strip()\n        user_email = data.get('email', '')\n        max_tokens = data.get('max_tokens', 500)\n        temperature = data.get('temperature', 0.7)\n        if not user_message:\n            return jsonify({'error': 'Mensaje requerido'}), 400",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "chat_stream",
-        "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def chat_stream():\n    \"\"\"Endpoint para chat con streaming (respuesta en tiempo real)\"\"\"\n    try:\n        data = request.get_json()\n        user_message = data.get('message', '').strip()\n        user_email = data.get('email', '')\n        max_tokens = data.get('max_tokens', 500)\n        temperature = data.get('temperature', 0.7)\n        if not user_message:\n            return jsonify({'error': 'Mensaje requerido'}), 400",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def health():\n    \"\"\"Endpoint de health check\"\"\"\n    try:\n        # Verificar conexión con GPT-OSS\n        response = requests.get(f\"{GPT_OSS_URL}/health\", timeout=5)\n        gpt_oss_status = \"ok\" if response.status_code == 200 else \"error\"\n    except:\n        gpt_oss_status = \"error\"\n    return jsonify({\n        'status': 'ok',",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def models():\n    \"\"\"Endpoint para obtener información del modelo\"\"\"\n    return jsonify({\n        'models': [{\n            'id': 'gpt-oss-20b',\n            'name': 'GPT-OSS-20B',\n            'description': 'Modelo de lenguaje de código abierto de 20B parámetros',\n            'max_tokens': 4096,\n            'temperature_range': [0.1, 2.0]\n        }]",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "save_conversation_endpoint",
-        "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def save_conversation_endpoint():\n    \"\"\"Endpoint para guardar conversación manualmente\"\"\"\n    try:\n        data = request.get_json()\n        user_message = data.get('message', '')\n        ai_response = data.get('response', '')\n        user_email = data.get('email', '')\n        if not user_message or not ai_response:\n            return jsonify({'error': 'Mensaje y respuesta requeridos'}), 400\n        save_conversation(user_message, ai_response, user_email)",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "index",
-        "kind": 2,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "def index():\n    \"\"\"Página principal\"\"\"\n    return '''\n    <html>\n        <head>\n            <title>capibara6 Backend - GPT-OSS-20B</title>\n            <style>\n                body { font-family: monospace; background: #0a0a0a; color: #00ff00; padding: 40px; }\n                h1 { color: #00ffff; }\n                .status { color: #00ff00; }",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Habilitar CORS para permitir peticiones desde el frontend\n# Configuración de la VM GPT-OSS-20B\nGPT_OSS_URL = os.getenv('GPT_OSS_URL', 'http://34.175.215.109:8080')\nGPT_OSS_TIMEOUT = int(os.getenv('GPT_OSS_TIMEOUT', '60'))\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "GPT_OSS_URL",
-        "kind": 5,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "GPT_OSS_URL = os.getenv('GPT_OSS_URL', 'http://34.175.215.109:8080')\nGPT_OSS_TIMEOUT = int(os.getenv('GPT_OSS_TIMEOUT', '60'))\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_conversation(user_message, ai_response, user_email=None):\n    \"\"\"Guardar conversación en archivo JSON\"\"\"\n    ensure_data_dir()",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "GPT_OSS_TIMEOUT",
-        "kind": 5,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "GPT_OSS_TIMEOUT = int(os.getenv('GPT_OSS_TIMEOUT', '60'))\n# Archivo para guardar datos\nDATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_conversation(user_message, ai_response, user_email=None):\n    \"\"\"Guardar conversación en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "DATA_FILE",
-        "kind": 5,
-        "importPath": "backend.server_gptoss",
-        "description": "backend.server_gptoss",
-        "peekOfCode": "DATA_FILE = 'user_data/conversations.json'\ndef ensure_data_dir():\n    \"\"\"Crear directorio de datos si no existe\"\"\"\n    os.makedirs('user_data', exist_ok=True)\ndef save_conversation(user_message, ai_response, user_email=None):\n    \"\"\"Guardar conversación en archivo JSON\"\"\"\n    ensure_data_dir()\n    # Leer datos existentes\n    existing_data = []\n    if os.path.exists(DATA_FILE):",
-        "detail": "backend.server_gptoss",
-        "documentation": {}
-    },
-    {
-        "label": "detect_context_needs",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_completo",
-        "description": "backend.smart_mcp_completo",
-        "peekOfCode": "def detect_context_needs(query):\n    \"\"\"Detecta qué contextos son relevantes para la consulta\"\"\"\n    query_lower = query.lower()\n    contexts = []\n    for context_type, config in CONTEXT_TRIGGERS.items():\n        for pattern in config['patterns']:\n            try:\n                if re.search(pattern, query_lower, re.IGNORECASE):\n                    context_result = config['context']()\n                    if context_result:",
-        "detail": "backend.smart_mcp_completo",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_completo",
-        "description": "backend.smart_mcp_completo",
-        "peekOfCode": "def health():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'smart-mcp-capibara6',\n        'version': '2.0',\n        'approach': 'selective-rag',\n        'contexts_available': len(CONTEXT_TRIGGERS),\n        'timestamp': datetime.now().isoformat()\n    })",
-        "detail": "backend.smart_mcp_completo",
-        "documentation": {}
-    },
-    {
-        "label": "analyze_query",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_completo",
-        "description": "backend.smart_mcp_completo",
-        "peekOfCode": "def analyze_query():\n    \"\"\"Analiza si la consulta necesita contexto adicional\"\"\"\n    # Manejar preflight\n    if request.method == 'OPTIONS':\n        return '', 204\n    try:\n        data = request.get_json(force=True)\n        user_query = data.get('query', '')\n        if not user_query:\n            return jsonify({'error': 'Query is required'}), 400",
-        "detail": "backend.smart_mcp_completo",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.smart_mcp_completo",
-        "description": "backend.smart_mcp_completo",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins='*')\n# Base de conocimiento verificada\nKNOWLEDGE_BASE = {\n    \"identity\": {\n        \"name\": \"Capibara6\",\n        \"creator\": \"Anachroni s.coop\",\n        \"status\": \"Producción\",\n        \"type\": \"Modelo de lenguaje basado en Gemma 3-12B\",\n        \"hardware\": \"Google Cloud VM en europe-southwest1-b\",",
-        "detail": "backend.smart_mcp_completo",
-        "documentation": {}
-    },
-    {
-        "label": "KNOWLEDGE_BASE",
-        "kind": 5,
-        "importPath": "backend.smart_mcp_completo",
-        "description": "backend.smart_mcp_completo",
-        "peekOfCode": "KNOWLEDGE_BASE = {\n    \"identity\": {\n        \"name\": \"Capibara6\",\n        \"creator\": \"Anachroni s.coop\",\n        \"status\": \"Producción\",\n        \"type\": \"Modelo de lenguaje basado en Gemma 3-12B\",\n        \"hardware\": \"Google Cloud VM en europe-southwest1-b\",\n        \"website\": \"https://capibara6.com\",\n        \"email\": \"info@anachroni.co\"\n    },",
-        "detail": "backend.smart_mcp_completo",
-        "documentation": {}
-    },
-    {
-        "label": "CONTEXT_TRIGGERS",
-        "kind": 5,
-        "importPath": "backend.smart_mcp_completo",
-        "description": "backend.smart_mcp_completo",
-        "peekOfCode": "CONTEXT_TRIGGERS = {\n    \"identity\": {\n        \"patterns\": [\n            r'\\b(quién|quien|que|qué)\\s+(eres|soy|es)\\b',\n            r'\\b(cómo|como)\\s+(te\\s+llamas|se\\s+llama)\\b',\n            r'\\b(tu|tú)\\s+(nombre|identidad)\\b',\n            r'\\bcapibara\\b',\n            r'\\bcreo|creador|desarrollador\\b',\n            r'\\bquién\\s+te\\s+(creó|creo|hizo|desarrollo)\\b',\n            r'\\b(tu|tú)\\s+nombre\\b'",
-        "detail": "backend.smart_mcp_completo",
-        "documentation": {}
-    },
-    {
-        "label": "calculate_if_possible",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "def calculate_if_possible(query):\n    \"\"\"Intenta resolver cálculos matemáticos básicos\"\"\"\n    # Buscar operaciones matemáticas\n    math_pattern = r'(\\d+(?:\\.\\d+)?)\\s*([\\+\\-\\*×÷/])\\s*(\\d+(?:\\.\\d+)?)'\n    match = re.search(math_pattern, query)\n    if match:\n        num1, op, num2 = match.groups()\n        num1, num2 = float(num1), float(num2)\n        operations = {\n            '+': num1 + num2,",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "detect_context_needs",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "def detect_context_needs(query):\n    \"\"\"Detecta qué contextos son relevantes para la consulta\"\"\"\n    query_lower = query.lower()\n    contexts = []\n    for context_type, config in CONTEXT_TRIGGERS.items():\n        for pattern in config['patterns']:\n            if re.search(pattern, query_lower):\n                context_func = config['context']\n                if context_type == 'calculation':\n                    context_result = context_func(query_lower)",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "def health():\n    \"\"\"Health check endpoint\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'smart-mcp-capibara6',\n        'version': '2.0',\n        'approach': 'selective-rag',\n        'timestamp': datetime.now().isoformat()\n    })\n@app.route('/analyze', methods=['POST'])",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "analyze_query",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "def analyze_query():\n    \"\"\"Analiza si la consulta necesita contexto adicional\"\"\"\n    try:\n        data = request.json\n        user_query = data.get('query', '')\n        if not user_query:\n            return jsonify({'error': 'Query is required'}), 400\n        # Detectar contextos relevantes\n        relevant_contexts = detect_context_needs(user_query)\n        # Solo agregar contexto si es realmente relevante",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "update_date",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "def update_date():\n    \"\"\"Actualiza la fecha actual (para mantenimiento)\"\"\"\n    try:\n        data = request.json\n        KNOWLEDGE_BASE['current_info']['date'] = data.get('date', KNOWLEDGE_BASE['current_info']['date'])\n        KNOWLEDGE_BASE['current_info']['day'] = data.get('day', KNOWLEDGE_BASE['current_info']['day'])\n        return jsonify({\n            'success': True,\n            'current_info': KNOWLEDGE_BASE['current_info']\n        })",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins=[\n    'http://localhost:5500',\n    'http://127.0.0.1:5500',\n    'http://172.22.128.1:5500',  # IP de red local (Live Server)\n    'http://localhost:8000',\n    'http://127.0.0.1:8000',\n    'http://172.22.128.1:8000',   # IP de red local (Python server)\n    'https://capibara6.vercel.app',  # Vercel production\n    'https://*.vercel.app',  # Vercel previews",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "KNOWLEDGE_BASE",
-        "kind": 5,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "KNOWLEDGE_BASE = {\n    \"identity\": {\n        \"name\": \"Capibara6 Consensus\",\n        \"creator\": \"Anachroni s.coop\",\n        \"status\": \"Beta (en pruebas)\",\n        \"type\": \"Modelo de lenguaje basado en Gemma 3-12B\",\n        \"hardware\": \"Google Cloud TPU v5e-64 en europe-southwest1-b\",\n        \"website\": \"http://www.anachroni.co\",\n        \"email\": \"info@anachroni.co\"\n    },",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "CONTEXT_TRIGGERS",
-        "kind": 5,
-        "importPath": "backend.smart_mcp_server",
-        "description": "backend.smart_mcp_server",
-        "peekOfCode": "CONTEXT_TRIGGERS = {\n    \"identity\": {\n        \"patterns\": [\n            r'\\b(quién|quien|que)\\s+(eres|soy|es)\\b',\n            r'\\b(cómo|como)\\s+(te\\s+llamas|se\\s+llama)\\b',\n            r'\\b(tu|tú)\\s+(nombre|identidad)\\b',\n            r'\\bcapibara\\b',\n            r'\\bcreo|creador|desarrollador\\b',\n            r'\\bquién\\s+te\\s+(creó|creo)\\b'\n        ],",
-        "detail": "backend.smart_mcp_server",
-        "documentation": {}
-    },
-    {
-        "label": "health",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_simple",
-        "description": "backend.smart_mcp_simple",
-        "peekOfCode": "def health():\n    \"\"\"Health check\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'smart-mcp-simple',\n        'version': '1.0',\n        'port': 5010\n    })\n@app.route('/analyze', methods=['POST'])\ndef analyze():",
-        "detail": "backend.smart_mcp_simple",
-        "documentation": {}
-    },
-    {
-        "label": "analyze",
-        "kind": 2,
-        "importPath": "backend.smart_mcp_simple",
-        "description": "backend.smart_mcp_simple",
-        "peekOfCode": "def analyze():\n    \"\"\"Analiza query - versión simple\"\"\"\n    try:\n        # Obtener datos\n        data = request.get_json()\n        if not data:\n            return jsonify({'error': 'No JSON data'}), 400\n        query = data.get('query', '')\n        if not query:\n            return jsonify({'error': 'Query is required'}), 400",
-        "detail": "backend.smart_mcp_simple",
-        "documentation": {}
-    },
-    {
-        "label": "app",
-        "kind": 5,
-        "importPath": "backend.smart_mcp_simple",
-        "description": "backend.smart_mcp_simple",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app, origins='*')\n@app.route('/health', methods=['GET'])\ndef health():\n    \"\"\"Health check\"\"\"\n    return jsonify({\n        'status': 'healthy',\n        'service': 'smart-mcp-simple',\n        'version': '1.0',\n        'port': 5010",
-        "detail": "backend.smart_mcp_simple",
-        "documentation": {}
-    },
-    {
-        "label": "check_gpt_oss_connection",
-        "kind": 2,
-        "importPath": "backend.start_gptoss_server",
-        "description": "backend.start_gptoss_server",
-        "peekOfCode": "def check_gpt_oss_connection():\n    \"\"\"Verificar conexión con GPT-OSS-20B\"\"\"\n    try:\n        response = requests.get(f\"{get_gpt_oss_url()}/health\", timeout=10)\n        if response.status_code == 200:\n            print(\"✅ Conexión con GPT-OSS-20B establecida\")\n            return True\n        else:\n            print(f\"❌ Error en GPT-OSS-20B: {response.status_code}\")\n            return False",
-        "detail": "backend.start_gptoss_server",
-        "documentation": {}
-    },
-    {
-        "label": "test_gpt_oss_model",
-        "kind": 2,
-        "importPath": "backend.start_gptoss_server",
-        "description": "backend.start_gptoss_server",
-        "peekOfCode": "def test_gpt_oss_model():\n    \"\"\"Probar el modelo con una petición simple\"\"\"\n    try:\n        payload = {\n            \"prompt\": \"Hola, ¿cómo estás?\",\n            \"n_predict\": 20,\n            \"temperature\": 0.7,\n            \"stream\": False\n        }\n        response = requests.post(",
-        "detail": "backend.start_gptoss_server",
-        "documentation": {}
-    },
-    {
-        "label": "start_server",
-        "kind": 2,
-        "importPath": "backend.start_gptoss_server",
-        "description": "backend.start_gptoss_server",
-        "peekOfCode": "def start_server():\n    \"\"\"Iniciar el servidor Flask\"\"\"\n    print(\"🚀 Iniciando servidor capibara6 con GPT-OSS-20B...\")\n    print(f\"📡 URL del modelo: {get_gpt_oss_url()}\")\n    print(f\"🌐 Puerto del servidor: {get_server_port()}\")\n    # Verificar conexión con el modelo\n    if not check_gpt_oss_connection():\n        print(\"⚠️  Advertencia: No se puede conectar con GPT-OSS-20B\")\n        print(\"   El servidor se iniciará pero las peticiones fallarán\")\n    # Probar el modelo",
-        "detail": "backend.start_gptoss_server",
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def show_help():\n    \"\"\"Mostrar ayuda\"\"\"\n    print(\"\"\"\n🦫 capibara6 MCP Connector - Script de Inicio\nUso: python start_mcp.py [comando]\nComandos disponibles:\n  server     - Iniciar servidor Flask con MCP integrado (por defecto)\n  standalone - Iniciar solo el conector MCP para testing\n  test       - Ejecutar tests del conector MCP\n  help       - Mostrar esta ayuda",
+        "detail": "backend.start_mcp",
         "documentation": {}
     },
     {
         "label": "main",
         "kind": 2,
-        "importPath": "backend.start_integrated_server",
-        "description": "backend.start_integrated_server",
-        "peekOfCode": "def main():\n    print(\"🚀 Iniciando Servidor Integrado Capibara6...\")\n    print(\"📦 Componentes incluidos:\")\n    print(\"   • Proxy CORS para GPT-OSS-20B\")\n    print(\"   • Smart MCP (Contexto Inteligente)\")\n    print(\"   • Coqui TTS (Síntesis de Voz)\")\n    print()\n    # Asegúrate de que el directorio actual sea el de 'backend'\n    script_dir = os.path.dirname(__file__)\n    os.chdir(script_dir)",
-        "detail": "backend.start_integrated_server",
+        "importPath": "backend.start_mcp",
+        "description": "backend.start_mcp",
+        "peekOfCode": "def main():\n    \"\"\"Función principal\"\"\"\n    command = sys.argv[1] if len(sys.argv) > 1 else \"server\"\n    print(\"🦫 capibara6 MCP Connector\")\n    print(\"=\" * 40)\n    if command == \"server\":\n        start_flask_server()\n    elif command == \"standalone\":\n        start_mcp_standalone()\n    elif command == \"test\":",
+        "detail": "backend.start_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "ClassificationResult",
+        "kind": 6,
+        "importPath": "backend.task_classifier",
+        "description": "backend.task_classifier",
+        "peekOfCode": "class ClassificationResult:\n    \"\"\"Resultado de la clasificación de un prompt.\"\"\"\n    model_tier: str\n    scores: Dict[str, int]\nclass TaskClassifier:\n    \"\"\"Clasificador simple basado en palabras clave y longitud del prompt.\"\"\"\n    COMPLEX_KEYWORDS = (\n        \"análisis\",\n        \"razonamiento\",\n        \"comparación\",",
+        "detail": "backend.task_classifier",
+        "documentation": {}
+    },
+    {
+        "label": "TaskClassifier",
+        "kind": 6,
+        "importPath": "backend.task_classifier",
+        "description": "backend.task_classifier",
+        "peekOfCode": "class TaskClassifier:\n    \"\"\"Clasificador simple basado en palabras clave y longitud del prompt.\"\"\"\n    COMPLEX_KEYWORDS = (\n        \"análisis\",\n        \"razonamiento\",\n        \"comparación\",\n        \"evaluar\",\n        \"estrategia\",\n        \"planificación\",\n        \"investigación\",",
+        "detail": "backend.task_classifier",
         "documentation": {}
     },
     {
@@ -2648,6 +1118,141 @@
         "description": "backend.test_email",
         "peekOfCode": "def send_test_email():\n    \"\"\"Enviar email de prueba\"\"\"\n    print(\"📧 ¿Quieres enviar un email de prueba? (s/n): \", end=\"\")\n    response = input().strip().lower()\n    if response != 's':\n        print(\"👋 Test cancelado\")\n        return\n    print(\"\\n📝 Ingresa el email de destino: \", end=\"\")\n    to_email = input().strip()\n    if not to_email or '@' not in to_email:",
         "detail": "backend.test_email",
+        "documentation": {}
+    },
+    {
+        "label": "MCPTester",
+        "kind": 6,
+        "importPath": "backend.test_mcp",
+        "description": "backend.test_mcp",
+        "peekOfCode": "class MCPTester:\n    \"\"\"Tester para el conector MCP de capibara6\"\"\"\n    def __init__(self, base_url: str = \"http://localhost:5000\"):\n        self.base_url = base_url\n        self.connector = Capibara6MCPConnector()\n    async def test_direct_connector(self):\n        \"\"\"Probar el conector directamente (sin servidor)\"\"\"\n        print(\"🧪 Probando conector MCP directamente...\")\n        # Test de inicialización\n        init_request = {",
+        "detail": "backend.test_mcp",
+        "documentation": {}
+    },
+    {
+        "label": "Colors",
+        "kind": 6,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "class Colors:\n    GREEN = '\\033[92m'\n    RED = '\\033[91m'\n    YELLOW = '\\033[93m'\n    BLUE = '\\033[94m'\n    BOLD = '\\033[1m'\n    END = '\\033[0m'\ndef print_header():\n    \"\"\"Imprimir encabezado del script\"\"\"\n    print(f\"{Colors.BLUE}{Colors.BOLD}\")",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "print_header",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def print_header():\n    \"\"\"Imprimir encabezado del script\"\"\"\n    print(f\"{Colors.BLUE}{Colors.BOLD}\")\n    print(\"=\" * 60)\n    print(\"🦫 CAPIBARA6 - VERIFICADOR DE CONFIGURACIÓN\")\n    print(\"=\" * 60)\n    print(f\"{Colors.END}\")\ndef print_section(title):\n    \"\"\"Imprimir título de sección\"\"\"\n    print(f\"\\n{Colors.BOLD}{Colors.YELLOW}📋 {title}{Colors.END}\")",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "print_section",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def print_section(title):\n    \"\"\"Imprimir título de sección\"\"\"\n    print(f\"\\n{Colors.BOLD}{Colors.YELLOW}📋 {title}{Colors.END}\")\n    print(\"-\" * 40)\ndef check_env_var(var_name, required=True, description=\"\"):\n    \"\"\"Verificar si una variable de entorno está configurada\"\"\"\n    value = os.getenv(var_name)\n    if value and value != f\"tu_{var_name.lower()}\" and not value.startswith(\"xxxxxxxx\"):\n        print(f\"✅ {var_name}: {Colors.GREEN}Configurado{Colors.END}\")\n        return True",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_env_var",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_env_var(var_name, required=True, description=\"\"):\n    \"\"\"Verificar si una variable de entorno está configurada\"\"\"\n    value = os.getenv(var_name)\n    if value and value != f\"tu_{var_name.lower()}\" and not value.startswith(\"xxxxxxxx\"):\n        print(f\"✅ {var_name}: {Colors.GREEN}Configurado{Colors.END}\")\n        return True\n    else:\n        status = f\"{Colors.RED}No configurado{Colors.END}\" if required else f\"{Colors.YELLOW}Opcional{Colors.END}\"\n        print(f\"❌ {var_name}: {status}\")\n        if description:",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_smtp",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_smtp():\n    \"\"\"Probar configuración SMTP\"\"\"\n    print_section(\"CONFIGURACIÓN SMTP\")\n    smtp_server = os.getenv('SMTP_SERVER')\n    smtp_port = os.getenv('SMTP_PORT', '587')\n    smtp_user = os.getenv('SMTP_USER')\n    smtp_password = os.getenv('SMTP_PASSWORD')\n    if not all([smtp_server, smtp_user, smtp_password]):\n        print(\"❌ Configuración SMTP incompleta\")\n        return False",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_openai",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_openai():\n    \"\"\"Probar API de OpenAI\"\"\"\n    print_section(\"OPENAI API\")\n    api_key = os.getenv('OPENAI_API_KEY')\n    if not api_key or api_key.startswith('sk-xxxxxxxx'):\n        print(\"❌ OpenAI API Key no configurada\")\n        return False\n    try:\n        headers = {\n            'Authorization': f'Bearer {api_key}',",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_anthropic",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_anthropic():\n    \"\"\"Probar API de Anthropic\"\"\"\n    print_section(\"ANTHROPIC API\")\n    api_key = os.getenv('ANTHROPIC_API_KEY')\n    if not api_key or api_key.startswith('sk-ant-xxxxxxxx'):\n        print(\"❌ Anthropic API Key no configurada\")\n        return False\n    try:\n        headers = {\n            'x-api-key': api_key,",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_google_ai",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_google_ai():\n    \"\"\"Probar API de Google AI\"\"\"\n    print_section(\"GOOGLE AI API\")\n    api_key = os.getenv('GOOGLE_AI_API_KEY')\n    if not api_key or api_key.startswith('AIzaSyxxxxxxxx'):\n        print(\"❌ Google AI API Key no configurada\")\n        return False\n    try:\n        url = f\"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}\"\n        response = requests.get(url, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_huggingface",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_huggingface():\n    \"\"\"Probar API de Hugging Face\"\"\"\n    print_section(\"HUGGING FACE API\")\n    api_key = os.getenv('HUGGINGFACE_API_KEY')\n    if not api_key or api_key.startswith('hf_xxxxxxxx'):\n        print(\"❌ Hugging Face API Key no configurada\")\n        return False\n    try:\n        headers = {'Authorization': f'Bearer {api_key}'}\n        response = requests.get('https://huggingface.co/api/whoami', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_pinecone",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_pinecone():\n    \"\"\"Probar API de Pinecone\"\"\"\n    print_section(\"PINECONE API\")\n    api_key = os.getenv('PINECONE_API_KEY')\n    if not api_key or api_key.startswith('xxxxxxxx-xxxx'):\n        print(\"❌ Pinecone API Key no configurada\")\n        return False\n    try:\n        headers = {'Api-Key': api_key}\n        response = requests.get('https://api.pinecone.io/actions/whoami', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "test_github",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def test_github():\n    \"\"\"Probar API de GitHub\"\"\"\n    print_section(\"GITHUB API\")\n    token = os.getenv('GITHUB_TOKEN')\n    if not token or token.startswith('ghp_xxxxxxxx'):\n        print(\"❌ GitHub Token no configurado\")\n        return False\n    try:\n        headers = {'Authorization': f'token {token}'}\n        response = requests.get('https://api.github.com/user', headers=headers, timeout=10)",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_required_config",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_required_config():\n    \"\"\"Verificar configuración requerida\"\"\"\n    print_section(\"CONFIGURACIÓN REQUERIDA\")\n    required_vars = [\n        ('SMTP_SERVER', 'Servidor SMTP para emails'),\n        ('SMTP_PORT', 'Puerto SMTP'),\n        ('SMTP_USER', 'Usuario SMTP'),\n        ('SMTP_PASSWORD', 'Contraseña SMTP'),\n        ('FROM_EMAIL', 'Email de origen')\n    ]",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "check_optional_config",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def check_optional_config():\n    \"\"\"Verificar configuración opcional\"\"\"\n    print_section(\"CONFIGURACIÓN OPCIONAL\")\n    optional_vars = [\n        ('OPENAI_API_KEY', 'API Key de OpenAI'),\n        ('ANTHROPIC_API_KEY', 'API Key de Anthropic'),\n        ('GOOGLE_AI_API_KEY', 'API Key de Google AI'),\n        ('HUGGINGFACE_API_KEY', 'API Key de Hugging Face'),\n        ('PINECONE_API_KEY', 'API Key de Pinecone'),\n        ('WEAVIATE_URL', 'URL de Weaviate'),",
+        "detail": "check_env",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "check_env",
+        "description": "check_env",
+        "peekOfCode": "def main():\n    \"\"\"Función principal\"\"\"\n    print_header()\n    # Verificar que existe el archivo .env\n    if not os.path.exists('.env'):\n        print(f\"{Colors.RED}❌ Archivo .env no encontrado{Colors.END}\")\n        print(\"💡 Copia .env.example a .env y configura tus claves:\")\n        print(\"   cp .env.example .env\")\n        sys.exit(1)\n    print(\"✅ Archivo .env encontrado\")",
+        "detail": "check_env",
         "documentation": {}
     }
 ]

@@ -73,6 +73,14 @@ function changeLanguage(lang) {
         }
     });
     
+    // Re-configurar botones de chat después de cambiar idioma (por si el texto cambió)
+    // Usar setTimeout para asegurar que las traducciones se hayan aplicado
+    setTimeout(() => {
+        if (typeof setupChatButtons === 'function') {
+            setupChatButtons();
+        }
+    }, 100);
+    
     console.log(`✓ Idioma cambiado a: ${lang === 'es' ? 'Español' : 'English'}`);
 }
 
@@ -391,14 +399,28 @@ prefersDarkScheme.addEventListener('change', (e) => {
 });
 
 // ============================================
+// Abrir chat desde botones "Comenzar Ahora" / "Probar Ahora"
+// ============================================
+function setupChatButtons() {
+    // Los botones "Comenzar Ahora" ahora apuntan directamente a chat.html
+    // Esta función se mantiene para compatibilidad pero ya no es necesaria
+    // ya que los botones tienen href="chat.html" en el HTML
+}
+
+// ============================================
 // Inicialización
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ Capibara6 website loaded successfully');
     
+    // Configurar botones para abrir el chat
+    setupChatButtons();
+    
     // Añadir clase loaded al body para posibles animaciones CSS
     setTimeout(() => {
         document.body.classList.add('loaded');
+        // Re-configurar botones después de que se carguen las traducciones
+        setupChatButtons();
     }, 100);
 });
 

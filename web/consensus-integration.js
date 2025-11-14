@@ -4,9 +4,13 @@
 
 // Configuración del sistema de consenso
 const CONSENSUS_CONFIG = {
-    serverUrl: 'http://localhost:5005/api/consensus/query',
+    // NOTA: Reemplaza [IP_DE_BOUNTY2] con la IP externa real de la VM bounty2
+    // Para obtenerla, ejecuta: gcloud compute instances describe bounty2 --zone=europe-west4-a --project=mamba-001
+    serverUrl: window.location.hostname === 'localhost'
+        ? 'http://34.175.136.104:5003/api/mcp/tools/call'  // Smart MCP Server (firewall: tcp:5003)
+        : 'http://localhost:5001/api/mcp/tools/call',      // Local en producción
     fallbackUrl: 'http://34.175.89.158:8080/completion',
-    enabled: false,  // Deshabilitado por defecto - activar manualmente
+    enabled: true,
     defaultTemplate: 'general',
     selectedModels: ['capibara6', 'oss-120b']
 };
@@ -24,22 +28,34 @@ let consensusEnabled = true;
 
 async function loadConsensusConfig() {
     try {
-        // Cargar modelos disponibles
-        const modelsResponse = await fetch('http://localhost:5005/api/consensus/models');
+        // Cargar modelos disponibles (usando endpoints MCP en lugar de consensus)
+        // IP REAL de la VM (según firewall actualizado)
+        // Puerto 5003 está abierto para Smart MCP Server según firewall
+        const serverBaseUrl = window.location.hostname === 'localhost'
+            ? 'http://34.175.136.104:5003'  // Smart MCP Server (firewall: tcp:5003)
+            : 'http://localhost:5001';
+            
+        const modelsResponse = await fetch(`${serverBaseUrl}/api/mcp/tools/list`);
         if (modelsResponse.ok) {
             const modelsData = await modelsResponse.json();
-            availableModels = modelsData.models_list || [];
+            availableModels = modelsData.result ? Object.keys(modelsData.result) : ['gpt-oss-20b', 'phi', 'mixtral'];
+        } else {
+            // Fallback si el endpoint MCP no está disponible
+            availableModels = ['gpt-oss-20b', 'phi', 'mixtral'];
         }
-
+        
         // Cargar plantillas disponibles
-        const templatesResponse = await fetch('http://localhost:5005/api/consensus/templates');
+        const templatesResponse = await fetch(`${serverBaseUrl}/api/mcp/prompts/list`);
         if (templatesResponse.ok) {
             const templatesData = await templatesResponse.json();
-            availableTemplates = Object.keys(templatesData);
+            availableTemplates = templatesData.result ? Object.keys(templatesData.result) : ['analyze-compliance', 'optimize-performance', 'multimodal-analysis'];
+        } else {
+            // Fallback si el endpoint MCP no está disponible
+            availableTemplates = ['analyze-compliance', 'optimize-performance', 'multimodal-analysis'];
         }
-
-        // Cargar configuración del consenso
-        const configResponse = await fetch('http://localhost:5005/api/consensus/config');
+        
+        // Cargar estado del MCP
+        const configResponse = await fetch(`${serverBaseUrl}/api/mcp/status`);
         if (configResponse.ok) {
             const configData = await configResponse.json();
             consensusEnabled = configData.enabled;

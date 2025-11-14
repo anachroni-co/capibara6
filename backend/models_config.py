@@ -12,52 +12,112 @@ from typing import Dict, List, Any
 # ============================================
 
 MODELS_CONFIG = {
-    'capibara6': {
-        'name': 'Capibara6',
-        'base_model': 'Gemma3-12B',
-        'server_url': 'http://34.175.104.187:8080/completion',  # IP actualizada
+    # ============================================
+    # MODELOS ACTIVOS (Backend BB)
+    # ============================================
+
+    'gpt-oss-20b': {
+        'name': 'GPT-OSS-20B',
+        'base_model': 'GPT-OSS-20B',
+        'server_url': 'http://34.175.215.109:8080/completion',  # VM de GPT-OSS
         'type': 'llama_cpp',
         'hardware': 'GPU',
         'status': 'active',
-        'priority': 1,
+        'priority': 2,
         'prompt_template': {
-            'system': 'Responde en el mismo idioma de la pregunta. Si piden código, usa bloques markdown: ```lenguaje',
+            'system': 'Eres un asistente experto en programación y análisis técnico.',
             'user': '{prompt}',
             'assistant': '',
-            'stop_tokens': ['<end_of_turn>', '<|im_end|>', '\n```', 'html<!DOCTYPE', 'html<', 'php<', 'js<', '{-', '<audio', '<video']
+            'stop_tokens': ['<|endoftext|>', '<|im_end|>']
         },
         'parameters': {
-            'n_predict': 100,
-            'temperature': 0.6,
-            'top_p': 0.85,
-            'repeat_penalty': 1.3,
+            'n_predict': 200,
+            'temperature': 0.7,
+            'top_p': 0.9,
+            'repeat_penalty': 1.2,
             'stream': True
         }
     },
-    
-    'oss-120b': {
-        'name': 'OSS-120B',
-        'base_model': 'Open Source Supervised 120B',
-        'server_url': 'http://tpu-server:8080/completion',  # Cambiar por la URL real del TPU
-        'type': 'tpu_inference',
-        'hardware': 'TPU-v5e-64',
+
+    'phi': {
+        'name': 'Phi-3 Mini',
+        'base_model': 'Microsoft Phi-3 Mini (3.8B)',
+        'server_url': 'http://34.175.215.109:8081/completion',  # Puerto diferente en la misma VM
+        'type': 'llama_cpp',
+        'hardware': 'GPU',
+        'status': 'active',
+        'priority': 3,
+        'prompt_template': {
+            'system': 'You are a helpful AI assistant. Respond concisely and accurately.',
+            'user': '{prompt}',
+            'assistant': '',
+            'stop_tokens': ['<|end|>', '<|endoftext|>']
+        },
+        'parameters': {
+            'n_predict': 80,  # Respuestas más cortas para modelo pequeño
+            'temperature': 0.5,
+            'top_p': 0.85,
+            'repeat_penalty': 1.2,
+            'stream': True
+        }
+    },
+
+    'mixtral': {
+        'name': 'Mixtral 8x7B',
+        'base_model': 'Mixtral-8x7B-Instruct-v0.1',
+        'server_url': 'http://34.175.215.109:8082/completion',  # Puerto diferente
+        'type': 'llama_cpp',
+        'hardware': 'GPU',
         'status': 'active',
         'priority': 2,
         'prompt_template': {
-            'system': 'Eres un asistente de IA avanzado. Responde de manera precisa y estructurada.',
-            'user': 'Usuario: {prompt}\nAsistente:',
+            'system': 'You are a creative and multilingual AI assistant. Provide detailed and engaging responses.',
+            'user': '[INST] {prompt} [/INST]',
             'assistant': '',
-            'stop_tokens': ['Usuario:', 'Asistente:', '\n\n', '<|endoftext|>', '<|im_end|>']
+            'stop_tokens': ['</s>', '[/INST]', '<|endoftext|>']
         },
         'parameters': {
-            'max_tokens': 150,
+            'n_predict': 250,
             'temperature': 0.7,
-            'top_p': 0.9,
-            'frequency_penalty': 0.1,
-            'presence_penalty': 0.1,
+            'top_p': 0.95,
+            'repeat_penalty': 1.1,
             'stream': True
         }
-    }
+    },
+
+    # ============================================
+    # MODELOS DESHABILITADOS (No en uso actualmente)
+    # ============================================
+
+    # 'capibara6': {
+    #     'name': 'Capibara6',
+    #     'base_model': 'Gemma3-12B',
+    #     'server_url': 'http://34.175.104.187:8080/completion',
+    #     'type': 'llama_cpp',
+    #     'hardware': 'GPU',
+    #     'status': 'inactive',
+    #     'priority': 1,
+    # },
+
+    # 'gemma3-12b': {
+    #     'name': 'Gemma3-12B',
+    #     'base_model': 'Gemma3-12B',
+    #     'server_url': 'http://34.175.104.187:8080/completion',
+    #     'type': 'llama_cpp',
+    #     'hardware': 'GPU',
+    #     'status': 'inactive',
+    #     'priority': 1,
+    # },
+
+    # 'oss-120b': {
+    #     'name': 'OSS-120B',
+    #     'base_model': 'Open Source Supervised 120B',
+    #     'server_url': 'http://tpu-server:8080/completion',
+    #     'type': 'tpu_inference',
+    #     'hardware': 'TPU-v5e-64',
+    #     'status': 'inactive',
+    #     'priority': 2,
+    # }
 }
 
 # ============================================
