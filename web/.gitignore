@@ -1,1 +1,6 @@
-.vercel
+*.BACKUP
+*.backup*
+*.bak
+tests/
+node_modules/
+.DS_Store
