@@ -267,6 +267,8 @@ kubectl apply -f .
 - [Plan de Reorganización](docs/PLAN_REORGANIZACION.md)
 - [Mejoras VM RAG3](docs/IMPROVEMENTS_VM_RAG3.md)
 - [Infrastructure Findings](docs/INFRASTRUCTURE_FINDINGS.md)
+- [Informe de Seguridad y Bugs](SECURITY_BUG_REPORT.md)
+- [Solución al problema CORS MCP](docs/CORS_FIX.md)
 
 ### Por VM
 
