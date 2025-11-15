@@ -9677,6 +9677,30 @@
         "documentation": {}
     },
     {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
         "label": "pandas",
         "kind": 6,
         "isExtraImport": true,
@@ -9740,6 +9764,14 @@
         "description": "unittest.mock",
         "isExtraImport": true,
         "detail": "unittest.mock",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
         "documentation": {}
     },
     {
@@ -24202,6 +24234,42 @@
         "documentation": {}
     },
     {
+        "label": "start_proxy_server",
+        "kind": 2,
+        "importPath": "scripts.cors_fix_verification",
+        "description": "scripts.cors_fix_verification",
+        "peekOfCode": "def start_proxy_server():\n    \"\"\"Iniciar el servidor proxy en segundo plano\"\"\"\n    print(\"🚀 Iniciando servidor proxy en puerto 8001...\")\n    def run_proxy():\n        try:\n            from proxy_cors import app\n            app.run(host='0.0.0.0', port=8001, debug=False)\n        except Exception as e:\n            print(f\"❌ Error iniciando proxy: {e}\")\n    proxy_thread = threading.Thread(target=run_proxy, daemon=True)",
+        "detail": "scripts.cors_fix_verification",
+        "documentation": {}
+    },
+    {
+        "label": "test_cors_fix",
+        "kind": 2,
+        "importPath": "scripts.cors_fix_verification",
+        "description": "scripts.cors_fix_verification",
+        "peekOfCode": "def test_cors_fix():\n    \"\"\"Probar que el problema de CORS está resuelto\"\"\"\n    print(\"\\n🔍 Probando solución de problema CORS...\")\n    tests = [\n        {\n            'name': 'Prueba básica de proxy',\n            'url': 'http://localhost:8001/health',\n            'method': 'GET',\n            'expected_status': 404  # Porque no existe el endpoint /health en los destinos\n        },",
+        "detail": "scripts.cors_fix_verification",
+        "documentation": {}
+    },
+    {
+        "label": "check_cors_headers",
+        "kind": 2,
+        "importPath": "scripts.cors_fix_verification",
+        "description": "scripts.cors_fix_verification",
+        "peekOfCode": "def check_cors_headers(response_headers):\n    \"\"\"Verificar si los encabezados CORS están presentes\"\"\"\n    cors_headers = [\n        'Access-Control-Allow-Origin',\n        'Access-Control-Allow-Methods',\n        'Access-Control-Allow-Headers'\n    ]\n    present_headers = []\n    for header in cors_headers:\n        if header.lower() in [h.lower() for h in response_headers.keys()]:",
+        "detail": "scripts.cors_fix_verification",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "scripts.cors_fix_verification",
+        "description": "scripts.cors_fix_verification",
+        "peekOfCode": "def main():\n    print(\"🦫 Capibara6 - Verificación de Solución CORS\")\n    print(\"=\" * 60)\n    print(\"🔧 Correcciones implementadas:\")\n    print(\"  • Redirección automática de /api/mcp/status a /api/mcp/health\")\n    print(\"  • Redirección de /api/v1/mcp/status a /api/v1/mcp/health\") \n    print(\"  • Soporte para diferentes variantes del endpoint status\")\n    # Intentar iniciar el servidor proxy\n    proxy_thread = start_proxy_server()\n    # Realizar pruebas",
+        "detail": "scripts.cors_fix_verification",
+        "documentation": {}
+    },
+    {
         "label": "run_gcloud_command",
         "kind": 2,
         "importPath": "scripts.get_vm_info",
@@ -27052,6 +27120,33 @@
         "description": "fix_cors_backend",
         "peekOfCode": "CORS_CONFIG = \"\"\"\nfrom flask_cors import CORS\n# Configurar CORS para permitir localhost:8000\nCORS(app, origins=[\n    \"http://localhost:8000\",\n    \"http://127.0.0.1:8000\",\n    \"http://localhost:3000\",\n    \"http://127.0.0.1:3000\",\n    \"https://www.capibara6.com\",\n    \"https://capibara6.com\"",
         "detail": "fix_cors_backend",
+        "documentation": {}
+    },
+    {
+        "label": "proxy",
+        "kind": 2,
+        "importPath": "proxy-cors",
+        "description": "proxy-cors",
+        "peekOfCode": "def proxy(path):\n    path = '/' + path\n    target = None\n    for prefix, url in TARGETS.items():\n        if path.startswith(prefix):\n            target = url\n            break\n    if not target:\n        return 'Not found', 404\n    # Manejar casos especiales - redirigir diferentes variantes de status a health",
+        "detail": "proxy-cors",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "proxy-cors",
+        "description": "proxy-cors",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\nTARGETS = {\n    '/api/ai': 'http://34.12.166.76:5001',\n    '/api/chat': 'http://34.12.166.76:5001',\n    '/api/mcp': 'http://34.175.136.104:5003',\n    '/api/n8n': 'http://34.175.136.104:5678',\n    '/api/tts': 'http://34.175.136.104:5002',\n    '/health': 'http://34.12.166.76:5001'\n}",
+        "detail": "proxy-cors",
+        "documentation": {}
+    },
+    {
+        "label": "TARGETS",
+        "kind": 5,
+        "importPath": "proxy-cors",
+        "description": "proxy-cors",
+        "peekOfCode": "TARGETS = {\n    '/api/ai': 'http://34.12.166.76:5001',\n    '/api/chat': 'http://34.12.166.76:5001',\n    '/api/mcp': 'http://34.175.136.104:5003',\n    '/api/n8n': 'http://34.175.136.104:5678',\n    '/api/tts': 'http://34.175.136.104:5002',\n    '/health': 'http://34.12.166.76:5001'\n}\n@app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])\ndef proxy(path):",
+        "detail": "proxy-cors",
         "documentation": {}
     },
     {
