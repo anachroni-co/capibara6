@@ -136,19 +136,85 @@ def get_all_contexts() -> Dict[str, Any]:
 def calculate(expression: str) -> Dict[str, Any]:
     """Calcula una expresión matemática de forma segura"""
     try:
-        # Evaluar de forma segura (sin exec/eval de Python directo)
-        # Solo permitir operaciones matemáticas básicas
+        # Validar que la expresión no esté vacía
+        if not expression or not expression.strip():
+            return {'error': 'Expresión vacía'}
+
+        # Verificar longitud máxima para evitar desbordamientos
+        if len(expression) > 1000:
+            return {'error': 'Expresión demasiado larga'}
+
+        # Validar que solo contenga caracteres permitidos
         allowed_chars = set('0123456789+-*/().% ')
         if not all(c in allowed_chars for c in expression):
             return {'error': 'Expresión contiene caracteres no permitidos'}
-        
-        result = eval(expression, {"__builtins__": {}}, {})
-        return {
-            'expression': expression,
-            'result': result
+
+        # Parsear la expresión de forma segura usando AST
+        import ast
+        import operator
+
+        # Definir operadores permitidos
+        ops = {
+            ast.Add: operator.add,
+            ast.Sub: operator.sub,
+            ast.Mult: operator.mul,
+            ast.Div: operator.truediv,
+            ast.Mod: operator.mod,
+            ast.Pow: operator.pow,
+            ast.USub: operator.neg,
+            ast.UAdd: operator.pos,
         }
+
+        def eval_node(node):
+            if isinstance(node, ast.Constant):  # Números
+                return node.value
+            elif isinstance(node, ast.Num):  # Para versiones antiguas de Python
+                return node.n
+            elif isinstance(node, ast.BinOp):
+                left = eval_node(node.left)
+                right = eval_node(node.right)
+                op = ops.get(type(node.op))
+                if op is None:
+                    raise ValueError(f'Operador no permitido: {type(node.op)}')
+                if isinstance(node.op, ast.Pow) and (abs(left) > 100 or abs(right) > 10):
+                    # Prevenir cálculos exponenciales muy grandes
+                    raise ValueError('Operación exponencial demasiado grande')
+                return op(left, right)
+            elif isinstance(node, ast.UnaryOp):
+                operand = eval_node(node.operand)
+                op = ops.get(type(node.op))
+                if op is None:
+                    raise ValueError(f'Operador unario no permitido: {type(node.op)}')
+                return op(operand)
+            else:
+                raise ValueError(f'Tipo de nodo no permitido: {type(node)}')
+
+        try:
+            # Parsear la expresión
+            tree = ast.parse(expression, mode='eval')
+            # Evaluar la expresión de forma segura
+            result = eval_node(tree.body)
+
+            # Validar el resultado
+            if isinstance(result, (int, float)):
+                # Verificar que el resultado no sea inf o nan
+                if str(result) in ('inf', '-inf', 'nan'):
+                    return {'error': 'Resultado inválido (infinito o NaN)'}
+                return {
+                    'expression': expression,
+                    'result': result
+                }
+            else:
+                return {'error': 'Tipo de resultado no permitido'}
+        except ValueError as e:
+            return {'error': f'Error en la expresión: {str(e)}'}
+        except OverflowError:
+            return {'error': 'Resultado de cálculo demasiado grande'}
+        except ZeroDivisionError:
+            return {'error': 'División por cero'}
+
     except Exception as e:
-        return {'error': str(e)}
+        return {'error': f'Error inesperado: {str(e)}'}
 
 def verify_fact(claim: str, category: str = 'general') -> Dict[str, Any]:
     """Verifica un hecho contra los contextos disponibles"""
