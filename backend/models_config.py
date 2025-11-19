@@ -40,10 +40,10 @@ MODELS_CONFIG = {
     },
 
     'phi': {
-        'name': 'Phi-3 Mini',
-        'base_model': 'Microsoft Phi-3 Mini (3.8B)',
-        'server_url': 'http://34.175.215.109:8081/completion',  # Puerto diferente en la misma VM
-        'type': 'llama_cpp',
+        'name': 'Phi-4 Mini',
+        'base_model': 'Microsoft Phi-4 Mini (14B)',  # Updated to Phi-4 with more parameters
+        'server_url': 'http://34.175.215.109:8000/v1',  # Updated to vLLM endpoint
+        'type': 'vllm',
         'hardware': 'GPU',
         'status': 'active',
         'priority': 3,
@@ -54,10 +54,33 @@ MODELS_CONFIG = {
             'stop_tokens': ['<|end|>', '<|endoftext|>']
         },
         'parameters': {
-            'n_predict': 80,  # Respuestas más cortas para modelo pequeño
+            'n_predict': 120,  # Updated for longer context
             'temperature': 0.5,
             'top_p': 0.85,
             'repeat_penalty': 1.2,
+            'stream': True
+        }
+    },
+
+    'qwen2.3-coder': {
+        'name': 'Qwen2.3-Coder 1.5B',
+        'base_model': 'Qwen/Qwen2.5-Coder-1.5B-Instruct',
+        'server_url': 'http://34.175.215.109:8000/v1',  # vLLM endpoint for the code model
+        'type': 'vllm',
+        'hardware': 'GPU',
+        'status': 'active',
+        'priority': 2,
+        'prompt_template': {
+            'system': 'You are an expert code assistant. Provide accurate, efficient, and well-documented code solutions.',
+            'user': '{prompt}',
+            'assistant': '',
+            'stop_tokens': ['<|end|>', '']
+        },
+        'parameters': {
+            'n_predict': 200,  # Suitable for code tasks
+            'temperature': 0.3,
+            'top_p': 0.9,
+            'repeat_penalty': 1.1,
             'stream': True
         }
     },

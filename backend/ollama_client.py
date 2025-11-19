@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Cliente HTTP para interactuar con Ollama con selección de modelo y fallback."""
+"""Cliente HTTP para interactuar con vLLM con selección de modelo y fallback."""
 
 from __future__ import annotations
 
@@ -10,20 +10,21 @@ import os
 from typing import Any, Dict, Iterable, Optional
 
 import requests  # type: ignore[import-untyped]
+from openai import OpenAI
 
 from task_classifier import TaskClassifier
 
 logger = logging.getLogger(__name__)
 
 
-class OllamaClient:
-    """Cliente para gestionar peticiones a Ollama con soporte de fallback."""
+class VLLMClient:
+    """Cliente para gestionar peticiones a vLLM con soporte de fallback."""
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.endpoint = config.get("api_settings", {}).get(
-            "ollama_endpoint",
-            os.getenv("OLLAMA_ENDPOINT", "http://localhost:11434"),
+            "vllm_endpoint",
+            config.get("api_settings", {}).get("ollama_endpoint", "http://localhost:8000/v1"),
         )
         self.models = config.get("models", {})
 
@@ -41,6 +42,12 @@ class OllamaClient:
             config.get("api_settings", {}).get("default_model", "fast_response"),
         )
 
+        # Initialize OpenAI client with vLLM endpoint
+        self.client = OpenAI(
+            base_url=self.endpoint,
+            api_key="EMPTY"  # vLLM typically doesn't require an API key in basic setup
+        )
+
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -52,26 +59,36 @@ class OllamaClient:
         if not model_cfg:
             raise ValueError(f"Modelo no configurado para tier: {model_tier}")
 
-        payload = self._build_payload(prompt, model_cfg, options)
-        timeout = self._resolve_timeout(model_cfg, options)
+        try:
+            # Prepare the chat completion request
+            response = self.client.chat.completions.create(
+                model=model_cfg["name"],
+                messages=[{"role": "user", "content": prompt}],
+                temperature=options.get("temperature", 0.7),
+                max_tokens=min(options.get("max_tokens", model_cfg.get("max_tokens", 512)), 2048),
+                top_p=options.get("top_p", 0.9),
+                top_k=options.get("top_k", 40),
+                timeout=self._resolve_timeout(model_cfg, options)
+            )
 
-        logger.debug("Solicitando a Ollama modelo %s", model_cfg["name"])
-        response = requests.post(
-            f"{self.endpoint}/api/generate",
-            json=payload,
-            timeout=timeout,
-        )
-        response.raise_for_status()
+            # Extract the response and metadata
+            message_content = response.choices[0].message.content
+            usage = response.usage
 
-        data = response.json()
-        return {
-            "success": True,
-            "model": model_cfg["name"],
-            "response": data.get("response", ""),
-            "eval_duration": data.get("eval_duration"),
-            "total_duration": data.get("total_duration"),
-            "token_count": data.get("eval_count"),
-        }
+            return {
+                "success": True,
+                "model": model_cfg["name"],
+                "response": message_content or "",
+                "total_duration": getattr(response, 'response_ms', None),
+                "token_count": usage.completion_tokens if usage else None,
+            }
+        except Exception as e:
+            logger.error(f"Error con modelo {model_cfg['name']}: {e}")
+            return {
+                "success": False,
+                "model": model_cfg["name"],
+                "error": str(e),
+            }
 
     def generate_with_fallback(self, prompt: str, model_tier: Optional[str] = None, **options: Any) -> Dict[str, Any]:
         """Generar respuesta con fallback según configuración."""
@@ -101,73 +118,34 @@ class OllamaClient:
         if not model_cfg:
             raise ValueError(f"Modelo no configurado para tier: {model_tier}")
 
-        payload = self._build_payload(prompt, model_cfg, options, stream=True)
-        timeout = self._resolve_timeout(model_cfg, options)
+        try:
+            # Prepare the chat completion request with streaming
+            stream = self.client.chat.completions.create(
+                model=model_cfg["name"],
+                messages=[{"role": "user", "content": prompt}],
+                temperature=options.get("temperature", 0.7),
+                max_tokens=min(options.get("max_tokens", model_cfg.get("max_tokens", 512)), 2048),
+                top_p=options.get("top_p", 0.9),
+                top_k=options.get("top_k", 40),
+                stream=True,
+                timeout=self._resolve_timeout(model_cfg, options)
+            )
 
-        with requests.post(
-            f"{self.endpoint}/api/generate",
-            json=payload,
-            timeout=timeout,
-            stream=True,
-        ) as response:
-            response.raise_for_status()
+            # Yield each chunk as it arrives
+            for chunk in stream:
+                if chunk.choices and chunk.choices[0].delta.content:
+                    yield chunk.choices[0].delta.content
 
-            buffer = ""
-            for chunk in response.iter_lines(decode_unicode=True):
-                if not chunk:
-                    continue
-                buffer += chunk
-                lines = buffer.split("\n")
-                buffer = lines.pop()
-
-                for line in lines:
-                    try:
-                        data = json.loads(line)
-                    except json.JSONDecodeError:
-                        logger.debug("No se pudo parsear línea de streaming: %s", line)
-                        continue
-
-                    if data.get("response"):
-                        yield data["response"]
-
-                    if data.get("done"):
-                        return
-
-            if buffer:
-                try:
-                    data = json.loads(buffer)
-                    if data.get("response"):
-                        yield data["response"]
-                except json.JSONDecodeError:
-                    logger.debug("No se pudo parsear buffer final de streaming: %s", buffer)
+        except Exception as e:
+            logger.error(f"Error en streaming con modelo {model_cfg['name']}: {e}")
+            raise
 
     # ------------------------------------------------------------------
     # Utilidades internas
     # ------------------------------------------------------------------
 
-    def _build_payload(self, prompt: str, model_cfg: Dict[str, Any], options: Dict[str, Any], stream: bool = False) -> Dict[str, Any]:
-        max_tokens = options.get("max_tokens") or model_cfg.get("max_tokens", 512)
-
-        payload: Dict[str, Any] = {
-            "model": model_cfg["name"],
-            "prompt": prompt,
-            "stream": stream,
-            "options": {
-                "temperature": options.get("temperature", 0.7),
-                "num_predict": min(max_tokens, 2048),
-                "top_p": options.get("top_p", 0.9),
-                "top_k": options.get("top_k", 40),
-            },
-        }
-
-        context = options.get("context")
-        if context:
-            payload["context"] = context
-
-        if options.get("stop"):
-            payload["stop"] = options["stop"]
-
-        return payload
+    # The _build_payload method is no longer needed since we're using the OpenAI client
+    # The OpenAI client handles the payload construction internally
 
     @staticmethod
     def _resolve_timeout(model_cfg: Dict[str, Any], options: Dict[str, Any]) -> float:

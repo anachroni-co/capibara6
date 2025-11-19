@@ -1,18 +1,18 @@
 {
   "models": {
     "fast_response": {
-      "name": "phi3:mini",
+      "name": "phi4:mini",
       "description": "Modelo más rápido para respuestas simples",
       "max_tokens": 512,
       "timeout": 8000,
       "use_case": ["preguntas simples", "respuestas rápidas", "chistes", "saludos", "respuestas directas"]
     },
     "balanced": {
-      "name": "mistral",
-      "description": "Modelo equilibrado para tareas intermedias",
+      "name": "qwen2.3-coder:1.5b",
+      "description": "Modelo experto en código y tareas técnicas",
       "max_tokens": 1024,
       "timeout": 20000,
-      "use_case": ["explicaciones", "análisis intermedio", "redacción", "resumen corto"]
+      "use_case": ["explicaciones", "análisis intermedio", "redacción", "resumen corto", "programación", "análisis técnico"]
     },
     "complex": {
       "name": "gpt-oss:20b",
@@ -28,14 +28,15 @@
   },
   "load_balancing": {
     "enable_preloading": true,
-    "models_to_keep_loaded": ["phi3:mini", "mistral"],
+    "models_to_keep_loaded": ["phi4:mini", "qwen2.3-coder:1.5b"],
     "max_loaded_models": 2,
     "cache_enabled": true,
     "cache_ttl_seconds": 3600
   },
   "api_settings": {
-    "ollama_endpoint": "http://34.12.166.76:11434",
-    "default_model": "phi3:mini",
+    "vllm_endpoint": "http://34.12.166.76:8000/v1",
+    "ollama_endpoint": "http://34.12.166.76:8000/v1",
+    "default_model": "phi4:mini",
     "max_concurrent_requests": 4,
     "streaming_enabled": true
   }
