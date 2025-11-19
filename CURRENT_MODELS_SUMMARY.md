@@ -12,7 +12,7 @@ These models are used by the main API endpoints:
    - Max tokens: 512
    - Timeout: 8000ms
 
-2. **balanced**: `qwen2.3-coder:1.5b`  
+2. **balanced**: `qwen2.5-coder-1.5b`
    - Description: Modelo experto en código y tareas técnicas
    - Use cases: explicaciones, análisis intermedio, redacción, resumen corto, programación, análisis técnico
    - Max tokens: 1024
@@ -79,11 +79,11 @@ These models are used by the Python backend services:
 ## System Configuration:
 - Consensus enabled: Yes
 - Fallback strategy: fast_response → balanced → complex
-- Models preloaded: phi4:mini, qwen2.3-coder:1.5b
+- Models preloaded: phi4:mini, qwen2.5-coder-1.5b
 - API Endpoint: http://34.12.166.76:8000/v1 (vLLM compatible)
 
 ## Key Changes from Migration:
 1. **phi3:mini** replaced with **phi4:mini** (upgraded from 3.8B to 14B parameters)
-2. **mistral** replaced with **qwen2.3-coder:1.5b** (new coding expert model)
+2. **mistral** replaced with **qwen2.5-coder-1.5b** (new coding expert model)
 3. **Ollama API** replaced with **vLLM OpenAI-compatible API**
 4. **gpt-oss:20b** remains unchanged as the complex reasoning model

@@ -32,8 +32,8 @@ def test_model_config():
         else:
             print(f"✅ Fast response model updated to: {config['models']['fast_response']['name']}")
         
-        if config['models']['balanced']['name'] != 'qwen2.3-coder:1.5b':
-            print(f"❌ Expected qwen2.3-coder:1.5b, got {config['models']['balanced']['name']}")
+        if config['models']['balanced']['name'] != 'qwen2.5-coder-1.5b':
+            print(f"❌ Expected qwen2.5-coder-1.5b, got {config['models']['balanced']['name']}")
             return False
         else:
             print(f"✅ Balanced model updated to: {config['models']['balanced']['name']}")
@@ -66,11 +66,11 @@ def test_python_imports():
         
         # Test importing models_config and verify new models
         import models_config
-        if 'qwen2.3-coder' not in models_config.MODELS_CONFIG:
-            print(f"❌ qwen2.3-coder not found in models_config")
+        if 'qwen2.5-coder' not in models_config.MODELS_CONFIG:
+            print(f"❌ qwen2.5-coder not found in models_config")
             return False
         else:
-            print(f"✅ qwen2.3-coder model found in Python config")
+            print(f"✅ qwen2.5-coder model found in Python config")
             
         if models_config.MODELS_CONFIG['phi']['name'] != 'Phi-4 Mini':
             print(f"❌ Phi model not updated to Phi-4 Mini")
