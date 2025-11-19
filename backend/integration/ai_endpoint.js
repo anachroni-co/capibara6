@@ -4,10 +4,10 @@ const app = express();
 
 // Cargar configuración
 const modelConfig = require('./model_config.json');
-const { OllamaClient } = require('./ollama_client.js');
+const { VLLMClient } = require('./ollama_client.js');  // Updated import
 const { TaskClassifier } = require('./task_classifier.js');
 
-const ollamaClient = new OllamaClient(modelConfig);
+const vllmClient = new VLLMClient(modelConfig);  // Updated client
 
 app.use(express.json());
 
@@ -23,14 +23,14 @@ app.post('/api/ai/generate', async (req, res) => {
       
       const modelTier = modelPreference === 'auto' ? TaskClassifier.classifyTask(prompt) : modelPreference;
       
-      await ollamaClient.streamWithModel(
-        prompt, 
-        modelTier, 
+      await vllmClient.streamWithModel(
+        prompt,
+        modelTier,
         (chunk) => res.write(chunk),
         () => res.end()
       );
     } else {
-      const result = await ollamaClient.generateWithFallback(prompt, {
+      const result = await vllmClient.generateWithFallback(prompt, {
         modelTier: modelPreference,
         ...options
       });
@@ -79,7 +79,7 @@ app.post('/api/ai/:modelTier/generate', async (req, res) => {
     const { modelTier } = req.params;
     const { prompt, ...options } = req.body;
     
-    const result = await ollamaClient.generate(prompt, modelTier, options);
+    const result = await vllmClient.generate(prompt, modelTier, options);
     
     if (result.success) {
       res.json({

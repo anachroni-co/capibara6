@@ -10,7 +10,7 @@ requiere datos personales del usuario, usando TOON para reducir tokens.
 import logging
 import re
 from typing import Dict, Any, Optional, Tuple
-from ollama_client import OllamaClient
+from ollama_client import VLLMClient  # Changed from OllamaClient to VLLMClient
 from rag_client import RAGClient
 
 logger = logging.getLogger(__name__)
@@ -33,23 +33,23 @@ class OllamaRAGIntegration:
 
     def __init__(
         self,
-        ollama_client: Optional[OllamaClient] = None,
+        vllm_client: Optional[VLLMClient] = None,
         rag_client: Optional[RAGClient] = None,
         rag_threshold: float = 0.3,  # Score mínimo para usar RAG
         context_max_length: int = 1500,
         enable_toon: bool = True,  # Nuevo: habilitar TOON
     ):
         """
-        Inicializar integración Ollama-RAG con soporte TOON
+        Inicializar integración vLLM-RAG con soporte TOON
 
         Args:
-            ollama_client: Cliente Ollama configurado
+            vllm_client: Cliente vLLM configurado
             rag_client: Cliente RAG configurado
             rag_threshold: Umbral para decidir si usar RAG
             context_max_length: Longitud máxima del contexto RAG
             enable_toon: Habilitar optimización TOON para reducir tokens
         """
-        self.ollama_client = ollama_client
+        self.vllm_client = vllm_client
         self.rag_client = rag_client or RAGClient(enable_toon=enable_toon)
         self.rag_threshold = rag_threshold
         self.context_max_length = context_max_length
@@ -159,23 +159,23 @@ Si no hay información relevante en el contexto, responde normalmente."""
         model_tier: Optional[str] = None,
         use_rag: bool = True,
         use_toon: Optional[bool] = None,
-        **ollama_options: Any
+        **vllm_options: Any
     ) -> Dict[str, Any]:
         """
-        Generar respuesta con Ollama, usando RAG+TOON si es necesario
+        Generar respuesta con vLLM, usando RAG+TOON si es necesario
 
         Args:
             prompt: Prompt del usuario
-            model_tier: Tier del modelo Ollama (fast_response, balanced, complex)
+            model_tier: Tier del modelo vLLM (fast_response, balanced, complex)
             use_rag: Si permitir el uso de RAG
             use_toon: Forzar uso de TOON (None=auto, True=forzar, False=desactivar)
-            **ollama_options: Opciones adicionales para Ollama
+            **vllm_options: Opciones adicionales para vLLM
 
         Returns:
             Dict con respuesta y metadatos incluyendo info de TOON
         """
-        if not self.ollama_client:
-            raise ValueError("OllamaClient no configurado")
+        if not self.vllm_client:
+            raise ValueError("VLLMClient no configurado")
 
         rag_data = None
 
@@ -188,18 +188,18 @@ Si no hay información relevante en el contexto, responde normalmente."""
         else:
             enriched_prompt = prompt
 
-        # Generar respuesta con Ollama
-        ollama_response = self.ollama_client.generate_with_fallback(
+        # Generar respuesta con vLLM
+        vllm_response = self.vllm_client.generate_with_fallback(
             prompt=enriched_prompt,
             model_tier=model_tier,
-            **ollama_options
+            **vllm_options
         )
 
         # Combinar respuesta con metadata RAG y TOON
         response = {
-            "response": ollama_response.get("response", ""),
-            "success": ollama_response.get("success", False),
-            "model": ollama_response.get("model"),
+            "response": vllm_response.get("response", ""),
+            "success": vllm_response.get("success", False),
+            "model": vllm_response.get("model"),
             "rag_used": rag_data is not None,
         }
 
@@ -224,23 +224,23 @@ Si no hay información relevante en el contexto, responde normalmente."""
         model_tier: str,
         use_rag: bool = True,
         use_toon: Optional[bool] = None,
-        **ollama_options: Any
+        **vllm_options: Any
     ):
         """
-        Generar respuesta en streaming con Ollama, RAG y TOON
+        Generar respuesta en streaming con vLLM, RAG y TOON
 
         Args:
             prompt: Prompt del usuario
             model_tier: Tier del modelo
             use_rag: Si usar RAG
             use_toon: Forzar uso de TOON (None=auto)
-            **ollama_options: Opciones adicionales
+            **vllm_options: Opciones adicionales
 
         Yields:
             Chunks de texto
         """
-        if not self.ollama_client:
-            raise ValueError("OllamaClient no configurado")
+        if not self.vllm_client:
+            raise ValueError("VLLMClient no configurado")
 
         # Enriquecer con RAG si está habilitado
         if use_rag:
@@ -258,36 +258,36 @@ Si no hay información relevante en el contexto, responde normalmente."""
         else:
             enriched_prompt = prompt
 
-        # Stream desde Ollama
-        for chunk in self.ollama_client.stream_with_model(
+        # Stream desde vLLM
+        for chunk in self.vllm_client.stream_with_model(
             prompt=enriched_prompt,
             model_tier=model_tier,
-            **ollama_options
+            **vllm_options
         ):
             yield chunk
 
 
 def create_integrated_client(
-    ollama_config: Dict[str, Any],
+    vllm_config: Dict[str, Any],
     rag_url: Optional[str] = None,
     enable_toon: bool = True
 ) -> OllamaRAGIntegration:
     """
-    Factory para crear cliente integrado Ollama-RAG con TOON
+    Factory para crear cliente integrado vLLM-RAG con TOON
 
     Args:
-        ollama_config: Configuración de Ollama (model_config.json)
+        vllm_config: Configuración de vLLM (model_config.json)
         rag_url: URL del servidor RAG (opcional)
         enable_toon: Habilitar optimización TOON
 
     Returns:
         Cliente integrado configurado con soporte TOON
     """
-    ollama_client = OllamaClient(ollama_config)
+    vllm_client = VLLMClient(vllm_config)
     rag_client = RAGClient(base_url=rag_url, enable_toon=enable_toon)
 
     return OllamaRAGIntegration(
-        ollama_client=ollama_client,
+        vllm_client=vllm_client,
         rag_client=rag_client,
         enable_toon=enable_toon
     )
@@ -304,7 +304,7 @@ if __name__ == "__main__":
 
     # Crear cliente integrado con TOON habilitado
     integrated_client = create_integrated_client(
-        ollama_config,
+        vllm_config=ollama_config,  # The config is compatible with both
         enable_toon=True
     )
 
