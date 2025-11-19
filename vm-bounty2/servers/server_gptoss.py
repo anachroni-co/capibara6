@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Backend de capibara6 - Servidor Flask para conectar con GPT-OSS-20B
+Backend de capibara6 - Servidor Flask para conectar con vLLM
 """
 
 from flask import Flask, request, jsonify, stream_with_context, Response
@@ -20,17 +20,21 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)  # Habilitar CORS para permitir peticiones desde el frontend
 
-# Configuración de Ollama
-OLLAMA_URL = os.getenv('OLLAMA_URL', 'http://34.12.166.76:11434')
-OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'gpt-oss-20b')
-OLLAMA_TIMEOUT = int(os.getenv('OLLAMA_TIMEOUT', '120'))
+# Configuración de vLLM
+VLLM_URL = os.getenv('VLLM_URL', 'http://34.12.166.76:8000/v1')  # vLLM endpoint
+VLLM_MODEL = os.getenv('VLLM_MODEL', 'gpt-oss-20b')
+VLLM_TIMEOUT = int(os.getenv('VLLM_TIMEOUT', '120'))
 
-# Backwards compatibility: si existe GPT_OSS_URL, usarlo como OLLAMA_URL
+# Backwards compatibility: si existe OLLAMA_URL, usarlo como VLLM_URL para migración
+if os.getenv('OLLAMA_URL'):
+    VLLM_URL = os.getenv('OLLAMA_URL').replace('/api/generate', '/v1/chat/completions').replace(':11434', ':8000/v1')
 if os.getenv('GPT_OSS_URL'):
-    OLLAMA_URL = os.getenv('GPT_OSS_URL')
-    # Si la URL tiene :8080, cambiar a :11434 (puerto por defecto de Ollama)
-    if ':8080' in OLLAMA_URL:
-        OLLAMA_URL = OLLAMA_URL.replace(':8080', ':11434')
+    # Si hay una URL específica de GPT-OSS, adaptarla a vLLM
+    original_url = os.getenv('GPT_OSS_URL')
+    if ':8080' in original_url:
+        VLLM_URL = original_url.replace(':8080', ':8000/v1')
+    else:
+        VLLM_URL = original_url + '/v1/chat/completions'
 
 # Archivo para guardar datos
 DATA_FILE = 'user_data/conversations.json'
@@ -76,8 +80,8 @@ def save_conversation(user_message, ai_response, user_email=None):
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(existing_data, f, indent=2, ensure_ascii=False)
 
-def call_ollama(prompt, max_tokens=500, temperature=0.7):
-    """Llamar al modelo a través de Ollama"""
+def call_vllm(prompt, max_tokens=500, temperature=0.7):
+    """Llamar al modelo a través de vLLM"""
 
     # Modo demo: si la variable de entorno USE_DEMO_MODE está activa
     use_demo = os.getenv('USE_DEMO_MODE', 'false').lower() == 'true'
@@ -86,81 +90,57 @@ def call_ollama(prompt, max_tokens=500, temperature=0.7):
         print("⚠️ MODO DEMO: Generando respuesta simulada")
         return """¡Hola! Soy Capibara6 en modo demo.
 
-El backend está funcionando correctamente, pero Ollama no está accesible en este momento.
+El backend está funcionando correctamente, pero vLLM no está accesible en este momento.
 
 Para activar el modelo real:
-1. Verifica que Ollama esté corriendo en la VM
-2. Asegúrate de que el puerto 11434 esté abierto
-3. Configura el archivo .env con la URL correcta de Ollama
+1. Verifica que vLLM esté corriendo en la VM
+2. Asegúrate de que el puerto 8000 esté abierto para vLLM endpoints
+3. Configura el archivo .env con la URL correcta de vLLM
 4. Desactiva el modo demo quitando USE_DEMO_MODE=true del .env
 
 Esta es una respuesta simulada para probar la funcionalidad del chat. Todas las demás características (subida de archivos, guardado de conversaciones, UI) están funcionando correctamente."""
 
     try:
-        # Preparar el payload para Ollama API
+        # Preparar el payload para vLLM OpenAI-compatible API
         payload = {
-            "model": OLLAMA_MODEL,
-            "prompt": prompt,
-            "stream": False,
-            "options": {
-                "num_predict": max_tokens,
-                "temperature": temperature,
-                "top_p": 0.9,
-                "repeat_penalty": 1.1,
-                "stop": ["Usuario:", "Capibara6:", "\n\n"]
-            }
+            "model": VLLM_MODEL,
+            "messages": [
+                {"role": "system", "content": "Eres Capibara6, un asistente de IA útil y preciso."},
+                {"role": "user", "content": prompt}
+            ],
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+            "top_p": 0.9,
+            "stream": False
         }
 
-        # Llamar a Ollama API
+        # Llamar a vLLM API (OpenAI-compatible endpoint)
         response = requests.post(
-            f"{OLLAMA_URL}/api/generate",
+            f"{VLLM_URL}/chat/completions",
             json=payload,
-            timeout=OLLAMA_TIMEOUT,
-            headers={'Content-Type': 'application/json'}
+            timeout=VLLM_TIMEOUT,
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer EMPTY'  # vLLM típicamente no requiere auth
+            }
         )
 
         if response.status_code == 200:
             data = response.json()
-            # Ollama devuelve la respuesta en el campo 'response', pero para GPT-OSS-20B puede estar en 'thinking' o combinado
-            response_text = data.get('response', '')
-            
-            # Si el campo 'response' está vacío, intentar extraer de 'thinking'
-            if not response_text and 'thinking' in data:
-                thinking = data.get('thinking', '')
-                if thinking:
-                    # Estrategia de extracción para GPT-OSS-20B
-                    # Buscar patrones comunes en el contenido de thinking
-                    import re
-                    
-                    # Patrón 1: Después de "So respond in Spanish:" o similar
-                    patterns = [
-                        r'So respond in [^:]*: (.+?)(?:\. |, |\n|$)',
-                        r'So (.+?)(?:\. |, |\n|$)',
-                        r'The assistant should respond appropriately.*?: (.+?)(?:\. |, |\n|$)',
-                        r'should respond in Spanish: (.+?)(?:\. |, |\n|$)',
-                    ]
-                    
-                    for pattern in patterns:
-                        match = re.search(pattern, thinking)
-                        if match:
-                            response_text = match.group(1).strip()
-                            break
-                    
-                    # Si aún no hay respuesta, usar el contenido todo del thinking
-                    if not response_text:
-                        response_text = thinking[:200]  # Limitar longitud para evitar basura
-                        
+            # vLLM devuelve la respuesta en el campo choices[0].message.content
+            response_text = data.get('choices', [{}])[0].get('message', {}).get('content', '')
+
             return response_text.strip()
         else:
-            print(f"Error en Ollama: {response.status_code} - {response.text}")
-            return f"Error: No se pudo conectar con Ollama ({response.status_code}). Verifica que esté corriendo en {OLLAMA_URL}"
+            print(f"Error en vLLM: {response.status_code} - {response.text}")
+            return f"Error: No se pudo conectar con vLLM ({response.status_code}). Verifica que esté corriendo en {VLLM_URL}"
 
     except requests.exceptions.Timeout:
-        return f"Error: Tiempo de espera agotado. Ollama ({OLLAMA_URL}) está tardando demasiado en responder."
+        return f"Error: Tiempo de espera agotado. vLLM ({VLLM_URL}) está tardando demasiado en responder."
     except requests.exceptions.ConnectionError:
-        return f"Error: No se pudo conectar con Ollama en {OLLAMA_URL}. Verifica que esté corriendo y que el puerto 11434 esté abierto."
+        return f"Error: No se pudo conectar con vLLM en {VLLM_URL}. Verifica que esté corriendo y que el puerto correspondiente esté abierto."
     except Exception as e:
-        print(f"Error llamando a Ollama: {e}")
+        print(f"Error llamando a vLLM: {e}")
         return f"Error: {str(e)}"
 
 @app.route('/api/chat', methods=['POST'])
@@ -227,8 +207,8 @@ Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mej
         
         full_prompt = f"{system_prompt}\n\nUsuario: {user_message_with_files}\n\nCapibara6:"
 
-        # Llamar al modelo a través de Ollama
-        ai_response = call_ollama(full_prompt, max_tokens, temperature)
+        # Llamar al modelo a través de vLLM
+        ai_response = call_vllm(full_prompt, max_tokens, temperature)
 
         # Guardar conversación
         save_conversation(user_message, ai_response, user_email)
@@ -282,20 +262,25 @@ Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mej
         def generate():
             try:
                 payload = {
-                    "prompt": full_prompt,
-                    "n_predict": max_tokens,
+                    "model": VLLM_MODEL,
+                    "messages": [
+                        {"role": "system", "content": "Eres Capibara6, un asistente de IA útil y preciso."},
+                        {"role": "user", "content": full_prompt}
+                    ],
+                    "max_tokens": max_tokens,
                     "temperature": temperature,
-                    "top_p": 0.9,  # Añadido para mejor diversidad
-                    "repeat_penalty": 1.1,  # Reducido para evitar repeticiones excesivas
-                    "stream": True,
-                    "stop": ["Usuario:", "Capibara6:", "\n\n", "<|endoftext|>", "</s>", "<|end|>"]
+                    "top_p": 0.9,
+                    "stream": True
                 }
                 
                 response = requests.post(
-                    f"{GPT_OSS_URL}/completion",
+                    f"{VLLM_URL}/chat/completions",
                     json=payload,
-                    timeout=GPT_OSS_TIMEOUT,
-                    headers={'Content-Type': 'application/json'},
+                    timeout=VLLM_TIMEOUT,
+                    headers={
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer EMPTY'
+                    },
                     stream=True
                 )
                 
@@ -303,22 +288,27 @@ Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mej
                     full_response = ""
                     for line in response.iter_lines():
                         if line:
-                            try:
-                                data = json.loads(line.decode('utf-8'))
-                                content = data.get('content', '')
-                                if content:
-                                    full_response += content
-                                    yield f"data: {json.dumps({'content': content, 'done': False})}\n\n"
-                            except json.JSONDecodeError:
-                                continue
-                    
+                            line_str = line.decode('utf-8').strip()
+                            if line_str.startswith('data: '):
+                                data_str = line_str[6:]  # Remove 'data: ' prefix
+                                if data_str == '[DONE]':
+                                    break
+                                try:
+                                    data = json.loads(data_str)
+                                    if data.get('choices') and data['choices'][0].get('delta', {}).get('content'):
+                                        content = data['choices'][0]['delta']['content']
+                                        full_response += content
+                                        yield f"data: {json.dumps({'content': content, 'done': False})}\n\n"
+                                except json.JSONDecodeError:
+                                    continue
+
                     # Guardar conversación completa
                     save_conversation(user_message, full_response, user_email)
-                    
+
                     # Enviar señal de finalización
                     yield f"data: {json.dumps({'content': '', 'done': True, 'full_response': full_response})}\n\n"
                 else:
-                    error_msg = f"Error: No se pudo conectar con el modelo ({response.status_code})"
+                    error_msg = f"Error: No se pudo conectar con el modelo vLLM ({response.status_code})"
                     yield f"data: {json.dumps({'error': error_msg, 'done': True})}\n\n"
                     
             except Exception as e:
@@ -335,44 +325,44 @@ Tu personalidad es profesional pero cercana, y siempre intentas ayudar de la mej
 def health():
     """Endpoint de health check"""
     try:
-        # Verificar conexión con Ollama
-        response = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
-        ollama_status = "ok" if response.status_code == 200 else "error"
+        # Verificar conexión con vLLM
+        response = requests.get(f"{VLLM_URL}/models", timeout=5)
+        vllm_status = "ok" if response.status_code == 200 else "error"
     except:
-        ollama_status = "error"
+        vllm_status = "error"
 
     return jsonify({
         'status': 'ok',
         'timestamp': datetime.now().isoformat(),
-        'ollama_status': ollama_status,
-        'ollama_url': OLLAMA_URL,
-        'ollama_model': OLLAMA_MODEL
+        'vllm_status': vllm_status,
+        'vllm_url': VLLM_URL,
+        'vllm_model': VLLM_MODEL
     })
 
 @app.route('/api/models', methods=['GET'])
 def models():
-    """Endpoint para obtener información de los modelos disponibles en Ollama"""
+    """Endpoint para obtener información de los modelos disponibles en vLLM"""
     try:
-        # Intentar obtener modelos desde Ollama
-        response = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
+        # Intentar obtener modelos desde vLLM
+        response = requests.get(f"{VLLM_URL}/models", timeout=5)
         if response.status_code == 200:
-            ollama_models = response.json().get('models', [])
+            vllm_models = response.json().get('data', [])
             return jsonify({
-                'models': ollama_models,
-                'current_model': OLLAMA_MODEL,
-                'source': 'ollama'
+                'models': vllm_models,
+                'current_model': VLLM_MODEL,
+                'source': 'vllm'
             })
     except Exception as e:
-        print(f"Error obteniendo modelos de Ollama: {e}")
+        print(f"Error obteniendo modelos de vLLM: {e}")
 
     # Fallback: devolver modelo configurado
     return jsonify({
         'models': [{
-            'name': OLLAMA_MODEL,
-            'description': f'Modelo configurado en Ollama: {OLLAMA_MODEL}',
+            'name': VLLM_MODEL,
+            'description': f'Modelo configurado en vLLM: {VLLM_MODEL}',
             'source': 'config'
         }],
-        'current_model': OLLAMA_MODEL
+        'current_model': VLLM_MODEL
     })
 
 @app.route('/api/save-conversation', methods=['POST'])
@@ -413,14 +403,14 @@ def index():
         <body>
             <h1>🦫 capibara6 Backend</h1>
             <p class="status">Servidor funcionando correctamente</p>
-            <p class="model">Modelo: ''' + OLLAMA_MODEL + ''' (via Ollama)</p>
-            <p>URL de Ollama: ''' + OLLAMA_URL + '''</p>
+            <p class="model">Modelo: ''' + VLLM_MODEL + ''' (via vLLM)</p>
+            <p>URL de vLLM: ''' + VLLM_URL + '''</p>
             <p>Endpoints disponibles:</p>
             <ul>
-                <li class="endpoint">POST /api/chat - Chat con modelo via Ollama</li>
+                <li class="endpoint">POST /api/chat - Chat con modelo via vLLM</li>
                 <li class="endpoint">POST /api/chat/stream - Chat con streaming</li>
                 <li class="endpoint">GET /api/health - Health check</li>
-                <li class="endpoint">GET /api/models - Listar modelos disponibles en Ollama</li>
+                <li class="endpoint">GET /api/models - Listar modelos disponibles en vLLM</li>
                 <li class="endpoint">POST /api/save-conversation - Guardar conversación</li>
             </ul>
         </body>
@@ -430,9 +420,9 @@ def index():
 if __name__ == '__main__':
     ensure_data_dir()
     print('🦫 capibara6 Backend iniciado')
-    print(f'🤖 Modelo: {OLLAMA_MODEL}')
-    print(f'🌐 URL de Ollama: {OLLAMA_URL}')
-    
+    print(f'🤖 Modelo: {VLLM_MODEL}')
+    print(f'🌐 URL de vLLM: {VLLM_URL}')
+
     # Puerto 5001 para desarrollo local (el frontend espera este puerto)
     port = int(os.getenv('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=True)

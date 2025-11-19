@@ -62,8 +62,8 @@ MODELS_CONFIG = {
         }
     },
 
-    'qwen2.3-coder': {
-        'name': 'Qwen2.3-Coder 1.5B',
+    'qwen2.5-coder': {
+        'name': 'Qwen2.5-Coder 1.5B',
         'base_model': 'Qwen/Qwen2.5-Coder-1.5B-Instruct',
         'server_url': 'http://34.175.215.109:8000/v1',  # vLLM endpoint for the code model
         'type': 'vllm',

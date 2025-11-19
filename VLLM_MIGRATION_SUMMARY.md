@@ -65,10 +65,10 @@ This document summarizes the changes made to migrate the Capibara6 system from O
 
 ### Model Tier Reassignment
 - **fast_response**: Changed from `phi3:mini` to `phi4:mini` (faster, more capable)
-- **balanced**: Changed from `mistral` to `qwen2.3-coder:1.5b` (coding expert)
+- **balanced**: Changed from `mistral` to `qwen2.5-coder-1.5b` (coding expert)
 - **complex**: Remains `gpt-oss:20b` (complex reasoning)
 
-### New Model: qwen2.3-coder(1.5B)
+### New Model: qwen2.5-coder-1.5b
 - Purpose: Expert in coding, programming, and technical tasks
 - Configuration optimized for code generation and analysis
 - Added to balanced tier for intermediate technical queries

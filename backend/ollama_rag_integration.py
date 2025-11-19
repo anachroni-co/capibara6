@@ -213,8 +213,8 @@ Si no hay información relevante en el contexto, responde normalmente."""
                     f"({rag_data.get('original_size', 0)} → {rag_data.get('optimized_size', 0)} chars)"
                 )
 
-        if "error" in ollama_response:
-            response["error"] = ollama_response["error"]
+        if "error" in vllm_response:
+            response["error"] = vllm_response["error"]
 
         return response
 

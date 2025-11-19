@@ -11,6 +11,11 @@ import time
 from typing import Dict, List, Any, Optional
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import sys
+import os
+# Añadir la carpeta config al path para importar models_config
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'config'))
+
 from models_config import (
     MODELS_CONFIG, CONSENSUS_CONFIG, PROMPT_TEMPLATES,
     get_active_models, get_model_config, format_prompt,
