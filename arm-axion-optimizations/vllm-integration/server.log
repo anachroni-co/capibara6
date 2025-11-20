@@ -1,0 +1,39 @@
+INFO 11-20 09:52:49 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+WARNING 11-20 09:52:49 [interface.py:201] Failed to import from vllm._C: ImportError('libcudart.so.12: cannot open shared object file: No such file or directory')
+/home/elect/capibara6/arm-axion-optimizations/vllm-integration/multi_model_server.py:125: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [303916]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+WARNING:  Invalid HTTP request received.
+======================================================================
+  vLLM Multi-Model Inference Server
+  ARM Axion Optimized
+======================================================================
+
+Loaded configuration with 4 experts
+
+
+✓ Server ready
+
+INFO:     127.0.0.1:54534 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54536 - "GET /v1/models HTTP/1.1" 200 OK
+Loading model: phi4_fast from /home/elect/models/phi-4-mini
+INFO 11-20 09:55:53 [utils.py:253] non-default args: {'trust_remote_code': True, 'dtype': 'float16', 'max_model_len': 4096, 'max_num_seqs': 512, 'disable_log_stats': True, 'model': '/home/elect/models/phi-4-mini'}
+INFO:     127.0.0.1:38580 - "POST /v1/chat/completions HTTP/1.1" 500 Internal Server Error
+Loading model: phi4_fast from /home/elect/models/phi-4-mini
+INFO 11-20 09:56:41 [utils.py:253] non-default args: {'trust_remote_code': True, 'dtype': 'float16', 'max_model_len': 4096, 'max_num_seqs': 512, 'disable_log_stats': True, 'model': '/home/elect/models/phi-4-mini'}
+INFO:     127.0.0.1:42628 - "POST /v1/chat/completions HTTP/1.1" 500 Internal Server Error
+INFO:     193.142.147.209:57072 - "GET / HTTP/1.1" 200 OK
+INFO:     83.142.209.135:33642 - "GET /cgi-bin/luci/%3Bstok%3D/locale HTTP/1.1" 404 Not Found
+INFO:     79.124.40.174:38550 - "GET /securityRealm/user/admin/search/index?q=a HTTP/1.1" 404 Not Found
+INFO:     79.124.40.174:52756 - "GET / HTTP/1.1" 200 OK
+INFO:     79.124.40.174:47030 - "POST /Autodiscover/Autodiscover.xml HTTP/1.1" 404 Not Found
+INFO:     79.124.40.174:49604 - "POST /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 404 Not Found
+INFO:     79.124.40.174:36376 - "GET /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 404 Not Found
