@@ -1,436 +1,253 @@
+#!/usr/bin/env python3
 """
-Benchmark suite for vLLM + ARM Axion Integration
-
-Tests:
-- TTFT (Time to First Token) with incremental routing
-- Throughput with multiple concurrent requests
-- Memory efficiency with quantization
-- Routing accuracy and speed
+Benchmark script for vLLM with ARM Axion optimizations
+Measures performance improvements for Qwen2.5, Phi4-mini, Gemma3-27b and Mistral7B models
 """
 
-import sys
-from pathlib import Path
 import time
 import asyncio
-import numpy as np
-from typing import List, Dict, Any
 import json
+import requests
+from concurrent.futures import ThreadPoolExecutor
+from typing import List, Dict, Any
+import statistics
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from vllm_integration.vllm_axion_backend import AxionMultiExpertVLLM
-from vllm_integration.livemind_orchestrator import LiveMindOrchestrator, GenerationRequest
-from vllm_integration.semantic_router import IncrementalSemanticRouter
-
-
-class VLLMAxionBenchmark:
-    """Comprehensive benchmark suite"""
-
-    def __init__(self, config_path: str = "config.json"):
-        """
-        Initialize benchmark
-
-        Args:
-            config_path: Path to config file
-        """
-        print("🔧 Initializing benchmark suite...")
-
-        # Load config
-        with open(config_path, 'r') as f:
-            self.config = json.load(f)
-
-        # Initialize system
-        print(f"📦 Loading {len(self.config['experts'])} experts...")
-        self.expert_system = AxionMultiExpertVLLM(self.config['experts'])
-
-        print("🧠 Initializing orchestrator...")
-        self.orchestrator = LiveMindOrchestrator(
-            expert_system=self.expert_system,
-            enable_consensus=self.config.get('enable_consensus', False),
-            chunk_size=self.config.get('chunk_size', 64),
-            routing_threshold=self.config.get('routing_threshold', 0.7)
-        )
-
-        print("✅ Benchmark suite ready!\n")
-
-        # Results storage
-        self.results = {
-            'ttft': [],
-            'latency': [],
-            'throughput': [],
-            'routing_accuracy': []
+# Configuration
+CONFIG = {
+    "base_url": "http://localhost:8080",  # Default vLLM server
+    "models": [
+        {
+            "name": "phi4_fast",
+            "endpoint": "/v1/chat/completions",
+            "description": "Phi-4 Mini optimized for ARM"
+        },
+        {
+            "name": "qwen_coder",
+            "endpoint": "/v1/chat/completions",
+            "description": "Qwen2.5-Coder 1.5B optimized for ARM"
+        },
+        {
+            "name": "gemma3_multimodal",
+            "endpoint": "/v1/chat/completions",
+            "description": "Gemma3 27B multimodal model"
+        },
+        {
+            "name": "mistral_balanced",
+            "endpoint": "/v1/chat/completions",
+            "description": "Mistral 7B balanced model"
         }
-
-    async def benchmark_ttft(
-        self,
-        prompts: List[str],
-        num_runs: int = 5
-    ) -> Dict[str, float]:
-        """
-        Benchmark Time to First Token with incremental routing
-
-        Args:
-            prompts: Test prompts of varying lengths
-            num_runs: Number of runs per prompt
-
-        Returns:
-            TTFT statistics
-        """
-        print("📊 Benchmarking TTFT (Time to First Token)")
-        print("=" * 60)
-
-        ttft_samples = []
-
-        for i, prompt in enumerate(prompts):
-            print(f"\nPrompt {i+1}/{len(prompts)} (length: {len(prompt.split())} words)")
-
-            for run in range(num_runs):
-                request = GenerationRequest(
-                    request_id=f"ttft_test_{i}_{run}",
-                    prompt=prompt,
-                    max_tokens=50,  # Short generation for TTFT measurement
-                    stream=True
-                )
-
-                start_time = time.time()
-
-                # Generate (will measure internal TTFT)
-                result = await self.orchestrator.generate(request)
-
-                ttft = result.time_to_first_token
-                ttft_samples.append(ttft)
-
-                print(f"  Run {run+1}: TTFT = {ttft*1000:.1f}ms, "
-                      f"Chunks = {result.chunks_processed}")
-
-        # Statistics
-        stats = {
-            'mean': np.mean(ttft_samples),
-            'median': np.median(ttft_samples),
-            'std': np.std(ttft_samples),
-            'min': np.min(ttft_samples),
-            'max': np.max(ttft_samples),
-            'p95': np.percentile(ttft_samples, 95),
-            'p99': np.percentile(ttft_samples, 99)
+    ],
+    "test_prompts": [
+        {
+            "name": "simple_query",
+            "prompt": "What is the capital of France?",
+            "max_tokens": 100
+        },
+        {
+            "name": "technical_query", 
+            "prompt": "Explain how ARM NEON SIMD instructions improve performance in machine learning inference.",
+            "max_tokens": 200
+        },
+        {
+            "name": "complex_query",
+            "prompt": "Compare the architectural differences between ARM Neoverse V1 and V2 processors, focusing on improvements in floating-point performance and memory bandwidth.",
+            "max_tokens": 300
+        },
+        {
+            "name": "coding_query",
+            "prompt": "Write a Python function that implements ARM NEON optimized vector addition using ctypes.",
+            "max_tokens": 250
         }
-
-        print(f"\n📈 TTFT Statistics:")
-        print(f"  Mean:   {stats['mean']*1000:.1f}ms")
-        print(f"  Median: {stats['median']*1000:.1f}ms")
-        print(f"  P95:    {stats['p95']*1000:.1f}ms")
-        print(f"  P99:    {stats['p99']*1000:.1f}ms")
-
-        self.results['ttft'] = stats
-        return stats
-
-    async def benchmark_throughput(
-        self,
-        num_requests: int = 50,
-        concurrent_requests: int = 10
-    ) -> Dict[str, float]:
-        """
-        Benchmark throughput with concurrent requests
-
-        Args:
-            num_requests: Total number of requests
-            concurrent_requests: Max concurrent requests
-
-        Returns:
-            Throughput statistics
-        """
-        print(f"\n📊 Benchmarking Throughput")
-        print("=" * 60)
-        print(f"Total requests: {num_requests}")
-        print(f"Concurrent: {concurrent_requests}\n")
-
-        # Test prompts
-        test_prompts = [
-            "Explain quantum computing in simple terms.",
-            "Write a Python function for binary search.",
-            "What are the benefits of PagedAttention?",
-            "Describe the ARM Axion processor architecture.",
-            "How does continuous batching improve throughput?"
-        ] * (num_requests // 5 + 1)
-
-        test_prompts = test_prompts[:num_requests]
-
-        # Semaphore for concurrency control
-        semaphore = asyncio.Semaphore(concurrent_requests)
-
-        async def run_single_request(idx, prompt):
-            async with semaphore:
-                request = GenerationRequest(
-                    request_id=f"throughput_test_{idx}",
-                    prompt=prompt,
-                    max_tokens=100,
-                    stream=False
-                )
-
-                start = time.time()
-                result = await self.orchestrator.generate(request)
-                latency = time.time() - start
-
-                return {
-                    'latency': latency,
-                    'tokens': result.tokens_generated
-                }
-
-        # Run all requests
-        start_time = time.time()
-
-        tasks = [
-            run_single_request(i, prompt)
-            for i, prompt in enumerate(test_prompts)
-        ]
-
-        results = await asyncio.gather(*tasks)
-
-        total_time = time.time() - start_time
-
-        # Calculate stats
-        latencies = [r['latency'] for r in results]
-        total_tokens = sum(r['tokens'] for r in results)
-
-        throughput_rps = num_requests / total_time
-        throughput_tps = total_tokens / total_time
-
-        stats = {
-            'requests_per_second': throughput_rps,
-            'tokens_per_second': throughput_tps,
-            'total_time': total_time,
-            'mean_latency': np.mean(latencies),
-            'p95_latency': np.percentile(latencies, 95),
-            'p99_latency': np.percentile(latencies, 99)
-        }
-
-        print(f"📈 Throughput Results:")
-        print(f"  Requests/sec: {stats['requests_per_second']:.2f}")
-        print(f"  Tokens/sec:   {stats['tokens_per_second']:.2f}")
-        print(f"  Total time:   {stats['total_time']:.2f}s")
-        print(f"  Mean latency: {stats['mean_latency']*1000:.1f}ms")
-        print(f"  P95 latency:  {stats['p95_latency']*1000:.1f}ms")
-
-        self.results['throughput'] = stats
-        return stats
-
-    def benchmark_routing_accuracy(
-        self,
-        test_cases: List[Dict[str, str]]
-    ) -> Dict[str, Any]:
-        """
-        Benchmark routing accuracy
-
-        Args:
-            test_cases: List of {'text': str, 'expected_domain': str}
-
-        Returns:
-            Accuracy statistics
-        """
-        print(f"\n📊 Benchmarking Routing Accuracy")
-        print("=" * 60)
-
-        correct = 0
-        total = len(test_cases)
-
-        results_detail = []
-
-        for i, test_case in enumerate(test_cases):
-            text = test_case['text']
-            expected = test_case['expected_domain']
-
-            # Get routing prediction
-            request_id = f"routing_test_{i}"
-            self.orchestrator.router.start_request(request_id)
-
-            prediction = self.orchestrator.router.process_chunk(
-                request_id,
-                text
-            )
-
-            # Get predicted domain
-            predicted_expert = prediction.expert_ids[0]
-            predicted_domain = self.orchestrator.router.expert_domains.get(
-                predicted_expert,
-                'unknown'
-            )
-
-            is_correct = predicted_domain == expected
-
-            if is_correct:
-                correct += 1
-
-            results_detail.append({
-                'text': text[:50] + '...',
-                'expected': expected,
-                'predicted': predicted_domain,
-                'confidence': prediction.confidence,
-                'correct': is_correct
-            })
-
-            status = "✅" if is_correct else "❌"
-            print(f"  {status} Test {i+1}: '{text[:40]}...'")
-            print(f"      Expected: {expected}, Got: {predicted_domain} "
-                  f"(conf: {prediction.confidence:.2f})")
-
-        accuracy = correct / total
-
-        stats = {
-            'accuracy': accuracy,
-            'correct': correct,
-            'total': total,
-            'details': results_detail
-        }
-
-        print(f"\n📈 Routing Accuracy: {accuracy*100:.1f}% ({correct}/{total})")
-
-        self.results['routing_accuracy'] = stats
-        return stats
-
-    def benchmark_memory_efficiency(self) -> Dict[str, Any]:
-        """
-        Benchmark memory efficiency with quantization
-
-        Returns:
-            Memory statistics
-        """
-        print(f"\n📊 Memory Efficiency Analysis")
-        print("=" * 60)
-
-        expert_info = []
-
-        for expert_id, info in self.expert_system.experts.items():
-            config = info['config']
-            engine = info['engine']
-
-            # Estimate memory usage
-            # This is approximate - real measurement would need actual vLLM metrics
-            quantization = config.quantization
-            model_path = config.model_path
-
-            # Rough estimate based on model name
-            if '7b' in model_path.lower() or '7B' in model_path:
-                params = 7_000_000_000
-            elif '13b' in model_path.lower() or '13B' in model_path:
-                params = 13_000_000_000
-            elif '70b' in model_path.lower() or '70B' in model_path:
-                params = 70_000_000_000
-            else:
-                params = 7_000_000_000  # Default assumption
-
-            # Memory calculation
-            if quantization == 'q4_0':
-                bytes_per_param = 0.5
-            elif quantization == 'q8_0':
-                bytes_per_param = 1.0
-            elif quantization in ['awq', 'gptq']:
-                bytes_per_param = 0.5  # ~4-bit
-            else:
-                bytes_per_param = 2.0  # FP16
-
-            memory_gb = (params * bytes_per_param) / 1e9
-
-            expert_info.append({
-                'expert_id': expert_id,
-                'domain': info['domain'],
-                'model': model_path,
-                'quantization': quantization or 'fp16',
-                'params': params,
-                'memory_gb': memory_gb
-            })
-
-            print(f"\n  Expert: {expert_id}")
-            print(f"    Domain: {info['domain']}")
-            print(f"    Model: {model_path}")
-            print(f"    Quantization: {quantization or 'fp16'}")
-            print(f"    Parameters: {params/1e9:.1f}B")
-            print(f"    Est. Memory: {memory_gb:.1f} GB")
-
-        total_memory = sum(e['memory_gb'] for e in expert_info)
-
-        print(f"\n📦 Total Memory Usage: {total_memory:.1f} GB")
-
-        stats = {
-            'experts': expert_info,
-            'total_memory_gb': total_memory,
-            'num_experts': len(expert_info)
-        }
-
-        return stats
-
-    def save_results(self, output_path: str = "benchmark_results.json"):
-        """Save benchmark results to file"""
-        with open(output_path, 'w') as f:
-            json.dump(self.results, f, indent=2, default=str)
-
-        print(f"\n💾 Results saved to: {output_path}")
-
-    async def run_full_suite(self):
-        """Run complete benchmark suite"""
-        print("\n" + "=" * 60)
-        print("🏆 vLLM + ARM Axion Full Benchmark Suite")
-        print("=" * 60)
-
-        # 1. TTFT Benchmark
-        test_prompts = [
-            "What is ARM Axion?",
-            "Explain PagedAttention in vLLM. How does it improve memory efficiency and enable higher batch sizes?",
-            "Write a detailed implementation of a binary search tree in Python with insert, delete, and search operations. Include proper error handling and documentation." * 5
-        ]
-
-        await self.benchmark_ttft(test_prompts, num_runs=3)
-
-        # 2. Throughput Benchmark
-        await self.benchmark_throughput(num_requests=30, concurrent_requests=10)
-
-        # 3. Routing Accuracy
-        test_cases = [
-            {'text': 'What are the legal implications of this contract clause?', 'expected_domain': 'legal'},
-            {'text': 'Implement a quicksort algorithm in Python', 'expected_domain': 'technical'},
-            {'text': 'What is the best investment strategy for retirement?', 'expected_domain': 'finance'},
-            {'text': 'Patient shows symptoms of high fever and headache', 'expected_domain': 'medical'},
-            {'text': 'Tell me about the weather today', 'expected_domain': 'general'},
-        ]
-
-        # Map to actual expert domains
-        actual_domains = set(
-            info['domain']
-            for info in self.expert_system.experts.values()
-        )
-
-        filtered_test_cases = [
-            tc for tc in test_cases
-            if tc['expected_domain'] in actual_domains or tc['expected_domain'] == 'general'
-        ]
-
-        if filtered_test_cases:
-            self.benchmark_routing_accuracy(filtered_test_cases)
-
-        # 4. Memory Efficiency
-        self.benchmark_memory_efficiency()
-
-        # Save results
-        self.save_results()
-
-        print("\n" + "=" * 60)
-        print("✅ Benchmark suite completed!")
-        print("=" * 60)
-
-
-if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description="vLLM + ARM Axion Benchmark")
-    parser.add_argument("--config", type=str, default="config.json", help="Config file path")
-    parser.add_argument("--output", type=str, default="benchmark_results.json", help="Output file")
-
-    args = parser.parse_args()
-
+    ],
+    "num_iterations": 10,
+    "concurrent_requests": [1, 2, 4, 8]  # Different concurrency levels to test
+}
+
+
+def run_single_request(model_config: Dict[str, Any], prompt_config: Dict[str, Any]) -> Dict[str, Any]:
+    """Run a single inference request and measure performance"""
+    url = f"{CONFIG['base_url']}{model_config['endpoint']}"
+    
+    payload = {
+        "model": model_config['name'],
+        "messages": [
+            {"role": "user", "content": prompt_config['prompt']}
+        ],
+        "max_tokens": prompt_config['max_tokens'],
+        "temperature": 0.7
+    }
+    
+    start_time = time.time()
+    
     try:
-        benchmark = VLLMAxionBenchmark(config_path=args.config)
-
-        asyncio.run(benchmark.run_full_suite())
-
+        response = requests.post(url, json=payload, timeout=120)
+        end_time = time.time()
+        
+        if response.status_code == 200:
+            result = response.json()
+            total_time = end_time - start_time
+            
+            # Calculate tokens per second
+            if 'usage' in result:
+                output_tokens = result['usage']['completion_tokens']
+            else:
+                # Estimate tokens from response text
+                output_text = result.get('choices', [{}])[0].get('message', {}).get('content', '')
+                output_tokens = len(output_text.split())
+                
+            tokens_per_second = output_tokens / total_time if total_time > 0 else 0
+            
+            return {
+                "status": "success",
+                "total_time": total_time,
+                "tokens_generated": output_tokens,
+                "tokens_per_second": tokens_per_second,
+                "response": result
+            }
+        else:
+            return {
+                "status": "error",
+                "error_code": response.status_code,
+                "error_message": response.text,
+                "total_time": end_time - start_time
+            }
     except Exception as e:
-        print(f"❌ Benchmark failed: {e}")
+        end_time = time.time()
+        return {
+            "status": "exception",
+            "error": str(e),
+            "total_time": end_time - start_time
+        }
+
+
+def benchmark_model_concurrent(model_config: Dict[str, Any], prompt_config: Dict[str, Any], 
+                               concurrency: int) -> List[Dict[str, Any]]:
+    """Run benchmark for a model with specified concurrency"""
+    print(f"  Testing {model_config['name']} with {concurrency} concurrent requests...")
+    
+    with ThreadPoolExecutor(max_workers=concurrency) as executor:
+        futures = [executor.submit(run_single_request, model_config, prompt_config) 
+                   for _ in range(concurrency)]
+        
+        results = [future.result() for future in futures]
+    
+    return results
+
+
+def run_benchmark():
+    """Run comprehensive benchmark for all models and configurations"""
+    print("="*80)
+    print("vLLM ARM Axion Optimization Benchmark")
+    print("="*80)
+    print(f"Models: {[m['name'] for m in CONFIG['models']]}")
+    print(f"Prompts: {[p['name'] for p in CONFIG['test_prompts']]}")
+    print(f"Iterations per test: {CONFIG['num_iterations']}")
+    print(f"Concurrency levels: {CONFIG['concurrent_requests']}")
+    print("="*80)
+    
+    all_results = {}
+    
+    for model_config in CONFIG['models']:
+        print(f"\nBenchmarking model: {model_config['name']} ({model_config['description']})")
+        print("-" * 60)
+        
+        model_results = {}
+        
+        for prompt_config in CONFIG['test_prompts']:
+            print(f"  Prompt: {prompt_config['name']} ({prompt_config['prompt'][:50]}...)")
+            
+            prompt_results = {}
+            
+            for concurrency in CONFIG['concurrent_requests']:
+                times = []
+                throughput_values = []
+                
+                # Run multiple iterations for statistical significance
+                for i in range(min(CONFIG['num_iterations'], 5)):  # Limit iterations for time
+                    results = benchmark_model_concurrent(model_config, prompt_config, concurrency)
+                    
+                    successful_results = [r for r in results if r['status'] == 'success']
+                    
+                    if successful_results:
+                        avg_time = statistics.mean([r['total_time'] for r in successful_results])
+                        avg_throughput = statistics.mean([r['tokens_per_second'] for r in successful_results if r['tokens_per_second'] > 0])
+                        
+                        times.append(avg_time)
+                        throughput_values.append(avg_throughput)
+                
+                if times and throughput_values:
+                    prompt_results[f"concurrency_{concurrency}"] = {
+                        "avg_response_time": statistics.mean(times),
+                        "std_response_time": statistics.stdev(times) if len(times) > 1 else 0,
+                        "avg_throughput": statistics.mean(throughput_values),
+                        "std_throughput": statistics.stdev(throughput_values) if len(throughput_values) > 1 else 0,
+                        "samples": len(times)
+                    }
+            
+            model_results[prompt_config['name']] = prompt_results
+        
+        all_results[model_config['name']] = model_results
+    
+    return all_results
+
+
+def print_benchmark_summary(results: Dict[str, Any]):
+    """Print a formatted summary of benchmark results"""
+    print("\n" + "="*80)
+    print("BENCHMARK RESULTS SUMMARY")
+    print("="*80)
+    
+    for model_name, model_results in results.items():
+        print(f"\n{model_name.upper()}:")
+        print("-" * 40)
+        
+        for prompt_name, prompt_results in model_results.items():
+            print(f"  {prompt_name}:")
+            
+            for concurrency_key, metrics in prompt_results.items():
+                concurrency = concurrency_key.split('_')[1]
+                avg_time = metrics['avg_response_time']
+                avg_throughput = metrics['avg_throughput']
+                
+                print(f"    Concurrency {concurrency}: "
+                      f"Response Time: {avg_time:.3f}s ± {metrics['std_response_time']:.3f}s, "
+                      f"Throughput: {avg_throughput:.2f} tok/s ± {metrics['std_throughput']:.2f}")
+
+
+def main():
+    """Main function to run the benchmark"""
+    try:
+        results = run_benchmark()
+        print_benchmark_summary(results)
+        
+        # Save detailed results to file
+        with open('benchmark_results.json', 'w') as f:
+            json.dump(results, f, indent=2)
+        
+        print(f"\nDetailed results saved to 'benchmark_results.json'")
+        
+        # Calculate and display key metrics
+        print("\nKEY PERFORMANCE METRICS:")
+        print("-" * 30)
+        
+        for model_name, model_results in results.items():
+            # Calculate average throughput across all prompts and concurrency levels
+            all_throughputs = []
+            for prompt_results in model_results.values():
+                for metrics in prompt_results.values():
+                    all_throughputs.append(metrics['avg_throughput'])
+            
+            if all_throughputs:
+                avg_throughput = statistics.mean(all_throughputs)
+                print(f"{model_name}: Avg Throughput = {avg_throughput:.2f} tokens/sec")
+        
+    except KeyboardInterrupt:
+        print("\nBenchmark interrupted by user.")
+    except Exception as e:
+        print(f"\nError during benchmark: {e}")
         import traceback
         traceback.print_exc()
+
+
+if __name__ == "__main__":
+    main()
