@@ -151,6 +151,27 @@ def proxy_gpt_oss_20b():
             return jsonify(error_response), 500
 
 # Smart MCP integrado
+@app.route('/api/mcp/status', methods=['GET', 'OPTIONS'])
+def mcp_status():
+    """Endpoint de health check para MCP"""
+    # Manejar preflight request (OPTIONS)
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        response.headers.add('Access-Control-Max-Age', '3600')
+        return response
+    
+    return jsonify({
+        'status': 'running',
+        'connector': 'capibara6-integrated-mcp',
+        'version': '1.0.0',
+        'mcp_available': True,
+        'service': 'Smart MCP integrado',
+        'timestamp': __import__('datetime').datetime.now().isoformat()
+    })
+
 @app.route('/api/mcp/analyze', methods=['POST'])
 def smart_mcp_analyze():
     try:

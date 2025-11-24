@@ -31,7 +31,29 @@ except ImportError:
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Habilitar CORS para permitir peticiones desde el frontend
+# Configurar CORS explícitamente para permitir peticiones desde localhost:8000 y otros orígenes
+# flask-cors maneja automáticamente las peticiones OPTIONS (preflight), no necesitamos handler manual
+CORS(app, 
+     origins=[
+         "http://localhost:8000",
+         "http://127.0.0.1:8000",
+         "http://localhost:3000",
+         "http://127.0.0.1:3000",
+         "http://localhost:8080",
+         "http://127.0.0.1:8080",
+         "http://localhost:8001",
+         "http://127.0.0.1:8001",
+         "https://www.capibara6.com",
+         "https://capibara6.com",
+         "http://34.12.166.76:5000",
+         "http://34.12.166.76:5001",
+         "http://34.12.166.76:8000",
+         "http://34.175.136.104:8000"
+     ],
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     max_age=3600)
 
 # Configuración de modelos de IA
 MODEL_CONFIG: Dict[str, Any] = {}
@@ -640,7 +662,7 @@ def save_lead():
 
 @app.route('/api/health', methods=['GET'])
 def health():
-    """Endpoint de health check"""
+    """Endpoint de health check - flask-cors maneja automáticamente OPTIONS"""
     return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})
 
 # ============================================================================

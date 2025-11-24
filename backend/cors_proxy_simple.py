@@ -15,9 +15,12 @@ CORS(app)
 # URL del backend remoto (bounty2:5001)
 BACKEND_URL = 'http://34.12.166.76:5001'
 
-@app.route('/api/chat', methods=['POST'])
+@app.route('/api/chat', methods=['POST', 'OPTIONS'])
 def proxy_chat():
     """Proxy específico para el endpoint de chat - versión robusta"""
+    # flask-cors maneja automáticamente las peticiones OPTIONS (preflight)
+    # No necesitamos manejarlas manualmente
+    
     try:
         # Obtener el cuerpo de la solicitud como bytes
         raw_data = request.get_data()
@@ -45,9 +48,21 @@ def proxy_chat():
         
         # Devolver la respuesta del backend remoto
         response_headers = dict(response.headers)
-        # Asegurarse de que no hay headers conflictivos
-        if 'Transfer-Encoding' in response_headers:
-            del response_headers['Transfer-Encoding']
+        
+        # Eliminar headers conflictivos y CORS del backend (el proxy maneja CORS)
+        headers_to_remove = [
+            'Transfer-Encoding', 
+            'Access-Control-Allow-Origin',
+            'Access-Control-Allow-Methods',
+            'Access-Control-Allow-Headers',
+            'Access-Control-Allow-Credentials',
+            'Access-Control-Max-Age'
+        ]
+        for header in headers_to_remove:
+            response_headers.pop(header, None)
+        
+        # flask-cors del proxy añadirá automáticamente los headers CORS correctos
+        # No necesitamos añadirlos manualmente aquí
             
         return Response(
             response.content,
@@ -60,22 +75,62 @@ def proxy_chat():
     except Exception as e:
         return jsonify({'error': f'Error interno: {str(e)}'}), 500
 
-@app.route('/api/health', methods=['GET'])
+@app.route('/api/health', methods=['GET', 'OPTIONS'])
 def proxy_health():
-    """Proxy para health check"""
-    try:
-        response = requests.get(f"{BACKEND_URL}/api/health")
-        return Response(
-            response.content,
-            status=response.status_code,
-            headers=dict(response.headers)
-        )
-    except requests.exceptions.RequestException as e:
-        return jsonify({'error': f'Error al conectar con el backend remoto: {str(e)}'}), 502
+    """Proxy para health check - flask-cors maneja automáticamente OPTIONS"""
+    # Intentar múltiples endpoints del backend
+    endpoints_to_try = [
+        f"{BACKEND_URL}/api/health",
+        f"{BACKEND_URL}/health",
+        f"{BACKEND_URL}/"
+    ]
+    
+    for endpoint_url in endpoints_to_try:
+        try:
+            response = requests.get(endpoint_url, timeout=5)
+            
+            # Eliminar headers CORS del backend (el proxy maneja CORS)
+            response_headers = dict(response.headers)
+            cors_headers = [
+                'Access-Control-Allow-Origin',
+                'Access-Control-Allow-Methods',
+                'Access-Control-Allow-Headers',
+                'Access-Control-Allow-Credentials',
+                'Access-Control-Max-Age'
+            ]
+            for header in cors_headers:
+                response_headers.pop(header, None)
+            
+            # flask-cors del proxy añadirá automáticamente los headers CORS correctos
+            proxy_response = Response(
+                response.content,
+                status=response.status_code,
+                headers=response_headers
+            )
+            return proxy_response
+        except requests.exceptions.Timeout:
+            print(f"⚠️ Timeout conectando a {endpoint_url}")
+            continue
+        except requests.exceptions.ConnectionError as e:
+            print(f"⚠️ Error de conexión a {endpoint_url}: {e}")
+            continue
+        except requests.exceptions.RequestException as e:
+            print(f"⚠️ Error en {endpoint_url}: {e}")
+            continue
+    
+    # Si todos los endpoints fallan, devolver error (flask-cors añadirá headers CORS automáticamente)
+    error_response = jsonify({
+        'error': 'No se pudo conectar con el backend remoto',
+        'backend_url': BACKEND_URL,
+        'message': 'El servidor backend no está respondiendo. Verifica que esté corriendo en el puerto correcto.',
+        'tried_endpoints': endpoints_to_try
+    })
+    # flask-cors maneja los headers CORS automáticamente, no necesitamos añadirlos manualmente
+    return error_response, 502
 
-@app.route('/<path:subpath>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route('/<path:subpath>', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 def proxy_all(subpath):
-    """Proxy general para todas las demás rutas"""
+    """Proxy general para todas las demás rutas - flask-cors maneja automáticamente OPTIONS"""
     try:
         # Determinar el método HTTP
         method = request.method
@@ -111,16 +166,34 @@ def proxy_all(subpath):
             return jsonify({'error': f'Método {method} no soportado'}), 405
         
         # Devolver la respuesta del backend remoto
+        response_headers = dict(response.headers)
+        
+        # Eliminar headers CORS del backend (el proxy maneja CORS)
+        cors_headers = [
+            'Access-Control-Allow-Origin',
+            'Access-Control-Allow-Methods',
+            'Access-Control-Allow-Headers',
+            'Access-Control-Allow-Credentials',
+            'Access-Control-Max-Age'
+        ]
+        for header in cors_headers:
+            response_headers.pop(header, None)
+        
+        # flask-cors del proxy añadirá automáticamente los headers CORS correctos
         return Response(
             response.content,
             status=response.status_code,
-            headers=dict(response.headers)
+            headers=response_headers
         )
         
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': f'Error de conexión con el backend remoto: {str(e)}'}), 502
+        # flask-cors maneja los headers CORS automáticamente
+        error_response = jsonify({'error': f'Error de conexión con el backend remoto: {str(e)}'})
+        return error_response, 502
     except Exception as e:
-        return jsonify({'error': f'Error interno: {str(e)}'}), 500
+        # flask-cors maneja los headers CORS automáticamente
+        error_response = jsonify({'error': f'Error interno: {str(e)}'})
+        return error_response, 500
 
 @app.route('/', methods=['GET'])
 def health_check():
