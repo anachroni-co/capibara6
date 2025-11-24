@@ -34,7 +34,7 @@
     "cache_ttl_seconds": 3600
   },
   "api_settings": {
-    "ollama_endpoint": "http://localhost:11434",
+    "ollama_endpoint": "http://34.12.166.76:11434",
     "default_model": "phi3:mini",
     "max_concurrent_requests": 4,
     "streaming_enabled": true
