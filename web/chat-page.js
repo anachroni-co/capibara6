@@ -2,11 +2,18 @@
 
 class Capibara6ChatPage {
     constructor() {
-        this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
+        // Usar proxy CORS si está disponible, sino usar configuración de CHATBOT_CONFIG
+        const corsProxy = typeof window !== 'undefined' && window.CORS_PROXY_URL 
+            ? window.CORS_PROXY_URL 
+            : (typeof CORS_PROXY_URL !== 'undefined' ? CORS_PROXY_URL : null);
+        
+        this.backendUrl = corsProxy || (typeof CHATBOT_CONFIG !== 'undefined' 
             ? CHATBOT_CONFIG.BACKEND_URL
-            : (window.location.hostname === 'localhost' 
-                ? 'http://localhost:5000'
-                : 'https://www.capibara6.com');
+            : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://172.22.134.254:8001'  // Proxy CORS local por defecto
+                : 'https://www.capibara6.com'));
+        
+        console.log('🔗 Backend URL configurada:', this.backendUrl);
         
         this.messages = [];
         this.chats = [];
@@ -165,43 +172,66 @@ class Capibara6ChatPage {
     
     async checkConnection() {
         try {
-            const classifyEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
-                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
-                : `${this.backendUrl}/api/ai/classify`;
-
-            const response = await fetch(classifyEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prompt: 'ping' })
-            });
-
-            if (response.ok) {
-                this.isConnected = true;
-                this.updateStatus('Conectado', 'success');
-                return;
-            }
-
-            // Fallback al health check clásico
+            // Usar health check directamente (más confiable)
             const healthEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.HEALTH
                 ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.HEALTH
                 : `${this.backendUrl}/api/health`;
 
-            const healthResponse = await fetch(healthEndpoint);
+            console.log('🔍 Verificando conexión en:', healthEndpoint);
+            
+            const healthResponse = await fetch(healthEndpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Timeout de 5 segundos
+                signal: AbortSignal.timeout(5000),
+                // Modo 'no-cors' para evitar problemas CORS en la verificación inicial
+                mode: 'cors',
+                credentials: 'omit'
+            });
+            
             if (healthResponse.ok) {
+                const data = await healthResponse.json().catch(() => ({}));
+                console.log('✅ Backend conectado:', data);
                 this.isConnected = true;
                 this.updateStatus('Conectado', 'success');
+                return;
             } else {
-                this.isConnected = false;
-                this.updateStatus('Desconectado', 'error');
-                this.showError('El backend no respondió correctamente. Verifica que el servidor esté activo.');
+                console.warn('⚠️ Backend respondió con status:', healthResponse.status);
+                // Intentar con endpoint alternativo
+                const altEndpoint = `${this.backendUrl}/health`;
+                const altResponse = await fetch(altEndpoint, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(3000)
+                });
+                
+                if (altResponse.ok) {
+                    this.isConnected = true;
+                    this.updateStatus('Conectado', 'success');
+                    return;
+                }
             }
-        } catch (error) {
-            console.error('Error verificando conexión:', error);
+            
             this.isConnected = false;
+            this.updateStatus('Desconectado', 'error');
+            this.showError('El backend no respondió correctamente. Verifica que el servidor esté activo.');
+        } catch (error) {
+            console.error('❌ Error verificando conexión:', error);
+            this.isConnected = false;
+            
+            // Mensaje más descriptivo según el tipo de error
+            let errorMessage = 'No se pudo conectar con el backend. ';
+            if (error.name === 'AbortError' || error.name === 'TimeoutError') {
+                errorMessage += 'Timeout: El servidor no respondió a tiempo.';
+            } else if (error.message.includes('Failed to fetch') || error.message.includes('ERR_CONNECTION_REFUSED')) {
+                errorMessage += 'El servidor no está disponible o el firewall está bloqueando la conexión.';
+            } else {
+                errorMessage += error.message;
+            }
+            
             this.updateStatus('Error de conexión', 'error');
-            this.showError('No se pudo conectar con el backend. Asegúrate de que el servidor esté corriendo en ' + this.backendUrl);
+            this.showError(errorMessage + ' URL: ' + this.backendUrl);
         }
     }
     
@@ -280,6 +310,8 @@ class Capibara6ChatPage {
             ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
             : `${this.backendUrl}/api/ai/generate`;
 
+        console.log('📤 Enviando mensaje a:', endpoint);
+        
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
@@ -293,18 +325,51 @@ class Capibara6ChatPage {
             })
         });
 
-        const data = await response.json();
+        // Verificar Content-Type antes de parsear JSON
+        const contentType = response.headers.get('content-type');
+        console.log('📥 Content-Type recibido:', contentType);
+        console.log('📊 Status:', response.status, response.statusText);
 
-        if (!response.ok || !data.success) {
-            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        // Leer la respuesta como texto primero (solo se puede leer una vez)
+        const textResponse = await response.text();
+        console.log('📦 Respuesta recibida (primeros 500 chars):', textResponse.substring(0, 500));
+
+        if (!response.ok) {
+            console.error('❌ Error del servidor:', textResponse.substring(0, 500));
+            throw new Error(`HTTP error! status: ${response.status} - ${textResponse.substring(0, 200)}`);
+        }
+
+        // Verificar que la respuesta sea JSON
+        if (!contentType || !contentType.includes('application/json')) {
+            console.error('❌ Respuesta no es JSON. Content-Type:', contentType);
+            console.error('📄 Contenido recibido:', textResponse.substring(0, 1000));
+            throw new Error(`El servidor devolvió ${contentType || 'texto plano'} en lugar de JSON. Respuesta: ${textResponse.substring(0, 200)}`);
+        }
+
+        // Parsear JSON con manejo de errores mejorado
+        let data;
+        try {
+            if (!textResponse.trim()) {
+                throw new Error('Respuesta vacía del servidor');
+            }
+            
+            data = JSON.parse(textResponse);
+        } catch (parseError) {
+            console.error('❌ Error parseando JSON:', parseError);
+            console.error('📄 Contenido recibido completo:', textResponse.substring(0, 1000));
+            throw new Error(`Error parseando respuesta JSON: ${parseError.message}. Respuesta recibida: ${textResponse.substring(0, 200)}`);
+        }
+
+        if (!data.success) {
+            throw new Error(data.error || 'El servidor indicó que la operación falló');
         }
 
         return {
-            content: data.response,
-            modelUsed: data.model_used,
+            content: data.response || data.content || '',
+            modelUsed: data.model_used || data.model,
             metadata: {
-                tokenCount: data.token_count,
-                processingTime: data.processing_time,
+                tokenCount: data.token_count || 0,
+                processingTime: data.processing_time || 0,
                 classification: data.classification,
             }
         };

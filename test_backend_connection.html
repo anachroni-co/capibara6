@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Conexión Backend - Capibara6</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4a9eff;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .success { background: #1a4a1a; color: #4aff4a; }
+        .error { background: #4a1a1a; color: #ff4a4a; }
+        .info { background: #1a1a4a; color: #4a9eff; }
+        button {
+            background: #4a9eff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5aaeff; }
+        input {
+            padding: 8px;
+            border: 1px solid #4a4a4a;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border-radius: 4px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test de Conexión Backend - Capibara6</h1>
+    
+    <div class="test-section">
+        <h2>Configuración</h2>
+        <label>URL del Backend:</label><br>
+        <input type="text" id="backendUrl" value="http://34.12.166.76:5001" placeholder="http://IP:PUERTO">
+        <button onclick="testConnection()">Probar Conexión</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Resultados</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function testConnection() {
+            const backendUrl = document.getElementById('backendUrl').value;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="test-result info">Probando conexión...</div>';
+            
+            const endpoints = [
+                { name: 'Health Check', path: '/api/health', method: 'GET' },
+                { name: 'Health (alternativo)', path: '/health', method: 'GET' },
+                { name: 'Root', path: '/', method: 'GET' },
+                { name: 'MCP Status', path: '/api/mcp/status', method: 'GET' },
+            ];
+            
+            let results = [];
+            
+            for (const endpoint of endpoints) {
+                const url = backendUrl + endpoint.path;
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'test-result info';
+                resultDiv.textContent = `Probando ${endpoint.name} (${url})...`;
+                resultsDiv.appendChild(resultDiv);
+                
+                try {
+                    const response = await fetch(url, {
+                        method: endpoint.method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        signal: AbortSignal.timeout(5000)
+                    });
+                    
+                    const data = await response.json().catch(() => ({ text: await response.text().catch(() => '') }));
+                    
+                    resultDiv.className = 'test-result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ ${endpoint.name}</strong><br>
+                        URL: ${url}<br>
+                        Status: ${response.status} ${response.statusText}<br>
+                        Response: <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    results.push({ endpoint: endpoint.name, success: true, status: response.status });
+                } catch (error) {
+                    resultDiv.className = 'test-result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ ${endpoint.name}</strong><br>
+                        URL: ${url}<br>
+                        Error: ${error.message}<br>
+                        Tipo: ${error.name}
+                    `;
+                    results.push({ endpoint: endpoint.name, success: false, error: error.message });
+                }
+            }
+            
+            // Resumen
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'test-result ' + (results.some(r => r.success) ? 'success' : 'error');
+            const successCount = results.filter(r => r.success).length;
+            summaryDiv.innerHTML = `
+                <strong>Resumen:</strong> ${successCount}/${results.length} endpoints respondieron correctamente
+            `;
+            resultsDiv.appendChild(summaryDiv);
+        }
+        
+        // Probar automáticamente al cargar
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 500);
+        });
+    </script>
+</body>
+</html>
+

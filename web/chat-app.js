@@ -16,9 +16,11 @@
         // Obtener la URL del backend desde CHATBOT_CONFIG si está disponible
         serverUrl: typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.MODEL_CONFIG
             ? CHATBOT_CONFIG.MODEL_CONFIG.serverUrl
-            : (window.location.hostname === 'localhost'
-                ? 'http://localhost:8001/api/chat'  // Usar proxy local para evitar problemas CORS
-                : 'http://34.12.166.76:5001/api/chat'), // Puerto correcto para producción
+            : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+                    ? `${CHATBOT_CONFIG.BACKEND_URL}/api/chat`
+                    : 'http://34.12.166.76:5001/api/chat')  // VM bounty2 - Backend con Ollama
+                : 'https://www.capibara6.com/api/chat'), // Producción
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
@@ -1588,7 +1590,11 @@ async function checkServerConnection() {
         updateServerStatus('connecting', 'Verificando...');
         
         // Usar endpoint de health check en lugar de hacer una solicitud de chat
-        const healthUrl = `${window.location.hostname === 'localhost' ? 'http://localhost:8001' : 'http://34.12.166.76:5001'}/api/health`;
+        const healthUrl = `${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+                ? CHATBOT_CONFIG.BACKEND_URL
+                : 'http://34.12.166.76:5001')
+            : 'https://www.capibara6.com'}/api/health`;
         const response = await fetch(healthUrl, {
             method: 'GET',
             headers: {
