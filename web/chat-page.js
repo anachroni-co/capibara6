@@ -5,7 +5,7 @@ class Capibara6ChatPage {
         this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
             ? CHATBOT_CONFIG.BACKEND_URL
             : (window.location.hostname === 'localhost' 
-                ? 'http://localhost:5000'
+                ? 'http://localhost:8001'  // Proxy CORS local para desarrollo
                 : 'https://www.capibara6.com');
         
         this.messages = [];
@@ -165,40 +165,35 @@ class Capibara6ChatPage {
     
     async checkConnection() {
         try {
-            const classifyEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
-                ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_CLASSIFY
-                : `${this.backendUrl}/api/ai/classify`;
-
-            const response = await fetch(classifyEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prompt: 'ping' })
-            });
-
-            if (response.ok) {
-                this.isConnected = true;
-                this.updateStatus('Conectado', 'success');
-                return;
-            }
-
-            // Fallback al health check clásico
+            // Usar health check primero (más simple y confiable)
             const healthEndpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.HEALTH
                 ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.HEALTH
-                : `${this.backendUrl}/api/health`;
+                : `${this.backendUrl}/health`;  // Usar /health directamente
 
-            const healthResponse = await fetch(healthEndpoint);
+            console.log('🔍 Verificando conexión en:', healthEndpoint);
+            
+            const healthResponse = await fetch(healthEndpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
             if (healthResponse.ok) {
                 this.isConnected = true;
                 this.updateStatus('Conectado', 'success');
-            } else {
-                this.isConnected = false;
-                this.updateStatus('Desconectado', 'error');
-                this.showError('El backend no respondió correctamente. Verifica que el servidor esté activo.');
+                console.log('✅ Conexión establecida correctamente');
+                return;
             }
+
+            // Si health check falla, el backend no está disponible
+            this.isConnected = false;
+            this.updateStatus('Desconectado', 'error');
+            const errorText = await healthResponse.text();
+            console.error('❌ Health check falló:', healthResponse.status, errorText);
+            this.showError('El backend no respondió correctamente. Verifica que el servidor esté activo.');
         } catch (error) {
-            console.error('Error verificando conexión:', error);
+            console.error('❌ Error verificando conexión:', error);
             this.isConnected = false;
             this.updateStatus('Error de conexión', 'error');
             this.showError('No se pudo conectar con el backend. Asegúrate de que el servidor esté corriendo en ' + this.backendUrl);
@@ -275,10 +270,12 @@ class Capibara6ChatPage {
     }
     
     async sendToBackend(message) {
-        // Usar el endpoint MCP tools/call para enviar mensajes al modelo
-        const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
-            ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
-            : `${this.backendUrl}/api/ai/generate`;
+        // Usar el endpoint /api/chat que es el principal del servidor integrado
+        const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.CHAT
+            ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.CHAT
+            : `${this.backendUrl}/api/chat`;
+
+        console.log('📤 Enviando mensaje a:', endpoint);
 
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -286,7 +283,7 @@ class Capibara6ChatPage {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                prompt: message,
+                message: message,  // El servidor integrado espera 'message', no 'prompt'
                 modelPreference: 'auto',
                 streaming: false,
                 context: this.getConversationContext(),
