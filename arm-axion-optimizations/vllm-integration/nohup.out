@@ -1,0 +1,34 @@
+INFO 11-25 21:08:07 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 11-25 21:08:07 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+WARNING 11-25 21:08:07 [interface.py:201] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+============================================================
+SERVER vLLM ARM-Axion INICIANDO - BACKEND CLÁSICO
+  Host: 0.0.0.0
+  Port: 8081
+  VLLM_USE_V1: 0
+  VLLM_USE_FLASHINFER: 0
+============================================================
+INFO:     Started server process [947488]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 8081): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO 11-25 21:08:18 [importing.py:44] Triton is installed but 0 active driver(s) found (expected 1). Disabling Triton to prevent runtime errors.
+INFO 11-25 21:08:18 [importing.py:68] Triton not installed or not compatible; certain GPU-related functions will not be available.
+WARNING 11-25 21:08:18 [interface.py:201] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+============================================================
+SERVER vLLM ARM-Axion INICIANDO - BACKEND CLÁSICO
+  Host: 0.0.0.0
+  Port: 8080
+  VLLM_USE_V1: 0
+  VLLM_USE_FLASHINFER: 0
+============================================================
+INFO:     Started server process [947563]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [947563]
