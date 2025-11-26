@@ -67,6 +67,7 @@ class GenerationRequest:
     top_p: float = 0.9
     stream: bool = True
     created_at: float = 0.0
+    expert_id: Optional[str] = None  # Specific expert to use (bypasses routing)
 
 
 @dataclass
@@ -293,6 +294,15 @@ class LiveMindOrchestrator:
         """
         start_time = time.time()
         request.created_at = start_time
+
+        # If expert_id is specified, bypass routing and use it directly
+        if request.expert_id:
+            print(f"✅ [{request.request_id}] Using specified expert: {request.expert_id}")
+            result = await self._generate_single_expert(
+                request,
+                request.expert_id
+            )
+            return result
 
         # Phase 1: PARALLEL processing - routing AND RAG fetch
         # Start RAG fetch in parallel (if enabled)

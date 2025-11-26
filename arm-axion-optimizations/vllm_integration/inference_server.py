@@ -341,6 +341,11 @@ async def chat_completions(request: ChatCompletionRequest):
     prompt = "\n".join(prompt_parts) + "\nAssistant:"
 
     # Create generation request
+    # If model is specified and not "default", use it as expert_id
+    expert_id = None
+    if request.model and request.model != "default":
+        expert_id = request.model
+
     gen_request = GenerationRequest(
         request_id=str(uuid.uuid4()),
         prompt=prompt,
@@ -348,7 +353,8 @@ async def chat_completions(request: ChatCompletionRequest):
         max_tokens=request.max_tokens,
         temperature=request.temperature,
         top_p=request.top_p,
-        stream=request.stream
+        stream=request.stream,
+        expert_id=expert_id
     )
 
     if request.stream:

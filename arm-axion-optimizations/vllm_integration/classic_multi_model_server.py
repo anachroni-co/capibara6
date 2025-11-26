@@ -107,16 +107,13 @@ def load_model(model_id: str) -> LLM:
         tensor_parallel_size=expert.get("tensor_parallel_size", 1),
         dtype=expert.get("dtype", "float16"),
         trust_remote_code=expert.get("trust_remote_code", True),
-        # Classic backend parameters - evitar parámetros de V1
+        # Classic backend parameters - compatible con ARM64 CPU
         gpu_memory_utilization=expert.get("gpu_memory_utilization", 0.9),
         max_num_seqs=expert.get("max_num_seqs", 256),
         max_model_len=expert.get("max_model_len", 4096),
         quantization=expert.get("quantization") if expert.get("quantization") != "q4_0" else None,
         enforce_eager=True,  # Compatible con classic backend
-        # Evitar parámetros específicos de V1
-        seed=expert.get("seed", 42),
-        disable_log_requests=True,
-        # Evitar parámetros que causan problemas
+        # Evitar parámetros incompatibles
     )
 
     models[model_id] = model

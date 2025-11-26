@@ -17,10 +17,53 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 import uvicorn
 
-# FORZAR USO DEL BACKEND CLÁSICO ANTES DE IMPORTAR vLLM
-os.environ['VLLM_USE_V1'] = '0'
-os.environ['VLLM_ENABLE_V1_ENGINE'] = '0'
-os.environ['VLLM_WORKER_MULTIPROC_METHOD'] = 'spawn'
+# FORZAR USO DEL BACKEND CLÁSICO Y COMPATIBILIDAD ARM ANTES DE IMPORTAR vLLM
+os.environ["VLLM_USE_V1"] = "0"  # Deshabilitar V1 engine
+os.environ["VLLM_ENABLE_V1_ENGINE"] = "0"  # Deshabilitar V1 engine
+os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "fork"
+os.environ["VLLM_USE_FLASHINFER"] = "0"
+os.environ["VLLM_NO_DEPRECATION_WARNING"] = "1"
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:disabled"  # Para evitar problemas de memoria en ARM
+# DESHABILITAR COMPONENTES PROBLEMÁTICOS EN ARM-Axion
+os.environ["VLLM_USE_TRITON_FLASH_ATTN"] = "0"
+os.environ["TORCHINDUCTOR_DISABLED"] = "1"
+os.environ["TORCH_COMPILE_BACKEND"] = "eager"  # Usar backend más sencillo en ARM
+
+import sys
+
+# Asegurar el path
+sys.path.insert(0, "/home/elect/capibara6/vllm-source-modified")
+
+# Aplicar patches de fallback antes de importar vLLM
+def apply_fallback_patches():
+    """Aplicar parches de fallback a operaciones personalizadas"""
+    import torch
+
+    # Si no hay namespace _C, crearlo
+    if not hasattr(torch.ops, "_C"):
+        class FakeC:
+            pass
+        torch.ops._C = FakeC()
+
+    # Implementar operaciones de fallback
+    if not hasattr(torch.ops._C, "rms_norm"):
+        def rms_norm_fallback(output, input, weight, epsilon):
+            variance = input.pow(2).mean(-1, keepdim=True)
+            inv_rms = torch.rsqrt(variance + epsilon)
+            normalized = input * inv_rms
+            output.copy_(normalized * weight)
+        torch.ops._C.rms_norm = rms_norm_fallback
+
+    if not hasattr(torch.ops._C, "fused_add_rms_norm"):
+        def fused_add_rms_norm_fallback(input, residual, weight, epsilon):
+            input.add_(residual)
+            variance = input.pow(2).mean(-1, keepdim=True)
+            inv_rms = torch.rsqrt(variance + epsilon)
+            input.mul_(inv_rms)
+            input.mul_(weight)
+        torch.ops._C.fused_add_rms_norm = fused_add_rms_norm_fallback
+
+apply_fallback_patches()
 
 # vLLM imports - ahora debería usar el backend clásico
 from vllm import LLM, SamplingParams

@@ -86,7 +86,6 @@ class AxionVLLMConfig:
             'tensor_parallel_size': self.tensor_parallel_size,
             'gpu_memory_utilization': self.gpu_memory_utilization,
             'max_num_seqs': self.max_num_seqs,
-            'disable_log_requests': True,
             'trust_remote_code': True,
         }
 

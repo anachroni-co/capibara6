@@ -47,8 +47,9 @@ class NEONKernels:
         ]
 
         for path in possible_paths:
-            if path.exists():
-                return str(path)
+            path_obj = Path(path) if isinstance(path, str) else path
+            if path_obj.exists():
+                return str(path_obj)
 
         return None
 

@@ -9,6 +9,14 @@ import torch.nn.functional as F
 import math
 from typing import Optional
 
+# Mover la importación al nivel superior del módulo
+try:
+    from vllm._custom_ops import *
+    NATIVE_OPS_AVAILABLE = True
+except ImportError:
+    NATIVE_OPS_AVAILABLE = False
+
+
 
 def rms_norm_fallback(hidden_states: torch.Tensor, weight: torch.Tensor, epsilon: float = 1e-6) -> torch.Tensor:
     """
@@ -392,13 +400,11 @@ def try_initialize_custom_ops_with_native():
     """
     Intenta inicializar operaciones personalizadas con implementaciones nativas si están disponibles
     """
-    try:
-        # Primero intentar con operaciones nativas
-        from vllm._custom_ops import *
+    if NATIVE_OPS_AVAILABLE:
         print("✓ Operaciones personalizadas nativas disponibles")
         return True
-    except ImportError as e:
-        print(f"⚠️  No se pudieron importar operaciones personalizadas nativas: {e}")
+    else:
+        print(f"⚠️  No se pudieron importar operaciones personalizadas nativas.")
         print("ℹ️   Usando implementaciones de fallback en PyTorch")
         initialize_custom_ops_fallback()
         return False

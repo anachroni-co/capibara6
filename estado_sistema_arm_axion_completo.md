@@ -35,25 +35,27 @@
 - [x] Verificación de los 5 modelos: Qwen2.5, Phi4-mini, Mistral7B, Gemma3-27B, GPT-OSS-20B
 - [x] Servidor multi-modelo ARM-Axion operativo en puerto 8081
 - [x] Sistema verificado como funcional con todos los componentes
+- [x] Integración con VM de servicios (TTS, MCP, N8n)
 
 ✅ **Pruebas realizadas:**
 - [x] Detección de plataforma ARM64 como CPU: CORRECTA
 - [x] Disponibilidad de los 5 modelos: CONFIRMADA
 - [x] Funcionamiento del servidor: VERIFICADO
 - [x] Backend clásico con parches ARM: OPERATIVO
+- [x] Acceso a servicios remotos (TTS, MCP, N8n): VERIFICADO
 
 ## Tareas pendientes por completar
 
-### 1. Actualizar la documentación 
-- [ ] Crear guía de usuario detallada para el sistema ARM-Axion
-- [ ] Documentar los endpoints disponibles y formato de solicitud
-- [ ] Crear guía de solución de problemas y mantenimiento
+### 1. Actualizar la documentación
+- [x] Crear guía de usuario detallada para el sistema ARM-Axion
+- [x] Documentar los endpoints disponibles y formato de solicitud
+- [x] Crear guía de solución de problemas y mantenimiento
 
 ### 2. Extender y optimizar el sistema
 - [ ] Implementar endpoints completos de OpenAI API (faltan `/v1/chat/completions`, `/v1/completions`, etc.)
-- [ ] Implementar carga selectiva de modelos para mejor uso de memoria
+- [x] Implementar carga selectiva de modelos para mejor uso de memoria
 - [ ] Optimizar tiempos de respuesta con ajustes específicos para ARM-Axion
-- [ ] Añadir logs estructurados con nivel de detalle adecuado
+- [x] Añadir logs estructurados con nivel de detalle adecuado
 
 ### 3. Pruebas adicionales
 - [ ] Pruebas de carga para evaluar estabilidad con múltiples solicitudes
@@ -61,10 +63,10 @@
 - [ ] Validar respuesta de los 5 modelos con consultas de ejemplo
 
 ### 4. Despliegue y mantenimiento
-- [ ] Crear script de inicialización automática del servicio
-- [ ] Implementar monitoreo de salud del sistema
-- [ ] Crear script de actualización del sistema
-- [ ] Implementar backup y recuperación de configuración
+- [x] Crear script de inicialización automática del servicio
+- [x] Implementar monitoreo de salud del sistema
+- [x] Crear script de actualización del sistema
+- [x] Implementar backup y recuperación de configuración
 
 ## Instrucciones de uso
 

@@ -4,9 +4,9 @@
       "expert_id": "phi4_fast",
       "model_path": "/home/elect/models/phi-4-mini",
       "domain": "general",
-      "description": "Modelo rápido para respuestas simples y directas - Optimizado para ARM Axion",
+      "description": "Modelo r\u00e1pido para respuestas simples y directas - Optimizado para ARM Axion",
       "priority": 5,
-      "quantization": "awq",
+      "quantization": null,
       "tensor_parallel_size": 1,
       "gpu_memory_utilization": 0.85,
       "max_num_seqs": 1024,
@@ -33,7 +33,7 @@
       },
       "use_cases": [
         "preguntas simples",
-        "respuestas rápidas",
+        "respuestas r\u00e1pidas",
         "chistes",
         "saludos",
         "respuestas directas"
@@ -43,11 +43,11 @@
       "expert_id": "mistral_balanced",
       "model_path": "/home/elect/models/mistral-7b-instruct-v0.2",
       "domain": "technical",
-      "description": "Modelo equilibrado para tareas técnicas intermedias - Optimizado para ARM Axion",
+      "description": "Modelo equilibrado para tareas t\u00e9cnicas intermedias - Optimizado para ARM Axion",
       "priority": 4,
-      "quantization": "awq",
+      "quantization": null,
       "tensor_parallel_size": 1,
-      "gpu_memory_utilization": 0.80,
+      "gpu_memory_utilization": 0.8,
       "max_num_seqs": 512,
       "enable_neon": true,
       "enable_chunked_prefill": true,
@@ -71,22 +71,22 @@
         "softmax_fast_exp": true
       },
       "use_cases": [
-        "explicaciones técnicas",
-        "código y programación",
-        "análisis intermedio",
-        "redacción",
-        "documentación"
+        "explicaciones t\u00e9cnicas",
+        "c\u00f3digo y programaci\u00f3n",
+        "an\u00e1lisis intermedio",
+        "redacci\u00f3n",
+        "documentaci\u00f3n"
       ]
     },
     {
       "expert_id": "qwen_coder",
       "model_path": "/home/elect/models/qwen2.5-coder-1.5b",
       "domain": "coding",
-      "description": "Modelo especializado en código y programación - Optimizado para ARM Axion",
+      "description": "Modelo especializado en c\u00f3digo y programaci\u00f3n - Optimizado para ARM Axion",
       "priority": 3,
-      "quantization": "awq",
+      "quantization": null,
       "tensor_parallel_size": 1,
-      "gpu_memory_utilization": 0.80,
+      "gpu_memory_utilization": 0.8,
       "max_num_seqs": 512,
       "enable_neon": true,
       "enable_chunked_prefill": true,
@@ -110,18 +110,18 @@
         "softmax_fast_exp": true
       },
       "use_cases": [
-        "generación de código",
+        "generaci\u00f3n de c\u00f3digo",
         "debugging",
-        "explicaciones técnicas",
+        "explicaciones t\u00e9cnicas",
         "refactoring",
-        "documentación de código"
+        "documentaci\u00f3n de c\u00f3digo"
       ]
     },
     {
       "expert_id": "gemma3_multimodal",
       "model_path": "/home/elect/models/gemma-3-27b-it-awq",
       "domain": "multimodal_expert",
-      "description": "Modelo multimodal para texto + imágenes, análisis complejo y contexto largo - Optimizado para ARM Axion",
+      "description": "Modelo multimodal para texto + im\u00e1genes, an\u00e1lisis complejo y contexto largo - Optimizado para ARM Axion",
       "priority": 2,
       "quantization": "awq",
       "tensor_parallel_size": 1,
@@ -158,14 +158,14 @@
         "max_seq_len": 131072
       },
       "use_cases": [
-        "análisis profundo",
+        "an\u00e1lisis profundo",
         "razonamiento complejo",
-        "análisis multimodal",
-        "imágenes + texto",
+        "an\u00e1lisis multimodal",
+        "im\u00e1genes + texto",
         "contexto largo (>8K tokens)",
-        "multilingüe avanzado (140+ idiomas)",
-        "research y documentación extensa",
-        "análisis de PDFs con imágenes"
+        "multiling\u00fce avanzado (140+ idiomas)",
+        "research y documentaci\u00f3n extensa",
+        "an\u00e1lisis de PDFs con im\u00e1genes"
       ]
     },
     {
@@ -174,9 +174,9 @@
       "domain": "expert",
       "description": "Modelo de gran capacidad para razonamiento complejo - Optimizado para ARM Axion",
       "priority": 1,
-      "quantization": "gptq", 
+      "quantization": null,
       "tensor_parallel_size": 1,
-      "gpu_memory_utilization": 0.80,
+      "gpu_memory_utilization": 0.8,
       "max_num_seqs": 128,
       "enable_neon": true,
       "enable_chunked_prefill": true,
@@ -204,10 +204,10 @@
         "acl_gemm": true
       },
       "use_cases": [
-        "análisis profundo",
+        "an\u00e1lisis profundo",
         "razonamiento complejo",
-        "planificación estratégica",
-        "análisis técnico avanzado",
+        "planificaci\u00f3n estrat\u00e9gica",
+        "an\u00e1lisis t\u00e9cnico avanzado",
         "research",
         "multidisciplinario"
       ]
@@ -217,7 +217,7 @@
     "enabled": true,
     "warmup_pool_size": 2,
     "max_loaded_experts": 4,
-    "memory_threshold": 0.80,
+    "memory_threshold": 0.8,
     "auto_unload_after_s": 300
   },
   "embedding_model": {
@@ -273,7 +273,7 @@
     "vm_name": "models-europe",
     "memory_estimation": {
       "phi4_awq": "~1.2 GB",
-      "mistral_awq": "~2.8 GB", 
+      "mistral_awq": "~2.8 GB",
       "qwen_awq": "~3.2 GB",
       "gemma3_awq": "~12 GB",
       "gptoss_q4": "~10 GB",

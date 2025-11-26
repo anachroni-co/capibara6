@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
     try {
         // URL del modelo en la VM (HTTP está OK en server-side)
-        const MODEL_URL = 'http://34.175.215.109:8080/completion';
+        const MODEL_URL = 'http://34.175.215.109:8082/completion';
         
         // Reenviar la petición a la VM
         const response = await fetch(MODEL_URL, {

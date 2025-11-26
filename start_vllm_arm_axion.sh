@@ -49,6 +49,11 @@ fi
 # Configurar PYTHONPATH
 export PYTHONPATH="$VLLM_MODIFIED_DIR:$ARM_AXION_DIR:$PYTHONPATH"
 
+# FORZAR uso del engine clásico (V0) para compatibilidad con CPU
+export VLLM_USE_V1=0
+export VLLM_ENABLE_V1_ENGINE=0
+export VLLM_WORKER_MULTIPROC_METHOD=spawn
+
 echo "✅ PYTHONPATH configurado:"
 echo "   - $VLLM_MODIFIED_DIR (vLLM modificado con detección ARM-Axion)"
 echo "   - $ARM_AXION_DIR (módulos vllm_integration)"
@@ -88,16 +93,5 @@ echo "   Presiona Ctrl+C para detener"
 echo ""
 
 cd "$VLLM_INTEGRATION_DIR"
-
-# Crear un enlace simbólico o copia del archivo de configuración como config.json
-if [ "$CONFIG_FILE" != "config.json" ]; then
-    if [ -f "$VLLM_INTEGRATION_DIR/$CONFIG_FILE" ]; then
-        ln -sf "$CONFIG_FILE" config.json
-        echo "✅ Archivo de configuración enlazado: $CONFIG_FILE -> config.json"
-    else
-        echo "❌ Archivo de configuración no encontrado: $VLLM_INTEGRATION_DIR/$CONFIG_FILE"
-        exit 1
-    fi
-fi
 
 exec python3 inference_server.py --host "$HOST" --port "$VLLM_PORT"
