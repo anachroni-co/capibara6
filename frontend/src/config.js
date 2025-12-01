@@ -4,13 +4,14 @@
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 // URLs de las VMs de Google Cloud
-const VM_MODELS = 'http://34.12.166.76';      // VM de modelos (bounty2)
-const VM_SERVICES = 'http://34.175.136.104';   // VM de servicios (TTS, MCP, N8N)
-const VM_RAG = 'http://10.154.0.2';            // VM rag3 - Sistema RAG completo (IP interna)
+const VM_MODELS = 'http://34.175.48.2';        // VM de modelos (models-europe)
+const VM_SERVICES = 'http://34.175.136.104';   // VM de servicios (gpt-oss-20b) - TTS, MCP, N8N
+const VM_RAG = 'http://34.175.110.120';        // VM rag-europe - Sistema RAG completo
 
 const CHATBOT_CONFIG = {
     // URL del backend - cambiar según entorno
-    BACKEND_URL: isLocalhost ? 'http://localhost:5001' : VM_MODELS + ':5001',
+    // En producción usar endpoints de Vercel que actúan como proxy a las VMs
+    BACKEND_URL: isLocalhost ? 'http://localhost:5001' : 'https://www.capibara6.com/api',
 
     // Endpoints
     ENDPOINTS: {
@@ -59,30 +60,30 @@ const CHATBOT_CONFIG = {
         // Configuración detallada por servicio
         MCP: {
             enabled: false,
-            url: isLocalhost ? 'http://localhost:5003' : VM_SERVICES + ':5003',
+            url: isLocalhost ? 'http://localhost:5003' : 'https://www.capibara6.com/api',
             endpoints: {
-                AUGMENT: '/api/mcp/augment',
-                CONTEXTS: '/api/mcp/contexts',
-                HEALTH: '/api/mcp/health',
-                CALCULATE: '/api/mcp/calculate',
-                VERIFY: '/api/mcp/verify'
+                AUGMENT: '/mcp-analyze',  // Usar endpoint de Vercel
+                CONTEXTS: '/mcp-status',  // Usar endpoint de Vercel
+                HEALTH: '/mcp-health',    // Usar endpoint de Vercel
+                CALCULATE: '/mcp-analyze', // Usar endpoint de Vercel
+                VERIFY: '/mcp-health'     // Usar endpoint de Vercel
             },
             timeout: 5000,
-            note: 'MCP principal - Context & RAG'
+            note: 'Vercel MCP Proxy - Context & RAG'
         },
 
         TTS: {
             enabled: true,
-            url: isLocalhost ? 'http://localhost:5002' : VM_SERVICES + ':5002',
+            url: isLocalhost ? 'http://localhost:5002' : 'https://www.capibara6.com/api',
             endpoints: {
-                SPEAK: '/tts',
-                VOICES: '/voices',
-                CLONE: '/clone',
-                HEALTH: '/health',
-                PRELOAD: '/preload'
+                SPEAK: '/tts',           // Usar endpoint de Vercel
+                VOICES: '/tts-voices',   // Usar endpoint de Vercel
+                CLONE: '/tts-clone',     // Usar endpoint de Vercel
+                HEALTH: '/health',       // Usar endpoint de Vercel
+                PRELOAD: '/tts-voices'   // Usar endpoint de Vercel
             },
             timeout: 10000,
-            note: 'Kyutai TTS - Text to Speech'
+            note: 'Vercel TTS Proxy - Text to Speech'
         },
 
         AUTH: {
@@ -117,14 +118,14 @@ const CHATBOT_CONFIG = {
 
         SMART_MCP: {
             enabled: false,
-            url: isLocalhost ? 'http://localhost:5010' : VM_SERVICES + ':5010',
+            url: isLocalhost ? 'http://localhost:5010' : 'https://www.capibara6.com/api',
             endpoints: {
-                HEALTH: '/health',
-                ANALYZE: '/analyze',
-                UPDATE_DATE: '/update-date'
+                HEALTH: '/mcp-health',
+                ANALYZE: '/mcp-analyze',
+                UPDATE_DATE: '/mcp-analyze'
             },
             timeout: 5000,
-            note: 'MCP alternativo - RAG selectivo simplificado'
+            note: 'Vercel Smart MCP Proxy - RAG selectivo simplificado'
         },
 
         E2B: {

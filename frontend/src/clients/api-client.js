@@ -1,7 +1,11 @@
 // API Client para conexiones con el backend de Capibara6
 class ApiClient {
     constructor() {
-        this.baseUrl = 'http://localhost:5001'; // Configurado para usar el backend local
+        // Detectar si estamos en localhost o en producción
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        this.baseUrl = isLocalhost
+            ? 'http://localhost:5001'  // Backend local para desarrollo
+            : 'https://www.capibara6.com/api';  // Endpoint de Vercel para producción
         this.defaultHeaders = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -16,11 +20,11 @@ class ApiClient {
                 method: 'GET',
                 headers: this.defaultHeaders
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
-            
+
             const data = await response.json();
             console.log('✅ Conexion con backend exitosa:', data);
             return data;
@@ -33,7 +37,12 @@ class ApiClient {
     // Método para enviar mensajes al chat
     async sendMessage(message, category = 'general') {
         try {
-            const response = await fetch(`${this.baseUrl}/api/chat`, {
+            // Determinar el endpoint correcto según el entorno
+            const endpoint = this.baseUrl.includes('capibara6.com')
+                ? `${this.baseUrl}/completion`  // Endpoint de Vercel
+                : `${this.baseUrl}/api/chat`;   // Endpoint local
+
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: this.defaultHeaders,
                 body: JSON.stringify({
@@ -46,7 +55,7 @@ class ApiClient {
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
-            
+
             const data = await response.json();
             console.log('🤖 Respuesta del modelo:', data);
             return data;
@@ -61,7 +70,12 @@ class ApiClient {
         // Este endpoint podría no estar disponible en el servidor de Capibara6
         // pero lo incluimos por si se quiere probar
         try {
-            const response = await fetch(`${this.baseUrl}/api/chat/classify`, {
+            // Determinar el endpoint correcto según el entorno
+            const endpoint = this.baseUrl.includes('capibara6.com')
+                ? `${this.baseUrl}/ai/classify`  // Endpoint de Vercel
+                : `${this.baseUrl}/api/chat/classify`;   // Endpoint local
+
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: this.defaultHeaders,
                 body: JSON.stringify({
@@ -80,7 +94,7 @@ class ApiClient {
                     confidence: 'medium'
                 };
             }
-            
+
             const data = await response.json();
             console.log('📋 Clasificación de tarea:', data);
             return data;

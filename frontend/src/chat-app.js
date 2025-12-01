@@ -14,7 +14,10 @@
 // Configuración del modelo original
     const MODEL_CONFIG = {
         // Usar proxy de Vercel para evitar problemas de Mixed Content
-        serverUrl: 'http://localhost:5001/api/chat',  // Servidor local
+        // Detectar si estamos en localhost o en producción
+        serverUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5001/api/chat'  // Servidor local
+            : 'https://www.capibara6.com/api/completion',  // Endpoint de Vercel
     systemPrompt: 'Eres Capibara6, un asistente experto en tecnología, programación e IA. Responde de forma clara, estructurada y en español.',  // System prompt mejorado
     defaultParams: {
         n_predict: 200,  // Optimizado para respuestas completas pero no excesivas
