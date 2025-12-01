@@ -1,97 +1,102 @@
 /**
- * Vercel Serverless Function - Gateway Proxy
+ * Vercel Serverless Function - Gateway Proxy (Simplificado)
  * Proxy HTTPS para el servicio Gateway en VM services
- * Permite a Vercel conectarse al gateway server que enruta a vLLM/Ollama
+ * Versión simplificada para evitar problemas de CORS
  */
 
 export default async function handler(req, res) {
-    // CORS headers (se aplican siempre)
+    // Asegurar CORS headers en todos los casos
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 
-    // Handle preflight (OPTIONS) immediately
+    // Si es solicitud OPTIONS (preflight), responder inmediatamente
     if (req.method === 'OPTIONS') {
-        return res.status(200).end();
+        res.status(200).setHeader('Content-Length', '0').end();
+        return;
     }
 
-    // Solo permitir POST para completions
+    // Solo permitir POST
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ 
+            error: 'Method not allowed',
+            allowed: 'POST'
+        });
     }
 
     try {
+        // Datos requeridos
+        const { message, prompt, messages } = req.body;
+        if (!message && !prompt && (!messages || messages.length === 0)) {
+            return res.status(400).json({ 
+                error: 'Message, prompt, or messages are required' 
+            });
+        }
+
         // URL base del gateway en la VM services
         const GATEWAY_BASE_URL = process.env.GATEWAY_URL || 'http://34.175.136.104:8080';
         const GATEWAY_CHAT_URL = `${GATEWAY_BASE_URL}/api/chat`;
         
-        // Preparar opciones para fetch con timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 segundos timeout
+        console.log(`📡 Conectando al gateway: ${GATEWAY_CHAT_URL}`);
         
-        const fetchOptions = {
+        // Hacer solicitud al gateway con timeout
+        const response = await fetch(GATEWAY_CHAT_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                ...req.headers,
-                // Asegurar que no se pasen encabezados problemáticos
-                'host': undefined,
-                'content-length': undefined,
-                'connection': undefined,
             },
-            signal: controller.signal
-        };
+            body: JSON.stringify({
+                message: message || prompt || (messages && messages[messages.length - 1]?.content),
+                model: req.body.model || 'phi4_fast',
+                use_semantic_router: true,
+                temperature: req.body.temperature || 0.7,
+                max_tokens: req.body.max_tokens || 200,
+                // Incluir contexto si está disponible
+                ...(messages ? { messages } : {})
+            }),
+            signal: AbortSignal.timeout(35000) // 35 segundos
+        });
+
+        console.log(`📡 Gateway respondió con status: ${response.status}`);
+
+        // Obtener respuesta
+        const responseText = await response.text();
         
-        // Incluir body
-        if (req.body) {
-            fetchOptions.body = JSON.stringify(req.body);
-        }
+        // Devolver respuesta con el mismo status
+        res.status(response.status);
         
-        try {
-            // Hacer la solicitud al gateway
-            const gatewayResponse = await fetch(GATEWAY_CHAT_URL, fetchOptions);
-            clearTimeout(timeoutId);
-            
-            // Obtener el cuerpo de la respuesta
-            const responseText = await gatewayResponse.text();
-            
-            // Devolver la respuesta con el mismo status code
-            res.status(gatewayResponse.status);
-            
+        if (responseText) {
             try {
-                // Si la respuesta es JSON válida, devolver como JSON
-                const jsonData = responseText ? JSON.parse(responseText) : {};
+                const jsonData = JSON.parse(responseText);
                 res.json(jsonData);
             } catch (e) {
-                // Si no es JSON, devolver como texto
-                res.setHeader('Content-Type', 'text/plain');
-                res.send(responseText);
+                // Si no es JSON válido, devolver como texto
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({ response: responseText }));
             }
-            
-        } catch (fetchError) {
-            clearTimeout(timeoutId);
-            if (fetchError.name === 'AbortError') {
-                console.error('❌ Timeout en solicitud al gateway:', GATEWAY_CHAT_URL);
-                res.status(408).json({
-                    error: 'Tiempo de espera agotado al conectar con el gateway',
-                    service: 'gateway'
-                });
-            } else {
-                console.error('❌ Error en solicitud al gateway:', fetchError.message);
-                res.status(503).json({
-                    error: 'Error al conectar con el gateway de IA',
-                    details: fetchError.message,
-                    service: 'gateway'
-                });
-            }
+        } else {
+            res.json({ status: 'ok', message: 'Empty response from gateway' });
         }
-        
+
     } catch (error) {
-        console.error('❌ Error general en gateway proxy:', error);
-        res.status(500).json({
-            error: 'Error interno en el proxy del gateway',
-            details: error.message
-        });
+        console.error('❌ Error en gateway proxy:', error);
+        
+        // Asegurar headers CORS incluso en error
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+
+        if (error.name === 'AbortError') {
+            res.status(408).json({
+                error: 'Gateway timeout',
+                details: 'La conexión con el servicio de IA tomó demasiado tiempo'
+            });
+        } else {
+            res.status(503).json({
+                error: 'Servicio no disponible',
+                details: error.message
+            });
+        }
     }
 }
 
