@@ -51,6 +51,10 @@
     {
       "source": "/api/mcp/:path*",
       "destination": "/api/mcp-proxy.js"
+    },
+    {
+      "source": "/api/completion-stream",
+      "destination": "/api/completion-stream.js"
     }
   ],
   "headers": [

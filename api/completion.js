@@ -110,6 +110,28 @@ export default async function handler(req, res) {
 
         console.log('📡 Intentando vLLM y Ollama concurrentemente...');
 
+        // Preparar mensajes con contexto más completo
+        const fullMessages = [];
+
+        // Si hay mensajes anteriores en la conversación, incluirlos
+        if (req.body.messages && req.body.messages.length > 0) {
+            // Usar los mensajes completos de la conversación
+            fullMessages.push(...req.body.messages);
+        } else {
+            // Si no hay mensajes, usar el mensaje actual
+            fullMessages.push({ role: 'user', content: prompt });
+        }
+
+        // Actualizar payloads con el historial completo
+        vllmPayload.messages = fullMessages;
+
+        // Verificar si se solicitó streaming
+        const useStreaming = req.body.stream || false;
+        if (useStreaming) {
+            vllmPayload.stream = true;
+            ollamaPayload.stream = true;
+        }
+
         // Hacer solicitudes concurrentes con timeouts reducidos
         const [vllmPromise, ollamaPromise] = [
             fetchWithTimeout(VLLM_URL, {
