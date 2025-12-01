@@ -491,8 +491,8 @@ class Capibara6ChatPage {
         // Determinar endpoint correcto según el entorno
         let endpoint;
         if (this.backendUrl.includes('capibara6.com') || this.backendUrl.includes('vercel.app')) {
-            // En producción (Vercel), siempre usar el endpoint de completion
-            endpoint = 'https://www.capibara6.com/api/completion';
+            // En producción (Vercel), usar el endpoint de completion en el mismo dominio
+            endpoint = `${this.backendUrl}/api/completion`;
         } else if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE) {
             // En desarrollo, usar endpoint de configuración si está definido
             endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE;
