@@ -490,13 +490,14 @@ class Capibara6ChatPage {
     async sendToBackend(message) {
         // Determinar endpoint correcto según el entorno
         let endpoint;
-        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE) {
-            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE;
-        } else if (this.backendUrl.includes('capibara6.com')) {
-            // En producción, usar el endpoint de completion de Vercel
+        if (this.backendUrl.includes('capibara6.com') || this.backendUrl.includes('vercel.app')) {
+            // En producción (Vercel), siempre usar el endpoint de completion
             endpoint = 'https://www.capibara6.com/api/completion';
+        } else if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE) {
+            // En desarrollo, usar endpoint de configuración si está definido
+            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE;
         } else {
-            // En desarrollo, usar el endpoint local
+            // Fallback para desarrollo
             endpoint = `${this.backendUrl}/api/ai/generate`;
         }
 
@@ -515,8 +516,15 @@ class Capibara6ChatPage {
 
         const data = await response.json();
 
-        if (!response.ok || !data.success) {
-            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        // Verificar si la respuesta es exitosa
+        // En producción con Vercel, los endpoints pueden no tener propiedad 'success'
+        // así que verificamos principalmente que no haya un error explícito
+        const isErrorResponse = response.status >= 400 ||
+            (data.error || data.detail || data.message) ||
+            (response.status === 200 && Object.keys(data).length === 0);
+
+        if (isErrorResponse) {
+            throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}`);
         }
 
         // Asegurarse de que la estructura de respuesta sea correcta
