@@ -55,6 +55,10 @@
     {
       "source": "/api/completion-stream",
       "destination": "/api/completion-stream.js"
+    },
+    {
+      "source": "/api/completion",
+      "destination": "/api/gateway-proxy.js"
     }
   ],
   "headers": [
