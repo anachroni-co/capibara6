@@ -43,6 +43,10 @@
     {
       "source": "/api/tts-clone",
       "destination": "/api/tts-clone.js"
+    },
+    {
+      "source": "/api/n8n/:path*",
+      "destination": "/api/n8n-proxy.js"
     }
   ],
   "headers": [
