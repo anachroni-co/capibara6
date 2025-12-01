@@ -86,8 +86,9 @@ export default async function handler(req, res) {
         }
 
         // URLs de servicios (usar variables de entorno o defaults)
-        const VLLM_URL = process.env.VLLM_URL || 'http://34.175.48.2:8080/v1/chat/completions';
-        const OLLAMA_URL = process.env.OLLAMA_URL || 'http://34.175.48.2:11434/api/generate';
+        // Usar el gateway server en VM services como intermediario
+        const GATEWAY_URL = process.env.GATEWAY_URL || 'http://34.175.136.104:8080';
+        const CHAT_URL = `${GATEWAY_URL}/api/chat`;
 
         // Preparar payloads para ambas solicitudes
         const vllmPayload = {
@@ -108,97 +109,42 @@ export default async function handler(req, res) {
             }
         };
 
-        console.log('📡 Intentando vLLM y Ollama concurrentemente...');
+        console.log('📡 Enviando solicitud al gateway server...');
 
-        // Preparar mensajes con contexto más completo
-        const fullMessages = [];
+        // Preparar payload para el gateway
+        const gatewayPayload = {
+            message: prompt,
+            model: model,
+            use_semantic_router: true,
+            temperature: temperature,
+            max_tokens: max_tokens
+        };
 
-        // Si hay mensajes anteriores en la conversación, incluirlos
+        // Si hay mensajes anteriores en la conversación, incluirlos también
         if (req.body.messages && req.body.messages.length > 0) {
-            // Usar los mensajes completos de la conversación
-            fullMessages.push(...req.body.messages);
-        } else {
-            // Si no hay mensajes, usar el mensaje actual
-            fullMessages.push({ role: 'user', content: prompt });
+            // El gateway manejará el contexto si tiene semantic routing
+            gatewayPayload.messages = req.body.messages;
         }
 
-        // Actualizar payloads con el historial completo
-        vllmPayload.messages = fullMessages;
-
-        // Verificar si se solicitó streaming
-        const useStreaming = req.body.stream || false;
-        if (useStreaming) {
-            vllmPayload.stream = true;
-            ollamaPayload.stream = true;
-        }
-
-        // Hacer solicitudes concurrentes con timeouts reducidos
-        const [vllmPromise, ollamaPromise] = [
-            fetchWithTimeout(VLLM_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(vllmPayload)
-            }, 15000), // Reducido a 15 segundos
-
-            fetchWithTimeout(OLLAMA_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(ollamaPayload)
-            }, 15000) // Reducido a 15 segundos
-        ];
-
-        // Esperar la primera respuesta exitosa
-        let vllmResponse = null;
-        let ollamaResponse = null;
-        let responseCompleted = false;
-
-        // Manejar ambas promesas concurrentemente
+        // Hacer solicitud al gateway server
         try {
-            // Esperar resultados con manejo concurrente
-            const vllmResult = vllmPromise.catch(err => {
-                console.log('⚠️ vLLM falló:', err.message);
-                return null;
-            });
+            const gatewayResponse = await fetchWithTimeout(CHAT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(gatewayPayload)
+            }, 25000); // Timeout más largo para procesamiento completo
 
-            const ollamaResult = ollamaPromise.catch(err => {
-                console.log('⚠️ Ollama falló:', err.message);
-                return null;
-            });
+            if (gatewayResponse.ok) {
+                console.log('✅ Gateway respondió exitosamente');
+                const data = await gatewayResponse.json();
 
-            // Esperar resultados
-            [vllmResponse, ollamaResponse] = await Promise.all([vllmResult, ollamaResult]);
-
-            // Procesar la primera respuesta exitosa
-            if (vllmResponse && vllmResponse.ok) {
-                console.log('✅ vLLM respondió exitosamente');
-                const data = await vllmResponse.json();
-                const responseData = {
-                    response: data.choices[0]?.message?.content || data.response,
-                    model: data.model || model,
-                    provider: 'vLLM',
-                    tokens: data.usage?.total_tokens
-                };
-
-                // Almacenar en caché si hay prompt
-                if (prompt) {
-                    const cacheKey = generateCacheKey(prompt, model, temperature);
-                    RESPONSE_CACHE.set(cacheKey, {
-                        data: responseData,
-                        timestamp: Date.now()
-                    });
-                }
-
-                return res.status(200).json(responseData);
-            }
-
-            if (ollamaResponse && ollamaResponse.ok) {
-                console.log('✅ Ollama respondió exitosamente');
-                const data = await ollamaResponse.json();
+                // Adaptar la respuesta del gateway a la estructura esperada
                 const responseData = {
                     response: data.response,
-                    model: data.model || ollamaPayload.model,
-                    provider: 'Ollama',
-                    done: data.done
+                    model: data.model || model,
+                    provider: 'gateway',
+                    tokens: data.tokens,
+                    routing_info: data.routing_info
                 };
 
                 // Almacenar en caché si hay prompt
@@ -211,9 +157,24 @@ export default async function handler(req, res) {
                 }
 
                 return res.status(200).json(responseData);
+            } else {
+                console.log(`❌ Gateway respondió con status: ${gatewayResponse.status}`);
+                const errorText = await gatewayResponse.text();
+                console.error('Error del gateway:', errorText);
+
+                return res.status(503).json({
+                    error: 'Servicio de IA no disponible a través del gateway',
+                    gateway_status: gatewayResponse.status,
+                    details: errorText
+                });
             }
         } catch (error) {
-            console.error('❌ Error en promesas concurrentes:', error.message);
+            console.error('❌ Error conectando con el gateway:', error.message);
+
+            return res.status(503).json({
+                error: 'Error al conectar con el gateway de IA',
+                details: error.message
+            });
         }
 
         // Si ambos fallan, mensaje de error
