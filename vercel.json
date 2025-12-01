@@ -47,6 +47,10 @@
     {
       "source": "/api/n8n/:path*",
       "destination": "/api/n8n-proxy.js"
+    },
+    {
+      "source": "/api/mcp/:path*",
+      "destination": "/api/mcp-proxy.js"
     }
   ],
   "headers": [

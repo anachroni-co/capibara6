@@ -1,11 +1,11 @@
 /**
- * Vercel Serverless Function - N8N Proxy Mejorado
- * Proxy HTTPS para el servicio N8N en VM services con manejo avanzado de errores
+ * Vercel Serverless Function - MCP Service Proxy Mejorado
+ * Proxy HTTPS para el servicio MCP (Model Context Protocol) en VM services con mejoras
  */
 
 // Simple cache en memoria para respuestas (limitado por la naturaleza serverless de Vercel)
 const RESPONSE_CACHE = new Map();
-const CACHE_TTL = 60000; // 1 minuto en ms para health checks
+const CACHE_TTL = 30000; // 30 segundos en ms para health checks y búsquedas comunes
 
 function generateCacheKey(url, method, body) {
     return `${method}-${url}-${body ? JSON.stringify(body) : ''}`;
@@ -32,19 +32,19 @@ export default async function handler(req, res) {
     }
 
     try {
-        // URL base de N8N en la VM services
-        const N8N_BASE_URL = process.env.N8N_URL || 'http://34.175.136.104:5678';
+        // URL base de MCP en la VM services
+        const MCP_BASE_URL = process.env.MCP_URL || 'http://34.175.136.104:5003';
         
         // Obtener el path de la solicitud y construir URL completa
         const { path = '' } = req.query;
-        const n8nPath = Array.isArray(path) ? path.join('/') : path;
-        const fullN8NPath = n8nPath.startsWith('/') ? n8nPath : `/${n8nPath}`;
-        const n8nUrl = `${N8N_BASE_URL}${fullN8NPath}`;
+        const mcpPath = Array.isArray(path) ? path.join('/') : path;
+        const fullMcpPath = mcpPath.startsWith('/') ? mcpPath : `/${mcpPath}`;
+        const mcpUrl = `${MCP_BASE_URL}${fullMcpPath}`;
         
         // Para health checks, intentar usar cache
-        const isHealthCheck = fullN8NPath.includes('/health');
+        const isHealthCheck = fullMcpPath.includes('/health') || fullMcpPath.includes('/status');
         if (isHealthCheck) {
-            const cacheKey = generateCacheKey(n8nUrl, req.method, req.body);
+            const cacheKey = generateCacheKey(mcpUrl, req.method, req.body);
             cleanupCache();
             
             const cachedResponse = RESPONSE_CACHE.get(cacheKey);
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
         
         // Preparar opciones para fetch con timeout
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos timeout
+        const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 segundos timeout para MCP
         
         const fetchOptions = {
             method: req.method,
@@ -76,25 +76,25 @@ export default async function handler(req, res) {
         }
         
         try {
-            // Hacer la solicitud a N8N
-            const n8nResponse = await fetch(n8nUrl, fetchOptions);
+            // Hacer la solicitud a MCP
+            const mcpResponse = await fetch(mcpUrl, fetchOptions);
             clearTimeout(timeoutId);
             
             // Obtener el cuerpo de la respuesta
-            const responseText = await n8nResponse.text();
+            const responseText = await mcpResponse.text();
             
             // Para health checks, almacenar en cache
             if (isHealthCheck) {
-                const cacheKey = generateCacheKey(n8nUrl, req.method, req.body);
+                const cacheKey = generateCacheKey(mcpUrl, req.method, req.body);
                 RESPONSE_CACHE.set(cacheKey, {
-                    status: n8nResponse.status,
+                    status: mcpResponse.status,
                     data: responseText ? JSON.parse(responseText) : null,
                     timestamp: Date.now()
                 });
             }
             
             // Devolver la respuesta con el mismo status code
-            res.status(n8nResponse.status);
+            res.status(mcpResponse.status);
             
             try {
                 // Si la respuesta es JSON válida, devolver como JSON
@@ -109,25 +109,25 @@ export default async function handler(req, res) {
         } catch (fetchError) {
             clearTimeout(timeoutId);
             if (fetchError.name === 'AbortError') {
-                console.error('❌ Timeout en solicitud a N8N:', n8nUrl);
+                console.error('❌ Timeout en solicitud a MCP:', mcpUrl);
                 res.status(408).json({
-                    error: 'Tiempo de espera agotado al conectar con N8N',
-                    path: n8nPath
+                    error: 'Tiempo de espera agotado al conectar con MCP',
+                    path: mcpPath
                 });
             } else {
-                console.error('❌ Error en solicitud a N8N:', fetchError.message);
+                console.error('❌ Error en solicitud a MCP:', fetchError.message);
                 res.status(503).json({
-                    error: 'Error al conectar con el servicio N8N',
+                    error: 'Error al conectar con el servicio MCP',
                     details: fetchError.message,
-                    path: n8nPath
+                    path: mcpPath
                 });
             }
         }
         
     } catch (error) {
-        console.error('❌ Error general en N8N proxy:', error);
+        console.error('❌ Error general en MCP proxy:', error);
         res.status(500).json({
-            error: 'Error interno en el proxy de N8N',
+            error: 'Error interno en el proxy de MCP',
             details: error.message
         });
     }
@@ -136,7 +136,7 @@ export default async function handler(req, res) {
 export const config = {
     api: {
         bodyParser: {
-            sizeLimit: '10mb',
+            sizeLimit: '5mb',
         },
     },
 };
