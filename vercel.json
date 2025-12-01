@@ -9,6 +9,18 @@
       "destination": "/api/completion.js"
     },
     {
+      "source": "/api/health",
+      "destination": "/api/health.js"
+    },
+    {
+      "source": "/api/ai/classify",
+      "destination": "/api/ai-classify.js"
+    },
+    {
+      "source": "/api/mcp/status",
+      "destination": "/api/mcp-status.js"
+    },
+    {
       "source": "/api/mcp-analyze",
       "destination": "/api/mcp-analyze.js"
     },
@@ -39,17 +51,25 @@
         },
         {
           "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type"
+          "value": "Content-Type, Authorization, X-Requested-With"
+        },
+        {
+          "key": "Access-Control-Max-Age",
+          "value": "86400"
         }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
