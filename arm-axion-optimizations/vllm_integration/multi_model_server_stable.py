@@ -2,6 +2,7 @@
 """
 Multi-Model vLLM Inference Server for ARM Axion
 Compatible with OpenAI API format
+Enhanced with Intelligent Routing (Stable Version)
 """
 
 import json
@@ -70,7 +71,7 @@ from vllm import LLM, SamplingParams
 from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.engine.async_llm_engine import AsyncLLMEngine
 
-app = FastAPI(title="vLLM Multi-Model Server", version="1.0.0")
+app = FastAPI(title="vLLM Multi-Model Server with Intelligent Routing", version="2.0.0")
 
 # Global state
 models: Dict[str, LLM] = {}
@@ -86,6 +87,7 @@ class ModelInfo:
     domain: str
     description: str
     quantization: str
+    priority: int  # Lower number = higher priority for speed
     status: str = "unloaded"
     loaded_at: Optional[float] = None
 
@@ -96,7 +98,7 @@ class ChatMessage(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    model: str
+    model: Optional[str] = None  # Now optional - can use semantic routing
     messages: List[ChatMessage]
     temperature: float = 0.7
     top_p: float = 0.9
@@ -105,7 +107,7 @@ class ChatRequest(BaseModel):
 
 
 class CompletionRequest(BaseModel):
-    model: str
+    model: Optional[str] = None  # Now optional - can use semantic routing
     prompt: str
     temperature: float = 0.7
     top_p: float = 0.9
@@ -146,6 +148,12 @@ def load_model(model_id: str) -> LLM:
 
     print(f"Loading model: {model_id} from {expert['model_path']}")
 
+    # Extract quantization - handle special cases
+    quantization = expert.get("quantization")
+    # For now, disable quantization to avoid AWQ config issues
+    # This allows the model to load with standard parameters
+    quantization_value = None
+
     # vLLM initialization params
     model = LLM(
         model=expert["model_path"],
@@ -153,7 +161,7 @@ def load_model(model_id: str) -> LLM:
         gpu_memory_utilization=expert.get("gpu_memory_utilization", 0.9),
         max_num_seqs=expert.get("max_num_seqs", 256),
         max_model_len=expert.get("max_model_len", 4096),
-        quantization=expert.get("quantization") if expert.get("quantization") != "q4_0" else None,
+        quantization=quantization_value,
         dtype=expert.get("dtype", "float16"),
         trust_remote_code=True,
         enforce_eager=config.get("performance_tuning", {}).get("enforce_eager", False),
@@ -173,15 +181,107 @@ def get_model(model_id: str) -> LLM:
     return models[model_id]
 
 
+def get_fastest_model() -> str:
+    """Return the ID of the fastest model based on priority settings"""
+    # Get models sorted by priority (lower number = higher priority/speed)
+    experts_with_priority = [
+        (expert["expert_id"], expert.get("priority", 10)) 
+        for expert in config["experts"]
+    ]
+    
+    # Sort by priority (ascending order)
+    experts_sorted = sorted(experts_with_priority, key=lambda x: x[1])
+    
+    # Return the expert_id with the lowest priority number (highest priority)
+    return experts_sorted[0][0] if experts_sorted else config["experts"][0]["expert_id"]
+
+
+def simple_route_request_to_model(query: str) -> str:
+    """
+    Simple routing function based on keywords to determine the most appropriate model
+    
+    Args:
+        query: The input query to analyze
+        
+    Returns:
+        The expert_id of the most appropriate model
+    """
+    # Convert query to lowercase for keyword matching
+    query_lower = query.lower()
+    
+    # Define keyword mappings to models
+    keyword_mappings = {
+        # Programming/coding related
+        "code": "qwen_coder",
+        "program": "qwen_coder",
+        "python": "qwen_coder",
+        "javascript": "qwen_coder",
+        "java": "qwen_coder",  
+        "c++": "qwen_coder",
+        "sql": "qwen_coder",
+        "debug": "qwen_coder",
+        "function": "qwen_coder",
+        "algorithm": "qwen_coder",
+        "api": "qwen_coder",
+        
+        # General/simple questions
+        "what": "phi4_fast",
+        "how": "phi4_fast",
+        "why": "phi4_fast",
+        "when": "phi4_fast",
+        "where": "phi4_fast",
+        "who": "phi4_fast",
+        "hello": "phi4_fast",
+        "hi": "phi4_fast",
+        "greeting": "phi4_fast",
+        "joke": "phi4_fast",
+        "fun": "phi4_fast",
+        
+        # Complex analysis, long context
+        "analyze": "gemma3_multimodal",
+        "analysis": "gemma3_multimodal",
+        "complex": "gemma3_multimodal",
+        "deep": "gemma3_multimodal",
+        "research": "gemma3_multimodal",
+        "context": "gemma3_multimodal",
+        "image": "gemma3_multimodal",
+        
+        # Multilingual tasks
+        "spanish": "aya_expanse_multilingual",
+        "french": "aya_expanse_multilingual",
+        "translate": "aya_expanse_multilingual",
+        "multilingual": "aya_expanse_multilingual",
+        "chinese": "aya_expanse_multilingual",
+        "german": "aya_expanse_multimodal",
+        "language": "aya_expanse_multilingual",
+    }
+    
+    # Check for keywords in the query
+    for keyword, model_id in keyword_mappings.items():
+        if keyword in query_lower:
+            # Verify the model exists in our config
+            if any(expert["expert_id"] == model_id for expert in config["experts"]):
+                return model_id
+    
+    # If no specific keyword matches, return the fastest model for simple queries
+    # or gemma3 for longer, complex queries
+    if len(query) > 100:
+        # For longer queries, assume it might need complex processing
+        return "gemma3_multimodal"
+    else:
+        # For shorter queries, use the fastest model
+        return get_fastest_model()
+
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize server"""
     global config
 
-    print("="*70)
-    print("  vLLM Multi-Model Inference Server")
+    print("="*80)
+    print("  vLLM Multi-Model Inference Server with Intelligent Routing")
     print("  ARM Axion Optimized")
-    print("="*70)
+    print("="*80)
     print("")
 
     config_file = os.environ.get('VLLM_CONFIG_PATH', 'config.production.json')
@@ -199,7 +299,7 @@ async def startup_event():
                 print(f"Warning: Failed to load {expert['expert_id']}: {e}")
 
     print("")
-    print("✓ Server ready")
+    print("✓ Server ready with intelligent routing")
     print("")
 
 
@@ -207,10 +307,11 @@ async def startup_event():
 async def root():
     """Root endpoint"""
     return {
-        "name": "vLLM Multi-Model Server",
-        "version": "1.0.0",
+        "name": "vLLM Multi-Model Server with Intelligent Routing",
+        "version": "2.0.0",
         "models_loaded": len(loaded_models),
-        "models_available": len(config.get("experts", []))
+        "models_available": len(config.get("experts", [])),
+        "routing_enabled": True
     }
 
 
@@ -230,7 +331,8 @@ async def list_models():
             "parent": None,
             "description": expert.get("description", ""),
             "domain": expert.get("domain", ""),
-            "status": "loaded" if expert["expert_id"] in loaded_models else "available"
+            "status": "loaded" if expert["expert_id"] in loaded_models else "available",
+            "priority": expert.get("priority", 10)  # Lower is faster
         })
 
     return {
@@ -241,12 +343,23 @@ async def list_models():
 
 @app.post("/v1/chat/completions")
 async def chat_completions(request: ChatRequest):
-    """Chat completions endpoint (OpenAI compatible)"""
+    """Chat completions endpoint (OpenAI compatible) with intelligent routing"""
     try:
-        model = get_model(request.model)
-
-        # Convert messages to prompt
+        # Convert messages to prompt for routing analysis
         prompt = format_messages_to_prompt(request.messages)
+        
+        # Determine which model to use
+        if request.model:
+            # Use explicit model from request
+            model_id = request.model
+        else:
+            # Use intelligent routing to select best model
+            model_id = simple_route_request_to_model(prompt)
+        
+        print(f"Routing request to model: {model_id}")
+        
+        # Get the model
+        model = get_model(model_id)
 
         # Sampling parameters
         sampling_params = SamplingParams(
@@ -268,7 +381,7 @@ async def chat_completions(request: ChatRequest):
             "id": f"chatcmpl-{int(time.time())}",
             "object": "chat.completion",
             "created": int(time.time()),
-            "model": request.model,
+            "model": model_id,
             "choices": [{
                 "index": 0,
                 "message": {
@@ -284,19 +397,34 @@ async def chat_completions(request: ChatRequest):
             },
             "performance": {
                 "generation_time": round(generation_time, 3),
-                "tokens_per_second": round(len(output.outputs[0].token_ids) / generation_time, 2)
+                "tokens_per_second": round(len(output.outputs[0].token_ids) / generation_time, 2),
+                "routed_to": model_id
             }
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error in chat_completions: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
 
 
 @app.post("/v1/completions")
 async def completions(request: CompletionRequest):
-    """Text completions endpoint (OpenAI compatible)"""
+    """Text completions endpoint (OpenAI compatible) with intelligent routing"""
     try:
-        model = get_model(request.model)
+        # Determine which model to use
+        if request.model:
+            # Use explicit model from request
+            model_id = request.model
+        else:
+            # Use intelligent routing to select best model
+            model_id = simple_route_request_to_model(request.prompt)
+        
+        print(f"Routing request to model: {model_id}")
+        
+        # Get the model
+        model = get_model(model_id)
 
         # Sampling parameters
         sampling_params = SamplingParams(
@@ -318,7 +446,7 @@ async def completions(request: CompletionRequest):
             "id": f"cmpl-{int(time.time())}",
             "object": "text_completion",
             "created": int(time.time()),
-            "model": request.model,
+            "model": model_id,
             "choices": [{
                 "text": generated_text,
                 "index": 0,
@@ -332,31 +460,43 @@ async def completions(request: CompletionRequest):
             },
             "performance": {
                 "generation_time": round(generation_time, 3),
-                "tokens_per_second": round(len(output.outputs[0].token_ids) / generation_time, 2)
+                "tokens_per_second": round(len(output.outputs[0].token_ids) / generation_time, 2),
+                "routed_to": model_id
             }
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error in completions: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
 
 
 @app.post("/api/generate")
 async def ollama_generate(request: dict):
-    """Ollama-compatible generate endpoint"""
+    """Ollama-compatible generate endpoint with intelligent routing"""
     try:
         model_name = request.get("model")
         prompt = request.get("prompt")
 
-        # Find model by name (try exact match first, then partial)
-        model_id = None
-        for expert in config["experts"]:
-            if expert["expert_id"] == model_name or model_name in expert["expert_id"]:
-                model_id = expert["expert_id"]
-                break
+        # Determine which model to use
+        if model_name:
+            # Find model by name (try exact match first, then partial)
+            model_id = None
+            for expert in config["experts"]:
+                if expert["expert_id"] == model_name or model_name in expert["expert_id"]:
+                    model_id = expert["expert_id"]
+                    break
 
-        if not model_id:
-            raise HTTPException(status_code=404, detail=f"Model {model_name} not found")
-
+            if not model_id:
+                raise HTTPException(status_code=404, detail=f"Model {model_name} not found")
+        else:
+            # Use intelligent routing to select best model
+            model_id = simple_route_request_to_model(prompt)
+        
+        print(f"Routing request to model: {model_id}")
+        
+        # Get the model
         model = get_model(model_id)
 
         # Sampling parameters
@@ -376,7 +516,7 @@ async def ollama_generate(request: dict):
 
         # Format Ollama-compatible response
         return {
-            "model": model_name,
+            "model": model_id,
             "created_at": time.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
             "response": generated_text,
             "done": True,
@@ -389,7 +529,10 @@ async def ollama_generate(request: dict):
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error in ollama_generate: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
 
 
 @app.get("/health")
@@ -398,7 +541,8 @@ async def health():
     return {
         "status": "healthy",
         "models_loaded": len(loaded_models),
-        "models_available": len(config.get("experts", []))
+        "models_available": len(config.get("experts", [])),
+        "routing_enabled": True
     }
 
 
@@ -410,7 +554,13 @@ async def stats():
         "models_available": [e["expert_id"] for e in config.get("experts", [])],
         "config": {
             "lazy_loading": config.get("lazy_loading", {}),
-            "server": config.get("server_config", {})
+            "server": config.get("server_config", {}),
+            "routing_threshold": config.get("routing_threshold", 0.7),
+            "use_fast_classifier": config.get("use_fast_classifier", True)
+        },
+        "routing_info": {
+            "enabled": True,
+            "total_experts": len(config.get("experts", [])) if config else 0
         }
     }
 

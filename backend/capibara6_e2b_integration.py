@@ -9,7 +9,7 @@ import json
 from typing import Dict, Any
 from e2b_manager import E2BManager, create_e2b_manager
 from utils import analyze_context, understand_query, determine_action, calculate_relevance
-from models_config import MODEL_CONFIGS
+from models_config import MODELS_CONFIG
 
 # Usar la clave API proporcionada
 E2B_API_TOKEN = "e2b_d8df23b5de5214b7bfb4ebe227a308b61a2ae172"

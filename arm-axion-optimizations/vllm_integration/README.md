@@ -60,23 +60,48 @@ Example configuration:
 {
   "experts": [
     {
-      "expert_id": "expert_general",
-      "model_path": "mistralai/Mistral-7B-Instruct-v0.2",
+      "expert_id": "phi4_fast",
+      "model_path": "/home/elect/models/phi-4-mini",
       "domain": "general",
       "quantization": "awq",
-      "enable_neon": true
+      "enable_neon": true,
+      "dtype": "float16"
     },
     {
-      "expert_id": "expert_code",
-      "model_path": "codellama/CodeLlama-13b-Instruct-hf",
+      "expert_id": "mistral_balanced",
+      "model_path": "/home/elect/models/mistral-7b-instruct-v0.2",
       "domain": "technical",
       "quantization": "awq",
-      "enable_neon": true
+      "enable_neon": true,
+      "dtype": "float16"
+    },
+    {
+      "expert_id": "qwen_coder",
+      "model_path": "/home/elect/models/qwen2.5-coder-1.5b",
+      "domain": "coding",
+      "quantization": "awq",
+      "enable_neon": true,
+      "dtype": "float16"
+    },
+    {
+      "expert_id": "gemma3_multimodal",
+      "model_path": "/home/elect/models/gemma-3-27b-it",
+      "domain": "multimodal_expert",
+      "quantization": null,
+      "enable_neon": true,
+      "dtype": "bfloat16"
     }
   ],
   "enable_consensus": false,
   "chunk_size": 64,
-  "routing_threshold": 0.7
+  "routing_threshold": 0.7,
+  "lazy_loading": {
+    "enabled": true,
+    "warmup_pool_size": 2,
+    "max_loaded_experts": 4,
+    "memory_threshold": 0.8,
+    "auto_unload_after_s": 300
+  }
 }
 ```
 

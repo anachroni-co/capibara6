@@ -2,7 +2,6 @@
 # Script para verificar servicios desde el portátil local
 # Usa las IPs conocidas de las VMs
 
-set -e
 
 # Colores
 RED='\033[0;31m'
@@ -13,9 +12,9 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 # IPs conocidas (actualizar si es necesario)
-BOUNTY2_IP="34.12.166.76"  # Según REAL_ARCHITECTURE.md
-RAG3_IP=""  # Por determinar
-GPT_OSS_IP="34.175.136.104"  # Según varios archivos
+MODELS_EUROPE_IP="34.175.48.2"    # models-europe VM
+RAG_EUROPE_IP="34.175.110.120"    # rag-europe VM
+SERVICES_IP="34.175.255.139"      # services VM
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}🔍 Verificación de Servicios desde Local${NC}"
@@ -52,30 +51,30 @@ check_http() {
     fi
 }
 
-echo -e "${CYAN}📡 Verificando VM bounty2 ($BOUNTY2_IP)...${NC}"
-check_port "$BOUNTY2_IP" 11434 "Ollama"
-check_port "$BOUNTY2_IP" 5001 "Backend Capibara6"
-check_port "$BOUNTY2_IP" 5000 "Backend alternativo"
-check_http "$BOUNTY2_IP" 11434 "/api/tags" "Ollama API"
-check_http "$BOUNTY2_IP" 5001 "/api/health" "Backend Health"
+echo -e "${CYAN}📡 Verificando VM models-europe ($MODELS_EUROPE_IP)...${NC}"
+check_port "$MODELS_EUROPE_IP" 11434 "Ollama"
+check_port "$MODELS_EUROPE_IP" 5001 "Backend Capibara6"
+check_port "$MODELS_EUROPE_IP" 5000 "Backend alternativo"
+check_http "$MODELS_EUROPE_IP" 11434 "/api/tags" "Ollama API"
+check_http "$MODELS_EUROPE_IP" 5001 "/api/health" "Backend Health"
 
 echo ""
-echo -e "${CYAN}📡 Verificando VM gpt-oss-20b ($GPT_OSS_IP)...${NC}"
-check_port "$GPT_OSS_IP" 5000 "Bridge/Main Server"
-check_port "$GPT_OSS_IP" 5002 "TTS Server"
-check_port "$GPT_OSS_IP" 5003 "MCP Server"
-check_port "$GPT_OSS_IP" 5010 "MCP Server (alternativo)"
-check_port "$GPT_OSS_IP" 5678 "N8n"
-check_port "$GPT_OSS_IP" 8080 "Modelo"
-check_http "$GPT_OSS_IP" 5000 "/api/health" "Bridge Health"
-check_http "$GPT_OSS_IP" 5003 "/api/mcp/status" "MCP Status"
-check_http "$GPT_OSS_IP" 5678 "/healthz" "N8n Health"
+echo -e "${CYAN}📡 Verificando VM services ($SERVICES_IP)...${NC}"
+check_port "$SERVICES_IP" 5000 "Bridge/Main Server"
+check_port "$SERVICES_IP" 5002 "TTS Server"
+check_port "$SERVICES_IP" 5003 "MCP Server"
+check_port "$SERVICES_IP" 5010 "MCP Server (alternativo)"
+check_port "$SERVICES_IP" 5678 "N8n"
+check_port "$SERVICES_IP" 8080 "Modelo"
+check_http "$SERVICES_IP" 5000 "/api/health" "Bridge Health"
+check_http "$SERVICES_IP" 5003 "/api/mcp/status" "MCP Status"
+check_http "$SERVICES_IP" 5678 "/healthz" "N8n Health"
 
-if [ -n "$RAG3_IP" ]; then
+if [ -n "$RAG_EUROPE_IP" ]; then
     echo ""
-    echo -e "${CYAN}📡 Verificando VM rag3 ($RAG3_IP)...${NC}"
-    check_port "$RAG3_IP" 8000 "RAG API"
-    check_http "$RAG3_IP" 8000 "/health" "RAG Health"
+    echo -e "${CYAN}📡 Verificando VM rag-europe ($RAG_EUROPE_IP)...${NC}"
+    check_port "$RAG_EUROPE_IP" 8000 "RAG API"
+    check_http "$RAG_EUROPE_IP" 8000 "/health" "RAG Health"
 fi
 
 echo ""
@@ -84,9 +83,9 @@ echo -e "${BLUE}📝 Resumen${NC}"
 echo -e "${BLUE}========================================${NC}\n"
 
 echo -e "${YELLOW}IPs configuradas:${NC}"
-echo "  • bounty2: $BOUNTY2_IP"
-echo "  • rag3: ${RAG3_IP:-No configurada}"
-echo "  • gpt-oss-20b: $GPT_OSS_IP"
+echo "  • models-europe: $MODELS_EUROPE_IP"
+echo "  • rag-europe: $RAG_EUROPE_IP"
+echo "  • services: $SERVICES_IP"
 
 echo ""
 echo -e "${YELLOW}Para obtener IPs actualizadas, ejecuta:${NC}"

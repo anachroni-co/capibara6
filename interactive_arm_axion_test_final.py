@@ -22,7 +22,7 @@ os.environ['VLLM_ENABLE_V1_ENGINE'] = '0'
 sys.path.insert(0, '/home/elect/capibara6/vllm-source-modified')
 
 class ARMInteractiveTestInterface:
-    def __init__(self, server_url="http://localhost:8082"):
+    def __init__(self, server_url="http://localhost:8080"):
         self.server_url = server_url
         self.models = [
             {"id": "phi4_fast", "name": "Phi4 mini", "desc": "Rápido para respuestas simples"},

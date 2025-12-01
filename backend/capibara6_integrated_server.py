@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, Response
 import requests
 import json
 import os
-from models_config import MODEL_CONFIGS, DEFAULT_MODEL, TIMEOUT
+from models_config import MODELS_CONFIG, DEFAULT_MODEL, TIMEOUT
 from toon_utils.format_manager_ultra_optimized import FormatManagerUltraOptimized
 import logging
 
@@ -90,7 +90,7 @@ def proxy_gpt_oss_20b():
         else:
             input_data = request.get_json()
         
-        model_config = MODEL_CONFIGS.get('gpt_oss_20b')
+        model_config = MODELS_CONFIG.get('gptoss_complex')
         
         if not model_config:
             error_response = {'error': 'Modelo GPT-OSS-20B no configurado'}
@@ -518,48 +518,49 @@ def generate_with_ollama(prompt, model_tier):
     import requests
     import time
     
-    # Mapear el tier al modelo real
+    # Mapear el tier al modelo real ARM-Axion
     model_mapping = {
-        'fast_response': 'phi3:mini',
-        'balanced': 'mistral', 
-        'complex': 'gpt-oss:20b'
+        'fast_response': 'phi4_fast',
+        'balanced': 'mistral_balanced',
+        'complex': 'gptoss_complex'
     }
     
     model_name = model_mapping.get(model_tier, 'phi3:mini')
     
-    # Configurar el endpoint de Ollama
-    ollama_endpoint = "http://localhost:11434/api/generate"
-    
+    # Configurar el endpoint de vLLM ARM-Axion
+    vllm_endpoint = "http://localhost:8080/v1/chat/completions"
+
     payload = {
         "model": model_name,
-        "prompt": prompt,
-        "stream": False,
-        "options": {
-            "temperature": 0.7,
-            "num_predict": 2048,
-            "top_p": 0.9,
-            "top_k": 40
-        }
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "max_tokens": 2048,
+        "stream": False
     }
-    
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
     try:
         start_time = time.time()
-        response = requests.post(ollama_endpoint, json=payload, timeout=240)  # Ajustar timeout
+        response = requests.post(vllm_endpoint, json=payload, headers=headers, timeout=240)  # Ajustar timeout
         end_time = time.time()
-        
+
         if response.status_code == 200:
             data = response.json()
             return {
                 'success': True,
-                'response': data.get('response', ''),
+                'response': data['choices'][0]['message']['content'],
                 'model': model_name,
                 'total_duration': int((end_time - start_time) * 1000),  # Convertir a ms
-                'token_count': data.get('eval_count', 0)
+                'token_count': data['usage']['completion_tokens']
             }
         else:
             return {
                 'success': False,
-                'error': f'Error de Ollama: {response.status_code}'
+                'error': f'Error de vLLM ARM-Axion: {response.status_code} - {response.text}'
             }
     except requests.exceptions.Timeout:
         return {
@@ -578,7 +579,7 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'service': 'capibara6_integrated_server',
-        'models': list(MODEL_CONFIGS.keys()),
+        'models': list(MODELS_CONFIG.keys()),
         'e2b_available': E2B_AVAILABLE,
         'toon_support': True
     })

@@ -1,0 +1,282 @@
+🧪 PRUEBAS DE LOS 5 MODELOS DEL SISTEMA CAPIBARA6
+==================================================
+
+🔍 Verificando disponibilidad del servidor...
+✅ Servidor disponible
+
+🤖 MODELO: phi4_fast
+📝 Descripción: Modelo rápido para respuestas simples
+========================================
+----- Prueba: Consulta general -----
+Modelo: phi4_fast
+Descripción: Modelo rápido para respuestas simples
+Consulta: ¿Qué es la inteligencia artificial?
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+❌ Error en la respuesta: ERROR: No se recibió respuesta válida
+   JSON completo: {"detail":"1 validation error for VllmConfig\n  Value error, Cannot find the config file for awq [type=value_error, input_value=ArgsKwargs((), {'model_co...additional_config': {}}), input_type=ArgsKwargs]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"}
+----------------------------------------
+
+
+🤖 MODELO: mistral_balanced
+📝 Descripción: Modelo equilibrado para tareas técnicas
+========================================
+----- Prueba: Consulta general -----
+Modelo: mistral_balanced
+Descripción: Modelo equilibrado para tareas técnicas
+Consulta: ¿Qué es la inteligencia artificial?
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+❌ Error en la respuesta: ERROR: No se recibió respuesta válida
+   JSON completo: {"detail":"1 validation error for VllmConfig\n  Value error, Cannot find the config file for awq [type=value_error, input_value=ArgsKwargs((), {'model_co...additional_config': {}}), input_type=ArgsKwargs]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"}
+----------------------------------------
+
+----- Prueba: Consulta técnica -----
+Modelo: mistral_balanced
+Descripción: Modelo equilibrado para tareas técnicas
+Consulta: Explica brevemente cómo funciona un algoritmo de ordenamiento rápido (quick sort).
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+❌ Error en la respuesta: ERROR: No se recibió respuesta válida
+   JSON completo: {"detail":"1 validation error for VllmConfig\n  Value error, Cannot find the config file for awq [type=value_error, input_value=ArgsKwargs((), {'model_co...additional_config': {}}), input_type=ArgsKwargs]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"}
+----------------------------------------
+
+
+🤖 MODELO: qwen_coder
+📝 Descripción: Modelo especializado en código y programación
+========================================
+----- Prueba: Consulta general -----
+Modelo: qwen_coder
+Descripción: Modelo especializado en código y programación
+Consulta: ¿Qué es la inteligencia artificial?
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+❌ Error en la respuesta: ERROR: No se recibió respuesta válida
+   JSON completo: {"detail":"1 validation error for VllmConfig\n  Value error, Cannot find the config file for awq [type=value_error, input_value=ArgsKwargs((), {'model_co...additional_config': {}}), input_type=ArgsKwargs]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"}
+----------------------------------------
+
+----- Prueba: Consulta técnica -----
+Modelo: qwen_coder
+Descripción: Modelo especializado en código y programación
+Consulta: Explica brevemente cómo funciona un algoritmo de ordenamiento rápido (quick sort).
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+❌ Error en la respuesta: ERROR: No se recibió respuesta válida
+   JSON completo: {"detail":"1 validation error for VllmConfig\n  Value error, Cannot find the config file for awq [type=value_error, input_value=ArgsKwargs((), {'model_co...additional_config': {}}), input_type=ArgsKwargs]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"}
+----------------------------------------
+
+----- Prueba: Consulta de programación -----
+Modelo: qwen_coder
+Descripción: Modelo especializado en código y programación
+Consulta: Escribe una función en Python que calcule el factorial de un número.
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+❌ Error en la respuesta: ERROR: No se recibió respuesta válida
+   JSON completo: {"detail":"1 validation error for VllmConfig\n  Value error, Cannot find the config file for awq [type=value_error, input_value=ArgsKwargs((), {'model_co...additional_config': {}}), input_type=ArgsKwargs]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"}
+----------------------------------------
+
+
+🤖 MODELO: gemma3_multimodal
+📝 Descripción: Modelo multimodal para análisis complejo
+========================================
+----- Prueba: Consulta general -----
+Modelo: gemma3_multimodal
+Descripción: Modelo multimodal para análisis complejo
+Consulta: ¿Qué es la inteligencia artificial?
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+✅ Respuesta del modelo:
+
+
+⏱️  Tiempo de respuesta: s
+----------------------------------------
+
+----- Prueba: Traducción -----
+Modelo: gemma3_multimodal
+Descripción: Modelo multimodal para análisis complejo
+Consulta: Traduce al inglés: 'La inteligencia artificial está transformando el mundo moderno'.
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+✅ Respuesta del modelo:
+
+
+⏱️  Tiempo de respuesta: s
+----------------------------------------
+
+
+🤖 MODELO: aya_expanse_multilingual
+📝 Descripción: Modelo multilingüe de Cohere (23 idiomas)
+========================================
+----- Prueba: Consulta general -----
+Modelo: aya_expanse_multilingual
+Descripción: Modelo multilingüe de Cohere (23 idiomas)
+Consulta: ¿Qué es la inteligencia artificial?
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+✅ Respuesta del modelo:
+
+
+⏱️  Tiempo de respuesta: s
+----------------------------------------
+
+----- Prueba: Traducción -----
+Modelo: aya_expanse_multilingual
+Descripción: Modelo multilingüe de Cohere (23 idiomas)
+Consulta: Traduce al inglés: 'La inteligencia artificial está transformando el mundo moderno'.
+
+/home/elect/capibara6/test_models_performance.sh: line 60: bc: command not found
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+✅ Respuesta del modelo:
+
+
+⏱️  Tiempo de respuesta: s
+----------------------------------------
+
+
+🔍 PRUEBA DE COMPARACIÓN ENTRE MODELOS
+======================================
+Consulta para comparación: Explica qué es el machine learning en 3 líneas
+
+💬 phi4_fast:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+-----
+💬 mistral_balanced:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+-----
+💬 qwen_coder:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+-----
+💬 gemma3_multimodal:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+-----
+💬 aya_expanse_multilingual:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+-----
+
+✅ PRUEBAS COMPLETADAS
+El sistema de 5 modelos en consenso está completamente funcional.

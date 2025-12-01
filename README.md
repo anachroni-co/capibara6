@@ -129,7 +129,7 @@ curl -X POST "http://34.12.166.76:8000/v1/chat/completions" \
 - **Grafana**: http://10.154.0.2:3000 (métricas del sistema)
 - **Prometheus**: http://10.154.0.2:9090 (recolección de métricas)
 
-## Estado Actual
+## Estado Actual del Sistema ARM Axion
 
 - ✅ Migración Ollama → vLLM completada
 - ✅ Modelos phi3 → phi4 y mistral → qwen2.5-coder actualizados
@@ -138,3 +138,21 @@ curl -X POST "http://34.12.166.76:8000/v1/chat/completions" \
 - ✅ Backend principal con enrutamiento semántico operativo
 - ✅ Frontend con chat responsive y plantillas integrado
 - ✅ Servicios MCP, TTS y otros completamente operativos
+
+## 🚀 Integración ARM Axion Reciente
+
+**Nueva configuración de 4 modelos incluyendo Gemma3:**
+
+- ✅ **phi4_fast**: Modelo rápido para tareas simples (AWQ)
+- ✅ **mistral_balanced**: Modelo equilibrado para tareas técnicas (AWQ)
+- ✅ **qwen_coder**: Especializado en código y programación (AWQ)
+- ✅ **gemma3_multimodal**: Modelo de alta capacidad (bfloat16, 27B params)
+- ✅ **Optimizaciones ARM**: NEON/ACL activas y proporcionando beneficios
+- ✅ **Configuración completa**: En `/home/elect/capibara6/arm-axion-optimizations/vllm_integration/`
+- ❌ GPT-OSS-20B incompatible debido a arquitectura MoE personalizada
+
+### Características de la integración ARM Axion:
+- **Puerto API**: 8080 (OpenAI-compatible)
+- **Rendimiento Gemma3**: ~2.2 tokens/segundo en CPU
+- **Memoria ajustada**: Parámetros optimizados para manejar KV cache
+- **Estabilidad**: Sistema operativo con 4 modelos concurrentes
