@@ -15,7 +15,7 @@ const VM_IPS = {
     // IP de services (TTS, MCP, N8n, Flask API)
     // Servicios de soporte y gateway
     SERVICES_INTERNAL: '10.204.0.5',
-    SERVICES_EXTERNAL: '34.175.255.139',
+    SERVICES_EXTERNAL: '34.175.136.104',  // IP real de la VM gpt-oss-20b
 
     // IP de rag-europe (Bridge API + Bases de datos)
     // Milvus, Nebula Graph, PostgreSQL, Redis
@@ -27,7 +27,7 @@ const VM_IPS = {
 const isLocalhost = window.location.hostname === 'localhost' ||
                     window.location.hostname === '127.0.0.1' ||
                     window.location.hostname === '' ||
-                    window.location.hostname === '34.175.255.139'; // IP de la VM services
+                    window.location.hostname === '34.175.136.104'; // IP de la VM services
 
 // Detectar proxy CORS local automáticamente
 // El proxy CORS resuelve problemas de CORS entre localhost y las VMs remotas
@@ -68,7 +68,7 @@ const CHATBOT_CONFIG = {
         // vLLM Multi-Model Server (en models-europe) - PRINCIPAL
         // Puerto: 8082 - 4 modelos: phi4_fast, mistral_balanced, qwen_coder, gptoss_complex
         VLLM: isLocalhost
-            ? (window.location.hostname === '34.175.255.139'
+            ? (window.location.hostname === '34.175.136.104'
                 ? `${window.location.origin}/models`
                 : `http://${VM_IPS.MODELS_EUROPE_EXTERNAL}:8082`)
             : null,
@@ -82,14 +82,14 @@ const CHATBOT_CONFIG = {
         // Bridge API + RAG (en rag-europe)
         // Puerto: 8000
         RAG_API: isLocalhost
-            ? (window.location.hostname === '34.175.255.139'
+            ? (window.location.hostname === '34.175.136.104'
                 ? `${window.location.origin}/rag`
                 : `http://${VM_IPS.RAG_EUROPE_EXTERNAL}:8000`)
             : null,
 
         // Bridge API endpoints específicos
         BRIDGE_API: isLocalhost
-            ? (window.location.hostname === '34.175.255.139'
+            ? (window.location.hostname === '34.175.136.104'
                 ? `${window.location.origin}/rag`
                 : `http://${VM_IPS.RAG_EUROPE_EXTERNAL}:8000`)
             : null,
@@ -103,7 +103,7 @@ const CHATBOT_CONFIG = {
         // TTS (Text-to-Speech) (en services)
         // Puerto: 5001
         TTS: isLocalhost
-            ? (window.location.hostname === '34.175.255.139'
+            ? (window.location.hostname === '34.175.136.104'
                 ? `${window.location.origin}/tts`
                 : `http://${VM_IPS.SERVICES_EXTERNAL}:5001`)
             : null,
@@ -111,7 +111,7 @@ const CHATBOT_CONFIG = {
         // MCP (Model Context Protocol) (en services)
         // Puerto: 5003
         MCP: isLocalhost
-            ? (window.location.hostname === '34.175.255.139'
+            ? (window.location.hostname === '34.175.136.104'
                 ? `${window.location.origin}/mcp`
                 : `http://${VM_IPS.SERVICES_EXTERNAL}:5003`)
             : null,
@@ -119,7 +119,7 @@ const CHATBOT_CONFIG = {
         // N8n (Workflow Automation) (en services)
         // Puerto: 5678
         N8N: isLocalhost
-            ? (window.location.hostname === '34.175.255.139'
+            ? (window.location.hostname === '34.175.136.104'
                 ? `${window.location.origin}/n8n`
                 : `http://${VM_IPS.SERVICES_EXTERNAL}:5678`)
             : null,

@@ -182,7 +182,15 @@ class N8NManager {
      */
     async checkN8NStatus() {
         try {
-            const response = await fetch(`${this.n8nURL}/healthz`, {
+            // Si estamos usando una URL de producción (Vercel), usar el endpoint proxy
+            let healthCheckUrl;
+            if (this.n8nURL.includes('capibara6.com')) {
+                healthCheckUrl = `${this.n8nURL}/n8n/healthz`;
+            } else {
+                healthCheckUrl = `${this.n8nURL}/healthz`;
+            }
+
+            const response = await fetch(healthCheckUrl, {
                 method: 'GET',
                 mode: 'no-cors' // Para evitar CORS en health check
             });
@@ -286,8 +294,12 @@ class N8NManager {
 
 // Instancia global
 const n8nManager = new N8NManager({
-    baseURL: window.API_BASE_URL || 'http://localhost:5000',
-    n8nURL: window.N8N_URL || 'http://localhost:5678'
+    baseURL: window.API_BASE_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5000'
+        : 'https://www.capibara6.com/api'),
+    n8nURL: window.N8N_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5678'
+        : 'https://www.capibara6.com')
 });
 
 // Exportar para uso en otros módulos

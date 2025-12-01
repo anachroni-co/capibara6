@@ -309,7 +309,13 @@ class AccountManager {
             return input.value;
         }
         const saved = localStorage.getItem('capibara6_n8n_url');
-        return saved || (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.N8N) || 'http://34.175.136.104:5678';
+        // En producción, usar endpoint proxy de Vercel, de lo contrario usar URL de servicio directo
+        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL && !CHATBOT_CONFIG.BACKEND_URL.includes('localhost')) {
+            // En producción, usar un proxy de Vercel para N8N
+            return 'https://www.capibara6.com/n8n';
+        } else {
+            return saved || (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.N8N) || 'http://34.175.136.104:5678';
+        }
     }
 
     saveN8nUrl(url) {

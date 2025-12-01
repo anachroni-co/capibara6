@@ -2,11 +2,11 @@
 
 class Capibara6ChatPage {
     constructor() {
-        this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
+        this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined'
             ? CHATBOT_CONFIG.BACKEND_URL
-            : (window.location.hostname === 'localhost' 
+            : (window.location.hostname === 'localhost'
                 ? 'http://localhost:5000'
-                : 'https://www.capibara6.com');
+                : 'https://www.capibara6.com/api');
         
         this.messages = [];
         this.chats = [];
@@ -488,10 +488,17 @@ class Capibara6ChatPage {
     }
     
     async sendToBackend(message) {
-        // Usar el endpoint MCP tools/call para enviar mensajes al modelo
-        const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
-            ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
-            : `${this.backendUrl}/api/ai/generate`;
+        // Determinar endpoint correcto según el entorno
+        let endpoint;
+        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE) {
+            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE;
+        } else if (this.backendUrl.includes('capibara6.com')) {
+            // En producción, usar el endpoint de completion de Vercel
+            endpoint = 'https://www.capibara6.com/api/completion';
+        } else {
+            // En desarrollo, usar el endpoint local
+            endpoint = `${this.backendUrl}/api/ai/generate`;
+        }
 
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -512,13 +519,15 @@ class Capibara6ChatPage {
             throw new Error(data.error || `HTTP error! status: ${response.status}`);
         }
 
+        // Asegurarse de que la estructura de respuesta sea correcta
+        // El endpoint de Vercel puede tener una estructura diferente
         return {
-            content: data.response,
-            modelUsed: data.model_used,
+            content: data.response || data.content || data.choices?.[0]?.message?.content || data,
+            modelUsed: data.model || 'unknown',
             metadata: {
-                tokenCount: data.token_count,
-                processingTime: data.processing_time,
-                classification: data.classification,
+                tokenCount: data.tokens || data.usage?.total_tokens,
+                processingTime: data.processing_time || null,
+                classification: data.classification || 'general',
             }
         };
     }
