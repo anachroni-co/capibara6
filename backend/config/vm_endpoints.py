@@ -24,51 +24,65 @@ def load_vm_config() -> Optional[Dict]:
     return None
 
 
-# Configuración por defecto (se puede sobrescribir con variables de entorno o vm_config.json)
+# Configuración por defecto - VMs actuales
+# Red VPC: default (10.204.0.0/24) - Zona: europe-southwest1-b
+# Actualizado: 2025-11-27
 DEFAULT_VM_ENDPOINTS = {
-    "bounty2": {
-        "ip_external": os.getenv("BOUNTY2_IP_EXTERNAL", ""),
-        "ip_internal": os.getenv("BOUNTY2_IP_INTERNAL", ""),
+    "models-europe": {
+        "ip_external": os.getenv("MODELS_EUROPE_IP_EXTERNAL", "34.175.48.2"),
+        "ip_internal": os.getenv("MODELS_EUROPE_IP_INTERNAL", "10.204.0.9"),
         "ollama": {
-            "endpoint": os.getenv("OLLAMA_ENDPOINT", "http://localhost:11434"),
+            "endpoint": os.getenv("OLLAMA_ENDPOINT", "http://10.204.0.9:11434"),
             "port": 11434,
-            "models": ["gpt-oss-20B", "mixtral", "phi-mini3"]
-        },
-        "backend": {
-            "endpoint": os.getenv("BOUNTY2_BACKEND_ENDPOINT", "http://localhost:5001"),
-            "port": 5001
+            "models": ["gpt-oss:20b", "mistral:latest", "phi3:mini"]
         }
     },
-    "rag3": {
-        "ip_external": os.getenv("RAG3_IP_EXTERNAL", ""),
-        "ip_internal": os.getenv("RAG3_IP_INTERNAL", ""),
-        "rag_api": {
-            "endpoint": os.getenv("RAG_API_ENDPOINT", "http://localhost:8000"),
+    "rag-europe": {
+        "ip_external": os.getenv("RAG_EUROPE_IP_EXTERNAL", "34.175.110.120"),
+        "ip_internal": os.getenv("RAG_EUROPE_IP_INTERNAL", "10.204.0.10"),
+        "bridge_api": {
+            "endpoint": os.getenv("BRIDGE_API_ENDPOINT", "http://10.204.0.10:8000"),
             "port": 8000
+        },
+        "rag_api": {
+            "endpoint": os.getenv("RAG_API_ENDPOINT", "http://10.204.0.10:8000"),
+            "port": 8000
+        },
+        "nebula_studio": {
+            "endpoint": os.getenv("NEBULA_STUDIO_ENDPOINT", "http://10.204.0.10:7001"),
+            "port": 7001
+        },
+        "nebula_graph": {
+            "endpoint": os.getenv("NEBULA_GRAPH_ENDPOINT", "http://10.204.0.10:9669"),
+            "port": 9669
+        },
+        "milvus": {
+            "endpoint": os.getenv("MILVUS_ENDPOINT", "http://10.204.0.10:19530"),
+            "port": 19530
         }
     },
-    "gpt-oss-20b": {
-        "ip_external": os.getenv("GPTOSS_IP_EXTERNAL", ""),
-        "ip_internal": os.getenv("GPTOSS_IP_INTERNAL", ""),
+    "services": {
+        "ip_external": os.getenv("SERVICES_IP_EXTERNAL", "34.175.255.139"),
+        "ip_internal": os.getenv("SERVICES_IP_INTERNAL", "10.204.0.5"),
         "tts": {
-            "endpoint": os.getenv("TTS_ENDPOINT", "http://localhost:5002"),
-            "port": 5002
+            "endpoint": os.getenv("TTS_ENDPOINT", "http://10.204.0.5:5001"),
+            "port": 5001
         },
         "mcp": {
-            "endpoint": os.getenv("MCP_ENDPOINT", "http://localhost:5003"),
+            "endpoint": os.getenv("MCP_ENDPOINT", "http://10.204.0.5:5003"),
             "port": 5003
         },
-        "mcp_alt": {
-            "endpoint": os.getenv("MCP_ALT_ENDPOINT", "http://localhost:5010"),
-            "port": 5010
-        },
         "n8n": {
-            "endpoint": os.getenv("N8N_ENDPOINT", "http://localhost:5678"),
+            "endpoint": os.getenv("N8N_ENDPOINT", "http://10.204.0.5:5678"),
             "port": 5678
         },
-        "bridge": {
-            "endpoint": os.getenv("BRIDGE_ENDPOINT", "http://localhost:5000"),
+        "flask_api": {
+            "endpoint": os.getenv("FLASK_API_ENDPOINT", "http://10.204.0.5:5000"),
             "port": 5000
+        },
+        "nginx": {
+            "endpoint": os.getenv("NGINX_ENDPOINT", "http://10.204.0.5:80"),
+            "port": 80
         }
     }
 }
@@ -84,122 +98,136 @@ class VMEndpoints:
     def _build_endpoints(self) -> Dict:
         """Construye los endpoints usando configuración de archivo o valores por defecto"""
         endpoints = DEFAULT_VM_ENDPOINTS.copy()
-        
+
         # Si hay configuración desde archivo, usarla
         if self.config.get("service_endpoints"):
             file_endpoints = self.config["service_endpoints"]
-            
-            # Actualizar endpoints de bounty2
-            if "bounty2" in file_endpoints:
-                endpoints["bounty2"].update(file_endpoints["bounty2"])
-            
-            # Actualizar endpoints de rag3
-            if "rag3" in file_endpoints:
-                endpoints["rag3"].update(file_endpoints["rag3"])
-            
-            # Actualizar endpoints de gpt-oss-20b
-            if "gpt-oss-20b" in file_endpoints:
-                endpoints["gpt-oss-20b"].update(file_endpoints["gpt-oss-20b"])
-        
+
+            # Actualizar endpoints de models-europe
+            if "models-europe" in file_endpoints:
+                endpoints["models-europe"].update(file_endpoints["models-europe"])
+
+            # Actualizar endpoints de rag-europe
+            if "rag-europe" in file_endpoints:
+                endpoints["rag-europe"].update(file_endpoints["rag-europe"])
+
+            # Actualizar endpoints de services
+            if "services" in file_endpoints:
+                endpoints["services"].update(file_endpoints["services"])
+
         return endpoints
     
     def get_ollama_endpoint(self, use_internal: bool = True) -> str:
-        """Obtiene el endpoint de Ollama"""
-        vm_info = self.endpoints.get("bounty2", {})
+        """Obtiene el endpoint de Ollama en models-europe"""
+        vm_info = self.endpoints.get("models-europe", {})
         ollama = vm_info.get("ollama", {})
-        
+
         if use_internal and vm_info.get("ip_internal"):
             return f"http://{vm_info['ip_internal']}:{ollama.get('port', 11434)}"
         elif vm_info.get("ip_external"):
             return f"http://{vm_info['ip_external']}:{ollama.get('port', 11434)}"
-        
+
         return ollama.get("endpoint", "http://localhost:11434")
-    
+
     def get_rag_endpoint(self, use_internal: bool = True) -> str:
-        """Obtiene el endpoint del RAG API"""
-        vm_info = self.endpoints.get("rag3", {})
+        """Obtiene el endpoint del RAG API en rag-europe"""
+        vm_info = self.endpoints.get("rag-europe", {})
         rag_api = vm_info.get("rag_api", {})
-        
+
         if use_internal and vm_info.get("ip_internal"):
             return f"http://{vm_info['ip_internal']}:{rag_api.get('port', 8000)}"
         elif vm_info.get("ip_external"):
             return f"http://{vm_info['ip_external']}:{rag_api.get('port', 8000)}"
-        
+
         return rag_api.get("endpoint", "http://localhost:8000")
-    
-    def get_tts_endpoint(self, use_internal: bool = True) -> str:
-        """Obtiene el endpoint de TTS"""
-        vm_info = self.endpoints.get("gpt-oss-20b", {})
-        tts = vm_info.get("tts", {})
-        
+
+    def get_bridge_endpoint(self, use_internal: bool = True) -> str:
+        """Obtiene el endpoint del Bridge API en rag-europe"""
+        vm_info = self.endpoints.get("rag-europe", {})
+        bridge = vm_info.get("bridge_api", {})
+
         if use_internal and vm_info.get("ip_internal"):
-            return f"http://{vm_info['ip_internal']}:{tts.get('port', 5002)}"
+            return f"http://{vm_info['ip_internal']}:{bridge.get('port', 8000)}"
         elif vm_info.get("ip_external"):
-            return f"http://{vm_info['ip_external']}:{tts.get('port', 5002)}"
-        
-        return tts.get("endpoint", "http://localhost:5002")
-    
-    def get_mcp_endpoint(self, use_internal: bool = True, use_alt: bool = False) -> str:
-        """Obtiene el endpoint de MCP"""
-        vm_info = self.endpoints.get("gpt-oss-20b", {})
-        mcp_key = "mcp_alt" if use_alt else "mcp"
-        mcp = vm_info.get(mcp_key, {})
-        
+            return f"http://{vm_info['ip_external']}:{bridge.get('port', 8000)}"
+
+        return bridge.get("endpoint", "http://localhost:8000")
+
+    def get_tts_endpoint(self, use_internal: bool = True) -> str:
+        """Obtiene el endpoint de TTS en services"""
+        vm_info = self.endpoints.get("services", {})
+        tts = vm_info.get("tts", {})
+
+        if use_internal and vm_info.get("ip_internal"):
+            return f"http://{vm_info['ip_internal']}:{tts.get('port', 5001)}"
+        elif vm_info.get("ip_external"):
+            return f"http://{vm_info['ip_external']}:{tts.get('port', 5001)}"
+
+        return tts.get("endpoint", "http://localhost:5001")
+
+    def get_mcp_endpoint(self, use_internal: bool = True) -> str:
+        """Obtiene el endpoint de MCP en services"""
+        vm_info = self.endpoints.get("services", {})
+        mcp = vm_info.get("mcp", {})
+
         if use_internal and vm_info.get("ip_internal"):
             return f"http://{vm_info['ip_internal']}:{mcp.get('port', 5003)}"
         elif vm_info.get("ip_external"):
             return f"http://{vm_info['ip_external']}:{mcp.get('port', 5003)}"
-        
+
         return mcp.get("endpoint", "http://localhost:5003")
-    
+
     def get_n8n_endpoint(self, use_internal: bool = True) -> str:
-        """Obtiene el endpoint de N8n"""
-        vm_info = self.endpoints.get("gpt-oss-20b", {})
+        """Obtiene el endpoint de N8n en services"""
+        vm_info = self.endpoints.get("services", {})
         n8n = vm_info.get("n8n", {})
-        
+
         if use_internal and vm_info.get("ip_internal"):
             return f"http://{vm_info['ip_internal']}:{n8n.get('port', 5678)}"
         elif vm_info.get("ip_external"):
             return f"http://{vm_info['ip_external']}:{n8n.get('port', 5678)}"
-        
+
         return n8n.get("endpoint", "http://localhost:5678")
-    
-    def get_bridge_endpoint(self, use_internal: bool = True) -> str:
-        """Obtiene el endpoint del Bridge"""
-        vm_info = self.endpoints.get("gpt-oss-20b", {})
-        bridge = vm_info.get("bridge", {})
-        
+
+    def get_flask_api_endpoint(self, use_internal: bool = True) -> str:
+        """Obtiene el endpoint de Flask API en services"""
+        vm_info = self.endpoints.get("services", {})
+        flask = vm_info.get("flask_api", {})
+
         if use_internal and vm_info.get("ip_internal"):
-            return f"http://{vm_info['ip_internal']}:{bridge.get('port', 5000)}"
+            return f"http://{vm_info['ip_internal']}:{flask.get('port', 5000)}"
         elif vm_info.get("ip_external"):
-            return f"http://{vm_info['ip_external']}:{bridge.get('port', 5000)}"
-        
-        return bridge.get("endpoint", "http://localhost:5000")
+            return f"http://{vm_info['ip_external']}:{flask.get('port', 5000)}"
+
+        return flask.get("endpoint", "http://localhost:5000")
     
     def are_vms_in_same_vpc(self) -> bool:
         """Verifica si las VMs están en la misma VPC"""
+        # Las VMs actuales están en la misma VPC por defecto
+        # Red: default (10.204.0.0/24) - Zona: europe-southwest1-b
         if self.config.get("network", {}).get("same_vpc"):
             return True
-        
+
         # Verificar manualmente
         networks = set()
-        for vm_name in ["bounty2", "rag3", "gpt-oss-20b"]:
+        for vm_name in ["models-europe", "rag-europe", "services"]:
             vm_data = self.config.get("vms", {}).get(vm_name, {})
             if vm_data.get("network"):
                 networks.add(vm_data["network"])
-        
-        return len(networks) == 1
-    
+
+        # Si no hay configuración, asumir que están en la misma VPC
+        return len(networks) <= 1
+
     def get_all_endpoints(self, use_internal: bool = True) -> Dict[str, str]:
         """Obtiene todos los endpoints en un diccionario"""
         return {
             "ollama": self.get_ollama_endpoint(use_internal),
             "rag_api": self.get_rag_endpoint(use_internal),
+            "bridge_api": self.get_bridge_endpoint(use_internal),
             "tts": self.get_tts_endpoint(use_internal),
             "mcp": self.get_mcp_endpoint(use_internal),
-            "mcp_alt": self.get_mcp_endpoint(use_internal, use_alt=True),
             "n8n": self.get_n8n_endpoint(use_internal),
-            "bridge": self.get_bridge_endpoint(use_internal)
+            "flask_api": self.get_flask_api_endpoint(use_internal)
         }
 
 

@@ -1,8 +1,7 @@
 #!/bin/bash
 # Script para conectarse a la VM de MODELOS (models-europe)
-# ACTUALIZADO: 2025-11-27 - bounty2 ya no existe
 
-echo "🦫 Conectando a VM de MODELOS (models-europe)..."
+echo "🤖 Conectando a VM de MODELOS (models-europe)..."
 echo "  - Zona: europe-southwest1-b"
 echo "  - IP Interna: 10.204.0.9"
 echo "  - IP Externa: 34.175.48.2"

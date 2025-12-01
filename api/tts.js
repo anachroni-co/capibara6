@@ -1,7 +1,12 @@
 /**
  * Vercel Serverless Function - TTS Proxy
- * Proxy ultra-ligero a servidor TTS en VM
- * JavaScript es más ligero que Python para proxies simples
+ * Proxy HTTPS para Coqui TTS Server en services VM
+ *
+ * Endpoint: services VM (10.204.0.5:5002)
+ * Tecnología: Coqui TTS / gTTS
+ * Fallback: Web Speech API del navegador
+ *
+ * Actualizado: 2025-12-01
  */
 
 export default async function handler(req, res) {
@@ -21,21 +26,22 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { text, language = 'es' } = req.body;
+    const { text, language = 'es', voice_id } = req.body;
 
     if (!text) {
       return res.status(400).json({ error: 'Text is required' });
     }
 
-    // Limitar caracteres
+    // Limitar caracteres (TTS tiene límites de procesamiento)
     const truncatedText = text.length > 3000 ? text.substring(0, 3000) : text;
 
-    // URL del servidor TTS en VM (variable de entorno)
-    const TTS_URL = process.env.KYUTAI_TTS_URL || 'http://34.175.215.109:5002/tts';
+    // URL del servidor TTS en services VM
+    // Puerto 5002 según especificaciones de red VPC
+    const TTS_URL = process.env.TTS_URL || 'http://34.175.255.139:5002/speak';
 
-    console.log(`📝 Proxy TTS: ${truncatedText.length} chars -> ${TTS_URL}`);
+    console.log(`📝 Proxy TTS: ${truncatedText.length} caracteres -> services VM:5002`);
 
-    // Reenviar request a la VM
+    // Reenviar request a la VM services
     const response = await fetch(TTS_URL, {
       method: 'POST',
       headers: {
@@ -43,19 +49,32 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         text: truncatedText,
-        language: language
+        language: language,
+        voice_id: voice_id || 'sofia'
       }),
       signal: AbortSignal.timeout(30000) // 30 segundos timeout
     });
 
     if (!response.ok) {
-      throw new Error(`VM responded with status ${response.status}`);
+      throw new Error(`TTS server responded with status ${response.status}`);
     }
 
+    // Si es audio binario, reenviarlo directamente
+    if (response.headers.get('content-type')?.includes('audio')) {
+      const audioBuffer = await response.arrayBuffer();
+      res.setHeader('Content-Type', 'audio/mpeg');
+      return res.status(200).send(Buffer.from(audioBuffer));
+    }
+
+    // Si es JSON (respuesta con URL o datos)
     const data = await response.json();
-    console.log('✅ TTS exitoso desde VM');
-    
-    return res.status(200).json(data);
+    console.log('✅ TTS exitoso desde services VM');
+
+    return res.status(200).json({
+      ...data,
+      provider: 'Coqui TTS',
+      vm: 'services'
+    });
 
   } catch (error) {
     console.error('❌ Error en proxy TTS:', error.message);
@@ -64,7 +83,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       error: error.message,
       fallback: true,
-      provider: 'Web Speech API (VM unavailable)'
+      provider: 'Web Speech API',
+      message: 'TTS server no disponible, usando síntesis del navegador'
     });
   }
 }

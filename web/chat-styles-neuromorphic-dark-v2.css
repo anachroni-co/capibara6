@@ -1,0 +1,70 @@
+
+/* ============================================
+   CORRECCIONES FINALES - Color y Márgenes
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Asegurar color correcto en todos los textos */
+.chat-message,
+.message-text,
+.message-content,
+p, span, div {
+    color: inherit;
+}
+
+/* Textos en mensajes del usuario */
+.message-user .message-text {
+    color: var(--text-primary) !important;
+}
+
+/* Textos en mensajes del asistente */
+.message-assistant .message-text {
+    color: var(--text-primary) !important;
+}
+
+/* Input de texto */
+.chat-input,
+textarea {
+    color: var(--text-primary) !important;
+    background-color: var(--bg-secondary) !important;
+}
+
+/* Sidebar textos */
+.sidebar,
+.sidebar * {
+    color: var(--text-primary);
+}
+
+/* Botones */
+button {
+    color: var(--text-primary);
+}
+
+/* Eliminar cualquier margen que cause "baile" */
+.chat-messages-container {
+    margin: 0 !important;
+}
+
+.chat-input-container {
+    margin: 0 !important;
+}
+
+.chat-main-content {
+    margin-left: var(--sidebar-width);
+    padding: 0 !important;
+}

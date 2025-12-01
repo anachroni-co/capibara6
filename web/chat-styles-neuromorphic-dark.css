@@ -1,0 +1,634 @@
+/* ============================================
+   Dark Neuromorphic Chat Design - Capibara6
+   ============================================ */
+
+:root {
+    --sidebar-width: 320px;
+    --sidebar-collapsed-width: 80px;
+    --header-height: 72px;
+    --input-height: 100px;
+
+    /* Dark Neuromorphic Colors */
+    --primary: #7c3aed;
+    --primary-light: #a78bfa;
+    --primary-dark: #5b21b6;
+    --accent: #06b6d4;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+
+    /* Dark Neuromorphic Background */
+    --bg-base: #1a1a2e;
+    --bg-primary: #16213e;
+    --bg-secondary: #0f1724;
+    --bg-elevated: #1e2940;
+    --bg-card: #1a2332;
+
+    /* Text colors */
+    --text-primary: #e2e8f0;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    /* Neuromorphic shadows */
+    --shadow-light: rgba(255, 255, 255, 0.05);
+    --shadow-dark: rgba(0, 0, 0, 0.5);
+
+    /* Neuromorphic effects */
+    --neuro-raised:
+        6px 6px 12px var(--shadow-dark),
+        -6px -6px 12px var(--shadow-light);
+
+    --neuro-pressed:
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light);
+
+    --neuro-flat:
+        4px 4px 8px var(--shadow-dark),
+        -2px -2px 6px var(--shadow-light);
+
+    --neuro-hover:
+        8px 8px 16px var(--shadow-dark),
+        -8px -8px 16px var(--shadow-light);
+
+    /* Border radius */
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    /* Transitions */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset and base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+.chat-page-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-base);
+    position: relative;
+}
+
+/* Subtle background texture */
+.chat-page-wrapper::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============================================
+   Sidebar - Neuromorphic
+   ============================================ */
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    transition: var(--transition-slow);
+    box-shadow: var(--neuro-flat);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+/* Sidebar header */
+.sidebar-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--bg-secondary);
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    box-shadow: var(--neuro-raised);
+    transition: var(--transition);
+}
+
+.sidebar-logo:hover {
+    box-shadow: var(--neuro-hover);
+}
+
+.sidebar-logo:active {
+    box-shadow: var(--neuro-pressed);
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* New chat button - Neuromorphic */
+.new-chat-btn {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    box-shadow: var(--neuro-raised);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.new-chat-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.new-chat-btn:hover {
+    box-shadow: var(--neuro-hover);
+    color: var(--primary-light);
+}
+
+.new-chat-btn:hover::before {
+    left: 100%;
+}
+
+.new-chat-btn:active {
+    box-shadow: var(--neuro-pressed);
+}
+
+/* Conversation list */
+.conversations-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px;
+}
+
+.conversation-item {
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    box-shadow: var(--neuro-flat);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.conversation-item:hover {
+    box-shadow: var(--neuro-raised);
+    border-color: rgba(124, 58, 237, 0.3);
+}
+
+.conversation-item.active {
+    box-shadow: var(--neuro-pressed);
+    border-color: var(--primary);
+    background: var(--bg-elevated);
+}
+
+.conversation-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.conversation-preview {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================
+   Main Chat Area - Neuromorphic
+   ============================================ */
+
+.chat-main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-base);
+    transition: var(--transition-slow);
+}
+
+.sidebar.collapsed ~ .chat-main {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Chat header */
+.chat-header {
+    height: var(--header-height);
+    background: var(--bg-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    box-shadow: var(--neuro-flat);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.chat-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.chat-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.action-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--neuro-raised);
+    transition: var(--transition);
+}
+
+.action-btn:hover {
+    box-shadow: var(--neuro-hover);
+    color: var(--primary-light);
+}
+
+.action-btn:active {
+    box-shadow: var(--neuro-pressed);
+}
+
+/* Messages container */
+.messages-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Custom scrollbar - Neuromorphic */
+.messages-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+    background: var(--bg-elevated);
+    border-radius: 4px;
+    box-shadow: var(--neuro-flat);
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-card);
+}
+
+/* Message bubbles - Neuromorphic */
+.message {
+    display: flex;
+    gap: 16px;
+    max-width: 85%;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    box-shadow: var(--neuro-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+}
+
+.message.user .message-avatar {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    box-shadow:
+        4px 4px 8px rgba(0, 0, 0, 0.4),
+        -2px -2px 6px rgba(124, 58, 237, 0.2);
+}
+
+.message-content {
+    flex: 1;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    box-shadow: var(--neuro-flat);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: var(--transition);
+}
+
+.message:hover .message-content {
+    box-shadow: var(--neuro-raised);
+}
+
+.message.user .message-content {
+    background: var(--bg-elevated);
+    border-color: rgba(124, 58, 237, 0.2);
+}
+
+.message-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.message-time {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    display: block;
+}
+
+/* ============================================
+   Input Area - Neuromorphic
+   ============================================ */
+
+.chat-input-wrapper {
+    padding: 20px 24px;
+    background: var(--bg-primary);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: var(--neuro-flat);
+}
+
+.chat-input-container {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.chat-input {
+    flex: 1;
+    min-height: 52px;
+    max-height: 200px;
+    padding: 14px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-size: 15px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    box-shadow: var(--neuro-pressed);
+    transition: var(--transition);
+}
+
+.chat-input:focus {
+    border-color: var(--primary);
+    box-shadow:
+        inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 8px rgba(255, 255, 255, 0.03),
+        0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.chat-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Send button - Neuromorphic */
+.send-btn {
+    width: 52px;
+    height: 52px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        6px 6px 12px rgba(0, 0, 0, 0.5),
+        -2px -2px 6px rgba(124, 58, 237, 0.3);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.send-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.send-btn:hover {
+    box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.6),
+        -4px -4px 8px rgba(124, 58, 237, 0.4);
+    transform: translateY(-2px);
+}
+
+.send-btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.send-btn:active {
+    box-shadow:
+        inset 4px 4px 8px rgba(0, 0, 0, 0.4),
+        inset -2px -2px 4px rgba(124, 58, 237, 0.2);
+    transform: translateY(0);
+}
+
+.send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: var(--neuro-flat);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .chat-main {
+        margin-left: 0;
+    }
+
+    .message {
+        max-width: 95%;
+    }
+}
+
+/* ============================================
+   Loading and States
+   ============================================ */
+
+.typing-indicator {
+    display: flex;
+    gap: 6px;
+    padding: 16px 20px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    animation: typing 1.4s infinite;
+    box-shadow: var(--neuro-raised);
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+/* Empty state */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+    color: var(--text-muted);
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    padding: 32px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    box-shadow: var(--neuro-raised);
+}
+
+.empty-state-text {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.neuro-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    box-shadow: var(--neuro-raised);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.neuro-pressed {
+    box-shadow: var(--neuro-pressed);
+}
+
+.neuro-hover:hover {
+    box-shadow: var(--neuro-hover);
+}

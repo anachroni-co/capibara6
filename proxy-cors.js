@@ -3,14 +3,33 @@ const httpProxy = require('http-proxy');
 
 const proxy = httpProxy.createProxyServer({});
 
+// Configuración actualizada - VMs en VPC default (10.204.0.0/24)
+// Zona: europe-southwest1-b - Actualizado: 2025-11-27
 const TARGETS = {
-  '/api/ai': 'http://34.12.166.76:5001',
-  '/api/chat': 'http://34.12.166.76:5001',
-  '/api/mcp': 'http://34.175.136.104:5003',
-  '/api/n8n': 'http://34.175.136.104:5678',
-  '/api/tts': 'http://34.175.136.104:5002',
-  '/api/rag': 'http://10.154.0.2:8000',
-  '/health': 'http://34.12.166.76:5001'
+  // vLLM Multi-Model Server en models-europe (10.204.0.9:8082) - PRINCIPAL
+  '/api/ai': 'http://10.204.0.9:8082',
+  '/api/chat': 'http://10.204.0.9:8082',
+  '/api/vllm': 'http://10.204.0.9:8082',
+  '/v1/chat': 'http://10.204.0.9:8082',
+  '/v1/completions': 'http://10.204.0.9:8082',
+
+  // Ollama en models-europe (10.204.0.9:11434) - ALTERNATIVO
+  '/api/ollama': 'http://10.204.0.9:11434',
+
+  // Bridge API y RAG en rag-europe (10.204.0.10)
+  '/api/rag': 'http://10.204.0.10:8000',
+  '/api/bridge': 'http://10.204.0.10:8000',
+  '/api/milvus': 'http://10.204.0.10:8000',
+  '/api/nebula': 'http://10.204.0.10:8000',
+
+  // Servicios en services (10.204.0.5)
+  '/api/mcp': 'http://10.204.0.5:5003',
+  '/api/n8n': 'http://10.204.0.5:5678',
+  '/api/tts': 'http://10.204.0.5:5001',
+  '/api/flask': 'http://10.204.0.5:5000',
+
+  // Health check
+  '/health': 'http://10.204.0.5:5000'
 };
 
 const server = http.createServer((req, res) => {
