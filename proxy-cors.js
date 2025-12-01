@@ -6,12 +6,12 @@ const proxy = httpProxy.createProxyServer({});
 // Configuración actualizada - VMs en VPC default (10.204.0.0/24)
 // Zona: europe-southwest1-b - Actualizado: 2025-11-27
 const TARGETS = {
-  // vLLM Multi-Model Server en models-europe (10.204.0.9:8082) - PRINCIPAL
-  '/api/ai': 'http://10.204.0.9:8082',
-  '/api/chat': 'http://10.204.0.9:8082',
-  '/api/vllm': 'http://10.204.0.9:8082',
-  '/v1/chat': 'http://10.204.0.9:8082',
-  '/v1/completions': 'http://10.204.0.9:8082',
+  // vLLM Multi-Model Server en models-europe (10.204.0.9:8080) - PRINCIPAL
+  '/api/ai': 'http://10.204.0.9:8080',
+  '/api/chat': 'http://10.204.0.9:8080',
+  '/api/vllm': 'http://10.204.0.9:8080',
+  '/v1/chat': 'http://10.204.0.9:8080',
+  '/v1/completions': 'http://10.204.0.9:8080',
 
   // Ollama en models-europe (10.204.0.9:11434) - ALTERNATIVO
   '/api/ollama': 'http://10.204.0.9:11434',

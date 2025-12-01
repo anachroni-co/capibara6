@@ -66,11 +66,11 @@ const CHATBOT_CONFIG = {
         // Si estamos en localhost real, usar IPs externas directas
 
         // vLLM Multi-Model Server (en models-europe) - PRINCIPAL
-        // Puerto: 8082 - 4 modelos: phi4_fast, mistral_balanced, qwen_coder, gptoss_complex
+        // Puerto: 8080 - 5 modelos: phi4_fast, mistral_balanced, qwen_coder, gemma3_multimodal, aya_expanse_multilingual
         VLLM: isLocalhost
             ? (window.location.hostname === '34.175.136.104'
                 ? `${window.location.origin}/models`
-                : `http://${VM_IPS.MODELS_EUROPE_EXTERNAL}:8082`)
+                : `http://${VM_IPS.MODELS_EUROPE_EXTERNAL}:8080`)
             : null,
 
         // Ollama API (en models-europe) - ALTERNATIVO

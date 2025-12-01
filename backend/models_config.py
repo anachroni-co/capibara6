@@ -88,7 +88,7 @@ MODELS_CONFIG = {
     'mixtral': {
         'name': 'Mixtral 8x7B',
         'base_model': 'Mixtral-8x7B-Instruct-v0.1',
-        'server_url': 'http://34.175.215.109:8082/completion',  # Puerto diferente
+        'server_url': 'http://34.175.48.2:8080/v1/chat/completions',  # Puerto actualizado
         'type': 'llama_cpp',
         'hardware': 'GPU',
         'status': 'active',

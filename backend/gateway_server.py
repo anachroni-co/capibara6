@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 # ============================================
 
 # URLs de servicios
-VLLM_URL = os.getenv("VLLM_URL", "http://10.204.0.9:8082")
+VLLM_URL = os.getenv("VLLM_URL", "http://10.204.0.9:8080")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://10.204.0.9:11434")
 BRIDGE_API_URL = os.getenv("BRIDGE_API_URL", "http://10.204.0.10:8000")
 

@@ -59,7 +59,7 @@
 
 ### Servicios Activos
 
-#### 1. vLLM Multi-Model Server (Puerto 8082) - **PRINCIPAL**
+#### 1. vLLM Multi-Model Server (Puerto 8080) - **PRINCIPAL**
 
 **Arquitectura:**
 - Sistema de consenso y routing de modelos
@@ -74,7 +74,8 @@
 | `phi4_fast` | ✅ Cargado | General | Respuestas rápidas y simples |
 | `mistral_balanced` | ✅ Cargado | Technical | Tareas técnicas intermedias |
 | `qwen_coder` | ✅ Cargado | Coding | Especializado en código |
-| `gptoss_complex` | ⏳ Disponible | Expert | Razonamiento complejo (20B) |
+| `gemma3_multimodal` | ✅ Cargado | Complex Reasoning | Análisis complejo y multimodal |
+| `aya_expanse_multilingual` | ✅ Cargado | Multilingual | Multilingüe y razonamiento complejo |
 
 **Endpoints:**
 
@@ -96,10 +97,10 @@ POST /api/generate        # Generate text
 
 ```bash
 # Listar modelos
-curl http://10.204.0.9:8082/v1/models
+curl http://10.204.0.9:8080/v1/models
 
 # Chat completion
-curl http://10.204.0.9:8082/v1/chat/completions \
+curl http://10.204.0.9:8080/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "phi4_fast",
@@ -212,7 +213,7 @@ Usuario/Cliente
 ┌─────────────────────────────────────────┐
 │ models-europe (10.204.0.9)              │
 │ ┌─────────────────────────────────────┐ │
-│ │ vLLM Server (8082) - PRINCIPAL      │ │
+│ │ vLLM Server (8080) - PRINCIPAL      │ │
 │ │ ├─ Router/Consenso                  │ │
 │ │ ├─ phi4_fast (rápido)               │ │
 │ │ ├─ mistral_balanced (balanceado)    │ │
@@ -250,7 +251,7 @@ services → models-europe:  0.5ms (0% packet loss) ✅
 services → rag-europe:     0.5ms (0% packet loss) ✅
 
 # APIs accesibles
-vLLM Server (10.204.0.9:8082):     ✅ 4 modelos
+vLLM Server (10.204.0.9:8080):     ✅ 5 modelos
 Ollama (10.204.0.9:11434):         ✅ 3 modelos
 Bridge API (10.204.0.10:8000):     ✅ 4 DBs conectadas
 ```
@@ -298,8 +299,8 @@ gcloud compute ssh rag-europe --zone=europe-southwest1-b
 
 ```bash
 # vLLM Server
-VLLM_URL=http://10.204.0.9:8082
-VLLM_MODELS=phi4_fast,mistral_balanced,qwen_coder,gptoss_complex
+VLLM_URL=http://10.204.0.9:8080
+VLLM_MODELS=phi4_fast,mistral_balanced,qwen_coder,gemma3_multimodal,aya_expanse_multilingual
 
 # Ollama (alternativo)
 OLLAMA_URL=http://10.204.0.9:11434
@@ -331,7 +332,7 @@ gcloud compute firewall-rules create allow-vllm \
   --priority=1000 \
   --network=default \
   --action=ALLOW \
-  --rules=tcp:8082 \
+  --rules=tcp:8080 \
   --source-ranges=10.204.0.0/24 \  # Solo VPC interna
   --target-tags=models-vm
 ```
@@ -347,8 +348,8 @@ gcloud compute firewall-rules create allow-vllm \
 curl http://10.204.0.5:5000/health
 
 # models-europe (vLLM)
-curl http://10.204.0.9:8082/health
-curl http://10.204.0.9:8082/stats
+curl http://10.204.0.9:8080/health
+curl http://10.204.0.9:8080/stats
 
 # models-europe (Ollama)
 curl http://10.204.0.9:11434/api/version
