@@ -59,6 +59,10 @@
     {
       "source": "/api/completion",
       "destination": "/api/gateway-proxy.js"
+    },
+    {
+      "source": "/api/cors-test",
+      "destination": "/api/cors-test.js"
     }
   ],
   "headers": [
