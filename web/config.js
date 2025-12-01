@@ -54,10 +54,10 @@ const CORS_PROXY_URL = (() => {
 const CHATBOT_CONFIG = {
     // URL del backend
     // En desarrollo local o VM: usa backend local
-    // En producción: URL de Vercel
+    // En producción: URL de Vercel (mismo dominio que el origen)
     BACKEND_URL: isLocalhost
         ? window.location.origin  // Usa el mismo origen (la VM o localhost)
-        : 'https://www.capibara6.com',
+        : window.location.origin, // Usa el mismo origen que el frontend (capibara6.com o www.capibara6.com)
     
     // URLs de servicios adicionales (solo en desarrollo local)
     SERVICE_URLS: {
