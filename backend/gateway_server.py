@@ -16,7 +16,7 @@ from functools import wraps
 
 from fastapi import FastAPI, HTTPException, Request, Depends, Header, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 import httpx
 from dotenv import load_dotenv
@@ -677,6 +677,55 @@ async def create_acontext_space(name: str):
     except Exception as e:
         logger.error(f"Error creating Acontext space: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to create Acontext space: {str(e)}")
+
+# ============================================
+# ACONTEXT PROXY ENDPOINTS
+# ============================================
+
+@app.api_route("/api/acontext/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
+async def acontext_proxy(request: Request, path: str):
+    """Proxy para todos los endpoints de Acontext"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    # Construir la URL completa de Acontext
+    acontext_base_url = os.getenv("ACONTEXT_BASE_URL", "http://localhost:8029/api/v1")
+
+    # Obtener el cuerpo de la solicitud
+    body = await request.body() if request.method in ["POST", "PUT", "PATCH"] else None
+
+    # Hacer la solicitud al servidor de Acontext
+    async with httpx.AsyncClient() as client:
+        try:
+            # Construir la URL completa
+            url = f"{acontext_base_url}/{path}"
+
+            # Incluir los parámetros de consulta si existen
+            params = dict(request.query_params)
+
+            # Hacer la solicitud al servidor Acontext
+            response = await client.request(
+                method=request.method,
+                url=url,
+                params=params,
+                content=body,
+                headers={key: value for key, value in request.headers.items()
+                        if key.lower() not in ['host', 'content-length']},
+                timeout=30.0
+            )
+
+            # Devolver la respuesta
+            return JSONResponse(
+                status_code=response.status_code,
+                content=response.json() if response.content else None,
+                headers=dict(response.headers)
+            )
+        except httpx.RequestError as e:
+            logger.error(f"Error en proxy Acontext: {e}")
+            raise HTTPException(status_code=502, detail=f"Acontext service error: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error inesperado en proxy Acontext: {e}")
+            raise HTTPException(status_code=500, detail=f"Acontext proxy error: {str(e)}")
 
 # ============================================
 # STARTUP/SHUTDOWN

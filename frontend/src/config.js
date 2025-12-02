@@ -24,7 +24,15 @@ const CHATBOT_CONFIG = {
         TTS_VOICES: '/api/tts/voices',    // Para listar voces
         MCP_CONTEXT: '/api/v1/mcp/context',  // Para contexto inteligente
         MCP_STATUS: '/api/v1/mcp/status',  // Endpoint de estado MCP
-        E2B_EXECUTE: '/api/v1/e2b/execute'   // Endpoint actualizado para E2B
+        E2B_EXECUTE: '/api/v1/e2b/execute',   // Endpoint actualizado para E2B
+        ACONTEXT: {
+            BASE_URL: isLocalhost ? 'http://localhost:8001/api' : 'https://www.capibara6.com/api',  // Proxy through backend
+            STATUS: '/acontext/status',              // Check Acontext status
+            SESSION_CREATE: '/acontext/session/create', // Create session
+            SPACE_CREATE: '/acontext/space/create',     // Create space
+            SEARCH: '/acontext/search',                 // Search in space
+            HEALTH: '/acontext/health'                  // Acontext health
+        }
     },
 
     // Configuración del modelo GPT-OSS-20B
@@ -131,6 +139,26 @@ const CHATBOT_CONFIG = {
         E2B: {
             enabled: true,
             note: 'E2B integrado en backend principal (puerto 5001)'
+        },
+
+        ACONTEXT: {
+            enabled: true,
+            url: isLocalhost ? 'http://localhost:8001' : 'https://www.capibara6.com',
+            endpoints: {
+                STATUS: '/api/acontext/status',
+                SESSION_CREATE: '/api/acontext/session/create',
+                SPACE_CREATE: '/api/acontext/space/create',
+                SEARCH: '/api/acontext/search',
+                HEALTH: '/api/acontext/health'
+            },
+            timeout: 10000,
+            note: 'Acontext - Context data platform for AI agents and self-learning',
+            features: {
+                session_management: true,
+                context_persistence: true,
+                self_learning: true,
+                experience_search: true
+            }
         },
 
         // ========== VM rag3 - Sistema RAG Completo ==========

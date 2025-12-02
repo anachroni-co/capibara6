@@ -1806,9 +1806,247 @@ function logout() {
     }
 }
 
-// Exportar funciones para uso global
-window.closeSettingsModal = closeSettingsModal;
-window.logout = logout;
+// ============================================
+// Acontext Integration
+// ============================================
+let acontextStatus = { enabled: false, status: 'disconnected' };
+let currentAcontextSession = null;
+
+async function checkAcontextStatus() {
+    try {
+        console.log('🔍 Verificando estado de Acontext...');
+        // Usar la URL del gateway server (proxy)
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8001' : '';
+
+        const response = await fetch(`${gatewayBaseUrl}/api/acontext/status`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            timeout: 5000
+        });
+
+        if (response.ok) {
+            const status = await response.json();
+            acontextStatus = { enabled: status.enabled, status: 'connected', project_id: status.project_id };
+            updateAcontextIndicator();
+            console.log('✅ Acontext está conectado:', status);
+            return status;
+        } else {
+            throw new Error(`HTTP ${response.status}`);
+        }
+    } catch (error) {
+        console.error('❌ No se pudo conectar a Acontext:', error);
+        acontextStatus = { enabled: false, status: 'disconnected' };
+        updateAcontextIndicator();
+        return null;
+    }
+}
+
+function updateAcontextIndicator() {
+    // Crear o actualizar el indicador de Acontext en el sidebar
+    const sidebarHeader = document.querySelector('.sidebar-header');
+    if (!sidebarHeader) return;
+
+    let acontextIndicator = document.getElementById('acontext-indicator');
+    if (!acontextIndicator) {
+        acontextIndicator = document.createElement('div');
+        acontextIndicator.id = 'acontext-indicator';
+        acontextIndicator.className = 'acontext-indicator';
+        acontextIndicator.innerHTML = `
+            <i data-lucide="brain" style="width: 16px; height: 16px;"></i>
+            <span id="acontext-status-text">Acontext</span>
+        `;
+        sidebarHeader.appendChild(acontextIndicator);
+    }
+
+    const statusText = document.getElementById('acontext-status-text');
+    if (statusText) {
+        if (acontextStatus.enabled && acontextStatus.status === 'connected') {
+            statusText.textContent = 'Acontext (activo)';
+            acontextIndicator.setAttribute('title', 'Acontext: Contexto persistente activo');
+        } else {
+            statusText.textContent = 'Acontext (desconectado)';
+            acontextIndicator.setAttribute('title', 'Acontext: No disponible');
+        }
+    }
+
+    // Actualizar icono según estado
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
+
+async function createAcontextSession(spaceId = null) {
+    if (!acontextStatus.enabled || acontextStatus.status !== 'connected') {
+        console.log('⚠️ Acontext no está disponible, omitiendo creación de sesión');
+        return null;
+    }
+
+    try {
+        console.log('📝 Creando sesión Acontext...');
+        // Usar el endpoint proxy del gateway server
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8001' : '';
+
+        const response = await fetch(`${gatewayBaseUrl}/api/acontext/session/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                space_id: spaceId
+            })
+        });
+
+        if (response.ok) {
+            const sessionData = await response.json();
+            currentAcontextSession = sessionData;
+            console.log('✅ Sessión Acontext creada:', sessionData.session_id);
+            return sessionData;
+        } else {
+            console.error('❌ Error creando sesión Acontext:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('❌ Error de red al crear sesión Acontext:', error);
+        return null;
+    }
+}
+
+// Agregar soporte para enviar mensajes a Acontext
+async function sendToAcontext(sessionId, message, role) {
+    if (!sessionId || !acontextStatus.enabled || acontextStatus.status !== 'connected') {
+        return;
+    }
+
+    try {
+        console.log(`💬 Enviando mensaje a Acontext (sesión: ${sessionId})`);
+        // Usar el endpoint proxy del gateway server
+        // Como no tenemos un endpoint específico para enviar mensajes a una sesión específica,
+        // debemos construir la ruta completa
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8001' : '';
+
+        const response = await fetch(`${gatewayBaseUrl}/api/acontext/session/${sessionId}/messages`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                blob: { role, content: message },
+                format: "openai"
+            })
+        });
+
+        if (response.ok) {
+            console.log('✅ Mensaje enviado a Acontext');
+        } else {
+            console.error('❌ Error enviando mensaje a Acontext:', response.status);
+        }
+    } catch (error) {
+        console.error('❌ Error de red al enviar mensaje a Acontext:', error);
+    }
+}
+
+// Inicializar Acontext al cargar la aplicación
+async function initAcontext() {
+    console.log('🎯 Inicializando Acontext integration...');
+    await checkAcontextStatus();
+
+    // Acontext está habilitado por defecto si está disponible
+    console.log('✅ Acontext integration habilitada');
+    // Actualizar UI con indicador de Acontext
+    setTimeout(updateAcontextIndicator, 1000);
+}
+
+// Modificar la función sendMessage para integrar con Acontext
+const originalSendMessage = sendMessage;
+sendMessage = async function() {
+    const content = messageInput ? messageInput.value.trim() : '';
+
+    if ((!content && attachedFiles.length === 0) || isTyping) {
+        return;
+    }
+
+    // Crear chat si no existe
+    if (!currentChatId) {
+        createNewChat();
+    }
+
+    // Crear sesión Acontext si está habilitado
+    if (acontextStatus.enabled && acontextStatus.status === 'connected' && !currentAcontextSession) {
+        await createAcontextSession();
+    }
+
+    // Construir mensaje con archivos si hay
+    let messageContent = content;
+    if (attachedFiles.length > 0) {
+        const filesList = attachedFiles.map(f => f.name).join(', ');
+        messageContent = content ? `${content}\n\n📎 Archivos adjuntos: ${filesList}` : `📎 Archivos adjuntos: ${filesList}`;
+    }
+
+    // Guardar el último mensaje del usuario para regeneración
+    lastUserMessage = content || 'Archivos adjuntos';
+
+    // Guardar copia de los archivos antes de limpiarlos
+    const filesToSend = [...attachedFiles];
+
+    // Agregar mensaje del usuario
+    appendMessage('user', messageContent);
+
+    // Enviar mensaje a Acontext también
+    if (currentAcontextSession) {
+        await sendToAcontext(currentAcontextSession.session_id, messageContent, 'user');
+    }
+
+    // Limpiar input y archivos (con pequeño delay para evitar flash visual)
+    setTimeout(() => {
+        messageInput.value = '';
+        messageInput.style.height = 'auto';
+        attachedFiles = [];
+        updateAttachmentsPreview();
+        updateSendButtonState();
+    }, 50);
+
+    // Guardar mensaje
+    saveMessage('user', messageContent);
+
+    // Actualizar título del chat si es el primer mensaje
+    const chat = chats.find(c => c.id === currentChatId);
+    if (chat && chat.messages.length === 1) {
+        chat.title = content.substring(0, 50) + (content.length > 50 ? '...' : '');
+        const titleElement = document.getElementById('current-chat-title');
+        if (titleElement) {
+            titleElement.textContent = chat.title;
+        }
+        updateChatsList();
+    }
+
+    // Simular respuesta del asistente
+    await simulateAssistantResponse(lastUserMessage, filesToSend);
+};
+
+// Modificar la función appendMessage para integrar con Acontext
+const originalAppendMessage = appendMessage;
+appendMessage = function(role, content, save = true, stats = null) {
+    // Llamar a la función original
+    originalAppendMessage(role, content, save, stats);
+
+    // Enviar mensaje a Acontext si es una respuesta del asistente
+    if (currentAcontextSession && role === 'assistant') {
+        sendToAcontext(currentAcontextSession.session_id, content, role);
+    }
+};
+
+// Modificar la inicialización para incluir Acontext
+const originalInit = init;
+init = function() {
+    console.log('🚀 Iniciando Capibara6 Chat con Acontext...');
+    originalInit();
+    initAcontext();
+};
 
 // ============================================
 // Importar función de cambio de idioma si existe
@@ -1816,4 +2054,10 @@ window.logout = logout;
 if (typeof window.capibaraLanguage !== 'undefined') {
     window.changeLanguage = window.capibaraLanguage.switch;
 }
+
+// Exportar funciones para uso global
+window.closeSettingsModal = closeSettingsModal;
+window.logout = logout;
+window.checkAcontextStatus = checkAcontextStatus;
+window.initAcontext = initAcontext;
 
