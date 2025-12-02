@@ -2013,6 +2013,33 @@ class Capibara6ChatPage {
             setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
+    setupAutoFocus() {
+        // Asegurar que el input de chat esté enfocado automáticamente en móviles
+        const isMobile = window.innerWidth <= 480 || ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+        
+        if (isMobile) {
+            setTimeout(() => {
+                if (this.chatInput) {
+                    this.chatInput.focus();
+                    // Colocar cursor al final del texto si hay contenido
+                    if (this.chatInput.value) {
+                        this.chatInput.selectionStart = this.chatInput.selectionEnd = this.chatInput.value.length;
+                    }
+                }
+            }, 300); // Pequeño delay para asegurar que el DOM esté completamente cargado
+            
+            // Escuchar eventos de touch para mantener el foco
+            document.addEventListener("touchstart", (e) => {
+                if (!e.target.closest(".chat-input, .chat-send-btn, .input-action-btn")) {
+                    setTimeout(() => {
+                        if (this.chatInput) {
+                            this.chatInput.focus();
+                        }
+                    }, 100);
+                }
+            }, { passive: true });
+        }
+    }
 }
 
 // Inicializar cuando el DOM esté listo
