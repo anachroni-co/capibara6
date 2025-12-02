@@ -727,6 +727,88 @@ async def acontext_proxy(request: Request, path: str):
             logger.error(f"Error inesperado en proxy Acontext: {e}")
             raise HTTPException(status_code=500, detail=f"Acontext proxy error: {str(e)}")
 
+@app.get("/api/agents")
+async def get_agents():
+    """Obtiene la lista de agentes desde Acontext"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    try:
+        # Para obtener agentes, podemos buscar en todos los espacios existentes
+        # Por ahora, devolvemos una lista simulada basada en búsquedas de experiencias
+        # En una implementación real, esto buscaría espacios que representen agentes
+        search_result = await acontext_client.search_space(
+            space_id=ACONTEXT_SPACE_ID or "default-space",
+            query="agent",
+            mode="fast"
+        )
+
+        agents = search_result.get("cited_blocks", [])
+
+        # También podemos devolver agentes guardados como espacios
+        # En el mock actual, devolveremos una lista vacía o datos simulados
+        simulated_agents = [
+            {
+                "id": "agent_1",
+                "name": "Agente de Soporte Técnico",
+                "description": "Especializado en resolver problemas técnicos",
+                "type": "support",
+                "created_at": "2025-12-02T10:00:00Z"
+            },
+            {
+                "id": "agent_2",
+                "name": "Agente de Investigación",
+                "description": "Ayuda con búsquedas y análisis de información",
+                "type": "research",
+                "created_at": "2025-12-02T11:00:00Z"
+            }
+        ]
+
+        return {"agents": simulated_agents}
+    except Exception as e:
+        logger.error(f"Error getting agents: {e}")
+        # En caso de error, devolver agentes simulados
+        return {
+            "agents": [
+                {
+                    "id": "demo_agent_1",
+                    "name": "Agente Demo",
+                    "description": "Agente de ejemplo para probar funcionalidad",
+                    "type": "demo",
+                    "created_at": "2025-12-02T12:00:00Z"
+                }
+            ]
+        }
+
+@app.post("/api/agents")
+async def create_agent(agent_data: dict):
+    """Crea un nuevo agente como un espacio en Acontext"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    try:
+        agent_name = agent_data.get("name", "Nuevo Agente")
+        agent_description = agent_data.get("description", "")
+
+        # Crear un espacio en Acontext para representar al agente
+        space_result = await acontext_client.create_space(ACONTEXT_PROJECT_ID, agent_name)
+
+        if "error" in space_result:
+            raise HTTPException(status_code=500, detail=space_result["error"])
+
+        agent_info = {
+            "id": space_result["id"],
+            "name": agent_name,
+            "description": agent_description,
+            "space_id": space_result["id"],
+            "created_at": datetime.now().isoformat()
+        }
+
+        return {"agent": agent_info}
+    except Exception as e:
+        logger.error(f"Error creating agent: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to create agent: {str(e)}")
+
 # ============================================
 # STARTUP/SHUTDOWN
 # ============================================

@@ -29,3 +29,12 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
 INFO:     127.0.0.1:32850 - "GET /api/acontext/status HTTP/1.1" 200 OK
 INFO:     127.0.0.1:41580 - "POST /api/acontext/session/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41248 - "POST /api/acontext/search HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:45650 - "GET /api/acontext/search?query=agent&mode=fast HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35734 - "GET /api/agents HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2025-12-02 17:23:13,242 - gateway_server - INFO - 🛑 Cerrando API Gateway...
+2025-12-02 17:23:13,242 - gateway_server - INFO - 🔒 Acontext client closed
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1050336]

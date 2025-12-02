@@ -1807,7 +1807,7 @@ function logout() {
 }
 
 // ============================================
-// Acontext Integration
+// Acontext Integration & Agent Generation
 // ============================================
 let acontextStatus = { enabled: false, status: 'disconnected' };
 let currentAcontextSession = null;
@@ -1817,7 +1817,7 @@ async function checkAcontextStatus() {
         console.log('🔍 Verificando estado de Acontext...');
         // Usar la URL del gateway server (proxy)
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8001' : '';
+        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8002' : '';
 
         const response = await fetch(`${gatewayBaseUrl}/api/acontext/status`, {
             method: 'GET',
@@ -1832,6 +1832,15 @@ async function checkAcontextStatus() {
             acontextStatus = { enabled: status.enabled, status: 'connected', project_id: status.project_id };
             updateAcontextIndicator();
             console.log('✅ Acontext está conectado:', status);
+
+            // Añadir log de carga del servicio Acontext
+            console.log('🎯 Servicio Acontext cargado y listo para usar');
+            console.log('📋 Project ID:', status.project_id);
+            console.log('📊 Estado:', status.status);
+
+            // Inicializar agentes
+            initAgentSystem();
+
             return status;
         } else {
             throw new Error(`HTTP ${response.status}`);
@@ -1840,9 +1849,334 @@ async function checkAcontextStatus() {
         console.error('❌ No se pudo conectar a Acontext:', error);
         acontextStatus = { enabled: false, status: 'disconnected' };
         updateAcontextIndicator();
+        console.log('⚠️ Servicio Acontext no disponible');
         return null;
     }
 }
+
+// ============================================
+// Agent System Integration with Acontext
+// ============================================
+
+async function initAgentSystem() {
+    console.log('🤖 Inicializando sistema de agentes con Acontext...');
+
+    // Conectar botón de creación de agentes
+    const createAgentBtn = document.getElementById('create-agent-btn');
+    if (createAgentBtn) {
+        createAgentBtn.addEventListener('click', showAgentCreationModal);
+        console.log('✅ Botón "Crear Agente" conectado a Acontext');
+    }
+
+    // Cargar agentes existentes
+    loadAgentsFromAcontext();
+
+    // Conectar pestaña de agentes
+    setupAgentsTab();
+}
+
+function setupAgentsTab() {
+    // Agregar event listener para el cambio de pestaña a agentes
+    document.querySelectorAll('.sidebar-tab').forEach(tab => {
+        if (tab.getAttribute('data-tab') === 'agents') {
+            tab.addEventListener('click', async () => {
+                setTimeout(async () => {
+                    await loadAgentsFromAcontext();
+                }, 100);
+            });
+        }
+    });
+}
+
+async function loadAgentsFromAcontext() {
+    if (!acontextStatus.enabled || acontextStatus.status !== 'connected') {
+        console.log('⚠️ Acontext no disponible, usando agentes locales');
+        loadLocalAgents();
+        return;
+    }
+
+    try {
+        console.log('🔄 Cargando agentes desde Acontext...');
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8002' : '';
+
+        // Usar el nuevo endpoint de agentes
+        const response = await fetch(`${gatewayBaseUrl}/api/agents`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const agents = data.agents || [];
+
+            console.log('📋 Agentes encontrados en Acontext:', agents.length);
+
+            // Convertir agentes a formato compatible con displayAgents
+            const formattedAgents = agents.map(agent => ({
+                block_id: agent.id,
+                title: agent.name,
+                type: 'agent',
+                props: {
+                    description: agent.description,
+                    type: agent.type,
+                    created_at: agent.created_at
+                }
+            }));
+
+            displayAgents(formattedAgents);
+        } else {
+            console.log('⚠️ No se pudieron cargar agentes de Acontext, usando locales');
+            loadLocalAgents();
+        }
+    } catch (error) {
+        console.error('❌ Error cargando agentes de Acontext:', error);
+        loadLocalAgents();
+    }
+}
+
+function loadLocalAgents() {
+    // Cargar agentes desde localStorage si Acontext no está disponible
+    const agents = JSON.parse(localStorage.getItem('acontext_agents')) || [];
+    displayAgents(agents.map(agent => ({
+        block_id: agent.id,
+        title: agent.name,
+        type: 'agent',
+        props: agent.config || {}
+    })));
+}
+
+function displayAgents(agents) {
+    const agentsList = document.getElementById('agents-list');
+    if (!agentsList) return;
+
+    if (agents.length === 0) {
+        agentsList.innerHTML = '<div class="no-agents">No hay agentes disponibles</div>';
+        return;
+    }
+
+    let html = '';
+    agents.forEach(agent => {
+        html += `
+            <div class="agent-item" data-agent-id="${agent.block_id}">
+                <div class="agent-icon">
+                    <i data-lucide="bot" style="width: 20px; height: 20px;"></i>
+                </div>
+                <div class="agent-info">
+                    <div class="agent-name">${agent.title || 'Agente sin nombre'}</div>
+                    <div class="agent-description">${agent.props.description || 'Agente basado en experiencias de Acontext'}</div>
+                </div>
+                <div class="agent-actions">
+                    <button class="btn-agent-action" title="Usar este agente" onclick="loadAgent('${agent.block_id}')">
+                        <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+                    </button>
+                    <button class="btn-agent-action" title="Editar agente" onclick="editAgent('${agent.block_id}')">
+                        <i data-lucide="edit" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    agentsList.innerHTML = html;
+
+    // Inicializar iconos Lucide
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
+
+function showAgentCreationModal() {
+    console.log('🎯 Mostrando modal de creación de agente...');
+
+    // Crear modal dinámicamente
+    let modal = document.getElementById('agent-creation-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'agent-creation-modal';
+        modal.className = 'modal';
+        modal.style.display = 'block';
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width: 600px;">
+                <div class="modal-header">
+                    <h2>Crear Nuevo Agente</h2>
+                    <button class="modal-close" onclick="closeAgentModal()">
+                        <i data-lucide="x-circle" style="width: 24px; height: 24px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="agent-name">Nombre del Agente</label>
+                        <input type="text" id="agent-name" class="form-control" placeholder="Ej: Agente de Soporte Técnico">
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-description">Descripción</label>
+                        <textarea id="agent-description" class="form-control" rows="3" placeholder="Describe qué hace este agente"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-behavior">Comportamiento</label>
+                        <select id="agent-behavior" class="form-control">
+                            <option value="conservador">Conservador (seguro y predecible)</option>
+                            <option value="balanceado" selected>Balanceado (equilibrado)</option>
+                            <option value="creativo">Creativo (diverso e innovador)</option>
+                            <option value="tecnico">Técnico (experto en temas técnicos)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-experience">Experiencia Base</label>
+                        <select id="agent-experience" class="form-control">
+                            <option value="">Ninguna (agente nuevo)</option>
+                            <option value="support">Soporte al cliente</option>
+                            <option value="tech">Tecnología y desarrollo</option>
+                            <option value="research">Investigación</option>
+                            <option value="creative">Creatividad y contenido</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeAgentModal()">Cancelar</button>
+                    <button class="btn btn-primary" onclick="createAgent()">Crear Agente</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Inicializar iconos Lucide
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    } else {
+        modal.style.display = 'block';
+    }
+}
+
+function closeAgentModal() {
+    const modal = document.getElementById('agent-creation-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+async function createAgent() {
+    const name = document.getElementById('agent-name').value;
+    const description = document.getElementById('agent-description').value;
+    const behavior = document.getElementById('agent-behavior').value;
+    const experience = document.getElementById('agent-experience').value;
+
+    if (!name) {
+        alert('Por favor, ingresa un nombre para el agente');
+        return;
+    }
+
+    console.log('🤖 Creando agente:', name);
+
+    // Crear el agente en Acontext como un espacio
+    try {
+        if (acontextStatus.enabled && acontextStatus.status === 'connected') {
+            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const gatewayBaseUrl = isLocalhost ? 'http://localhost:8002' : '';
+
+            const response = await fetch(`${gatewayBaseUrl}/api/agents`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    description: description,
+                    behavior: behavior,
+                    experience: experience
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('✅ Agente creado en Acontext:', result);
+
+                // Cerrar modal
+                closeAgentModal();
+
+                // Limpiar formulario
+                document.getElementById('agent-name').value = '';
+                document.getElementById('agent-description').value = '';
+
+                // Recargar lista de agentes
+                await loadAgentsFromAcontext();
+
+                alert(`🤖 ¡Agente "${name}" creado exitosamente!`);
+            } else {
+                throw new Error(`HTTP ${response.status}`);
+            }
+        } else {
+            // Si Acontext no está disponible, crear localmente
+            const agentConfig = {
+                id: 'agent_' + Date.now(),
+                name: name,
+                description: description,
+                behavior: behavior,
+                experience: experience,
+                createdAt: new Date().toISOString()
+            };
+
+            let agents = JSON.parse(localStorage.getItem('acontext_agents')) || [];
+            agents.push(agentConfig);
+            localStorage.setItem('acontext_agents', JSON.stringify(agents));
+
+            console.log('✅ Agente creado localmente (Acontext no disponible)');
+
+            // Cerrar modal
+            closeAgentModal();
+
+            // Limpiar formulario
+            document.getElementById('agent-name').value = '';
+            document.getElementById('agent-description').value = '';
+
+            // Recargar lista de agentes
+            displayAgents(agents.map(agent => ({
+                block_id: agent.id,
+                title: agent.name,
+                type: 'agent',
+                props: agent
+            })));
+
+            alert(`🤖 ¡Agente "${name}" creado localmente!`);
+        }
+    } catch (error) {
+        console.error('❌ Error creando agente:', error);
+        alert('Error creando el agente: ' + error.message);
+    }
+}
+
+async function loadAgent(agentId) {
+    console.log('🔄 Cargando agente:', agentId);
+
+    // Simular la carga del agente (en el futuro, esto podría cargar contexto específico de Acontext)
+    alert(`Cargando agente: ${agentId}\n\nEn una implementación completa, esto cargaría el contexto específico del agente desde Acontext.`);
+
+    // Podría crear una nueva sesión de chat especializada para este agente
+    createNewChat();
+}
+
+function editAgent(agentId) {
+    console.log('✏️ Editando agente:', agentId);
+    alert(`Editar agente: ${agentId}\n\nFuncionalidad de edición en desarrollo.`);
+}
+
+// Añadir cierre de modal al hacer clic fuera
+document.addEventListener('click', (e) => {
+    const modal = document.getElementById('agent-creation-modal');
+    if (modal && e.target === modal) {
+        closeAgentModal();
+    }
+});
+
+// Asegurar que las funciones estén disponibles globalmente
+window.closeAgentModal = closeAgentModal;
+window.createAgent = createAgent;
+window.loadAgent = loadAgent;
+window.editAgent = editAgent;
 
 function updateAcontextIndicator() {
     // Crear o actualizar el indicador de Acontext en el sidebar
@@ -1888,7 +2222,7 @@ async function createAcontextSession(spaceId = null) {
         console.log('📝 Creando sesión Acontext...');
         // Usar el endpoint proxy del gateway server
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8001' : '';
+        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8002' : '';
 
         const response = await fetch(`${gatewayBaseUrl}/api/acontext/session/create`, {
             method: 'POST',
@@ -1927,7 +2261,7 @@ async function sendToAcontext(sessionId, message, role) {
         // Como no tenemos un endpoint específico para enviar mensajes a una sesión específica,
         // debemos construir la ruta completa
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8001' : '';
+        const gatewayBaseUrl = isLocalhost ? 'http://localhost:8002' : '';
 
         const response = await fetch(`${gatewayBaseUrl}/api/acontext/session/${sessionId}/messages`, {
             method: 'POST',

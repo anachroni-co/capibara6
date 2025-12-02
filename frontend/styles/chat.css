@@ -2723,3 +2723,180 @@
 .sidebar .acontext-indicator:hover {
     background: rgba(255, 255, 255, 0.15);
 }
+
+/* Agent System Styles */
+.agent-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.agent-item:hover {
+    background: var(--card-hover-bg);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.agent-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary-color), #6a11cb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.agent-info {
+    flex: 1;
+}
+
+.agent-name {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 4px;
+}
+
+.agent-description {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.agent-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-agent-action {
+    background: var(--btn-secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-color);
+}
+
+.btn-agent-action:hover {
+    background: var(--btn-secondary-hover-bg);
+    border-color: var(--primary-color);
+}
+
+.agents-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.btn-create-agent {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--primary-color), #6a11cb);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-create-agent:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(106, 17, 203, 0.3);
+}
+
+.no-agents {
+    text-align: center;
+    padding: 40px 16px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.agents-list {
+    padding: 16px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+/* Modal de creación de agente */
+#agent-creation-modal .modal-content {
+    max-width: 600px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.1);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a0db9;
+}
+
+.btn-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover-bg);
+}
+
