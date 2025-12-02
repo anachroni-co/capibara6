@@ -392,6 +392,25 @@ async def chat(request: ChatRequest):
             logger.error(f"❌ Error creating Acontext session: {e}")
             # Continue without Acontext if it fails
 
+    # If Acontext space is configured, search for relevant experiences
+    context_experiences = []
+    if ACONTEXT_ENABLED and ACONTEXT_SPACE_ID:
+        try:
+            # Search for relevant experiences in the space
+            search_result = await acontext_client.search_space(
+                space_id=ACONTEXT_SPACE_ID,
+                query=request.message,
+                mode="fast"
+            )
+            context_experiences = search_result.get("cited_blocks", [])
+            if context_experiences:
+                logger.info(f"🔍 Found {len(context_experiences)} relevant experiences from Acontext space")
+            else:
+                logger.info("🔍 No relevant experiences found in Acontext space")
+        except Exception as e:
+            logger.error(f"❌ Error searching Acontext space: {e}")
+            # Continue without experiences if search fails
+
     # Seleccionar modelo
     if request.use_semantic_router and semantic_router.enabled:
         routing_info = semantic_router.select_model(request.message)
@@ -440,25 +459,6 @@ async def chat(request: ChatRequest):
         except Exception as e:
             logger.error(f"❌ Error storing user message in Acontext: {e}")
 
-    # If Acontext space is configured, search for relevant experiences
-    context_experiences = []
-    if ACONTEXT_ENABLED and ACONTEXT_SPACE_ID:
-        try:
-            # Search for relevant experiences in the space
-            search_result = await acontext_client.search_space(
-                space_id=ACONTEXT_SPACE_ID,
-                query=request.message,
-                mode="fast"
-            )
-            context_experiences = search_result.get("cited_blocks", [])
-            if context_experiences:
-                logger.info(f"🔍 Found {len(context_experiences)} relevant experiences from Acontext space")
-            else:
-                logger.info("🔍 No relevant experiences found in Acontext space")
-        except Exception as e:
-            logger.error(f"❌ Error searching Acontext space: {e}")
-            # Continue without experiences if search fails
-
     try:
         # Llamar a vLLM con circuit breaker
         async def call_vllm():
@@ -498,7 +498,7 @@ async def chat(request: ChatRequest):
             latency_ms=latency_ms
         )
 
-    except HTTPException:
+    except HTTPException as he:
         # Even if the main call fails, try to flush session if Acontext was used
         if ACONTEXT_ENABLED and acontext_session_id:
             try:
@@ -507,9 +507,82 @@ async def chat(request: ChatRequest):
             except Exception as e:
                 logger.error(f"❌ Error flushing Acontext session: {e}")
 
+        logger.error(f"❌ HTTPException en chat: {he}")
         raise
+    except httpx.HTTPStatusError as he:
+        logger.error(f"❌ HTTPStatusError en chat (vLLM): {he}")
+
+        # Even if the main call fails, try to flush session if Acontext was used
+        if ACONTEXT_ENABLED and acontext_session_id:
+            try:
+                await acontext_client.flush_session(ACONTEXT_PROJECT_ID, acontext_session_id)
+                logger.info(f"🔄 Acontext session flushed: {acontext_session_id}")
+            except Exception as e:
+                logger.error(f"❌ Error flushing Acontext session: {e}")
+
+        # Intentar fallback a Ollama
+        try:
+            logger.info("🔄 Intentando fallback a Ollama...")
+            async with httpx.AsyncClient(timeout=120.0) as client:
+                ollama_request = {
+                    "model": "phi3:mini",
+                    "prompt": request.message,
+                    "stream": False
+                }
+                response = await client.post(
+                    f"{OLLAMA_URL}/api/generate",
+                    json=ollama_request
+                )
+                response.raise_for_status()
+                result = response.json()
+
+                # Store fallback response in Acontext if enabled
+                if ACONTEXT_ENABLED and acontext_session_id:
+                    try:
+                        fallback_message = {
+                            "role": "assistant",
+                            "content": result['response']
+                        }
+                        await acontext_client.send_message_to_session(acontext_session_id, fallback_message)
+                        logger.info(f"🔄 Fallback message stored in Acontext session: {acontext_session_id}")
+                    except Exception as e:
+                        logger.error(f"❌ Error storing fallback message in Acontext: {e}")
+
+                latency_ms = int((time.time() - start_time) * 1000)
+
+                return ChatResponse(
+                    response=result['response'],
+                    model="phi3:mini (fallback)",
+                    routing_info={"fallback": True, "original_model": selected_model},
+                    tokens=None,
+                    latency_ms=latency_ms
+                )
+        except Exception as fallback_error:
+            logger.error(f"❌ Fallback también falló: {fallback_error}")
+
+            # Still try to flush session if Acontext was used
+            if ACONTEXT_ENABLED and acontext_session_id:
+                try:
+                    await acontext_client.flush_session(ACONTEXT_PROJECT_ID, acontext_session_id)
+                    logger.info(f"🔄 Acontext session flushed: {acontext_session_id}")
+                except Exception as e:
+                    logger.error(f"❌ Error flushing Acontext session: {e}")
+
+            raise HTTPException(
+                status_code=503,
+                detail=f"Model service error: {str(he)}"
+            )
     except Exception as e:
-        logger.error(f"❌ Error en chat: {e}")
+        logger.error(f"❌ Error general en chat: {e}")
+        logger.exception("Full traceback:")  # Log completo del error para diagnóstico
+
+        # Even if the main call fails, try to flush session if Acontext was used
+        if ACONTEXT_ENABLED and acontext_session_id:
+            try:
+                await acontext_client.flush_session(ACONTEXT_PROJECT_ID, acontext_session_id)
+                logger.info(f"🔄 Acontext session flushed: {acontext_session_id}")
+            except Exception as e2:
+                logger.error(f"❌ Error flushing Acontext session: {e2}")
 
         # Intentar fallback a Ollama
         try:

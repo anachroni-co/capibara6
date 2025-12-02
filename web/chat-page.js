@@ -48,7 +48,7 @@ class Capibara6ChatPage {
         
         // Verificar conexión con el backend
         await this.checkConnection();
-        
+
         // Inicializar servicios integrados
         this.initTTSService();
         this.initMCPService();
@@ -326,7 +326,6 @@ class Capibara6ChatPage {
             // Intentar cada endpoint
             for (const endpoint of endpointsToTry) {
                 const fullUrl = `${backendUrl}${endpoint.path}`;
-                console.log(`🔍 Intentando: ${endpoint.method} ${fullUrl} (${endpoint.description})`);
                 try {
                     const fetchOptions = {
                         method: endpoint.method,
@@ -342,50 +341,25 @@ class Capibara6ChatPage {
                     const response = await fetch(fullUrl, fetchOptions);
                     if (response.ok || response.status === 200) {
                         const responseData = await response.json().catch(() => ({}));
-                        console.log('✅ Backend conectado:', responseData);
                         this.isConnected = true;
                         this.updateStatus('Conectado', 'success');
                         return;
-                    } else {
-                        console.warn(`⚠️ ${endpoint.description} respondió con status ${response.status}`);
                     }
                 } catch (endpointError) {
-                    console.warn(`⚠️ ${endpoint.description} falló:`, endpointError.message);
+                    // Silenciar logs redundantes para endpoints fallback
                     continue;
                 }
             }
 
-            // Si todos los endpoints fallan, diagnóstico avanzado (tu lógica)
-            if (backendUrl.includes('localhost:8001')) {
-                console.log('🔍 Verificando si el proxy CORS está corriendo...');
-                try {
-                    const proxyCheck = await fetch('http://localhost:8001/', {
-                        method: 'GET',
-                        signal: createTimeoutSignal(3000)
-                    });
-                    if (proxyCheck.ok) {
-                        const proxyData = await proxyCheck.json().catch(() => ({}));
-                        console.log('✅ Proxy CORS está corriendo:', proxyData);
-                        this.showError('El proxy CORS está corriendo pero no puede conectar con el backend remoto. Verifica que el backend en 34.12.166.76:5001 esté activo.');
-                    } else {
-                        this.showError('El proxy CORS no está respondiendo. Inicia el proxy con: python3 backend/cors_proxy_simple.py');
-                    }
-                } catch (proxyError) {
-                    this.showError('El proxy CORS no está corriendo. Inicia el proxy con:\npython3 backend/cors_proxy_simple.py\nO verifica que esté escuchando en localhost:8001');
-                }
-            }
-
-            // Si todos fallan
+            // Si todos los endpoints fallan
             this.isConnected = false;
             this.updateStatus('Desconectado', 'error');
-            this.showError('No se pudo conectar con el backend. Verifica:\n1. Que el servidor esté corriendo\n2. Que el proxy CORS esté activo (si usas localhost:8001)\n3. Que el firewall permita conexiones');
+            this.showError('No se pudo conectar con el backend. Verifica:\n1. Que el servidor esté corriendo\n2. Que el firewall permita conexiones');
 
         } catch (error) {
-            console.error('❌ Error verificando conexión:', error);
             const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
                 ? CHATBOT_CONFIG.BACKEND_URL
                 : this.backendUrl;
-            console.error('📍 Backend URL intentada:', backendUrl);
 
             if (error.name === 'AbortError' || error.message?.includes('aborted')) {
                 this.isConnected = false;
@@ -396,17 +370,9 @@ class Capibara6ChatPage {
                 this.updateStatus('Error de conexión', 'error');
                 let errorMsg = `No se pudo conectar con el backend en ${backendUrl}.\n`;
                 if (backendUrl.includes('localhost:8001')) {
-                    errorMsg += 'El proxy CORS no está corriendo o no puede conectar con el backend remoto.\n';
-                    errorMsg += 'Para iniciar el proxy:\n';
-                    errorMsg += 'python3 backend/cors_proxy_simple.py\n';
-                    errorMsg += 'Verifica también que el backend remoto esté activo en 34.12.166.76:5001';
+                    errorMsg += 'Verifica que el proxy esté corriendo y el backend remoto esté activo.';
                 } else {
-                    errorMsg += 'Posibles causas:\n';
-                    errorMsg += '1. El servidor no está corriendo\n';
-                    errorMsg += '2. El firewall bloquea la conexión\n';
-                    errorMsg += '3. La URL es incorrecta\n';
-                    errorMsg += '4. Error de CORS\n';
-                    errorMsg += 'Verifica la configuración en config.js';
+                    errorMsg += 'Posibles causas: servidor no corriendo, firewall, o configuración incorrecta.';
                 }
                 this.showError(errorMsg);
             } else {
@@ -432,36 +398,36 @@ class Capibara6ChatPage {
     async sendMessage() {
         const message = this.chatInput.value.trim();
         if (!message || this.isProcessing) return;
-        
+
         if (!this.isConnected) {
             this.showError('No hay conexión con el servidor. Por favor, verifica tu conexión.');
             return;
         }
-        
+
         // Crear chat si no existe
         if (!this.currentChatId) {
             this.currentChatId = 'chat_' + Date.now();
             this.saveChats();
         }
-        
+
         // Agregar mensaje del usuario
         this.addMessage(message, 'user');
         this.chatInput.value = '';
         this.chatInput.style.height = 'auto';
-        
+
         // Deshabilitar input mientras se procesa
         this.setProcessing(true);
-        
+
         // Mostrar indicador de escritura
         const typingIndicator = this.showTypingIndicator();
-        
+
         try {
             // Enviar mensaje al backend usando MCP
             const response = await this.sendToBackend(message);
-            
+
             // Remover indicador de escritura
             this.removeTypingIndicator(typingIndicator);
-            
+
             // Agregar respuesta del bot
             if (response && response.content) {
                 this.addMessage(response.content, 'bot');
@@ -472,24 +438,17 @@ class Capibara6ChatPage {
             } else {
                 throw new Error('Respuesta inválida del servidor');
             }
-            
+
             // Actualizar lista de chats
             this.updateChatInList();
-            
-        } catch (error) {
-            console.error('❌ Error enviando mensaje:', error);
-            console.error('📋 Detalles del error:', {
-                message: error.message,
-                stack: error.stack,
-                name: error.name
-            });
 
+        } catch (error) {
             this.removeTypingIndicator(typingIndicator);
 
             // Mensaje de error más descriptivo
             let errorMessage = 'Lo siento, ocurrió un error al procesar tu mensaje.';
             if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                errorMessage += ' No se pudo conectar con el servidor. Verifica tu conexión y que el backend esté activo.';
+                errorMessage += ' No se pudo conectar con el servidor.';
             } else if (error.message.includes('HTTP error!')) {
                 errorMessage += ` El servidor respondió con error: ${error.message}`;
             } else {
@@ -501,7 +460,7 @@ class Capibara6ChatPage {
                 'bot',
                 true
             );
-            this.showError('Error: ' + error.message);
+            console.debug('Message sending failed:', error.message); // Solo log debug
         } finally {
             this.setProcessing(false);
         }
@@ -531,9 +490,6 @@ class Capibara6ChatPage {
             context: this.getConversationContext(),
         };
 
-        console.log('📤 Enviando solicitud a:', endpoint);
-        console.log('📤 Payload:', chatPayload);
-
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
@@ -542,18 +498,13 @@ class Capibara6ChatPage {
             body: JSON.stringify(chatPayload)
         });
 
-        console.log('📡 Status de respuesta:', response.status);
-        console.log('📡 Headers de respuesta:', [...response.headers.entries()]);
-
         // Intentar leer el cuerpo como JSON, pero manejar posibles errores
         let data;
         try {
             data = await response.json();
-            console.log('📥 Datos de respuesta (JSON):', data);
         } catch (parseError) {
             // Si no es JSON, leer como texto
             const responseText = await response.text();
-            console.log('📥 Datos de respuesta (Texto):', responseText);
             data = { error: `Parse error: ${parseError.message}`, raw_response: responseText };
         }
 
@@ -565,13 +516,6 @@ class Capibara6ChatPage {
             (response.status === 200 && Object.keys(data).length === 0);
 
         if (isErrorResponse) {
-            console.error('❌ Error de respuesta detectado:', {
-                status: response.status,
-                statusText: response.statusText,
-                data: data,
-                endpoint: endpoint,
-                payload: chatPayload
-            });
             throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}, endpoint: ${endpoint}`);
         }
 
@@ -958,15 +902,13 @@ class Capibara6ChatPage {
     initTTSService() {
         try {
             if (typeof TTS_CONFIG !== 'undefined') {
-                console.log('🎙️ Inicializando servicio TTS...');
-                
                 const ttsControls = document.getElementById('tts-controls');
                 const ttsPlayBtn = document.getElementById('tts-play-btn');
                 const ttsPauseBtn = document.getElementById('tts-pause-btn');
                 const ttsStopBtn = document.getElementById('tts-stop-btn');
                 const ttsSpeedSlider = document.getElementById('tts-speed');
                 const ttsSpeedValue = document.getElementById('tts-speed-value');
-                
+
                 if (ttsControls && ttsPlayBtn) {
                     // Mostrar controles TTS cuando hay un mensaje del bot
                     this.showTTSControls = () => {
@@ -975,12 +917,12 @@ class Capibara6ChatPage {
                             lucide.createIcons();
                         }
                     };
-                    
+
                     // Ocultar controles TTS
                     this.hideTTSControls = () => {
                         ttsControls.style.display = 'none';
                     };
-                    
+
                     // Configurar controles
                     if (ttsPlayBtn) {
                         ttsPlayBtn.addEventListener('click', () => {
@@ -996,7 +938,7 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
+
                     if (ttsPauseBtn) {
                         ttsPauseBtn.addEventListener('click', () => {
                             if (typeof window.speechSynthesis !== 'undefined') {
@@ -1006,7 +948,7 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
+
                     if (ttsStopBtn) {
                         ttsStopBtn.addEventListener('click', () => {
                             if (typeof window.speechSynthesis !== 'undefined') {
@@ -1017,7 +959,7 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
+
                     if (ttsSpeedSlider && ttsSpeedValue) {
                         ttsSpeedSlider.addEventListener('input', (e) => {
                             const speed = parseFloat(e.target.value);
@@ -1027,22 +969,18 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
-                    console.log('✅ Servicio TTS inicializado');
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando TTS:', error);
+            console.debug('TTS service could not be initialized:', error.message);
         }
     }
     
     initMCPService() {
         try {
-            console.log('🧠 Inicializando servicio MCP...');
-            
             const mcpIndicator = document.getElementById('mcp-indicator');
             const mcpStatusText = document.getElementById('mcp-status-text');
-            
+
             if (mcpIndicator) {
                 // Verificar estado usando checkSmartMCPHealth si está disponible
                 if (typeof checkSmartMCPHealth === 'function') {
@@ -1053,7 +991,6 @@ class Capibara6ChatPage {
                             if (mcpStatusText) {
                                 mcpStatusText.textContent = 'MCP Activo';
                             }
-                            console.log('✅ MCP disponible');
                         } else {
                             mcpIndicator.style.display = 'none';
                         }
@@ -1069,41 +1006,34 @@ class Capibara6ChatPage {
                             if (mcpStatusText) {
                                 mcpStatusText.textContent = 'MCP Activo';
                             }
-                            console.log('✅ MCP disponible');
                         }
                     }).catch(() => {
                         mcpIndicator.style.display = 'none';
                     });
-                } else {
-                    console.log('ℹ️ Funciones MCP no disponibles');
                 }
-                
-                console.log('✅ Servicio MCP inicializado');
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando MCP:', error);
+            console.debug('MCP service could not be initialized:', error.message);
         }
     }
     
     initRAGService() {
         try {
             if (typeof Capibara6API !== 'undefined') {
-                console.log('🔍 Inicializando servicio RAG...');
-                
                 const ragPanel = document.getElementById('rag-panel');
                 const ragPanelClose = document.getElementById('rag-panel-close');
                 const ragSearchBtnSidebar = document.getElementById('rag-search-btn-sidebar');
                 const ragSearchBtn = document.getElementById('rag-search-btn');
                 const ragSearchInput = document.getElementById('rag-search-input');
                 const ragResults = document.getElementById('rag-results');
-                
+
                 if (ragPanel && ragSearchBtnSidebar) {
                     const ragUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.RAG_API
                         ? CHATBOT_CONFIG.SERVICE_URLS.RAG_API
                         : 'http://localhost:8000';
-                    
+
                     this.ragClient = new Capibara6API(ragUrl);
-                    
+
                     // Abrir panel RAG
                     ragSearchBtnSidebar.addEventListener('click', () => {
                         ragPanel.classList.add('open');
@@ -1111,24 +1041,24 @@ class Capibara6ChatPage {
                             lucide.createIcons();
                         }
                     });
-                    
+
                     // Cerrar panel RAG
                     if (ragPanelClose) {
                         ragPanelClose.addEventListener('click', () => {
                             ragPanel.classList.remove('open');
                         });
                     }
-                    
+
                     // Realizar búsqueda RAG
                     if (ragSearchBtn && ragSearchInput) {
                         const performRAGSearch = async () => {
                             const query = ragSearchInput.value.trim();
                             if (!query) return;
-                            
+
                             const searchType = document.querySelector('input[name="rag-search-type"]:checked')?.value || 'rag';
-                            
+
                             ragResults.innerHTML = '<div class="rag-empty-state"><div class="spinner"></div><p>Buscando...</p></div>';
-                            
+
                             try {
                                 let results;
                                 if (searchType === 'rag') {
@@ -1138,13 +1068,13 @@ class Capibara6ChatPage {
                                 } else {
                                     results = await this.ragClient.searchAll(query, 5);
                                 }
-                                
+
                                 this.displayRAGResults(results, ragResults, searchType);
                             } catch (error) {
                                 ragResults.innerHTML = `<div class="rag-empty-state"><p style="color: var(--danger);">Error: ${error.message}</p></div>`;
                             }
                         };
-                        
+
                         ragSearchBtn.addEventListener('click', performRAGSearch);
                         ragSearchInput.addEventListener('keypress', (e) => {
                             if (e.key === 'Enter') {
@@ -1152,12 +1082,10 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
-                    console.log('✅ Servicio RAG inicializado');
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando RAG:', error);
+            console.debug('RAG service could not be initialized:', error.message);
         }
     }
     
@@ -1213,23 +1141,21 @@ class Capibara6ChatPage {
     initN8NService() {
         try {
             if (typeof N8NManager !== 'undefined') {
-                console.log('🔄 Inicializando servicio N8n...');
-                
                 const n8nWidget = document.getElementById('n8n-widget');
                 const n8nStatus = document.getElementById('n8n-status');
                 const n8nWorkflowsList = document.getElementById('n8n-workflows-list');
                 const n8nDashboardBtn = document.getElementById('n8n-dashboard-btn');
-                
+
                 if (n8nWidget) {
                     const n8nUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.N8N
                         ? CHATBOT_CONFIG.SERVICE_URLS.N8N
                         : 'http://localhost:5678';
-                    
-                    this.n8nManager = new N8NManager({ 
+
+                    this.n8nManager = new N8NManager({
                         baseURL: this.backendUrl,
-                        n8nURL: n8nUrl 
+                        n8nURL: n8nUrl
                     });
-                    
+
                     // Verificar estado N8n
                     this.n8nManager.checkN8NStatus().then(status => {
                         if (status && status.available) {
@@ -1256,7 +1182,7 @@ class Capibara6ChatPage {
                             `;
                         }
                     });
-                    
+
                     // Abrir dashboard N8n
                     if (n8nDashboardBtn) {
                         n8nDashboardBtn.addEventListener('click', () => {
@@ -1267,12 +1193,11 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
-                    console.log('✅ Servicio N8n inicializado');
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando N8n:', error);
+            // Solo log si hay error real
+            console.debug('N8n service initialization failed:', error.message);
         }
     }
     
@@ -1310,26 +1235,22 @@ class Capibara6ChatPage {
     initModelVisualization() {
         try {
             if (typeof ModelVisualization !== 'undefined') {
-                console.log('📊 Inicializando visualización de modelos...');
                 // La visualización de modelos se puede usar cuando sea necesario
                 this.modelViz = new ModelVisualization();
-                console.log('✅ Visualización de modelos inicializada');
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando visualización de modelos:', error);
+            console.debug('Model visualization could not be initialized:', error.message);
         }
     }
-    
+
     initEntropyMonitor() {
         try {
             if (typeof EntropyMonitor !== 'undefined') {
-                console.log('📈 Inicializando monitor de entropía...');
                 // El monitor de entropía se puede usar cuando sea necesario
                 this.entropyMonitor = new EntropyMonitor();
-                console.log('✅ Monitor de entropía inicializado');
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando monitor de entropía:', error);
+            console.debug('Entropy monitor could not be initialized:', error.message);
         }
     }
     
