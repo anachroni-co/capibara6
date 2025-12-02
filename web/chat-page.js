@@ -35,6 +35,7 @@ class Capibara6ChatPage {
         this.settingsModal = document.getElementById('settings-modal');
         
         this.init();
+        this.setupAutoFocus();
     }
     
     async init() {
