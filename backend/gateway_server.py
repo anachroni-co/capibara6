@@ -20,6 +20,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 import httpx
 from dotenv import load_dotenv
+import acontext_integration
 
 # Cargar variables de entorno
 load_dotenv("/home/elect/capibara6/backend/.env.production")
@@ -43,6 +44,17 @@ BRIDGE_API_URL = os.getenv("BRIDGE_API_URL", "http://10.204.0.10:8000")
 # API Keys entre VMs
 INTER_VM_API_KEY = os.getenv("INTER_VM_API_KEY", secrets.token_urlsafe(32))
 logger.info(f"🔐 Inter-VM API Key: {INTER_VM_API_KEY[:8]}...")
+
+# Acontext configuration
+ACONTEXT_ENABLED = os.getenv("ACONTEXT_ENABLED", "true").lower() == "true"
+ACONTEXT_PROJECT_ID = os.getenv("ACONTEXT_PROJECT_ID", "capibara6-project")
+ACONTEXT_SPACE_ID = os.getenv("ACONTEXT_SPACE_ID", None)  # Optional space for learning
+
+logger.info(f"📊 Acontext integration: {'enabled' if ACONTEXT_ENABLED else 'disabled'}")
+if ACONTEXT_ENABLED:
+    logger.info(f"📚 Acontext project: {ACONTEXT_PROJECT_ID}")
+    if ACONTEXT_SPACE_ID:
+        logger.info(f"🧠 Acontext space: {ACONTEXT_SPACE_ID}")
 
 # Rate limiting
 RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", "10"))
@@ -254,6 +266,9 @@ rate_limiter = RateLimiter(
     window=RATE_LIMIT_WINDOW
 )
 
+# Acontext client
+acontext_client = acontext_integration.acontext_client
+
 # ============================================
 # FASTAPI APP
 # ============================================
@@ -360,8 +375,22 @@ async def health():
 
 @app.post("/api/chat", response_model=ChatResponse, dependencies=[Depends(check_rate_limit)])
 async def chat(request: ChatRequest):
-    """Endpoint de chat con routing semántico"""
+    """Endpoint de chat con routing semántico y persistencia de contexto Acontext"""
     start_time = time.time()
+
+    # Initialize Acontext session if enabled
+    acontext_session_id = None
+    if ACONTEXT_ENABLED:
+        try:
+            acontext_session = await acontext_client.create_session(
+                project_id=ACONTEXT_PROJECT_ID,
+                space_id=ACONTEXT_SPACE_ID
+            )
+            acontext_session_id = acontext_session.id
+            logger.info(f"📊 Acontext session created: {acontext_session_id}")
+        except Exception as e:
+            logger.error(f"❌ Error creating Acontext session: {e}")
+            # Continue without Acontext if it fails
 
     # Seleccionar modelo
     if request.use_semantic_router and semantic_router.enabled:
@@ -373,13 +402,62 @@ async def chat(request: ChatRequest):
 
     logger.info(f"🎯 Modelo seleccionado: {selected_model}")
 
+    # Prepare context from experiences if available
+    context_message = ""
+    if context_experiences:
+        # Format experiences as context for the model
+        context_parts = []
+        for exp in context_experiences:
+            title = exp.get('title', 'Unknown')
+            content = exp.get('props', {}).get('content', '') if 'props' in exp else str(exp)
+            context_parts.append(f"Relevant experience - {title}: {content}")
+
+        context_message = "Relevant past experiences for this query:\n" + "\n".join(context_parts) + "\n\n"
+
     # Preparar request para vLLM
+    messages = []
+    if context_message:
+        # Add context as a system message
+        messages.append({"role": "system", "content": context_message})
+    messages.append({"role": "user", "content": request.message})
+
     vllm_request = {
         "model": selected_model,
-        "messages": [{"role": "user", "content": request.message}],
+        "messages": messages,
         "temperature": request.temperature,
         "max_tokens": request.max_tokens
     }
+
+    # Store user message in Acontext if enabled
+    if ACONTEXT_ENABLED and acontext_session_id:
+        try:
+            user_message = {
+                "role": "user",
+                "content": request.message
+            }
+            await acontext_client.send_message_to_session(acontext_session_id, user_message)
+            logger.info(f"💬 User message stored in Acontext session: {acontext_session_id}")
+        except Exception as e:
+            logger.error(f"❌ Error storing user message in Acontext: {e}")
+
+    # If Acontext space is configured, search for relevant experiences
+    context_experiences = []
+    if ACONTEXT_ENABLED and ACONTEXT_SPACE_ID:
+        try:
+            # Search for relevant experiences in the space
+            search_result = await acontext_client.search_space(
+                space_id=ACONTEXT_SPACE_ID,
+                query=request.message,
+                mode="fast"
+            )
+            context_experiences = search_result.get("cited_blocks", [])
+            if context_experiences:
+                logger.info(f"🔍 Found {len(context_experiences)} relevant experiences from Acontext space")
+            else:
+                logger.info("🔍 No relevant experiences found in Acontext space")
+        except Exception as e:
+            logger.error(f"❌ Error searching Acontext space: {e}")
+            # Continue without experiences if search fails
 
     try:
         # Llamar a vLLM con circuit breaker
@@ -398,6 +476,18 @@ async def chat(request: ChatRequest):
         response_text = result['choices'][0]['message']['content']
         tokens = result.get('usage', {}).get('total_tokens', 0)
 
+        # Store assistant response in Acontext if enabled
+        if ACONTEXT_ENABLED and acontext_session_id:
+            try:
+                assistant_message = {
+                    "role": "assistant",
+                    "content": response_text
+                }
+                await acontext_client.send_message_to_session(acontext_session_id, assistant_message)
+                logger.info(f"🤖 Assistant message stored in Acontext session: {acontext_session_id}")
+            except Exception as e:
+                logger.error(f"❌ Error storing assistant message in Acontext: {e}")
+
         latency_ms = int((time.time() - start_time) * 1000)
 
         return ChatResponse(
@@ -409,6 +499,14 @@ async def chat(request: ChatRequest):
         )
 
     except HTTPException:
+        # Even if the main call fails, try to flush session if Acontext was used
+        if ACONTEXT_ENABLED and acontext_session_id:
+            try:
+                await acontext_client.flush_session(ACONTEXT_PROJECT_ID, acontext_session_id)
+                logger.info(f"🔄 Acontext session flushed: {acontext_session_id}")
+            except Exception as e:
+                logger.error(f"❌ Error flushing Acontext session: {e}")
+
         raise
     except Exception as e:
         logger.error(f"❌ Error en chat: {e}")
@@ -429,6 +527,18 @@ async def chat(request: ChatRequest):
                 response.raise_for_status()
                 result = response.json()
 
+                # Store fallback response in Acontext if enabled
+                if ACONTEXT_ENABLED and acontext_session_id:
+                    try:
+                        fallback_message = {
+                            "role": "assistant",
+                            "content": result['response']
+                        }
+                        await acontext_client.send_message_to_session(acontext_session_id, fallback_message)
+                        logger.info(f"🔄 Fallback message stored in Acontext session: {acontext_session_id}")
+                    except Exception as e:
+                        logger.error(f"❌ Error storing fallback message in Acontext: {e}")
+
                 latency_ms = int((time.time() - start_time) * 1000)
 
                 return ChatResponse(
@@ -440,10 +550,27 @@ async def chat(request: ChatRequest):
                 )
         except Exception as fallback_error:
             logger.error(f"❌ Fallback también falló: {fallback_error}")
+
+            # Still try to flush session if Acontext was used
+            if ACONTEXT_ENABLED and acontext_session_id:
+                try:
+                    await acontext_client.flush_session(ACONTEXT_PROJECT_ID, acontext_session_id)
+                    logger.info(f"🔄 Acontext session flushed: {acontext_session_id}")
+                except Exception as e:
+                    logger.error(f"❌ Error flushing Acontext session: {e}")
+
             raise HTTPException(
                 status_code=503,
                 detail=f"All model services unavailable: {str(e)}"
             )
+
+    # Flush session at the end of successful request
+    if ACONTEXT_ENABLED and acontext_session_id:
+        try:
+            await acontext_client.flush_session(ACONTEXT_PROJECT_ID, acontext_session_id)
+            logger.info(f"🔄 Acontext session flushed: {acontext_session_id}")
+        except Exception as e:
+            logger.error(f"❌ Error flushing Acontext session: {e}")
 
 @app.get("/api/router/info")
 async def router_info():
@@ -475,6 +602,83 @@ async def router_test(query: str):
     }
 
 # ============================================
+# ACONTEXT ENDPOINTS
+# ============================================
+
+@app.get("/api/acontext/status")
+async def acontext_status():
+    """Estado de la integración Acontext"""
+    return {
+        "enabled": ACONTEXT_ENABLED,
+        "project_id": ACONTEXT_PROJECT_ID,
+        "space_id": ACONTEXT_SPACE_ID,
+        "status": "connected" if ACONTEXT_ENABLED else "disconnected"
+    }
+
+@app.post("/api/acontext/session/create")
+async def create_acontext_session(space_id: Optional[str] = None):
+    """Crear una nueva sesión Acontext manualmente"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    try:
+        session = await acontext_client.create_session(
+            project_id=ACONTEXT_PROJECT_ID,
+            space_id=space_id or ACONTEXT_SPACE_ID
+        )
+        return {
+            "session_id": session.id,
+            "project_id": session.project_id,
+            "space_id": session.space_id,
+            "status": "created"
+        }
+    except Exception as e:
+        logger.error(f"Error creating Acontext session: {e}")
+        raise HTTPException(status_code=503, detail=f"Failed to create Acontext session: {str(e)}")
+
+@app.post("/api/acontext/search")
+async def search_acontext_space(query: str, space_id: Optional[str] = None, mode: str = "fast"):
+    """Buscar en el espacio Acontext"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    search_space_id = space_id or ACONTEXT_SPACE_ID
+    if not search_space_id:
+        raise HTTPException(status_code=400, detail="No space_id provided or configured")
+
+    try:
+        result = await acontext_client.search_space(search_space_id, query, mode)
+        return result
+    except Exception as e:
+        logger.error(f"Error searching Acontext space: {e}")
+        raise HTTPException(status_code=503, detail=f"Failed to search Acontext space: {str(e)}")
+
+@app.post("/api/acontext/space/create")
+async def create_acontext_space(name: str):
+    """Crear un nuevo espacio Acontext"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    try:
+        result = await acontext_client.create_space(ACONTEXT_PROJECT_ID, name)
+        if "error" in result:
+            raise HTTPException(status_code=500, detail=result["error"])
+
+        # Update the global space ID if this is the first space
+        if not ACONTEXT_SPACE_ID:
+            logger.info(f"🧠 New Acontext space created: {result['id']}")
+
+        return {
+            "space_id": result["id"],
+            "project_id": ACONTEXT_PROJECT_ID,
+            "name": name,
+            "status": "created"
+        }
+    except Exception as e:
+        logger.error(f"Error creating Acontext space: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to create Acontext space: {str(e)}")
+
+# ============================================
 # STARTUP/SHUTDOWN
 # ============================================
 
@@ -487,6 +691,10 @@ async def startup_event():
     logger.info(f"🎯 Semantic Router: {'✅ Activo' if semantic_router.enabled else '❌ Inactivo'}")
     logger.info(f"⚡ Circuit Breaker: ✅ Activo (threshold={CIRCUIT_BREAKER_THRESHOLD})")
     logger.info(f"🚦 Rate Limiter: ✅ Activo ({RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s)")
+    logger.info(f"📊 Acontext Integration: {'✅ Activo' if ACONTEXT_ENABLED else '❌ Inactivo'}")
+    logger.info(f"📚 Acontext Project: {ACONTEXT_PROJECT_ID}")
+    if ACONTEXT_SPACE_ID:
+        logger.info(f"🧠 Acontext Space: {ACONTEXT_SPACE_ID}")
     logger.info(f"🔗 vLLM: {VLLM_URL}")
     logger.info(f"🔗 Ollama: {OLLAMA_URL}")
     logger.info(f"🔗 Bridge API: {BRIDGE_API_URL}")
@@ -496,6 +704,13 @@ async def startup_event():
 async def shutdown_event():
     """Limpieza al cerrar"""
     logger.info("🛑 Cerrando API Gateway...")
+
+    # Close Acontext client
+    try:
+        await acontext_client.close()
+        logger.info("🔒 Acontext client closed")
+    except Exception as e:
+        logger.error(f"Error closing Acontext client: {e}")
 
 # ============================================
 # MAIN
