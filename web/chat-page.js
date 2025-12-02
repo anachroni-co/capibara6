@@ -18,6 +18,8 @@ class Capibara6ChatPage {
         // Elementos del DOM
         this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chat-input');
+        // Asegurar autofocus en dispositivos móviles
+        this.setupAutoFocus();
         this.chatSendBtn = document.getElementById('chat-send-btn');
         this.statusIndicator = document.getElementById('status-indicator');
         this.statusText = document.getElementById('status-text');
