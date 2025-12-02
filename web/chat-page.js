@@ -6,7 +6,7 @@ class Capibara6ChatPage {
             ? CHATBOT_CONFIG.BACKEND_URL
             : (window.location.hostname === 'localhost'
                 ? 'http://localhost:5000'
-                : 'https://www.capibara6.com');
+                : window.location.origin);  // Usar el mismo origen que el frontend
         
         this.messages = [];
         this.chats = [];
