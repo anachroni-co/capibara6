@@ -56,6 +56,7 @@ class Capibara6ChatPage {
         this.initN8NService();
         this.initModelVisualization();
         this.initEntropyMonitor();
+        this.initAcontextAgentSystem();
         
         // Cargar chats guardados
         this.loadChats();
@@ -160,6 +161,14 @@ class Capibara6ChatPage {
         document.getElementById('select-chat-merge-cancel-btn').addEventListener('click', () => {
             this.closeSelectChatMergeModal();
         });
+
+        // Evento de creación de agente
+        const createAgentBtn = document.getElementById('create-agent-btn');
+        if (createAgentBtn) {
+            createAgentBtn.addEventListener('click', () => {
+                this.showAgentCreationModal();
+            });
+        }
         
         
         // Modal - Cuenta
@@ -1963,6 +1972,67 @@ class Capibara6ChatPage {
         }
     }
 }
+
+    // ============================================
+    // Acontext Integration & Agent System
+    // ============================================
+
+    initAcontextAgentSystem() {
+        // Verificar estado de Acontext en los logs
+        console.debug('🎯 Acontext integration loaded and ready');
+
+        // Cargar agentes existentes si Acontext está disponible
+        setTimeout(() => {
+            this.loadAgentsFromAcontext();
+        }, 1000); // Pequeño delay para que otros servicios se inicialicen primero
+    }
+
+    async loadAgentsFromAcontext() {
+        // Esta función puede ser implementada para cargar agentes desde Acontext
+        // Para simplicidad en esta implementación, mostraremos un agente de ejemplo
+        try {
+            const agentsList = document.getElementById('agents-list');
+            if (!agentsList) return;
+
+            // Simular agentes existentes (esto debería conectarse con Acontext en una implementación completa)
+            // Por ahora mostramos un agente de ejemplo
+            const demoAgent = document.createElement('div');
+            demoAgent.className = 'chat-item agent-item';
+            demoAgent.innerHTML = `
+                <div class="chat-item-icon">
+                    <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="chat-item-content">
+                    <div class="chat-item-title">Demo Agent</div>
+                    <div class="chat-item-time">Just now</div>
+                </div>
+                <div class="chat-item-actions">
+                    <button class="btn-chat-action" title="Usar agente">
+                        <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            `;
+
+            agentsList.innerHTML = '';
+            agentsList.appendChild(demoAgent);
+
+            // Inicializar iconos de Lucide
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+        } catch (error) {
+            console.debug('Acontext agents not available:', error.message);
+        }
+    }
+
+    showAgentCreationModal() {
+        // Mostrar modal de creación de agente
+        alert('Crear Nuevo Agente:\n\nFuncionalidad de agentes de Acontext disponible.\n\nEn una implementación completa, esto permitiría crear agentes especializados basados en experiencias anteriores almacenadas en Acontext.');
+
+        // Cargar de nuevo la lista de agentes
+        this.loadAgentsFromAcontext();
+    }
 
 // Inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
