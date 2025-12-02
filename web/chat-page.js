@@ -1988,7 +1988,6 @@ class Capibara6ChatPage {
             }, { passive: true });
         }
     }
-}
 
     // ============================================
     // Acontext Integration & Agent System
