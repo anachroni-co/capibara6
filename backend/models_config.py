@@ -301,20 +301,27 @@ def get_system_info():
         }
     }
 
+# ============================================
+# CONSTANTES PARA COMPATIBILIDAD
+# ============================================
+MODEL_CONFIGS = MODELS_CONFIG
+DEFAULT_MODEL = 'phi4_fast'  # Modelo por defecto
+TIMEOUT = 120  # Timeout por defecto
+
 if __name__ == '__main__':
     print("🤖 Configuración de Modelos Capibara6")
     print("=" * 50)
-    
+
     info = get_system_info()
     print(f"Modelos activos: {info['active_models']}/{info['total_models']}")
     print(f"Consenso habilitado: {info['consensus_enabled']}")
     print(f"Plantillas disponibles: {len(info['available_templates'])}")
-    
+
     print("\n📋 Modelos configurados:")
     for model_id in info['models_list']:
         config = get_model_config(model_id)
         print(f"  • {config['name']} ({config['hardware']}) - {config['status']}")
-    
+
     print("\n🎯 Plantillas disponibles:")
     for template_id in info['available_templates']:
         template = get_prompt_template(template_id)
