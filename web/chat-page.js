@@ -488,30 +488,35 @@ class Capibara6ChatPage {
     }
     
     async sendToBackend(message) {
-        // Determinar endpoint correcto según el entorno
+        // Determinar endpoint correcto según el entorno - MODIFICADO PARA USAR API CHAT COMPATIBLE
         let endpoint;
         if (this.backendUrl.includes('capibara6.com') || this.backendUrl.includes('vercel.app')) {
-            // En producción (Vercel), usar el endpoint de completion en el mismo dominio
-            endpoint = `${this.backendUrl}/api/completion`;
+            // En producción (Vercel), usar el endpoint de chat compatible
+            endpoint = `${this.backendUrl}/api/chat`;
         } else if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE) {
-            // En desarrollo, usar endpoint de configuración si está definido
-            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE;
+            // Modificar para usar chat en lugar de ai/generate
+            endpoint = this.backendUrl + '/api/chat';
         } else {
-            // Fallback para desarrollo
-            endpoint = `${this.backendUrl}/api/ai/generate`;
+            // Fallback para desarrollo - USAR API CHAT
+            endpoint = `${this.backendUrl}/api/chat`;
         }
+
+        // Adaptar el formato de la solicitud al esperado por el gateway server
+        const chatPayload = {
+            message: message,
+            model: 'phi4_fast', // Especificar modelo para evitar problemas
+            temperature: 0.7,
+            max_tokens: 200,
+            use_semantic_router: false, // Desactivar temporalmente para estabilidad
+            context: this.getConversationContext(),
+        };
 
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                prompt: message,
-                modelPreference: 'auto',
-                streaming: false,
-                context: this.getConversationContext(),
-            })
+            body: JSON.stringify(chatPayload)
         });
 
         const data = await response.json();
@@ -528,13 +533,13 @@ class Capibara6ChatPage {
         }
 
         // Asegurarse de que la estructura de respuesta sea correcta
-        // El endpoint de Vercel puede tener una estructura diferente
+        // El endpoint ahora devuelve el formato del gateway server
         return {
             content: data.response || data.content || data.choices?.[0]?.message?.content || data,
-            modelUsed: data.model || 'unknown',
+            modelUsed: data.model || data.modelUsed || 'unknown',
             metadata: {
                 tokenCount: data.tokens || data.usage?.total_tokens,
-                processingTime: data.processing_time || null,
+                processingTime: data.latency_ms || data.processing_time || null,
                 classification: data.classification || 'general',
             }
         };
