@@ -29,11 +29,31 @@ class Capibara6ChatPage {
         // Asegurar que el input de chat esté enfocado automáticamente en móviles
         const isMobile = window.innerWidth <= 480 || ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
 
-        // Elementos del DOM
+        if (this.chatInput && isMobile) {
+            setTimeout(() => {
+                this.chatInput.focus();
+                if (this.chatInput.value) {
+                    this.chatInput.selectionStart = this.chatInput.selectionEnd = this.chatInput.value.length;
+                }
+            }, 300);
+
+            // Escuchar eventos de touch para mantener el foco
+            document.addEventListener("touchstart", (e) => {
+                if (!e.target.closest(".chat-input, .chat-send-btn, .input-action-btn")) {
+                    setTimeout(() => {
+                        if (this.chatInput) {
+                            this.chatInput.focus();
+                        }
+                    }, 100);
+                }
+            }, { passive: true });
+        }
+    }
+    
+    async init() {
+        // Inicializar elementos del DOM (después de que el DOM esté completamente cargado)
         this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chat-input');
-        // Asegurar autofocus en dispositivos móviles
-        this.setupAutoFocus();
         this.chatSendBtn = document.getElementById('chat-send-btn');
         this.statusIndicator = document.getElementById('status-indicator');
         this.statusText = document.getElementById('status-text');
@@ -47,12 +67,10 @@ class Capibara6ChatPage {
         this.profileMenuBtn = document.getElementById('profile-menu-btn');
         this.profileMenu = document.getElementById('profile-menu');
         this.settingsModal = document.getElementById('settings-modal');
-        
-        this.init();
-        this.setupAutoFocus();
-    }
-    
-    async init() {
+
+        // Elementos específicos de Acontext
+        this.agentsList = document.getElementById('agents-list');
+
         // Cargar configuración del usuario
         this.loadUserSettings();
         this.loadUserProfile();
@@ -1999,7 +2017,11 @@ class Capibara6ChatPage {
 
         // Cargar agentes existentes si Acontext está disponible
         setTimeout(() => {
-            this.loadAgentsFromAcontext();
+            if (this.agentsList) {  // Asegurar que el elemento esté disponible antes de cargar
+                this.loadAgentsFromAcontext();
+            } else {
+                console.debug('⚠️ Elemento agents-list no encontrado, omitiendo carga de agentes');
+            }
         }, 1000); // Pequeño delay para que otros servicios se inicialicen primero
     }
 
@@ -2007,8 +2029,7 @@ class Capibara6ChatPage {
         // Esta función puede ser implementada para cargar agentes desde Acontext
         // Para simplicidad en esta implementación, mostraremos un agente de ejemplo
         try {
-            const agentsList = document.getElementById('agents-list');
-            if (!agentsList) return;
+            if (!this.agentsList) return;
 
             // Simular agentes existentes (esto debería conectarse con Acontext en una implementación completa)
             // Por ahora mostramos un agente de ejemplo
@@ -2029,8 +2050,8 @@ class Capibara6ChatPage {
                 </div>
             `;
 
-            agentsList.innerHTML = '';
-            agentsList.appendChild(demoAgent);
+            this.agentsList.innerHTML = '';
+            this.agentsList.appendChild(demoAgent);
 
             // Inicializar iconos de Lucide
             if (typeof lucide !== 'undefined') {
