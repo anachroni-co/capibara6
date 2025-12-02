@@ -476,14 +476,17 @@ class Capibara6ChatPage {
     }
     
     async sendToBackend(message) {
-        // Determinar endpoint correcto según el entorno - MODIFICADO PARA USAR API CHAT COMPATIBLE
+        // Determinar endpoint correcto según la configuración
         let endpoint;
-        if (this.backendUrl.includes('capibara6.com') || this.backendUrl.includes('vercel.app')) {
+        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS?.CHAT) {
+            // Usar configuración explícita desde config.js
+            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.CHAT;
+        } else if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS?.AI_CHAT) {
+            // Retrocompatibilidad
+            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_CHAT;
+        } else if (this.backendUrl.includes('capibara6.com') || this.backendUrl.includes('vercel.app')) {
             // En producción (Vercel), usar el endpoint de chat compatible
             endpoint = `${this.backendUrl}/api/chat`;
-        } else if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE) {
-            // Modificar para usar chat en lugar de ai/generate
-            endpoint = this.backendUrl + '/api/chat';
         } else {
             // Fallback para desarrollo - USAR API CHAT
             endpoint = `${this.backendUrl}/api/chat`;

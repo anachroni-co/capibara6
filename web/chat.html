@@ -11,6 +11,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="chat-styles-neuromorphic-dark-v2.css">
+    <script src="config.js"></script>
+    <script>
+        // Asegurar que la configuración se aplique antes de que otros scripts la usen
+        if (typeof CHATBOT_CONFIG !== 'undefined') {
+            console.log('✅ Configuración de CHATBOT cargada:', {
+                backendUrl: CHATBOT_CONFIG.BACKEND_URL,
+                endpoints: CHATBOT_CONFIG.ENDPOINTS,
+                services: CHATBOT_CONFIG.SERVICES
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="chat-page-wrapper">
