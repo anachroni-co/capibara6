@@ -6,7 +6,7 @@ class Capibara6ChatPage {
             ? CHATBOT_CONFIG.BACKEND_URL
             : (window.location.hostname === 'localhost'
                 ? 'http://localhost:5000'
-                : window.location.origin);  // Usar el mismo origen que el frontend
+                : this.normalizeOrigin(window.location.origin));  // Normalizar el origen para garantizar www
         
         this.messages = [];
         this.chats = [];
@@ -14,7 +14,21 @@ class Capibara6ChatPage {
         this.isConnected = false;
         this.isProcessing = false;
         this.sidebarCollapsed = false;
-        
+    }
+
+    // Método para normalizar el origen y asegurar que use www si es necesario
+    normalizeOrigin(origin) {
+        // Si es el dominio de producción, asegurar que use www
+        if (origin.includes('capibara6.com') && !origin.includes('www.')) {
+            return origin.replace('capibara6.com', 'www.capibara6.com');
+        }
+        return origin;
+    }
+
+    setupAutoFocus() {
+        // Asegurar que el input de chat esté enfocado automáticamente en móviles
+        const isMobile = window.innerWidth <= 480 || ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+
         // Elementos del DOM
         this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chat-input');
@@ -2036,6 +2050,7 @@ class Capibara6ChatPage {
         // Cargar de nuevo la lista de agentes
         this.loadAgentsFromAcontext();
     }
+}
 
 // Inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
