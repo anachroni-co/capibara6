@@ -474,10 +474,27 @@ class Capibara6ChatPage {
             this.updateChatInList();
             
         } catch (error) {
-            console.error('Error enviando mensaje:', error);
+            console.error('❌ Error enviando mensaje:', error);
+            console.error('📋 Detalles del error:', {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
+
             this.removeTypingIndicator(typingIndicator);
+
+            // Mensaje de error más descriptivo
+            let errorMessage = 'Lo siento, ocurrió un error al procesar tu mensaje.';
+            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                errorMessage += ' No se pudo conectar con el servidor. Verifica tu conexión y que el backend esté activo.';
+            } else if (error.message.includes('HTTP error!')) {
+                errorMessage += ` El servidor respondió con error: ${error.message}`;
+            } else {
+                errorMessage += ` Detalles: ${error.message}`;
+            }
+
             this.addMessage(
-                'Lo siento, ocurrió un error al procesar tu mensaje. Por favor, intenta de nuevo.',
+                errorMessage,
                 'bot',
                 true
             );
@@ -511,6 +528,9 @@ class Capibara6ChatPage {
             context: this.getConversationContext(),
         };
 
+        console.log('📤 Enviando solicitud a:', endpoint);
+        console.log('📤 Payload:', chatPayload);
+
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
@@ -519,7 +539,20 @@ class Capibara6ChatPage {
             body: JSON.stringify(chatPayload)
         });
 
-        const data = await response.json();
+        console.log('📡 Status de respuesta:', response.status);
+        console.log('📡 Headers de respuesta:', [...response.headers.entries()]);
+
+        // Intentar leer el cuerpo como JSON, pero manejar posibles errores
+        let data;
+        try {
+            data = await response.json();
+            console.log('📥 Datos de respuesta (JSON):', data);
+        } catch (parseError) {
+            // Si no es JSON, leer como texto
+            const responseText = await response.text();
+            console.log('📥 Datos de respuesta (Texto):', responseText);
+            data = { error: `Parse error: ${parseError.message}`, raw_response: responseText };
+        }
 
         // Verificar si la respuesta es exitosa
         // En producción con Vercel, los endpoints pueden no tener propiedad 'success'
@@ -529,7 +562,14 @@ class Capibara6ChatPage {
             (response.status === 200 && Object.keys(data).length === 0);
 
         if (isErrorResponse) {
-            throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}`);
+            console.error('❌ Error de respuesta detectado:', {
+                status: response.status,
+                statusText: response.statusText,
+                data: data,
+                endpoint: endpoint,
+                payload: chatPayload
+            });
+            throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}, endpoint: ${endpoint}`);
         }
 
         // Asegurarse de que la estructura de respuesta sea correcta
