@@ -2643,3 +2643,321 @@ input {
     margin: 0 !important;
     padding: 0 !important;
 }
+/* ============================================
+   RESPONSIVE - Pantallas pequeñas (móviles)
+   ============================================ */
+
+@media (max-width: 480px) {
+    /* Layout principal */
+    .chat-page-wrapper {
+        flex-direction: column;
+    }
+    
+    .chat-main-content {
+        margin-left: 0;
+        height: calc(100vh - 60px);
+    }
+    
+    /* Sidebar en móvil */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px !important;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        padding-top: 60px;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        backdrop-filter: blur(5px);
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+    
+    .sidebar-header {
+        padding: 0.75rem;
+        height: 60px;
+    }
+    
+    .logo-icon {
+        display: none;
+    }
+    
+    .logo-text {
+        font-size: 1.2rem;
+    }
+    
+    .sidebar-section {
+        padding: 0.5rem;
+    }
+    
+    .btn-new-chat {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Botones de acción en sidebar */
+    .sidebar-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .sidebar-section-header {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Header del chat */
+    .chat-header {
+        padding: 0.75rem;
+        height: 60px;
+        min-height: 60px;
+    }
+    
+    .chat-header-left {
+        gap: 0.5rem;
+    }
+    
+    .btn-icon {
+        padding: 0.5rem;
+    }
+    
+    .btn-icon i {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    .chat-title {
+        font-size: 1.1rem;
+        margin-right: 0.5rem;
+    }
+    
+    #sidebar-toggle-mobile {
+        display: block;
+        padding: 0.5rem;
+    }
+    
+    /* Mensajes */
+    .chat-messages-container {
+        padding: 0.75rem;
+        margin-top: 0.5rem;
+    }
+    
+    .chat-message {
+        max-width: 90%;
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .message-avatar i {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    .message-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    /* Área de entrada */
+    .chat-input-container {
+        padding: 0.75rem;
+        margin: 0.5rem;
+    }
+    
+    .chat-input-wrapper {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .input-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        order: -1; /* Mover los botones al principio en móvil */
+    }
+    
+    .input-action-btn {
+        padding: 0.5rem;
+        margin: 0 0.125rem;
+    }
+    
+    .chat-input {
+        margin: 0 !important;
+        width: 100%;
+        resize: none;
+        max-height: 100px;
+    }
+    
+    .chat-send-btn {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .chat-send-btn span {
+        display: inline;
+        margin-right: 0.5rem;
+    }
+    
+    /* Controles TTS */
+    .tts-controls {
+        flex-direction: row;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+    
+    .tts-controls button {
+        padding: 0.5rem;
+    }
+    
+    .tts-speed-slider {
+        width: 80px;
+        height: auto;
+    }
+    
+    /* Modal */
+    .modal-content {
+        margin: 1rem;
+        width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
+    }
+    
+    .modal-header, .modal-body, .modal-footer {
+        padding: 1rem;
+    }
+    
+    /* N8N widget */
+    .n8n-widget {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    
+    /* Componentes del chat */
+    .chat-status {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Botones de acciones */
+    .chat-header-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .chat-header-actions > * {
+        margin: 0 0.125rem;
+    }
+    
+    /* Ajustes para elementos de texto largo */
+    .section-title, .workflow-name {
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Ajustes para listas de chats */
+    .chat-item {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .chat-item .chat-title {
+        font-size: 0.9rem;
+    }
+    
+    .chat-item .chat-time {
+        font-size: 0.7rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - Tablet pequeña
+   ============================================ */
+@media (min-width: 481px) and (max-width: 768px) {
+    .sidebar {
+        width: 280px !important;
+    }
+    
+    .chat-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .chat-messages-container {
+        padding: 0.75rem 1rem;
+    }
+    
+    .chat-message {
+        max-width: 95%;
+        padding: 1rem;
+    }
+    
+    .chat-input-container {
+        padding: 1rem;
+    }
+    
+    .chat-input-wrapper {
+        flex-direction: column;
+    }
+    
+    .chat-send-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+/* ============================================
+   TOUCH OPTIMIZATION - General
+   ============================================ */
+@media screen and (hover: none) and (pointer: coarse) {
+    /* Ajustes específicos para dispositivos táctiles */
+    .btn-icon, .btn-square, .icon-btn-sm, .input-action-btn, .btn-sidebar-action, .btn-new-chat {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 0.75rem;
+    }
+    
+    .chat-input {
+        min-height: 60px;
+    }
+    
+    /* Asegurar áreas táctiles adecuadas */
+    .message-actions button {
+        min-height: 36px;
+        min-width: 36px;
+    }
+    
+    .btn-new-chat, .btn-sidebar-action {
+        padding: 0.75rem 1rem;
+    }
+}
