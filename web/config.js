@@ -3,10 +3,13 @@
 
 // Evitar múltiples declaraciones de la misma variable
 if (typeof window.CHATBOT_CONFIG === 'undefined') {
+    // Definir la URL base primero para evitar referencias circulares
+    const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5000'  // Desarrollo
+        : window.location.origin;   // Producción (https://www.capibara6.com)
+
     const CHATBOT_CONFIG = {
-        BACKEND_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://localhost:5000'  // Desarrollo
-            : window.location.origin,   // Producción (https://www.capibara6.com)
+        BACKEND_URL: BACKEND_URL,
 
         // Definir endpoints explícitamente para evitar confusiones
         ENDPOINTS: {
@@ -24,8 +27,8 @@ if (typeof window.CHATBOT_CONFIG === 'undefined') {
             ACONTEXT: {
                 ENABLED: true,
                 BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? `${window.CHATBOT_CONFIG.BACKEND_URL}/api/acontext`  // Usar gateway local
-                    : `${window.CHATBOT_CONFIG.BACKEND_URL}/api/acontext`,  // Usar gateway en producción
+                    ? `${BACKEND_URL}/api/acontext`  // Usar gateway local
+                    : `${BACKEND_URL}/api/acontext`,  // Usar gateway en producción
                 ENDPOINTS: {
                     STATUS: '/status',
                     SESSION_CREATE: '/session/create',

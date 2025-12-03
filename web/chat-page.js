@@ -3,11 +3,17 @@
 class Capibara6ChatPage {
     constructor() {
         console.log('🔧 Constructor de Capibara6ChatPage llamado');
-        this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined'
-            ? CHATBOT_CONFIG.BACKEND_URL
-            : (window.location.hostname === 'localhost'
+
+        // Obtener la URL del backend de forma segura
+        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL) {
+            this.backendUrl = CHATBOT_CONFIG.BACKEND_URL;
+            console.log('🔌 Backend URL desde configuración:', this.backendUrl);
+        } else {
+            this.backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
                 ? 'http://localhost:5000'
-                : this.normalizeOrigin(window.location.origin));  // Normalizar el origen para garantizar www
+                : this.normalizeOrigin(window.location.origin);  // Normalizar el origen para garantizar www
+            console.warn('⚠️ Configuración no disponible, usando URL por defecto:', this.backendUrl);
+        }
 
         this.messages = [];
         this.chats = [];
@@ -459,9 +465,11 @@ class Capibara6ChatPage {
     async checkConnection() {
         try {
             // Asegurar que tenemos la URL correcta del backend
-            const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+            const backendUrl = (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL)
                 ? CHATBOT_CONFIG.BACKEND_URL
                 : this.backendUrl;
+
+            console.log('📡 Verificando conexión con backend:', backendUrl);
 
             // Función helper para crear timeout compatible
             const createTimeoutSignal = (ms) => {
@@ -532,10 +540,12 @@ class Capibara6ChatPage {
                     if (response.ok || response.status === 200) {
                         const responseData = await response.json().catch(() => ({}));
                         this.isConnected = true;
+                        console.log('✅ Conexión exitosa con:', endpoint.description);
                         this.updateStatus('Conectado', 'success');
                         return;
                     }
                 } catch (endpointError) {
+                    console.debug('❌ Falló endpoint:', endpoint.description, endpointError.message);
                     // Silenciar logs redundantes para endpoints fallback
                     continue;
                 }
@@ -547,10 +557,11 @@ class Capibara6ChatPage {
             this.showError('No se pudo conectar con el backend. Verifica:\n1. Que el servidor esté corriendo\n2. Que el firewall permita conexiones');
 
         } catch (error) {
-            const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+            const backendUrl = (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL)
                 ? CHATBOT_CONFIG.BACKEND_URL
                 : this.backendUrl;
 
+            console.error('💥 Error en checkConnection:', error);
             if (error.name === 'AbortError' || error.message?.includes('aborted')) {
                 this.isConnected = false;
                 this.updateStatus('Timeout', 'error');
