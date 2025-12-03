@@ -3363,6 +3363,11 @@ input {
     margin-bottom: 20px;
 }
 
+/* Estilo mejorado para el indicador de actualización en el avatar */
+.avatar-gradient {
+    position: relative;
+}
+
 /* En dispositivos móviles, asegurar que el input esté focalizado cuando sea relevante */
 @media (max-width: 480px) {
     .chat-input-container:focus-within .chat-input {

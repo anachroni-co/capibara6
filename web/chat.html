@@ -273,7 +273,7 @@
                         <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
                     </button>
                     <div class="chat-header-title">
-                        <h1 class="chat-title">capibara6</h1>
+                        <h1 class="chat-title">capibara6 <span style="color: #ef4444; font-size: 0.7em; vertical-align: middle;">● ACTIVO</span></h1>
                         <div class="chat-status">
                             <span class="status-indicator" id="status-indicator"></span>
                             <span id="status-text">Conectando...</span>
@@ -314,8 +314,10 @@
             <div class="chat-messages-container" id="chat-messages">
                 <div class="chat-message bot-message">
                     <div class="message-avatar">
-                        <div class="avatar-gradient">
+                        <div class="avatar-gradient" style="position: relative;">
                             <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                            <!-- Indicador visual de actualización -->
+                            <div style="position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 1px solid var(--bg-primary);"></div>
                         </div>
                     </div>
                     <div class="message-content">
