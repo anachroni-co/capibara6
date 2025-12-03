@@ -3171,6 +3171,73 @@ input {
     outline: none !important;
 }
 
+/* Estilos para servicios adicionales en sidebar */
+.rag-status, .tts-status, .e2b-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    display: inline-block;
+}
+
+.status-dot.inactive {
+    background: var(--error);
+}
+
+.tts-controls {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+.tts-controls.expanded {
+    display: flex;
+}
+
+.tts-controls-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.btn-icon-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-icon-sm:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+.btn-icon-sm:active {
+    transform: translateY(0);
+}
+
 /* En dispositivos móviles, asegurar que el input esté focalizado cuando sea relevante */
 @media (max-width: 480px) {
     .chat-input-container:focus-within .chat-input {

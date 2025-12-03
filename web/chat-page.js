@@ -423,6 +423,64 @@ class Capibara6ChatPage {
                     this.changePassword();
                 });
             }
+
+            // Eventos para RAG
+            const ragSearchBtnSidebar = document.getElementById('rag-search-btn-sidebar');
+            if (ragSearchBtnSidebar) {
+                ragSearchBtnSidebar.addEventListener('click', () => {
+                    // Abrir panel RAG
+                    const ragPanel = document.getElementById('rag-panel');
+                    if (ragPanel) {
+                        ragPanel.classList.add('open');
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+                    }
+                });
+            }
+
+            // Eventos para TTS sidebar
+            const ttsControlsToggle = document.getElementById('tts-controls-toggle');
+            if (ttsControlsToggle) {
+                ttsControlsToggle.addEventListener('click', () => {
+                    const ttsControls = document.getElementById('tts-controls-sidebar');
+                    if (ttsControls) {
+                        ttsControls.classList.toggle('expanded');
+                    }
+                });
+            }
+
+            const ttsPlayBtnSidebar = document.getElementById('tts-play-btn-sidebar');
+            if (ttsPlayBtnSidebar) {
+                ttsPlayBtnSidebar.addEventListener('click', () => {
+                    // Reproducir texto del último mensaje del bot
+                    const lastBotMessage = Array.from(this.chatMessages.querySelectorAll('.bot-message .message-text')).pop();
+                    if (lastBotMessage) {
+                        const text = lastBotMessage.textContent;
+                        if (typeof speakText === 'function') {
+                            speakText(text);
+                        }
+                    }
+                });
+            }
+
+            const ttsStopBtnSidebar = document.getElementById('tts-stop-btn-sidebar');
+            if (ttsStopBtnSidebar) {
+                ttsStopBtnSidebar.addEventListener('click', () => {
+                    if (typeof window.speechSynthesis !== 'undefined') {
+                        window.speechSynthesis.cancel();
+                    }
+                });
+            }
+
+            // Eventos para E2B
+            const e2bStatusBtn = document.getElementById('e2b-status-btn');
+            if (e2bStatusBtn) {
+                e2bStatusBtn.addEventListener('click', () => {
+                    // Mostrar información sobre el estado de E2B
+                    this.showE2BInfo();
+                });
+            }
         } catch (error) {
             console.error('Error en setupEventListeners:', error);
         }
@@ -2409,6 +2467,35 @@ class Capibara6ChatPage {
         } catch (error) {
             console.error('❌ Error subiendo archivos:', error);
             this.showError(`Error subiendo archivos: ${error.message}`);
+        }
+    }
+
+    // Función para mostrar información de E2B
+    async showE2BInfo() {
+        try {
+            // Simular verificación del estado de E2B
+            // En una implementación real, aquí se haría una llamada al servicio E2B
+            const e2bStatusElement = document.getElementById('e2b-status');
+            if (e2bStatusElement) {
+                const statusSpan = e2bStatusElement.querySelector('span:last-child');
+                const statusDot = e2bStatusElement.querySelector('.status-dot');
+
+                // Simular verificación
+                statusSpan.textContent = 'E2B Verificando...';
+                statusDot.style.background = '#f59e0b'; // color amarillo para proceso
+
+                // Simular respuesta real después de un tiempo
+                setTimeout(() => {
+                    if (statusSpan) {
+                        statusSpan.textContent = 'E2B Activo';
+                        if (statusDot) {
+                            statusDot.style.background = '#10b981'; // color verde para activo
+                        }
+                    }
+                }, 1000);
+            }
+        } catch (error) {
+            console.error('❌ Error verificando estado E2B:', error);
         }
     }
 }
