@@ -31,3 +31,9 @@ INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
 INFO:     127.0.0.1:42758 - "GET /api/agents HTTP/1.1" 200 OK
 INFO:     127.0.0.1:59044 - "POST /api/agents HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2025-12-03 12:00:26,296 - gateway_server - INFO - 🛑 Cerrando API Gateway...
+2025-12-03 12:00:26,296 - gateway_server - INFO - 🔒 Acontext client closed
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1052946]

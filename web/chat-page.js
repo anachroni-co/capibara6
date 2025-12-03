@@ -2026,32 +2026,71 @@ class Capibara6ChatPage {
     }
 
     async loadAgentsFromAcontext() {
-        // Esta función puede ser implementada para cargar agentes desde Acontext
-        // Para simplicidad en esta implementación, mostraremos un agente de ejemplo
+        // Cargar agentes desde el endpoint de Acontext
         try {
             if (!this.agentsList) return;
 
-            // Simular agentes existentes (esto debería conectarse con Acontext en una implementación completa)
-            // Por ahora mostramos un agente de ejemplo
-            const demoAgent = document.createElement('div');
-            demoAgent.className = 'chat-item agent-item';
-            demoAgent.innerHTML = `
-                <div class="chat-item-icon">
-                    <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
-                </div>
-                <div class="chat-item-content">
-                    <div class="chat-item-title">Demo Agent</div>
-                    <div class="chat-item-time">Just now</div>
-                </div>
-                <div class="chat-item-actions">
-                    <button class="btn-chat-action" title="Usar agente">
-                        <i data-lucide="play" style="width: 16px; height: 16px;"></i>
-                    </button>
-                </div>
-            `;
+            // Hacer solicitud al endpoint de agentes
+            const response = await fetch(`${this.backendUrl}/api/agents`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
+            if (!response.ok) {
+                throw new Error(`Error cargando agentes: ${response.status} - ${await response.text()}`);
+            }
+
+            const result = await response.json();
+            const agents = result.agents || [];
+
+            // Limpiar la lista
             this.agentsList.innerHTML = '';
-            this.agentsList.appendChild(demoAgent);
+
+            if (agents.length === 0) {
+                const emptyAgent = document.createElement('div');
+                emptyAgent.className = 'chat-item agent-item disabled';
+                emptyAgent.innerHTML = `
+                    <div class="chat-item-icon">
+                        <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div class="chat-item-content">
+                        <div class="chat-item-title">No hay agentes</div>
+                        <div class="chat-item-time">Crea uno nuevo</div>
+                    </div>
+                `;
+                this.agentsList.appendChild(emptyAgent);
+            } else {
+                // Crear elementos para cada agente
+                agents.forEach(agent => {
+                    const agentElement = document.createElement('div');
+                    agentElement.className = 'chat-item agent-item';
+                    agentElement.innerHTML = `
+                        <div class="chat-item-icon">
+                            <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
+                        </div>
+                        <div class="chat-item-content">
+                            <div class="chat-item-title">${agent.name}</div>
+                            <div class="chat-item-time">${agent.type || 'Agente'}</div>
+                        </div>
+                        <div class="chat-item-actions">
+                            <button class="btn-chat-action" title="Usar agente" data-agent-id="${agent.id}">
+                                <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    `;
+                    this.agentsList.appendChild(agentElement);
+                });
+
+                // Agregar event listeners para los botones de usar agente
+                this.agentsList.querySelectorAll('.btn-chat-action').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const agentId = btn.getAttribute('data-agent-id');
+                        this.useAgent(agentId);
+                    });
+                });
+            }
 
             // Inicializar iconos de Lucide
             if (typeof lucide !== 'undefined') {
@@ -2059,16 +2098,72 @@ class Capibara6ChatPage {
             }
 
         } catch (error) {
-            console.debug('Acontext agents not available:', error.message);
+            console.error('❌ Error cargando agentes:', error);
+            // Mostrar mensaje de error en la UI
+            if (this.agentsList) {
+                this.agentsList.innerHTML = `
+                    <div class="chat-item agent-item disabled">
+                        <div class="chat-item-icon">
+                            <i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>
+                        </div>
+                        <div class="chat-item-content">
+                            <div class="chat-item-title">Error al cargar agentes</div>
+                            <div class="chat-item-time">Intente más tarde</div>
+                        </div>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
         }
     }
 
-    showAgentCreationModal() {
-        // Mostrar modal de creación de agente
-        alert('Crear Nuevo Agente:\n\nFuncionalidad de agentes de Acontext disponible.\n\nEn una implementación completa, esto permitiría crear agentes especializados basados en experiencias anteriores almacenadas en Acontext.');
+    async useAgent(agentId) {
+        // Funcionalidad para usar un agente específico
+        console.debug(`🎯 Usando agente con ID: ${agentId}`);
+        // Aquí se podría implementar la funcionalidad para interactuar con el agente específico
+        // Por ejemplo, cargar contexto específico del agente o preconfigurar el chat
+        this.showSuccess('Agente seleccionado - funcionalidad completa disponible en versión avanzada');
+    }
 
-        // Cargar de nuevo la lista de agentes
-        this.loadAgentsFromAcontext();
+    async showAgentCreationModal() {
+        // Mostrar modal de creación de agente con formulario
+        const agentName = prompt('Nombre del nuevo agente:', 'Nuevo Agente');
+        if (!agentName) return;
+
+        const agentDescription = prompt('Descripción del agente (opcional):', 'Un agente especializado creado con Acontext');
+
+        try {
+            // Crear el agente usando el endpoint del gateway
+            const response = await fetch(`${this.backendUrl}/api/agents`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: agentName,
+                    description: agentDescription || `Agente ${agentName}`
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error creando agente: ${response.status} - ${await response.text()}`);
+            }
+
+            const result = await response.json();
+            console.debug('✅ Agente creado exitosamente:', result.agent);
+
+            // Mostrar mensaje de éxito
+            this.showSuccess(`Agente "${agentName}" creado exitosamente`);
+
+            // Cargar de nuevo la lista de agentes
+            this.loadAgentsFromAcontext();
+
+        } catch (error) {
+            console.error('❌ Error creando agente:', error);
+            this.showError(`Error creando agente: ${error.message}`);
+        }
     }
 }
 

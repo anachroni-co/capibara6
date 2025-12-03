@@ -24,8 +24,8 @@ if (typeof window.CHATBOT_CONFIG === 'undefined') {
             ACONTEXT: {
                 ENABLED: true,
                 BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? 'http://localhost:8029/api/v1'  // Servidor Acontext local
-                    : 'https://www.capibara6.com/api/acontext',  // En producción
+                    ? `${window.CHATBOT_CONFIG.BACKEND_URL}/api/acontext`  // Usar gateway local
+                    : `${window.CHATBOT_CONFIG.BACKEND_URL}/api/acontext`,  // Usar gateway en producción
                 ENDPOINTS: {
                     STATUS: '/status',
                     SESSION_CREATE: '/session/create',

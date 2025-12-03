@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 # Load Acontext configuration
 ACONTEXT_BASE_URL = os.getenv("ACONTEXT_BASE_URL", "http://localhost:8029/api/v1")
 ACONTEXT_API_KEY = os.getenv("ACONTEXT_API_KEY", "sk-ac-your-root-api-bearer-token")
+ACONTEXT_PROJECT_ID = os.getenv("ACONTEXT_PROJECT_ID", "capibara6-project")
 
 class AcontextSession(BaseModel):
     """Acontext Session representation"""
@@ -36,15 +37,17 @@ class AcontextIntegration:
     def __init__(self):
         self.base_url = ACONTEXT_BASE_URL
         self.api_key = ACONTEXT_API_KEY
+        self.project_id = ACONTEXT_PROJECT_ID
         self.client = httpx.AsyncClient(
             base_url=self.base_url,
             headers={"Authorization": f"Bearer {self.api_key}"},
             timeout=30.0
         )
         self.enabled = bool(self.api_key and self.base_url)
-        
+
         if self.enabled:
             logger.info(f"✅ Acontext integration enabled, connecting to: {self.base_url}")
+            logger.info(f"📚 Project ID: {self.project_id}")
         else:
             logger.warning("⚠️ Acontext integration disabled - missing API key or base URL")
     
@@ -173,16 +176,17 @@ class AcontextIntegration:
         """Search a space for learned experiences"""
         if not self.enabled:
             return {"cited_blocks": []}
-        
+
         try:
+            # Use project_id for the search endpoint as required by Acontext API
             response = await self.client.get(
-                f"/space/{space_id}/experience_search",
+                f"/project/{self.project_id}/space/{space_id}/experience_search",
                 params={
                     "query": query,
                     "mode": mode
                 }
             )
-            
+
             response.raise_for_status()
             return response.json()
         except httpx.HTTPStatusError as e:
