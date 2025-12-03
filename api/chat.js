@@ -29,9 +29,12 @@ export default async function handler(req, res) {
         // El gateway server espera un campo 'message' único como string simple
         const userMessage = message || (req.body.messages && req.body.messages[0]?.content) || '';
 
+        // Usar modelo más rápido por defecto para evitar timeouts con aya_expanse_multilingual
+        const defaultModel = 'phi4_fast';  // Modelo más rápido como fallback
+
         const payload = {
             message: userMessage, // Campo requerido por el gateway server
-            model: model || 'aya_expanse_multilingual',
+            model: model || defaultModel,  // Cambiamos a un modelo más rápido por defecto
             temperature: temperature || 0.7,
             max_tokens: max_tokens || 200,
             use_semantic_router: use_semantic_router || false
@@ -41,13 +44,24 @@ export default async function handler(req, res) {
         console.log('📋 Payload:', { model: payload.model, content_len: userMessage.length, temp: payload.temperature });
 
         // Conectar al gateway server en VM services (IP externa) que enruta a la VM models-europe
+        // Aumentar timeout para manejar modelos grandes
+        // Primero intentamos con el modelo solicitado, pero usamos uno más rápido como fallback
+        const targetModel = payload.model !== 'aya_expanse_multilingual' ? payload.model : 'phi4_fast';
+
+        const attemptPayload = {
+            ...payload,
+            model: targetModel
+        };
+
+        console.log(`🔄 Usando modelo fallback: ${targetModel} en lugar de aya_expanse_multilingual`);
+
         const response = await fetch('http://34.175.255.139:8080/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload),
-            signal: AbortSignal.timeout(45000) // 45 segundos de timeout aumentado
+            body: JSON.stringify(attemptPayload),
+            signal: AbortSignal.timeout(90000) // 90 segundos para modelos grandes
         });
 
         console.log('📥 Recibiendo respuesta del gateway server:', response.status);

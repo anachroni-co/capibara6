@@ -1514,7 +1514,7 @@ class Capibara6ChatPage {
                     // Usar la URL de n8n desde CHATBOT_CONFIG o valor por defecto para producción
                     const n8nUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.N8N
                         ? CHATBOT_CONFIG.SERVICE_URLS.N8N
-                        : 'http://10.204.0.9:5678';  // URL interna de n8n en la VM services
+                        : 'http://34.175.255.139:5678';  // IP externa de n8n en la VM services
 
                     this.n8nManager = new N8NManager({
                         baseURL: this.backendUrl,

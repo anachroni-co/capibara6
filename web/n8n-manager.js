@@ -6,8 +6,9 @@
 class N8NManager {
     constructor(config = {}) {
         // Usar URLs de la VM services para producción
-        this.baseURL = config.baseURL || 'http://10.204.0.9:5000';  // Puede ser el gateway o un proxy
-        this.n8nURL = config.n8nURL || 'http://10.204.0.9:5678';    // Puerto de n8n en VM services
+        // Para acceso desde frontend (Vercel), usar IP externa
+        this.baseURL = config.baseURL || 'http://34.175.255.139:5000';  // IP externa VM services
+        this.n8nURL = config.n8nURL || 'http://34.175.255.139:5678';    // Puerto de n8n en VM services (externa)
         this.cache = {
             templates: null,
             recommended: null,
@@ -205,16 +206,25 @@ class N8NManager {
     async checkN8NStatus() {
         try {
             // Usar fetch con timeout para evitar bloqueos
+            // n8n usa endpoint /health para health check
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 segundos timeout
 
-            const response = await fetch(`${this.n8nURL}/healthz`, {
+            const response = await fetch(`${this.n8nURL}/health`, {
                 method: 'GET',
                 signal: controller.signal
             });
 
             clearTimeout(timeoutId);
-            const data = await response.json();
+
+            // n8n puede devolver diferentes tipos de respuesta
+            let data;
+            try {
+                data = await response.json();
+            } catch (parseError) {
+                // Si no es JSON, tratar como texto y crear objeto de salud
+                data = { status: 'ok', message: 'n8n is running' };
+            }
 
             return {
                 available: response.ok,
@@ -224,6 +234,10 @@ class N8NManager {
             };
         } catch (error) {
             // No mostrar error si n8n no está disponible (es opcional)
+            // Solo registrar en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N health check fallido - opcional:', error.message);
+            }
             return { available: false, error: error.message, url: this.n8nURL };
         }
     }
@@ -334,8 +348,8 @@ class N8NManager {
 
 // Instancia global
 const n8nManager = new N8NManager({
-    baseURL: window.API_BASE_URL || 'http://10.204.0.9:5000',  // URL interna en VM services
-    n8nURL: window.N8N_URL || 'http://10.204.0.9:5678'        // Puerto de n8n en VM services
+    baseURL: window.API_BASE_URL || 'http://34.175.255.139:5000',  // IP externa VM services
+    n8nURL: window.N8N_URL || 'http://34.175.255.139:5678'        // Puerto de n8n en VM services (externa)
 });
 
 // Exportar para uso en otros módulos
