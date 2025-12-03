@@ -31,13 +31,13 @@ export default async function handler(req, res) {
   try {
     const { message, model, temperature, max_tokens, use_semantic_router } = req.body;
 
-    // Preparar payload para conectar con VM services gateway con streaming
+    // Preparar payload para conectar con VM services gateway (formato esperado por gateway server)
     const payload = {
+      message: message || '', // Campo requerido por el gateway server (no messages)
       model: model || 'aya_expanse_multilingual',
-      messages: [{ role: 'user', content: message || '' }],
       temperature: temperature || 0.7,
       max_tokens: max_tokens || 200,
-      stream: true, // Habilitar streaming
+      // El streaming se manejará internamente en el gateway server
       use_semantic_router: use_semantic_router || false
     };
 

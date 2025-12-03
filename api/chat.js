@@ -26,16 +26,19 @@ export default async function handler(req, res) {
         console.log('📥 Datos recibidos:', { message: message ? message.substring(0, 50) + '...' : 'vacio', model, temperature, max_tokens, use_semantic_router });
 
         // Preparar payload para conectar con VM models-europe
+        // El gateway server espera un campo 'message' único como string simple
+        const userMessage = message || (req.body.messages && req.body.messages[0]?.content) || '';
+
         const payload = {
+            message: userMessage, // Campo requerido por el gateway server
             model: model || 'aya_expanse_multilingual',
-            messages: [{ role: 'user', content: message || '' }],
             temperature: temperature || 0.7,
             max_tokens: max_tokens || 200,
-            use_semantic_router: use_semantic_router || false // Asegurar que se maneje esta propiedad
+            use_semantic_router: use_semantic_router || false
         };
 
         console.log('📤 Enviando solicitud al gateway server:', 'http://34.175.255.139:8080/api/chat');
-        console.log('📋 Payload:', { model: payload.model, content_len: payload.messages[0].content.length, temp: payload.temperature });
+        console.log('📋 Payload:', { model: payload.model, content_len: userMessage.length, temp: payload.temperature });
 
         // Conectar al gateway server en VM services (IP externa) que enruta a la VM models-europe
         const response = await fetch('http://34.175.255.139:8080/api/chat', {
