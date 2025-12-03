@@ -20,7 +20,7 @@ from fastapi import HTTPException
 logger = logging.getLogger(__name__)
 
 # Load Acontext configuration
-ACONTEXT_BASE_URL = os.getenv("ACONTEXT_BASE_URL", "http://localhost:8029/api/v1")
+ACONTEXT_BASE_URL = os.getenv("ACONTEXT_BASE_URL", "http://localhost:8029/api/v1")  # Real Acontext server
 ACONTEXT_API_KEY = os.getenv("ACONTEXT_API_KEY", "sk-ac-your-root-api-bearer-token")
 ACONTEXT_PROJECT_ID = os.getenv("ACONTEXT_PROJECT_ID", "capibara6-project")
 

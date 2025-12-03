@@ -71,13 +71,30 @@ class Capibara6ChatPage {
         // Elementos específicos de Acontext
         this.agentsList = document.getElementById('agents-list');
 
+        // Verificar que los elementos esenciales existan
+        const essentialElements = [
+            this.chatMessages, this.chatInput, this.chatSendBtn,
+            this.statusIndicator, this.statusText
+        ];
+
+        const missingElements = essentialElements.filter(el => !el);
+        if (missingElements.length > 0) {
+            console.warn('⚠️ Algunos elementos esenciales no se encontraron en el DOM');
+            // Registrar cuales elementos faltan para diagnóstico
+            if (!this.chatMessages) console.debug('⚠️ chat-messages no encontrado');
+            if (!this.chatInput) console.debug('⚠️ chat-input no encontrado');
+            if (!this.chatSendBtn) console.debug('⚠️ chat-send-btn no encontrado');
+            if (!this.statusIndicator) console.debug('⚠️ status-indicator no encontrado');
+            if (!this.statusText) console.debug('⚠️ status-text no encontrado');
+        }
+
         // Cargar configuración del usuario
         this.loadUserSettings();
         this.loadUserProfile();
-        
+
         // Configurar event listeners
         this.setupEventListeners();
-        
+
         // Verificar conexión con el backend
         await this.checkConnection();
 
@@ -89,173 +106,251 @@ class Capibara6ChatPage {
         this.initModelVisualization();
         this.initEntropyMonitor();
         this.initAcontextAgentSystem();
-        
+
         // Cargar chats guardados
         this.loadChats();
-        
+
         // Cargar mensajes del chat actual
         this.loadMessages();
     }
     
     setupEventListeners() {
-        // Enviar mensaje
-        this.chatSendBtn.addEventListener('click', () => this.sendMessage());
-        this.chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                this.sendMessage();
+        try {
+            // Enviar mensaje
+            if (this.chatSendBtn) {
+                this.chatSendBtn.addEventListener('click', () => this.sendMessage());
             }
-        });
-        
-        // Auto-resize del textarea
-        this.chatInput.addEventListener('input', () => {
-            this.chatInput.style.height = 'auto';
-            this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 200) + 'px';
-        });
-        
-        // Sidebar
-        this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
-        this.sidebarToggleMobile.addEventListener('click', () => this.toggleSidebarMobile());
-        this.sidebarOverlay.addEventListener('click', () => this.closeSidebarMobile());
-        
-        // Nuevo chat
-        this.newChatBtn.addEventListener('click', () => this.createNewChat());
-        
-        // Limpiar chat
-        this.clearChatBtn.addEventListener('click', () => this.clearChat());
-        
-        // Perfil
-        this.profileMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.toggleProfileMenu();
-        });
-        
-        // Cerrar menú de perfil al hacer clic fuera
-        document.addEventListener('click', (e) => {
-            if (!this.profileMenu.contains(e.target) && !this.profileMenuBtn.contains(e.target)) {
-                this.profileMenu.classList.remove('active');
-            }
-        });
-        
-        // Configuración
-        document.getElementById('profile-settings-btn').addEventListener('click', () => {
-            this.openSettings();
-            this.profileMenu.classList.remove('active');
-        });
-        
-        document.getElementById('settings-modal-close').addEventListener('click', () => {
-            this.closeSettings();
-        });
-        
-        document.getElementById('settings-save-btn').addEventListener('click', () => {
-            this.saveSettings();
-        });
-        
-        // Temperatura slider
-        const tempSlider = document.getElementById('temperature-setting');
-        const tempValue = document.getElementById('temperature-value');
-        tempSlider.addEventListener('input', (e) => {
-            tempValue.textContent = e.target.value;
-        });
-        
-        // Crear proyecto (acción separada)
-        document.getElementById('create-project-btn').addEventListener('click', () => {
-            this.openCreateProjectModal();
-        });
-        
-        // Modales - Crear Proyecto
-        document.getElementById('create-project-modal-close').addEventListener('click', () => {
-            this.closeCreateProjectModal();
-        });
-        
-        document.getElementById('create-project-cancel-btn').addEventListener('click', () => {
-            this.closeCreateProjectModal();
-        });
-        
-        document.getElementById('create-project-submit-btn').addEventListener('click', () => {
-            this.createProject();
-        });
-        
-        // Modales - Seleccionar Proyecto
-        document.getElementById('select-project-modal-close').addEventListener('click', () => {
-            this.closeSelectProjectModal();
-        });
-        
-        document.getElementById('select-project-cancel-btn').addEventListener('click', () => {
-            this.closeSelectProjectModal();
-        });
-        
-        // Modales - Seleccionar Chat para Unir
-        document.getElementById('select-chat-merge-modal-close').addEventListener('click', () => {
-            this.closeSelectChatMergeModal();
-        });
-        
-        document.getElementById('select-chat-merge-cancel-btn').addEventListener('click', () => {
-            this.closeSelectChatMergeModal();
-        });
+            if (this.chatInput) {
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
 
-        // Evento de creación de agente
-        const createAgentBtn = document.getElementById('create-agent-btn');
-        if (createAgentBtn) {
-            createAgentBtn.addEventListener('click', () => {
-                this.showAgentCreationModal();
-            });
-        }
-        
-        
-        // Modal - Cuenta
-        document.getElementById('profile-account-btn').addEventListener('click', () => {
-            this.openAccountModal();
-            this.profileMenu.classList.remove('active');
-        });
-        
-        // Tabs del modal de cuenta
-        document.querySelectorAll('.account-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.dataset.tab;
-                this.switchAccountTab(tabName);
-            });
-        });
-        
-        // Importadores de redes sociales
-        document.querySelectorAll('.btn-social-import').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const platform = btn.dataset.platform;
-                const fileInput = document.getElementById(`${platform}-file-input`);
-                fileInput.click();
-            });
-        });
-        
-        // File inputs para importación
-        ['twitter', 'linkedin', 'instagram', 'github'].forEach(platform => {
-            const fileInput = document.getElementById(`${platform}-file-input`);
-            if (fileInput) {
-                fileInput.addEventListener('change', (e) => {
-                    this.handleSocialImport(platform, e.target.files[0]);
+                // Auto-resize del textarea
+                this.chatInput.addEventListener('input', () => {
+                    this.chatInput.style.height = 'auto';
+                    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 200) + 'px';
                 });
             }
-        });
-        
-        // Generar gemelo digital
-        document.getElementById('generate-twin-btn').addEventListener('click', () => {
-            this.generateDigitalTwin();
-        });
-        
-        document.getElementById('account-modal-close').addEventListener('click', () => {
-            this.closeAccountModal();
-        });
-        
-        document.getElementById('account-cancel-btn').addEventListener('click', () => {
-            this.closeAccountModal();
-        });
-        
-        document.getElementById('account-save-btn').addEventListener('click', () => {
-            this.saveAccount();
-        });
-        
-        document.getElementById('change-password-btn').addEventListener('click', () => {
-            this.changePassword();
-        });
+
+            // Sidebar
+            if (this.sidebarToggle) {
+                this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
+            }
+            if (this.sidebarToggleMobile) {
+                this.sidebarToggleMobile.addEventListener('click', () => this.toggleSidebarMobile());
+            }
+            if (this.sidebarOverlay) {
+                this.sidebarOverlay.addEventListener('click', () => this.closeSidebarMobile());
+            }
+
+            // Nuevo chat
+            if (this.newChatBtn) {
+                this.newChatBtn.addEventListener('click', () => this.createNewChat());
+            }
+
+            // Limpiar chat
+            if (this.clearChatBtn) {
+                this.clearChatBtn.addEventListener('click', () => this.clearChat());
+            }
+
+            // Perfil
+            if (this.profileMenuBtn && this.profileMenu) {
+                this.profileMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleProfileMenu();
+                });
+
+                // Cerrar menú de perfil al hacer clic fuera
+                document.addEventListener('click', (e) => {
+                    if (!this.profileMenu.contains(e.target) && !this.profileMenuBtn.contains(e.target)) {
+                        this.profileMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Configuración
+            const profileSettingsBtn = document.getElementById('profile-settings-btn');
+            if (profileSettingsBtn) {
+                profileSettingsBtn.addEventListener('click', () => {
+                    this.openSettings();
+                    if (this.profileMenu) {
+                        this.profileMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            const settingsModalClose = document.getElementById('settings-modal-close');
+            if (settingsModalClose) {
+                settingsModalClose.addEventListener('click', () => {
+                    this.closeSettings();
+                });
+            }
+
+            const settingsSaveBtn = document.getElementById('settings-save-btn');
+            if (settingsSaveBtn) {
+                settingsSaveBtn.addEventListener('click', () => {
+                    this.saveSettings();
+                });
+            }
+
+            // Temperatura slider
+            const tempSlider = document.getElementById('temperature-setting');
+            const tempValue = document.getElementById('temperature-value');
+            if (tempSlider && tempValue) {
+                tempSlider.addEventListener('input', (e) => {
+                    tempValue.textContent = e.target.value;
+                });
+            }
+
+            // Crear proyecto (acción separada)
+            const createProjectBtn = document.getElementById('create-project-btn');
+            if (createProjectBtn) {
+                createProjectBtn.addEventListener('click', () => {
+                    this.openCreateProjectModal();
+                });
+            }
+
+            // Modales - Crear Proyecto
+            const createProjectModalClose = document.getElementById('create-project-modal-close');
+            if (createProjectModalClose) {
+                createProjectModalClose.addEventListener('click', () => {
+                    this.closeCreateProjectModal();
+                });
+            }
+
+            const createProjectCancelBtn = document.getElementById('create-project-cancel-btn');
+            if (createProjectCancelBtn) {
+                createProjectCancelBtn.addEventListener('click', () => {
+                    this.closeCreateProjectModal();
+                });
+            }
+
+            const createProjectSubmitBtn = document.getElementById('create-project-submit-btn');
+            if (createProjectSubmitBtn) {
+                createProjectSubmitBtn.addEventListener('click', () => {
+                    this.createProject();
+                });
+            }
+
+            // Modales - Seleccionar Proyecto
+            const selectProjectModalClose = document.getElementById('select-project-modal-close');
+            if (selectProjectModalClose) {
+                selectProjectModalClose.addEventListener('click', () => {
+                    this.closeSelectProjectModal();
+                });
+            }
+
+            const selectProjectCancelBtn = document.getElementById('select-project-cancel-btn');
+            if (selectProjectCancelBtn) {
+                selectProjectCancelBtn.addEventListener('click', () => {
+                    this.closeSelectProjectModal();
+                });
+            }
+
+            // Modales - Seleccionar Chat para Unir
+            const selectChatMergeModalClose = document.getElementById('select-chat-merge-modal-close');
+            if (selectChatMergeModalClose) {
+                selectChatMergeModalClose.addEventListener('click', () => {
+                    this.closeSelectChatMergeModal();
+                });
+            }
+
+            const selectChatMergeCancelBtn = document.getElementById('select-chat-merge-cancel-btn');
+            if (selectChatMergeCancelBtn) {
+                selectChatMergeCancelBtn.addEventListener('click', () => {
+                    this.closeSelectChatMergeModal();
+                });
+            }
+
+            // Evento de creación de agente
+            const createAgentBtn = document.getElementById('create-agent-btn');
+            if (createAgentBtn) {
+                createAgentBtn.addEventListener('click', () => {
+                    this.showAgentCreationModal();
+                });
+            }
+
+            // Modal - Cuenta
+            const profileAccountBtn = document.getElementById('profile-account-btn');
+            if (profileAccountBtn) {
+                profileAccountBtn.addEventListener('click', () => {
+                    this.openAccountModal();
+                    if (this.profileMenu) {
+                        this.profileMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Tabs del modal de cuenta
+            document.querySelectorAll('.account-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    this.switchAccountTab(tabName);
+                });
+            });
+
+            // Importadores de redes sociales
+            document.querySelectorAll('.btn-social-import').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const platform = btn.dataset.platform;
+                    const fileInput = document.getElementById(`${platform}-file-input`);
+                    if (fileInput) {
+                        fileInput.click();
+                    }
+                });
+            });
+
+            // File inputs para importación
+            ['twitter', 'linkedin', 'instagram', 'github'].forEach(platform => {
+                const fileInput = document.getElementById(`${platform}-file-input`);
+                if (fileInput) {
+                    fileInput.addEventListener('change', (e) => {
+                        this.handleSocialImport(platform, e.target.files[0]);
+                    });
+                }
+            });
+
+            // Generar gemelo digital
+            const generateTwinBtn = document.getElementById('generate-twin-btn');
+            if (generateTwinBtn) {
+                generateTwinBtn.addEventListener('click', () => {
+                    this.generateDigitalTwin();
+                });
+            }
+
+            const accountModalClose = document.getElementById('account-modal-close');
+            if (accountModalClose) {
+                accountModalClose.addEventListener('click', () => {
+                    this.closeAccountModal();
+                });
+            }
+
+            const accountCancelBtn = document.getElementById('account-cancel-btn');
+            if (accountCancelBtn) {
+                accountCancelBtn.addEventListener('click', () => {
+                    this.closeAccountModal();
+                });
+            }
+
+            const accountSaveBtn = document.getElementById('account-save-btn');
+            if (accountSaveBtn) {
+                accountSaveBtn.addEventListener('click', () => {
+                    this.saveAccount();
+                });
+            }
+
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            if (changePasswordBtn) {
+                changePasswordBtn.addEventListener('click', () => {
+                    this.changePassword();
+                });
+            }
+        } catch (error) {
+            console.error('Error en setupEventListeners:', error);
+        }
     }
     
     toggleSidebar() {
