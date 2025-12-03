@@ -2,18 +2,21 @@
 
 class Capibara6ChatPage {
     constructor() {
+        console.log('🔧 Constructor de Capibara6ChatPage llamado');
         this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined'
             ? CHATBOT_CONFIG.BACKEND_URL
             : (window.location.hostname === 'localhost'
                 ? 'http://localhost:5000'
                 : this.normalizeOrigin(window.location.origin));  // Normalizar el origen para garantizar www
-        
+
         this.messages = [];
         this.chats = [];
         this.currentChatId = null;
         this.isConnected = false;
         this.isProcessing = false;
         this.sidebarCollapsed = false;
+
+        console.log('✅ Propiedades iniciales inicializadas');
     }
 
     // Método para normalizar el origen y asegurar que use www si es necesario
@@ -51,6 +54,8 @@ class Capibara6ChatPage {
     }
     
     async init() {
+        console.log('🚀 Iniciando función init()');
+
         // Inicializar elementos del DOM (después de que el DOM esté completamente cargado)
         this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chat-input');
@@ -71,6 +76,25 @@ class Capibara6ChatPage {
         // Elementos específicos de Acontext
         this.agentsList = document.getElementById('agents-list');
 
+        console.log('🔍 Elementos DOM obtenidos:', {
+            chatMessages: !!this.chatMessages,
+            chatInput: !!this.chatInput,
+            chatSendBtn: !!this.chatSendBtn,
+            statusIndicator: !!this.statusIndicator,
+            statusText: !!this.statusText,
+            clearChatBtn: !!this.clearChatBtn,
+            sidebar: !!this.sidebar,
+            sidebarToggle: !!this.sidebarToggle,
+            sidebarToggleMobile: !!this.sidebarToggleMobile,
+            sidebarOverlay: !!this.sidebarOverlay,
+            newChatBtn: !!this.newChatBtn,
+            chatList: !!this.chatList,
+            profileMenuBtn: !!this.profileMenuBtn,
+            profileMenu: !!this.profileMenu,
+            settingsModal: !!this.settingsModal,
+            agentsList: !!this.agentsList
+        });
+
         // Verificar que los elementos esenciales existan
         const essentialElements = [
             this.chatMessages, this.chatInput, this.chatSendBtn,
@@ -86,19 +110,25 @@ class Capibara6ChatPage {
             if (!this.chatSendBtn) console.debug('⚠️ chat-send-btn no encontrado');
             if (!this.statusIndicator) console.debug('⚠️ status-indicator no encontrado');
             if (!this.statusText) console.debug('⚠️ status-text no encontrado');
+        } else {
+            console.log('✅ Todos los elementos esenciales encontrados');
         }
 
         // Cargar configuración del usuario
+        console.log('💾 Cargando configuración del usuario');
         this.loadUserSettings();
         this.loadUserProfile();
 
         // Configurar event listeners
+        console.log('🖱️ Configurando event listeners');
         this.setupEventListeners();
 
         // Verificar conexión con el backend
+        console.log('🔌 Verificando conexión con backend');
         await this.checkConnection();
 
         // Inicializar servicios integrados
+        console.log('⚙️ Inicializando servicios integrados');
         this.initTTSService();
         this.initMCPService();
         this.initRAGService();
@@ -108,22 +138,30 @@ class Capibara6ChatPage {
         this.initAcontextAgentSystem();
 
         // Cargar chats guardados
+        console.log('📚 Cargando chats guardados');
         this.loadChats();
 
         // Cargar mensajes del chat actual
+        console.log('💬 Cargando mensajes del chat');
         this.loadMessages();
+
+        console.log('🎉 Inicialización completada exitosamente');
     }
     
     setupEventListeners() {
         try {
             // Enviar mensaje
             if (this.chatSendBtn) {
-                this.chatSendBtn.addEventListener('click', () => this.sendMessage());
+                this.chatSendBtn.addEventListener('click', () => {
+                    console.log('🖱️ Botón de enviar clickeado');
+                    this.sendMessage();
+                });
             }
             if (this.chatInput) {
                 this.chatInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
+                        console.log('⌨️ Enter presionado en el input');
                         this.sendMessage();
                     }
                 });
@@ -137,28 +175,44 @@ class Capibara6ChatPage {
 
             // Sidebar
             if (this.sidebarToggle) {
-                this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
+                this.sidebarToggle.addEventListener('click', () => {
+                    console.log('🖱️ Botón de sidebar toggle clickeado');
+                    this.toggleSidebar();
+                });
             }
             if (this.sidebarToggleMobile) {
-                this.sidebarToggleMobile.addEventListener('click', () => this.toggleSidebarMobile());
+                this.sidebarToggleMobile.addEventListener('click', () => {
+                    console.log('📱 Botón de sidebar mobile toggle clickeado');
+                    this.toggleSidebarMobile();
+                });
             }
             if (this.sidebarOverlay) {
-                this.sidebarOverlay.addEventListener('click', () => this.closeSidebarMobile());
+                this.sidebarOverlay.addEventListener('click', () => {
+                    console.log('👀 Sidebar overlay clickeado');
+                    this.closeSidebarMobile();
+                });
             }
 
             // Nuevo chat
             if (this.newChatBtn) {
-                this.newChatBtn.addEventListener('click', () => this.createNewChat());
+                this.newChatBtn.addEventListener('click', () => {
+                    console.log('🆕 Botón de nuevo chat clickeado');
+                    this.createNewChat();
+                });
             }
 
             // Limpiar chat
             if (this.clearChatBtn) {
-                this.clearChatBtn.addEventListener('click', () => this.clearChat());
+                this.clearChatBtn.addEventListener('click', () => {
+                    console.log('🧹 Botón de limpiar chat clickeado');
+                    this.clearChat();
+                });
             }
 
             // Perfil
             if (this.profileMenuBtn && this.profileMenu) {
                 this.profileMenuBtn.addEventListener('click', (e) => {
+                    console.log('👤 Botón de menú de perfil clickeado');
                     e.stopPropagation();
                     this.toggleProfileMenu();
                 });
@@ -532,10 +586,17 @@ class Capibara6ChatPage {
     }
     
     async sendMessage() {
-        const message = this.chatInput.value.trim();
-        if (!message || this.isProcessing) return;
+        console.log('📤 sendMessage() llamado');
+        const message = this.chatInput?.value?.trim();
+        console.log('📝 Mensaje:', message, 'isProcessing:', this.isProcessing);
+
+        if (!message || this.isProcessing) {
+            console.log('🚫 Mensaje vacío o procesamiento en curso, saliendo');
+            return;
+        }
 
         if (!this.isConnected) {
+            console.log('🔴 No conectado al servidor');
             this.showError('No hay conexión con el servidor. Por favor, verifica tu conexión.');
             return;
         }
@@ -547,6 +608,7 @@ class Capibara6ChatPage {
         }
 
         // Agregar mensaje del usuario
+        console.log('👤 Agregando mensaje del usuario:', message);
         this.addMessage(message, 'user');
         this.chatInput.value = '';
         this.chatInput.style.height = 'auto';
@@ -556,22 +618,27 @@ class Capibara6ChatPage {
 
         // Mostrar indicador de escritura
         const typingIndicator = this.showTypingIndicator();
+        console.log('👀 Indicador de escritura mostrado');
 
         try {
             // Enviar mensaje al backend usando MCP
+            console.log('📡 Enviando mensaje al backend...');
             const response = await this.sendToBackend(message);
+            console.log('📥 Respuesta recibida:', response);
 
             // Remover indicador de escritura
             this.removeTypingIndicator(typingIndicator);
 
             // Agregar respuesta del bot
             if (response && response.content) {
+                console.log('🤖 Agregando respuesta del bot:', response.content);
                 this.addMessage(response.content, 'bot');
                 // Mostrar controles TTS cuando hay respuesta del bot
                 if (this.showTTSControls) {
                     this.showTTSControls();
                 }
             } else {
+                console.error('❌ Respuesta inválida del servidor');
                 throw new Error('Respuesta inválida del servidor');
             }
 
@@ -579,6 +646,7 @@ class Capibara6ChatPage {
             this.updateChatInList();
 
         } catch (error) {
+            console.error('💥 Error en sendMessage:', error);
             this.removeTypingIndicator(typingIndicator);
 
             // Mensaje de error más descriptivo
@@ -596,9 +664,10 @@ class Capibara6ChatPage {
                 'bot',
                 true
             );
-            console.debug('Message sending failed:', error.message); // Solo log debug
+            console.error('❌ Message sending failed:', error.message); // Mostrar error en consola
         } finally {
             this.setProcessing(false);
+            console.log('🔚 sendMessage() finalizado');
         }
     }
     
@@ -2263,10 +2332,25 @@ class Capibara6ChatPage {
 }
 
 // Inicializar cuando el DOM esté listo
+function initializeChatPage() {
+    console.log('📊 Estado del DOM:', document.readyState);
+    try {
+        console.log('🎉 DOM completamente cargado, inicializando Capibara6ChatPage');
+        const chatPage = new Capibara6ChatPage();
+        // Esperar a que la inicialización asíncrona se complete
+        chatPage.init().catch(error => {
+            console.error('💥 Error durante la inicialización:', error);
+        });
+    } catch (error) {
+        console.error('💥 Error al crear la instancia:', error);
+    }
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new Capibara6ChatPage();
-    });
+    console.log('⏳ DOM aún cargando, esperando DOMContentLoaded');
+    document.addEventListener('DOMContentLoaded', initializeChatPage);
 } else {
-    new Capibara6ChatPage();
+    console.log('✅ DOM ya cargado, inicializando Capibara6ChatPage inmediatamente');
+    // Usar setTimeout para asegurar que todo el DOM esté completamente cargado
+    setTimeout(initializeChatPage, 0);
 }
