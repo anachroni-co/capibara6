@@ -824,7 +824,13 @@ class Capibara6ChatPage {
                 const responseText = await response.text();
                 console.error('❌ Error parseando respuesta JSON:', parseError);
                 console.log('📄 Texto de respuesta:', responseText);
-                data = { error: `Parse error: ${parseError.message}`, raw_response: responseText };
+
+                // Si el status es 500 o similar, y no pudimos parsear como JSON, considerarlo como error de backend
+                if (response.status >= 400) {
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${responseText}`);
+                } else {
+                    data = { content: responseText, raw_response: responseText };
+                }
             }
 
             // Verificar si la respuesta es exitosa
@@ -836,6 +842,13 @@ class Capibara6ChatPage {
 
             if (isErrorResponse) {
                 console.error('❌ Error en la respuesta del servidor:', data);
+
+                // Si es el error 500 del backend que mencionas, lo manejamos como condición normal en beta
+                if (response.status === 500 && data.error && data.error.includes("Error interno")) {
+                    console.log('⚠️ Backend no disponible (modo beta), usando simulación...');
+                    throw new Error('Backend unavailable - beta mode');
+                }
+
                 throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}, endpoint: ${endpoint}`);
             }
 
@@ -853,9 +866,12 @@ class Capibara6ChatPage {
         } catch (error) {
             console.error('💥 Error en la solicitud al backend:', error);
 
-            // Si todos los endpoints tradicionales fallan, usar respuesta simulada
-            // como último recurso para mantener la funcionalidad de la interfaz
-            console.log('🔄 Usando respuesta simulada como último recurso');
+            // Verificar si es el error específico de backend no disponible
+            if (error.message.includes('Backend unavailable - beta mode') || error.message.includes('Error interno')) {
+                console.log('🔄 Backend no disponible (modo beta), usando respuesta simulada...');
+            } else {
+                console.log('🔄 Usando respuesta simulada como último recurso debido a error:', error.message);
+            }
 
             // Generar una respuesta más útil e informativa
             const simulatedResponses = [
