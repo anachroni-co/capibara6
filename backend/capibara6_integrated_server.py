@@ -80,6 +80,29 @@ except ImportError as e:
 
 app = Flask(__name__)
 
+# Configurar CORS según el entorno
+from flask_cors import CORS
+if os.getenv('ENVIRONMENT') == 'production':
+    frontend_domain = os.getenv('FRONTEND_DOMAIN', 'https://capibara6.com')
+    CORS(app, origins=[frontend_domain, 'https://www.capibara6.com'])
+else:
+    # Desarrollo - permitir orígenes comunes de desarrollo
+    CORS(app, origins=[
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+        "https://www.capibara6.com",
+        "https://capibara6.com",
+        "http://34.12.166.76:5001",
+        "http://34.12.166.76:8000",
+        "http://34.175.136.104:8000"
+    ])
+
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
