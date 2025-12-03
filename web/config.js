@@ -4,8 +4,9 @@
 // Evitar múltiples declaraciones de la misma variable
 if (typeof window.CHATBOT_CONFIG === 'undefined') {
     // Definir la URL base primero para evitar referencias circulares
+    // Usar el gateway server local en desarrollo
     const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5000'  // Desarrollo
+        ? 'http://localhost:8080'  // Gateway Server local
         : window.location.origin;   // Producción (https://www.capibara6.com)
 
     const CHATBOT_CONFIG = {

@@ -724,46 +724,98 @@ class Capibara6ChatPage {
             context: this.getConversationContext(),
         };
 
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(chatPayload)
-        });
+        console.log('📡 Enviando solicitud a:', endpoint, 'con payload:', chatPayload);
 
-        // Intentar leer el cuerpo como JSON, pero manejar posibles errores
-        let data;
         try {
-            data = await response.json();
-        } catch (parseError) {
-            // Si no es JSON, leer como texto
-            const responseText = await response.text();
-            data = { error: `Parse error: ${parseError.message}`, raw_response: responseText };
-        }
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(chatPayload)
+            });
 
-        // Verificar si la respuesta es exitosa
-        // En producción con Vercel, los endpoints pueden no tener propiedad 'success'
-        // así que verificamos principalmente que no haya un error explícito
-        const isErrorResponse = response.status >= 400 ||
-            (data.error || data.detail || data.message) ||
-            (response.status === 200 && Object.keys(data).length === 0);
+            console.log('📥 Respuesta recibida:', response.status);
 
-        if (isErrorResponse) {
-            throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}, endpoint: ${endpoint}`);
-        }
-
-        // Asegurarse de que la estructura de respuesta sea correcta
-        // El endpoint ahora devuelve el formato del gateway server
-        return {
-            content: data.response || data.content || data.choices?.[0]?.message?.content || data,
-            modelUsed: data.model || data.modelUsed || 'unknown',
-            metadata: {
-                tokenCount: data.tokens || data.usage?.total_tokens,
-                processingTime: data.latency_ms || data.processing_time || null,
-                classification: data.classification || 'general',
+            // Intentar leer el cuerpo como JSON, pero manejar posibles errores
+            let data;
+            try {
+                data = await response.json();
+                console.log('📥 Datos recibidos:', data);
+            } catch (parseError) {
+                // Si no es JSON, leer como texto
+                const responseText = await response.text();
+                console.error('❌ Error parseando respuesta JSON:', parseError);
+                console.log('📄 Texto de respuesta:', responseText);
+                data = { error: `Parse error: ${parseError.message}`, raw_response: responseText };
             }
-        };
+
+            // Verificar si la respuesta es exitosa
+            // En producción con Vercel, los endpoints pueden no tener propiedad 'success'
+            // así que verificamos principalmente que no haya un error explícito
+            const isErrorResponse = response.status >= 400 ||
+                (data.error || data.detail || data.message) ||
+                (response.status === 200 && Object.keys(data).length === 0);
+
+            if (isErrorResponse) {
+                console.error('❌ Error en la respuesta del servidor:', data);
+                throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}, endpoint: ${endpoint}`);
+            }
+
+            // Asegurarse de que la estructura de respuesta sea correcta
+            // El endpoint ahora devuelve el formato del gateway server
+            return {
+                content: data.response || data.content || data.choices?.[0]?.message?.content || data,
+                modelUsed: data.model || data.modelUsed || 'unknown',
+                metadata: {
+                    tokenCount: data.tokens || data.usage?.total_tokens,
+                    processingTime: data.latency_ms || data.processing_time || null,
+                    classification: data.classification || 'general',
+                }
+            };
+        } catch (error) {
+            console.error('💥 Error en la solicitud al backend:', error);
+
+            // Intentar con endpoints de fallback si el principal falla
+            const fallbackEndpoints = [
+                `${this.backendUrl}/api/ai/chat`,
+                `${this.backendUrl}/api/generate`,
+                `${this.backendUrl}/api/completion`
+            ];
+
+            for (const fallbackEndpoint of fallbackEndpoints) {
+                console.log(`🔄 Intentando endpoint de fallback: ${fallbackEndpoint}`);
+                try {
+                    const fallbackResponse = await fetch(fallbackEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(chatPayload)
+                    });
+
+                    if (fallbackResponse.ok) {
+                        const fallbackData = await fallbackResponse.json();
+                        console.log('✅ Respuesta exitosa del endpoint de fallback');
+                        return {
+                            content: fallbackData.response || fallbackData.content || fallbackData.choices?.[0]?.message?.content || fallbackData,
+                            modelUsed: fallbackData.model || fallbackData.modelUsed || 'unknown',
+                            metadata: {
+                                tokenCount: fallbackData.tokens || fallbackData.usage?.total_tokens,
+                                processingTime: fallbackData.latency_ms || fallbackData.processing_time || null,
+                                classification: fallbackData.classification || 'general',
+                            }
+                        };
+                    }
+                } catch (fallbackError) {
+                    console.debug(`❌ Fallback también falló (${fallbackEndpoint}):`, fallbackError.message);
+                    continue; // Probar siguiente endpoint
+                }
+            }
+
+            // Si todos los endpoints fallan, lanzar el error original
+            throw error;
+        }
     }
 
     getConversationContext() {
