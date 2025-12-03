@@ -3,7 +3,7 @@
 class Capibara6ChatPage {
     constructor() {
         console.log('🔧 Constructor de Capibara6ChatPage llamado');
-
+        
         // Obtener la URL del backend de forma segura
         if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL) {
             this.backendUrl = CHATBOT_CONFIG.BACKEND_URL;
@@ -58,10 +58,10 @@ class Capibara6ChatPage {
             }, { passive: true });
         }
     }
-    
+
     async init() {
         console.log('🚀 Iniciando función init()');
-
+        
         // Inicializar elementos del DOM (después de que el DOM esté completamente cargado)
         this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chat-input');
@@ -150,7 +150,7 @@ class Capibara6ChatPage {
         // Cargar mensajes del chat actual
         console.log('💬 Cargando mensajes del chat');
         this.loadMessages();
-
+        
         console.log('🎉 Inicialización completada exitosamente');
     }
     
@@ -381,6 +381,21 @@ class Capibara6ChatPage {
                 });
             }
 
+            // Botón de adjuntar archivo
+            const attachBtn = document.getElementById('attach-btn');
+            const fileUploadInput = document.getElementById('file-upload-input');
+            if (attachBtn && fileUploadInput) {
+                attachBtn.addEventListener('click', () => {
+                    console.log('📎 Botón de adjuntar archivo clickeado');
+                    fileUploadInput.click(); // Activar input de archivo
+                });
+                
+                // Manejar la selección de archivos
+                fileUploadInput.addEventListener('change', (e) => {
+                    this.handleFileUpload(e.target.files);
+                });
+            }
+
             const accountModalClose = document.getElementById('account-modal-close');
             if (accountModalClose) {
                 accountModalClose.addEventListener('click', () => {
@@ -422,21 +437,21 @@ class Capibara6ChatPage {
         }
         this.saveUserSettings();
     }
-    
+
     toggleSidebarMobile() {
         this.sidebar.classList.toggle('active');
         this.sidebarOverlay.classList.toggle('active');
     }
-    
+
     closeSidebarMobile() {
         this.sidebar.classList.remove('active');
         this.sidebarOverlay.classList.remove('active');
     }
-    
+
     toggleProfileMenu() {
         this.profileMenu.classList.toggle('active');
     }
-    
+
     createNewChat() {
         this.currentChatId = null;
         this.messages = [];
@@ -460,8 +475,8 @@ class Capibara6ChatPage {
         }
         this.closeSidebarMobile();
     }
-    
-    
+
+
     async checkConnection() {
         try {
             // Asegurar que tenemos la URL correcta del backend
@@ -583,7 +598,7 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     updateStatus(text, type) {
         this.statusText.textContent = text;
         const colors = {
@@ -600,7 +615,7 @@ class Capibara6ChatPage {
         console.log('📤 sendMessage() llamado');
         const message = this.chatInput?.value?.trim();
         console.log('📝 Mensaje:', message, 'isProcessing:', this.isProcessing);
-
+        
         if (!message || this.isProcessing) {
             console.log('🚫 Mensaje vacío o procesamiento en curso, saliendo');
             return;
@@ -681,7 +696,7 @@ class Capibara6ChatPage {
             console.log('🔚 sendMessage() finalizado');
         }
     }
-    
+
     async sendToBackend(message) {
         // Determinar endpoint correcto según la configuración
         let endpoint;
@@ -750,7 +765,7 @@ class Capibara6ChatPage {
             }
         };
     }
-    
+
     getConversationContext() {
         // Obtener los últimos mensajes para contexto
         const recentMessages = this.messages.slice(-10);
@@ -759,7 +774,7 @@ class Capibara6ChatPage {
             content: msg.text
         }));
     }
-    
+
     addMessage(text, type, isError = false) {
         const message = {
             text: text,
@@ -767,57 +782,56 @@ class Capibara6ChatPage {
             timestamp: new Date(),
             isError: isError
         };
-        
+
         this.messages.push(message);
         this.saveMessages();
-        
+
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${type}-message`;
         if (isError) {
             messageDiv.classList.add('error');
         }
-        
+
         const avatar = document.createElement('div');
         avatar.className = 'message-avatar';
         const avatarGradient = document.createElement('div');
         avatarGradient.className = 'avatar-gradient';
-        avatarGradient.innerHTML = type === 'bot' 
+        avatarGradient.innerHTML = type === 'bot'
             ? '<i data-lucide="bot" style="width: 24px; height: 24px;"></i>'
             : '<i data-lucide="user" style="width: 24px; height: 24px;"></i>';
         avatar.appendChild(avatarGradient);
-        
+
         const content = document.createElement('div');
         content.className = 'message-content';
-        
+
         const textDiv = document.createElement('div');
         textDiv.className = 'message-text';
         const textP = document.createElement('p');
         textP.textContent = text;
         textDiv.appendChild(textP);
         content.appendChild(textDiv);
-        
+
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
-        timeDiv.textContent = message.timestamp.toLocaleTimeString('es-ES', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+        timeDiv.textContent = message.timestamp.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit'
         });
         content.appendChild(timeDiv);
-        
+
         messageDiv.appendChild(avatar);
         messageDiv.appendChild(content);
-        
+
         this.chatMessages.appendChild(messageDiv);
-        
-        // Inicializar iconos de Lucide
+
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
-        
+
         // Scroll al final
         this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
     }
-    
+
     showTypingIndicator() {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'typing-indicator';
@@ -827,28 +841,28 @@ class Capibara6ChatPage {
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
         `;
-        
+
         const messageDiv = document.createElement('div');
         messageDiv.className = 'chat-message bot-message';
         messageDiv.appendChild(typingDiv);
-        
+
         this.chatMessages.appendChild(messageDiv);
         this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
-        
+
         return messageDiv;
     }
-    
+
     removeTypingIndicator(typingElement) {
         if (typingElement && typingElement.parentNode) {
             typingElement.remove();
         }
     }
-    
+
     setProcessing(processing) {
         this.isProcessing = processing;
         this.chatInput.disabled = processing;
         this.chatSendBtn.disabled = processing;
-        
+
         if (processing) {
             this.chatSendBtn.innerHTML = '<span>Procesando...</span>';
         } else {
@@ -858,28 +872,28 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     showError(message) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.textContent = message;
-        
+
         // Insertar después del header
         const chatMain = document.querySelector('.chat-main-content');
         chatMain.insertBefore(errorDiv, chatMain.children[1]);
-        
+
         // Remover después de 5 segundos
         setTimeout(() => {
             errorDiv.remove();
         }, 5000);
     }
-    
+
     clearChat() {
         if (confirm('¿Estás seguro de que quieres limpiar toda la conversación?')) {
             this.createNewChat();
         }
     }
-    
+
     // Gestión de chats
     loadChats() {
         try {
@@ -892,7 +906,7 @@ class Capibara6ChatPage {
             console.warn('Error cargando chats:', error);
         }
     }
-    
+
     saveChats() {
         try {
             if (this.currentChatId) {
@@ -904,13 +918,13 @@ class Capibara6ChatPage {
                     timestamp: new Date().toISOString(),
                     messageCount: this.messages.length
                 };
-                
+
                 if (chatIndex >= 0) {
                     this.chats[chatIndex] = chatData;
                 } else {
                     this.chats.unshift(chatData);
                 }
-                
+
                 // Mantener solo los últimos 20 chats
                 this.chats = this.chats.slice(0, 20);
                 localStorage.setItem('capibara6_chats', JSON.stringify(this.chats));
@@ -920,10 +934,10 @@ class Capibara6ChatPage {
             console.warn('Error guardando chats:', error);
         }
     }
-    
+
     renderChatList() {
         this.chatList.innerHTML = '';
-        
+
         if (this.chats.length === 0) {
             const emptyDiv = document.createElement('div');
             emptyDiv.className = 'empty-chat-list';
@@ -932,7 +946,7 @@ class Capibara6ChatPage {
             this.chatList.appendChild(emptyDiv);
             return;
         }
-        
+
         this.chats.forEach(chat => {
             const chatItem = document.createElement('div');
             chatItem.className = 'chat-item';
@@ -940,7 +954,7 @@ class Capibara6ChatPage {
             if (chat.id === this.currentChatId) {
                 chatItem.classList.add('active');
             }
-            
+
             chatItem.innerHTML = `
                 <div class="chat-item-icon">
                     <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
@@ -961,13 +975,13 @@ class Capibara6ChatPage {
                     </button>
                 </div>
             `;
-            
+
             // Click principal para cargar el chat
             chatItem.querySelector('.chat-item-content').addEventListener('click', (e) => {
                 e.stopPropagation();
                 this.loadChat(chat.id);
             });
-            
+
             // Event listeners para el menú contextual
             const menuBtns = chatItem.querySelectorAll('.chat-menu-btn');
             menuBtns.forEach(btn => {
@@ -975,7 +989,7 @@ class Capibara6ChatPage {
                     e.stopPropagation();
                     const action = btn.dataset.action;
                     const chatId = chatItem.dataset.chatId;
-                    
+
                     if (action === 'add-to-project') {
                         this.addChatToProject(chatId);
                     } else if (action === 'merge') {
@@ -985,19 +999,19 @@ class Capibara6ChatPage {
                     }
                 });
             });
-            
+
             this.chatList.appendChild(chatItem);
         });
-        
+
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     updateChatInList() {
         this.saveChats();
     }
-    
+
     loadChat(chatId) {
         // Por ahora, solo actualizamos el ID actual
         // En una implementación completa, cargaríamos los mensajes del chat
@@ -1005,7 +1019,7 @@ class Capibara6ChatPage {
         this.renderChatList();
         this.closeSidebarMobile();
     }
-    
+
     // Configuración
     loadUserSettings() {
         try {
@@ -1023,7 +1037,7 @@ class Capibara6ChatPage {
             console.warn('Error cargando configuración:', error);
         }
     }
-    
+
     saveUserSettings() {
         try {
             const settings = {
@@ -1034,7 +1048,7 @@ class Capibara6ChatPage {
             console.warn('Error guardando configuración:', error);
         }
     }
-    
+
     loadUserProfile() {
         try {
             const profile = localStorage.getItem('capibara6_profile');
@@ -1051,15 +1065,15 @@ class Capibara6ChatPage {
             console.warn('Error cargando perfil:', error);
         }
     }
-    
+
     openSettings() {
         this.settingsModal.classList.add('active');
     }
-    
+
     closeSettings() {
         this.settingsModal.classList.remove('active');
     }
-    
+
     saveSettings() {
         // Guardar configuración
         const settings = {
@@ -1068,7 +1082,7 @@ class Capibara6ChatPage {
             soundNotifications: document.getElementById('sound-notifications').checked,
             autoScroll: document.getElementById('auto-scroll').checked
         };
-        
+
         try {
             localStorage.setItem('capibara6_chat_settings', JSON.stringify(settings));
             this.closeSettings();
@@ -1079,7 +1093,7 @@ class Capibara6ChatPage {
             alert('Error al guardar la configuración');
         }
     }
-    
+
     saveMessages() {
         try {
             if (this.currentChatId) {
@@ -1093,7 +1107,7 @@ class Capibara6ChatPage {
             console.warn('Error guardando mensajes:', error);
         }
     }
-    
+
     loadMessages() {
         try {
             if (this.currentChatId) {
@@ -1101,7 +1115,7 @@ class Capibara6ChatPage {
                 if (saved) {
                     const chatData = JSON.parse(saved);
                     this.messages = chatData.messages || [];
-                    
+
                     // Renderizar mensajes
                     this.chatMessages.innerHTML = '';
                     this.messages.forEach(msg => {
@@ -1113,11 +1127,11 @@ class Capibara6ChatPage {
             console.warn('Error cargando mensajes:', error);
         }
     }
-    
+
     // ============================================
     // Inicialización de Servicios Integrados
     // ============================================
-    
+
     initTTSService() {
         try {
             if (typeof TTS_CONFIG !== 'undefined') {
@@ -1194,7 +1208,7 @@ class Capibara6ChatPage {
             console.debug('TTS service could not be initialized:', error.message);
         }
     }
-    
+
     initMCPService() {
         try {
             const mcpIndicator = document.getElementById('mcp-indicator');
@@ -1235,7 +1249,7 @@ class Capibara6ChatPage {
             console.debug('MCP service could not be initialized:', error.message);
         }
     }
-    
+
     initRAGService() {
         try {
             if (typeof Capibara6API !== 'undefined') {
@@ -1307,15 +1321,15 @@ class Capibara6ChatPage {
             console.debug('RAG service could not be initialized:', error.message);
         }
     }
-    
+
     displayRAGResults(results, container, searchType) {
         if (!results || (results.results && results.results.length === 0)) {
             container.innerHTML = '<div class="rag-empty-state"><p>No se encontraron resultados</p></div>';
             return;
         }
-        
+
         let html = '';
-        
+
         if (searchType === 'rag' && results.results) {
             // Formato RAG completo
             const allResults = [];
@@ -1324,9 +1338,9 @@ class Capibara6ChatPage {
                     allResults.push({ collection: collName, ...r });
                 });
             }
-            
+
             allResults.sort((a, b) => (b.similarity || 0) - (a.similarity || 0));
-            
+
             allResults.forEach(result => {
                 html += `
                     <div class="rag-result-item">
@@ -1353,10 +1367,10 @@ class Capibara6ChatPage {
                 `;
             });
         }
-        
+
         container.innerHTML = html || '<div class="rag-empty-state"><p>No se encontraron resultados</p></div>';
     }
-    
+
     initN8NService() {
         try {
             if (typeof N8NManager !== 'undefined') {
@@ -1368,7 +1382,7 @@ class Capibara6ChatPage {
                 if (n8nWidget) {
                     const n8nUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.N8N
                         ? CHATBOT_CONFIG.SERVICE_URLS.N8N
-                        : 'http://localhost:5678';
+                        : 'http://localhost:5000';
 
                     this.n8nManager = new N8NManager({
                         baseURL: this.backendUrl,
@@ -1419,16 +1433,16 @@ class Capibara6ChatPage {
             console.debug('N8n service initialization failed:', error.message);
         }
     }
-    
+
     async loadN8NWorkflows() {
         try {
             if (this.n8nManager && document.getElementById('n8n-workflows-list')) {
                 const workflowsList = document.getElementById('n8n-workflows-list');
-                
+
                 // Usar getRecommended para obtener plantillas recomendadas
                 try {
                     const workflows = await this.n8nManager.getRecommended();
-                    
+
                     if (workflows && workflows.length > 0) {
                         workflowsList.innerHTML = workflows.slice(0, 5).map(wf => `
                             <div class="n8n-workflow-item" title="${wf.description || ''}">
@@ -1450,7 +1464,7 @@ class Capibara6ChatPage {
             console.warn('⚠️ Error cargando workflows N8n:', error);
         }
     }
-    
+
     initModelVisualization() {
         try {
             if (typeof ModelVisualization !== 'undefined') {
@@ -1472,11 +1486,11 @@ class Capibara6ChatPage {
             console.debug('Entropy monitor could not be initialized:', error.message);
         }
     }
-    
+
     // ============================================
     // Gestión de Proyectos y Chats
     // ============================================
-    
+
     openCreateProjectModal() {
         const modal = document.getElementById('create-project-modal');
         modal.classList.add('active');
@@ -1484,7 +1498,7 @@ class Capibara6ChatPage {
             lucide.createIcons();
         }
     }
-    
+
     closeCreateProjectModal() {
         const modal = document.getElementById('create-project-modal');
         modal.classList.remove('active');
@@ -1493,17 +1507,17 @@ class Capibara6ChatPage {
         document.getElementById('project-description').value = '';
         document.getElementById('project-include-current-chat').checked = false;
     }
-    
+
     async createProject() {
         const name = document.getElementById('project-name').value.trim();
         const description = document.getElementById('project-description').value.trim();
         const includeCurrent = document.getElementById('project-include-current-chat').checked;
-        
+
         if (!name) {
             this.showError('Por favor, ingresa un nombre para el proyecto');
             return;
         }
-        
+
         try {
             const project = {
                 id: 'project_' + Date.now(),
@@ -1512,12 +1526,12 @@ class Capibara6ChatPage {
                 createdAt: new Date().toISOString(),
                 chats: includeCurrent && this.currentChatId ? [this.currentChatId] : []
             };
-            
+
             // Guardar proyecto en localStorage
             const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
             projects.push(project);
             localStorage.setItem('capibara6_projects', JSON.stringify(projects));
-            
+
             // Si había un chat pendiente para añadir, añadirlo ahora
             if (this.pendingChatForProject) {
                 project.chats.push(this.pendingChatForProject);
@@ -1527,7 +1541,7 @@ class Capibara6ChatPage {
             } else {
                 this.showSuccess(`Proyecto "${name}" creado exitosamente`);
             }
-            
+
             this.closeCreateProjectModal();
             console.log('✅ Proyecto creado:', project);
         } catch (error) {
@@ -1535,14 +1549,14 @@ class Capibara6ChatPage {
             this.showError('Error al crear el proyecto');
         }
     }
-    
+
     // ============================================
     // Acciones Contextuales de Chat
     // ============================================
-    
+
     addChatToProject(chatId) {
         const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
-        
+
         if (projects.length === 0) {
             // Si no hay proyectos, abrir modal para crear uno
             this.openCreateProjectModal();
@@ -1550,25 +1564,25 @@ class Capibara6ChatPage {
             this.pendingChatForProject = chatId;
             return;
         }
-        
+
         // Mostrar selector de proyectos
         this.showProjectSelector(chatId);
     }
-    
+
     showProjectSelector(chatId) {
         const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
-        
+
         if (projects.length === 0) {
             this.showError('No hay proyectos. Crea uno primero.');
             return;
         }
-        
+
         const modal = document.getElementById('select-project-modal');
         const list = document.getElementById('projects-list');
-        
+
         // Guardar chatId para usar después
         this.selectedChatForProject = chatId;
-        
+
         list.innerHTML = projects.map((project, index) => {
             const isInProject = project.chats && project.chats.includes(chatId);
             return `
@@ -1582,7 +1596,7 @@ class Capibara6ChatPage {
                 </div>
             `;
         }).join('');
-        
+
         // Event listeners
         list.querySelectorAll('.project-item:not(.disabled)').forEach(item => {
             item.addEventListener('click', () => {
@@ -1590,21 +1604,21 @@ class Capibara6ChatPage {
                 this.addChatToSelectedProject(chatId, index);
             });
         });
-        
+
         modal.classList.add('active');
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     addChatToSelectedProject(chatId, projectIndex) {
         const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
         const project = projects[projectIndex];
-        
+
         if (!project.chats) {
             project.chats = [];
         }
-        
+
         if (!project.chats.includes(chatId)) {
             project.chats.push(chatId);
             localStorage.setItem('capibara6_projects', JSON.stringify(projects));
@@ -1614,27 +1628,27 @@ class Capibara6ChatPage {
             this.showError('Este chat ya está en el proyecto');
         }
     }
-    
+
     closeSelectProjectModal() {
         const modal = document.getElementById('select-project-modal');
         modal.classList.remove('active');
         this.selectedChatForProject = null;
     }
-    
+
     mergeChatWithOther(chatId) {
         const chats = this.chats.filter(c => c.id !== chatId);
-        
+
         if (chats.length === 0) {
             this.showError('No hay otros chats para unir');
             return;
         }
-        
+
         const modal = document.getElementById('select-chat-merge-modal');
         const list = document.getElementById('chats-merge-list');
-        
+
         // Guardar chatId origen
         this.sourceChatForMerge = chatId;
-        
+
         list.innerHTML = chats.map(chat => `
             <div class="chat-selection-item" data-chat-id="${chat.id}">
                 <div class="chat-selection-item-icon">
@@ -1647,7 +1661,7 @@ class Capibara6ChatPage {
                 <i data-lucide="chevron-right" style="width: 20px; height: 20px; color: var(--text-muted);"></i>
             </div>
         `).join('');
-        
+
         // Event listeners
         list.querySelectorAll('.chat-selection-item').forEach(item => {
             item.addEventListener('click', () => {
@@ -1656,57 +1670,57 @@ class Capibara6ChatPage {
                 this.closeSelectChatMergeModal();
             });
         });
-        
+
         modal.classList.add('active');
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     closeSelectChatMergeModal() {
         const modal = document.getElementById('select-chat-merge-modal');
         modal.classList.remove('active');
         this.sourceChatForMerge = null;
     }
-    
+
     async performMerge(sourceChatId, targetChatId) {
         try {
             // Cargar mensajes de ambos chats
             const sourceData = localStorage.getItem(`capibara6_chat_${sourceChatId}`);
             const targetData = localStorage.getItem(`capibara6_chat_${targetChatId}`);
-            
+
             if (!sourceData || !targetData) {
                 this.showError('Error al cargar los chats');
                 return;
             }
-            
+
             const sourceChat = JSON.parse(sourceData);
             const targetChat = JSON.parse(targetData);
-            
+
             // Combinar mensajes
             const allMessages = [
                 ...(sourceChat.messages || []),
                 ...(targetChat.messages || [])
             ];
-            
+
             // Ordenar por timestamp
             allMessages.sort((a, b) => new Date(a.timestamp || 0) - new Date(b.timestamp || 0));
-            
+
             // Actualizar chat destino
             targetChat.messages = allMessages;
             targetChat.mergedFrom = targetChat.mergedFrom || [];
             if (!targetChat.mergedFrom.includes(sourceChatId)) {
                 targetChat.mergedFrom.push(sourceChatId);
             }
-            
+
             localStorage.setItem(`capibara6_chat_${targetChatId}`, JSON.stringify(targetChat));
-            
+
             // Eliminar chat origen
             localStorage.removeItem(`capibara6_chat_${sourceChatId}`);
-            
+
             this.showSuccess('Chats unidos exitosamente');
             this.loadChats();
-            
+
             // Si el chat actual era el origen, cargar el destino
             if (this.currentChatId === sourceChatId) {
                 this.currentChatId = targetChatId;
@@ -1717,15 +1731,15 @@ class Capibara6ChatPage {
             this.showError('Error al unir los chats');
         }
     }
-    
+
     deleteChat(chatId) {
         const chat = this.chats.find(c => c.id === chatId);
         const chatTitle = chat?.title || 'este chat';
-        
+
         if (confirm(`¿Estás seguro de que deseas eliminar "${chatTitle}"?\n\nEsta acción no se puede deshacer.`)) {
             try {
                 localStorage.removeItem(`capibara6_chat_${chatId}`);
-                
+
                 // Si el chat actual fue eliminado, crear uno nuevo
                 if (this.currentChatId === chatId) {
                     this.currentChatId = null;
@@ -1749,7 +1763,7 @@ class Capibara6ChatPage {
                         lucide.createIcons();
                     }
                 }
-                
+
                 this.showSuccess('Chat eliminado exitosamente');
                 this.loadChats();
             } catch (error) {
@@ -1758,14 +1772,14 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     // ============================================
     // Gestión de Cuenta
     // ============================================
-    
+
     openAccountModal() {
         const modal = document.getElementById('account-modal');
-        
+
         // Cargar datos del usuario
         const userData = this.loadUserProfile();
         if (userData) {
@@ -1773,28 +1787,28 @@ class Capibara6ChatPage {
             document.getElementById('account-email').value = userData.email || 'usuario@example.com';
             document.getElementById('account-company').value = userData.company || '';
         }
-        
+
         modal.classList.add('active');
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     closeAccountModal() {
         const modal = document.getElementById('account-modal');
         modal.classList.remove('active');
     }
-    
+
     async saveAccount() {
         const name = document.getElementById('account-name').value.trim();
         const email = document.getElementById('account-email').value.trim();
         const company = document.getElementById('account-company').value.trim();
-        
+
         if (!name || !email) {
             this.showError('Nombre y email son obligatorios');
             return;
         }
-        
+
         try {
             const userData = {
                 name: name,
@@ -1802,13 +1816,13 @@ class Capibara6ChatPage {
                 company: company,
                 updatedAt: new Date().toISOString()
             };
-            
+
             localStorage.setItem('capibara6_user', JSON.stringify(userData));
-            
+
             // Actualizar UI
             document.getElementById('user-name').textContent = name;
             document.getElementById('user-email').textContent = email;
-            
+
             this.closeAccountModal();
             this.showSuccess('Información de cuenta actualizada');
         } catch (error) {
@@ -1816,26 +1830,26 @@ class Capibara6ChatPage {
             this.showError('Error al guardar la información');
         }
     }
-    
+
     changePassword() {
         // TODO: Implementar cambio de contraseña
         this.showError('Funcionalidad de cambio de contraseña próximamente');
     }
-    
+
     // ============================================
     // Gemelo Digital
     // ============================================
-    
+
     switchAccountTab(tabName) {
         // Cambiar tabs activos
         document.querySelectorAll('.account-tab').forEach(tab => {
             tab.classList.toggle('active', tab.dataset.tab === tabName);
         });
-        
+
         document.querySelectorAll('.account-tab-content').forEach(content => {
             content.classList.toggle('active', content.id === `tab-${tabName}`);
         });
-        
+
         // Mostrar/ocultar botones del footer según la pestaña
         const saveBtn = document.getElementById('account-save-btn');
         const cancelBtn = document.getElementById('account-cancel-btn');
@@ -1848,47 +1862,47 @@ class Capibara6ChatPage {
                 cancelBtn.style.display = 'none';
             }
         }
-        
+
         // Inicializar iconos si es necesario
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
-        
+
         // Si se cambia a la pestaña de gemelo digital, cargar estado
         if (tabName === 'digital-twin') {
             this.loadDigitalTwinState();
         }
     }
-    
+
     loadDigitalTwinState() {
         // Cargar estado guardado del gemelo digital
         const twinData = localStorage.getItem('capibara6_digital_twin');
         const importedData = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
-        
+
         // Actualizar estados de importación
         Object.keys(importedData).forEach(platform => {
             this.updateSocialStatus(platform, 'imported');
         });
-        
+
         // Si hay gemelo generado, mostrarlo
         if (twinData) {
             const twin = JSON.parse(twinData);
             this.displayTwinProfile(twin);
         }
-        
+
         // Habilitar botón de generar si hay datos importados
         this.updateGenerateButton();
     }
-    
+
     async handleSocialImport(platform, file) {
         if (!file) return;
-        
+
         try {
             this.showSuccess(`Importando datos de ${platform}...`);
-            
+
             // Leer archivo
             const fileContent = await this.readFileAsText(file);
-            
+
             // Parsear según tipo de archivo
             let data;
             if (file.name.endsWith('.json')) {
@@ -1898,7 +1912,7 @@ class Capibara6ChatPage {
             } else {
                 throw new Error('Formato de archivo no soportado');
             }
-            
+
             // Guardar datos importados
             const imports = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
             imports[platform] = {
@@ -1908,22 +1922,22 @@ class Capibara6ChatPage {
                 recordCount: Array.isArray(data) ? data.length : Object.keys(data).length
             };
             localStorage.setItem('capibara6_social_imports', JSON.stringify(imports));
-            
+
             // Actualizar UI
             this.updateSocialStatus(platform, 'imported');
             this.updateGenerateButton();
-            
+
             this.showSuccess(`✅ ${platform} importado exitosamente (${imports[platform].recordCount} registros)`);
-            
+
             // Enviar al backend (simulado por ahora)
             // await this.sendToBackend(platform, data);
-            
+
         } catch (error) {
             console.error(`Error importando ${platform}:`, error);
             this.showError(`Error al importar ${platform}: ${error.message}`);
         }
     }
-    
+
     readFileAsText(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -1932,7 +1946,7 @@ class Capibara6ChatPage {
             reader.readAsText(file);
         });
     }
-    
+
     parseCSV(csvText) {
         // Parseo simple de CSV
         const lines = csvText.split('\n');
@@ -1946,16 +1960,16 @@ class Capibara6ChatPage {
             return obj;
         }).filter(obj => Object.keys(obj).length > 0);
     }
-    
+
     updateSocialStatus(platform, status) {
         const statusElement = document.getElementById(`${platform}-status`);
         const importBtn = document.querySelector(`[data-platform="${platform}"] .btn-social-import`);
-        
+
         if (statusElement) {
             statusElement.textContent = status === 'imported' ? 'Importado ✓' : 'No importado';
             statusElement.classList.toggle('imported', status === 'imported');
         }
-        
+
         if (importBtn) {
             importBtn.classList.toggle('imported', status === 'imported');
             if (status === 'imported') {
@@ -1966,30 +1980,30 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     updateGenerateButton() {
         const imports = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
         const hasImports = Object.keys(imports).length > 0;
         const generateBtn = document.getElementById('generate-twin-btn');
-        
+
         if (generateBtn) {
             generateBtn.disabled = !hasImports;
         }
     }
-    
+
     async generateDigitalTwin() {
         const imports = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
-        
+
         if (Object.keys(imports).length === 0) {
             this.showError('Importa al menos una red social antes de generar el gemelo');
             return;
         }
-        
+
         try {
             // Mostrar progreso
             this.showProgressSection();
             this.updateProgress(0, 'Iniciando generación del gemelo digital...');
-            
+
             // Simular proceso de generación (en producción esto sería una llamada al backend)
             const steps = [
                 { progress: 10, message: 'Procesando datos importados...' },
@@ -2000,12 +2014,12 @@ class Capibara6ChatPage {
                 { progress: 85, message: 'Generando perfil del gemelo...' },
                 { progress: 100, message: 'Gemelo digital generado exitosamente ✓' }
             ];
-            
+
             for (const step of steps) {
                 await this.delay(800);
                 this.updateProgress(step.progress, step.message);
             }
-            
+
             // Crear gemelo digital simulado
             const twin = {
                 id: 'twin_' + Date.now(),
@@ -2024,52 +2038,52 @@ class Capibara6ChatPage {
                     neuroticism: Math.random() * 100
                 }
             };
-            
+
             // Guardar gemelo
             localStorage.setItem('capibara6_digital_twin', JSON.stringify(twin));
-            
+
             // Actualizar estado
             document.getElementById('twin-status-badge').textContent = 'Activo';
             document.getElementById('twin-status-badge').classList.add('active');
-            
+
             // Mostrar perfil
             this.displayTwinProfile(twin);
-            
+
             this.showSuccess('Gemelo digital generado exitosamente');
-            
+
         } catch (error) {
             console.error('Error generando gemelo:', error);
             this.showError('Error al generar el gemelo digital');
         }
     }
-    
+
     showProgressSection() {
         const progressSection = document.getElementById('twin-progress-section');
         const progressSteps = document.getElementById('twin-progress-steps');
-        
+
         if (progressSection) {
             progressSection.style.display = 'block';
         }
-        
+
         // Limpiar pasos anteriores
         if (progressSteps) {
             progressSteps.innerHTML = '';
         }
     }
-    
+
     updateProgress(percentage, message) {
         const progressBar = document.getElementById('twin-progress-bar');
         const progressPercentage = document.getElementById('twin-progress-percentage');
         const progressSteps = document.getElementById('twin-progress-steps');
-        
+
         if (progressBar) {
             progressBar.style.width = `${percentage}%`;
         }
-        
+
         if (progressPercentage) {
             progressPercentage.textContent = `${percentage}%`;
         }
-        
+
         if (progressSteps && message) {
             // Añadir paso actual
             const stepDiv = document.createElement('div');
@@ -2079,25 +2093,25 @@ class Capibara6ChatPage {
                 <span>${message}</span>
             `;
             progressSteps.appendChild(stepDiv);
-            
+
             // Scroll al último paso
             progressSteps.scrollTop = progressSteps.scrollHeight;
         }
     }
-    
+
     displayTwinProfile(twin) {
         const profileSection = document.getElementById('twin-profile-section');
         if (!profileSection) return;
-        
+
         profileSection.style.display = 'block';
-        
+
         // Actualizar información básica
         document.getElementById('twin-name').textContent = twin.name;
-        document.getElementById('twin-created-date').textContent = 
+        document.getElementById('twin-created-date').textContent =
             `Creado el ${new Date(twin.createdAt).toLocaleDateString('es-ES')}`;
         document.getElementById('twin-messages-count').textContent = twin.stats.messagesAnalyzed;
         document.getElementById('twin-platforms-count').textContent = twin.stats.platformsCount;
-        
+
         // Mostrar análisis de personalidad
         const personalityDiv = document.getElementById('twin-personality');
         if (personalityDiv && twin.personality) {
@@ -2108,7 +2122,7 @@ class Capibara6ChatPage {
                 { key: 'agreeableness', label: 'Amabilidad' },
                 { key: 'neuroticism', label: 'Neuroticismo' }
             ];
-            
+
             personalityDiv.innerHTML = traits.map(trait => {
                 const value = Math.round(twin.personality[trait.key]);
                 return `
@@ -2125,11 +2139,11 @@ class Capibara6ChatPage {
             }).join('');
         }
     }
-    
+
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    
+
     showSuccess(message) {
         // Crear notificación de éxito
         const notification = document.createElement('div');
@@ -2148,16 +2162,17 @@ class Capibara6ChatPage {
             animation: slideInRight 0.3s ease;
         `;
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease';
             setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
+    
     setupAutoFocus() {
         // Asegurar que el input de chat esté enfocado automáticamente en móviles
         const isMobile = window.innerWidth <= 480 || ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
-        
+
         if (isMobile) {
             setTimeout(() => {
                 if (this.chatInput) {
@@ -2168,7 +2183,7 @@ class Capibara6ChatPage {
                     }
                 }
             }, 300); // Pequeño delay para asegurar que el DOM esté completamente cargado
-            
+
             // Escuchar eventos de touch para mantener el foco
             document.addEventListener("touchstart", (e) => {
                 if (!e.target.closest(".chat-input, .chat-send-btn, .input-action-btn")) {
@@ -2201,71 +2216,32 @@ class Capibara6ChatPage {
     }
 
     async loadAgentsFromAcontext() {
-        // Cargar agentes desde el endpoint de Acontext
+        // Esta función puede ser implementada para cargar agentes desde Acontext
+        // Para simplicidad en esta implementación, mostraremos un agente de ejemplo
         try {
             if (!this.agentsList) return;
 
-            // Hacer solicitud al endpoint de agentes
-            const response = await fetch(`${this.backendUrl}/api/agents`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
+            // Simular agentes existentes (esto debería conectarse con Acontext en una implementación completa)
+            // Por ahora mostramos un agente de ejemplo
+            const demoAgent = document.createElement('div');
+            demoAgent.className = 'chat-item agent-item';
+            demoAgent.innerHTML = `
+                <div class="chat-item-icon">
+                    <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="chat-item-content">
+                    <div class="chat-item-title">Demo Agent</div>
+                    <div class="chat-item-time">Just now</div>
+                </div>
+                <div class="chat-item-actions">
+                    <button class="btn-chat-action" title="Usar agente">
+                        <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            `;
 
-            if (!response.ok) {
-                throw new Error(`Error cargando agentes: ${response.status} - ${await response.text()}`);
-            }
-
-            const result = await response.json();
-            const agents = result.agents || [];
-
-            // Limpiar la lista
             this.agentsList.innerHTML = '';
-
-            if (agents.length === 0) {
-                const emptyAgent = document.createElement('div');
-                emptyAgent.className = 'chat-item agent-item disabled';
-                emptyAgent.innerHTML = `
-                    <div class="chat-item-icon">
-                        <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
-                    </div>
-                    <div class="chat-item-content">
-                        <div class="chat-item-title">No hay agentes</div>
-                        <div class="chat-item-time">Crea uno nuevo</div>
-                    </div>
-                `;
-                this.agentsList.appendChild(emptyAgent);
-            } else {
-                // Crear elementos para cada agente
-                agents.forEach(agent => {
-                    const agentElement = document.createElement('div');
-                    agentElement.className = 'chat-item agent-item';
-                    agentElement.innerHTML = `
-                        <div class="chat-item-icon">
-                            <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
-                        </div>
-                        <div class="chat-item-content">
-                            <div class="chat-item-title">${agent.name}</div>
-                            <div class="chat-item-time">${agent.type || 'Agente'}</div>
-                        </div>
-                        <div class="chat-item-actions">
-                            <button class="btn-chat-action" title="Usar agente" data-agent-id="${agent.id}">
-                                <i data-lucide="play" style="width: 16px; height: 16px;"></i>
-                            </button>
-                        </div>
-                    `;
-                    this.agentsList.appendChild(agentElement);
-                });
-
-                // Agregar event listeners para los botones de usar agente
-                this.agentsList.querySelectorAll('.btn-chat-action').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const agentId = btn.getAttribute('data-agent-id');
-                        this.useAgent(agentId);
-                    });
-                });
-            }
+            this.agentsList.appendChild(demoAgent);
 
             // Inicializar iconos de Lucide
             if (typeof lucide !== 'undefined') {
@@ -2273,24 +2249,7 @@ class Capibara6ChatPage {
             }
 
         } catch (error) {
-            console.error('❌ Error cargando agentes:', error);
-            // Mostrar mensaje de error en la UI
-            if (this.agentsList) {
-                this.agentsList.innerHTML = `
-                    <div class="chat-item agent-item disabled">
-                        <div class="chat-item-icon">
-                            <i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>
-                        </div>
-                        <div class="chat-item-content">
-                            <div class="chat-item-title">Error al cargar agentes</div>
-                            <div class="chat-item-time">Intente más tarde</div>
-                        </div>
-                    </div>
-                `;
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            }
+            console.debug('Acontext agents not available:', error.message);
         }
     }
 
@@ -2340,28 +2299,89 @@ class Capibara6ChatPage {
             this.showError(`Error creando agente: ${error.message}`);
         }
     }
+    
+    // Función para manejar la subida de archivos
+    handleFileUpload(files) {
+        if (!files || files.length === 0) {
+            console.log('📭 No se seleccionaron archivos');
+            return;
+        }
+
+        console.log(`📎 ${files.length} archivo(s) seleccionado(s):`, Array.from(files).map(f => f.name));
+
+        // Mostrar notificación de archivos adjuntos
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            // Mostrar el archivo adjunto en el área de mensajes
+            this.addMessage(`${file.name} (archivo adjunto - ${this.formatFileSize(file.size)})`, 'system');
+        }
+
+        // Aquí puedes implementar la lógica real para subir archivos al backend
+        // Por ahora, solo mostramos una notificación
+        this.showSuccess(`Archivo(s) adjuntado(s): ${Array.from(files).map(f => f.name).join(', ')}`);
+        
+        // Opcional: Puedes enviar información del archivo al backend
+        // this.sendFileToBackend(files);
+    }
+    
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Función opcional para enviar archivos al backend
+    async sendFileToBackend(files) {
+        try {
+            // Preparar FormData para enviar los archivos
+            const formData = new FormData();
+            Array.from(files).forEach((file, index) => {
+                formData.append(`file_${index}`, file, file.name);
+            });
+
+            // Enviar al backend
+            const response = await fetch(`${this.backendUrl}/api/upload`, {
+                method: 'POST',
+                body: formData // No incluir Content-Type, el navegador lo hará automáticamente con boundary
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error subiendo archivos: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('✅ Archivos subidos exitosamente:', result);
+            return result;
+        } catch (error) {
+            console.error('❌ Error subiendo archivos:', error);
+            this.showError(`Error subiendo archivos: ${error.message}`);
+        }
+    }
 }
 
 // Inicializar cuando el DOM esté listo
-function initializeChatPage() {
-    console.log('📊 Estado del DOM:', document.readyState);
-    try {
+console.log('📊 Estado del DOM:', document.readyState);
+if (document.readyState === 'loading') {
+    console.log('⏳ DOM aún cargando, esperando DOMContentLoaded');
+    document.addEventListener('DOMContentLoaded', () => {
         console.log('🎉 DOM completamente cargado, inicializando Capibara6ChatPage');
         const chatPage = new Capibara6ChatPage();
         // Esperar a que la inicialización asíncrona se complete
         chatPage.init().catch(error => {
             console.error('💥 Error durante la inicialización:', error);
         });
-    } catch (error) {
-        console.error('💥 Error al crear la instancia:', error);
-    }
-}
-
-if (document.readyState === 'loading') {
-    console.log('⏳ DOM aún cargando, esperando DOMContentLoaded');
-    document.addEventListener('DOMContentLoaded', initializeChatPage);
+    });
 } else {
     console.log('✅ DOM ya cargado, inicializando Capibara6ChatPage inmediatamente');
     // Usar setTimeout para asegurar que todo el DOM esté completamente cargado
-    setTimeout(initializeChatPage, 0);
+    setTimeout(() => {
+        console.log('🎉 DOM completamente cargado, inicializando Capibara6ChatPage');
+        const chatPage = new Capibara6ChatPage();
+        // Esperar a que la inicialización asíncrona se complete
+        chatPage.init().catch(error => {
+            console.error('💥 Error durante la inicialización:', error);
+        });
+    }, 0);
 }

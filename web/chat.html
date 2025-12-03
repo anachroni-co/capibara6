@@ -249,16 +249,14 @@
             <div class="chat-input-container">
                 <div class="chat-input-wrapper">
                     <div class="input-actions">
-                        <button class="input-action-btn" id="rag-search-btn-sidebar" title="Buscar en RAG">
-                            <i data-lucide="search" style="width: 20px; height: 20px;"></i>
-                        </button>
                         <button class="input-action-btn" id="attach-btn" title="Adjuntar archivo">
                             <i data-lucide="paperclip" style="width: 20px; height: 20px;"></i>
                         </button>
+                        <input type="file" id="file-upload-input" style="display: none;" multiple>
                     </div>
-                    <textarea 
-                        id="chat-input" 
-                        class="chat-input" 
+                    <textarea
+                        id="chat-input"
+                        class="chat-input"
                         placeholder="Escribe tu mensaje aquí... (Shift+Enter para nueva línea)"
                         rows="1"
                         autocomplete="off"
