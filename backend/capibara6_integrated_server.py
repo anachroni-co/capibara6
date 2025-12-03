@@ -93,7 +93,7 @@ def proxy_to_models_europe():
 
         import requests
         response = requests.post(
-            "http://34.175.48.2:8082/v1/chat/completions",  # ESTA VM
+            "http://10.204.0.9:8082/v1/chat/completions",  # IP interna correcta de models-europe
             json=payload,
             headers={"Content-Type": "application/json"},
             timeout=2  # Muy reducido para pruebas rápidas de fallback
