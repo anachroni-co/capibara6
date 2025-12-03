@@ -29,8 +29,8 @@ export default async function handler(req, res) {
             use_semantic_router: use_semantic_router || false // Asegurar que se maneje esta propiedad
         };
 
-        // Conectar a la VM models-europe usando IP interna
-        const response = await fetch('http://10.204.0.9:8082/v1/chat/completions', {
+        // Conectar al gateway server en VM services que enruta a la VM models-europe
+        const response = await fetch('http://10.204.0.9:8080/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
