@@ -21,50 +21,54 @@ export default async function handler(req, res) {
     }
 
     try {
-        // URL del modelo en la VM (HTTP está OK en server-side)
-        const MODEL_URL = 'http://34.175.215.109:8082/completion';
+        // URL del gateway server en VM services
+        const CHAT_URL = 'http://10.204.0.9:8080/api/chat';
         
-        // Reenviar la petición a la VM
-        const response = await fetch(MODEL_URL, {
+        // Preparar el payload para el gateway server
+        const payload = {
+            message: req.body.prompt || req.body.message || req.body.text || '',
+            model: req.body.model || 'aya_expanse_multilingual',
+            temperature: req.body.temperature || 0.7,
+            max_tokens: req.body.max_tokens || req.body.n_predict || 200,
+            use_semantic_router: true
+        };
+
+        // Reenviar la petición al gateway server
+        const response = await fetch(CHAT_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(req.body)
+            body: JSON.stringify(payload)
         });
 
         // Si la VM no está disponible, usar fallback
         if (!response.ok) {
-            console.log('⚠️ VM no disponible, usando fallback...');
+            console.log('⚠️ Gateway server no disponible, usando fallback...');
             return res.status(200).json({
                 content: "Lo siento, el modelo de IA no está disponible en este momento. Por favor, intenta más tarde o contacta al administrador.",
                 stop: true
             });
         }
 
-        // Si es streaming, manejar como stream
-        if (req.body.stream) {
-            res.setHeader('Content-Type', 'text/event-stream');
-            res.setHeader('Cache-Control', 'no-cache');
-            res.setHeader('Connection', 'keep-alive');
+        // Recibir respuesta del gateway server
+        const data = await response.json();
 
-            // Pipe the response
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                
-                const chunk = decoder.decode(value, { stream: true });
-                res.write(chunk);
-            }
-
-            res.end();
+        // Formatear la respuesta para que sea compatible con el frontend
+        if (data.choices && data.choices[0]) {
+            // Formato OpenAI
+            res.status(200).json({
+                content: data.choices[0].message?.content || data.response || data.content,
+                model: data.model,
+                finish_reason: data.choices[0].finish_reason || 'stop'
+            });
         } else {
-            // Respuesta normal (no streaming)
-            const data = await response.json();
-            res.status(response.status).json(data);
+            // Formato alternativo
+            res.status(200).json({
+                content: data.response || data.content || (data.choices && data.choices[0]?.message?.content),
+                model: data.model,
+                finish_reason: 'stop'
+            });
         }
 
     } catch (error) {

@@ -42,102 +42,77 @@ export default async function handler(req, res) {
       });
     }
 
-    // URLs de servicios
-    const VLLM_URL = process.env.VLLM_URL || 'http://34.175.48.2:8080/v1/chat/completions';
-    const OLLAMA_URL = process.env.OLLAMA_URL || 'http://34.175.48.2:11434/api/generate';
+    // URLs de servicios (usando gateway server en VM services)
+    const CHAT_URL = process.env.CHAT_URL || 'http://10.204.0.9:8080/api/chat';
 
     console.log(`📨 Mensaje recibido: ${userMessage.substring(0, 50)}...`);
     console.log(`🎯 Modelo solicitado: ${model || 'auto'}`);
 
-    // PRINCIPAL: Intentar con vLLM Multi-Model Server
+    // Llamada al gateway server
     try {
-      console.log('📡 Intentando vLLM Multi-Model Server...');
+      console.log('📡 Enviando solicitud al gateway server...');
 
-      const vllmResponse = await fetch(VLLM_URL, {
+      const chatResponse = await fetch(CHAT_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: model || 'phi4_fast',
-          messages: [
-            {
-              role: 'system',
-              content: 'Eres Capibara6, un asistente de IA experto y útil de Anachroni s.coop. Respondes en español de forma clara y concisa.'
-            },
-            {
-              role: 'user',
-              content: userMessage
-            }
-          ],
+          message: userMessage,
+          model: model || 'aya_expanse_multilingual',
           temperature: temperature,
           max_tokens: max_tokens,
-          stream: false
+          use_semantic_router: true
         }),
-        signal: AbortSignal.timeout(30000)
+        signal: AbortSignal.timeout(60000) // Aumentar timeout para modelo grande
       });
 
-      if (vllmResponse.ok) {
-        const data = await vllmResponse.json();
-        console.log('✅ vLLM respondió exitosamente');
+      const data = await chatResponse.json();
 
+      console.log('✅ Gateway server respondió');
+
+      // Verificar si el gateway ya devolvió una respuesta simulada
+      if (data.status && data.status.includes('simulated')) {
+        console.log('⚠️ Gateway devolvió respuesta simulada, retornando tal cual');
+        return res.status(200).json(data);
+      }
+
+      // Formatear la respuesta para que sea compatible con el frontend
+      if (data.choices && data.choices[0]) {
         return res.status(200).json({
-          response: data.choices[0].message.content,
-          content: data.choices[0].message.content,
-          model: data.model || model || 'phi4_fast',
-          provider: 'vLLM Multi-Model',
-          tokens: data.usage?.total_tokens,
-          finish_reason: data.choices[0].finish_reason
+          response: data.choices[0].message?.content || data.response || data.content,
+          content: data.choices[0].message?.content || data.response || data.content,
+          model: data.model || model || 'aya_expanse_multilingual',
+          provider: 'Capibara6 Gateway',
+          tokens: data.tokens,
+          finish_reason: data.choices[0].finish_reason,
+          routing_info: data.routing_info
+        });
+      } else {
+        // Si no tiene el formato de choices, usar directamente la respuesta
+        return res.status(200).json({
+          response: data.response || data.content || (data.choices && data.choices[0]?.message?.content),
+          content: data.response || data.content || (data.choices && data.choices[0]?.message?.content),
+          model: data.model || model || 'aya_expanse_multilingual',
+          provider: 'Capibara6 Gateway',
+          tokens: data.tokens,
+          routing_info: data.routing_info
         });
       }
-    } catch (vllmError) {
-      console.log('⚠️ vLLM no disponible:', vllmError.message);
-      console.log('📡 Cambiando a Ollama fallback...');
+    } catch (error) {
+      console.error('❌ Error al conectar con gateway server:', error);
+      throw new Error('Gateway server no disponible');
     }
-
-    // FALLBACK: Ollama
-    console.log('📡 Usando Ollama como fallback...');
-    const ollamaResponse = await fetch(OLLAMA_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-oss:20b',
-        prompt: `Eres Capibara6, un asistente de IA de Anachroni s.coop. Responde en español de forma clara.\n\nUsuario: ${userMessage}\n\nAsistente:`,
-        stream: false,
-        options: {
-          temperature: temperature,
-          num_predict: max_tokens
-        }
-      }),
-      signal: AbortSignal.timeout(30000)
-    });
-
-    if (ollamaResponse.ok) {
-      const data = await ollamaResponse.json();
-      console.log('✅ Ollama fallback exitoso');
-
-      return res.status(200).json({
-        response: data.response,
-        content: data.response,
-        model: 'gpt-oss:20b',
-        provider: 'Ollama (fallback)',
-        done: data.done
-      });
-    }
-
-    // Si ambos fallan
-    throw new Error('Todos los servicios de IA no están disponibles');
 
   } catch (error) {
     console.error('❌ Error en AI Generate:', error);
 
+    // En lugar de devolver fallback aquí, dejar que el gateway server lo maneje
     return res.status(503).json({
       error: 'Servicios de IA temporalmente no disponibles',
       message: 'Por favor, intenta de nuevo en unos momentos.',
       details: error.message,
-      fallback: true
+      provider: 'Capibara6 Gateway (error)'
     });
   }
 }
