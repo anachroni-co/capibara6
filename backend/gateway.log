@@ -1,0 +1,40 @@
+2025-12-02 16:52:54,775 - gateway_server - INFO - 🔐 Inter-VM API Key: TaKnyUy9...
+2025-12-02 16:52:54,775 - gateway_server - INFO - 📊 Acontext integration: enabled
+2025-12-02 16:52:54,775 - gateway_server - INFO - 📚 Acontext project: capibara6-project
+2025-12-02 16:52:55,900 - semantic_model_router - INFO - 🚀 Inicializando Semantic Router por primera vez...
+2025-12-02 16:52:55,900 - semantic_model_router - INFO - 🎯 Inicializando Semantic Router...
+2025-12-02 16:52:55,900 - semantic_model_router - INFO - 📦 Cargando FastEmbed encoder...
+2025-12-02 16:52:56,917 - semantic_model_router - INFO - 🔧 Creando Semantic Router...
+[33m2025-12-02 16:52:56 WARNING semantic_router No index provided. Using default LocalIndex.[0m
+[33m2025-12-02 16:52:56 WARNING semantic_router No config is written for LocalIndex.[0m
+2025-12-02 16:52:56,961 - semantic_model_router - INFO - ✅ Semantic Router inicializado correctamente
+2025-12-02 16:52:56,961 - semantic_model_router - INFO -    📋 Rutas disponibles: 7
+2025-12-02 16:52:56,961 - semantic_model_router - INFO -    🤖 Modelos configurados: 8
+2025-12-02 16:52:56,961 - gateway_server - INFO - ✅ Semantic Router inicializado
+INFO:     Started server process [1050336]
+INFO:     Waiting for application startup.
+2025-12-02 16:52:56,966 - gateway_server - INFO - ============================================================
+2025-12-02 16:52:56,966 - gateway_server - INFO - 🚀 Capibara6 API Gateway Iniciando...
+2025-12-02 16:52:56,967 - gateway_server - INFO - ============================================================
+2025-12-02 16:52:56,967 - gateway_server - INFO - 🎯 Semantic Router: ✅ Activo
+2025-12-02 16:52:56,967 - gateway_server - INFO - ⚡ Circuit Breaker: ✅ Activo (threshold=5)
+2025-12-02 16:52:56,967 - gateway_server - INFO - 🚦 Rate Limiter: ✅ Activo (10 req/60s)
+2025-12-02 16:52:56,967 - gateway_server - INFO - 📊 Acontext Integration: ✅ Activo
+2025-12-02 16:52:56,967 - gateway_server - INFO - 📚 Acontext Project: capibara6-project
+2025-12-02 16:52:56,967 - gateway_server - INFO - 🔗 vLLM: http://10.204.0.9:8082
+2025-12-02 16:52:56,967 - gateway_server - INFO - 🔗 Ollama: http://10.204.0.9:11434
+2025-12-02 16:52:56,967 - gateway_server - INFO - 🔗 Bridge API: http://10.204.0.10:8000
+2025-12-02 16:52:56,967 - gateway_server - INFO - ============================================================
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:32850 - "GET /api/acontext/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41580 - "POST /api/acontext/session/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41248 - "POST /api/acontext/search HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:45650 - "GET /api/acontext/search?query=agent&mode=fast HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35734 - "GET /api/agents HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2025-12-02 17:23:13,242 - gateway_server - INFO - 🛑 Cerrando API Gateway...
+2025-12-02 17:23:13,242 - gateway_server - INFO - 🔒 Acontext client closed
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1050336]
