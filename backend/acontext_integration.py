@@ -33,7 +33,7 @@ class AcontextSession(BaseModel):
 
 class AcontextIntegration:
     """Integration class for Acontext platform"""
-    
+
     def __init__(self):
         self.base_url = ACONTEXT_BASE_URL
         self.api_key = ACONTEXT_API_KEY
@@ -44,6 +44,10 @@ class AcontextIntegration:
             timeout=30.0
         )
         self.enabled = bool(self.api_key and self.base_url)
+        # Dictionary to keep track of spaces
+        self.spaces = {}
+        # Dictionary to keep track of sessions
+        self.sessions = {}
 
         if self.enabled:
             logger.info(f"✅ Acontext integration enabled, connecting to: {self.base_url}")
@@ -55,26 +59,31 @@ class AcontextIntegration:
         """Create a new Acontext session"""
         if not self.enabled:
             raise HTTPException(status_code=503, detail="Acontext integration not enabled")
-        
+
         try:
             payload = {}
             if space_id:
                 payload["space_id"] = space_id
-            
+
             response = await self.client.post(
                 f"/project/{project_id}/session",
                 json=payload
             )
-            
+
             response.raise_for_status()
             data = response.json()
-            
-            return AcontextSession(
+
+            session = AcontextSession(
                 id=data["id"],
                 project_id=project_id,
                 space_id=space_id,
                 created_at=datetime.now()
             )
+
+            # Store the session in our local dictionary
+            self.sessions[data["id"]] = session
+
+            return session
         except httpx.HTTPStatusError as e:
             logger.error(f"Failed to create Acontext session: {e}")
             raise HTTPException(status_code=503, detail=f"Acontext session creation failed: {str(e)}")
@@ -151,20 +160,31 @@ class AcontextIntegration:
         """Create a new space for learning"""
         if not self.enabled:
             return {"status": "disabled", "id": "n/a"}
-        
+
         try:
             payload = {
                 "name": name,
                 "project_id": project_id
             }
-            
+
             response = await self.client.post(
                 f"/project/{project_id}/space",
                 json=payload
             )
-            
+
             response.raise_for_status()
-            return response.json()
+            result = response.json()
+
+            # Store the space in our local dictionary
+            space_id = result["id"]
+            self.spaces[space_id] = {
+                "id": space_id,
+                "name": name,
+                "project_id": project_id,
+                "created_at": datetime.now().isoformat()
+            }
+
+            return result
         except httpx.HTTPStatusError as e:
             logger.error(f"Failed to create Acontext space: {e}")
             return {"status": "error", "error": str(e)}
@@ -172,10 +192,10 @@ class AcontextIntegration:
             logger.error(f"Unexpected error creating Acontext space: {e}")
             return {"status": "error", "error": str(e)}
     
-    async def search_space(self, space_id: str, query: str, mode: str = "fast") -> Dict[str, Any]:
-        """Search a space for learned experiences"""
+    async def search_space(self, space_id: str, query: str, mode: str = "fast", limit: int = 10) -> Dict[str, Any]:
+        """Search a space for learned experiences with enhanced capabilities"""
         if not self.enabled:
-            return {"cited_blocks": []}
+            return {"cited_blocks": [], "query": query, "search_metadata": {"total_results": 0, "mode": mode, "limit": limit}}
 
         try:
             # Use project_id for the search endpoint as required by Acontext API
@@ -183,18 +203,61 @@ class AcontextIntegration:
                 f"/project/{self.project_id}/space/{space_id}/experience_search",
                 params={
                     "query": query,
-                    "mode": mode
+                    "mode": mode,
+                    "limit": limit
                 }
             )
 
             response.raise_for_status()
-            return response.json()
+            result = response.json()
+
+            # Enhance the search results with additional metadata and context
+            cited_blocks = result.get("cited_blocks", [])
+
+            # Add search metadata for better context
+            enhanced_result = {
+                "cited_blocks": cited_blocks,
+                "query": query,
+                "search_metadata": {
+                    "total_results": len(cited_blocks),
+                    "mode": mode,
+                    "limit": limit,
+                    "space_id": space_id,
+                    "search_date": datetime.now().isoformat()
+                }
+            }
+
+            # If we have results, add additional processing to enrich them
+            if cited_blocks:
+                logger.info(f"🔍 Found {len(cited_blocks)} relevant experiences for query: '{query[:50]}...'")
+
+                # Add relevance scoring if not present
+                for block in cited_blocks:
+                    if "relevance_score" not in block:
+                        block["relevance_score"] = block.get("distance", 0.5)  # Default relevance based on distance
+
+                # Sort by relevance if available
+                cited_blocks.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+            else:
+                logger.info(f"🔍 No relevant experiences found for query: '{query[:50]}...'")
+
+            return enhanced_result
         except httpx.HTTPStatusError as e:
             logger.error(f"Failed to search Acontext space {space_id}: {e}")
-            return {"cited_blocks": [], "error": str(e)}
+            return {
+                "cited_blocks": [],
+                "error": str(e),
+                "query": query,
+                "search_metadata": {"total_results": 0, "mode": mode, "limit": limit, "error": str(e)}
+            }
         except Exception as e:
             logger.error(f"Unexpected error searching Acontext space {space_id}: {e}")
-            return {"cited_blocks": [], "error": str(e)}
+            return {
+                "cited_blocks": [],
+                "error": str(e),
+                "query": query,
+                "search_metadata": {"total_results": 0, "mode": mode, "limit": limit, "error": str(e)}
+            }
     
     async def close(self):
         """Close the HTTP client"""

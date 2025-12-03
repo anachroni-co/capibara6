@@ -394,17 +394,27 @@ async def chat(request: ChatRequest):
 
     # If Acontext space is configured, search for relevant experiences
     context_experiences = []
+    search_result = None
     if ACONTEXT_ENABLED and ACONTEXT_SPACE_ID:
         try:
-            # Search for relevant experiences in the space
+            # Search for relevant experiences in the space with enhanced parameters
             search_result = await acontext_client.search_space(
                 space_id=ACONTEXT_SPACE_ID,
                 query=request.message,
-                mode="fast"
+                mode="fast",
+                limit=5  # Limit to top 5 most relevant experiences
             )
             context_experiences = search_result.get("cited_blocks", [])
+            search_metadata = search_result.get("search_metadata", {})
+
             if context_experiences:
-                logger.info(f"🔍 Found {len(context_experiences)} relevant experiences from Acontext space")
+                logger.info(f"🔍 Found {len(context_experiences)} relevant experiences from Acontext space (search took {search_metadata.get('search_date', 'N/A')})")
+
+                # Log the relevance scores of found experiences
+                for i, exp in enumerate(context_experiences[:3]):  # Log top 3
+                    score = exp.get("relevance_score", "N/A")
+                    title = exp.get("title", "Unknown")[:50]
+                    logger.debug(f"   Top {i+1}: '{title}...' (relevance: {score})")
             else:
                 logger.info("🔍 No relevant experiences found in Acontext space")
         except Exception as e:
@@ -807,40 +817,108 @@ async def get_agents():
         raise HTTPException(status_code=503, detail="Acontext integration not enabled")
 
     try:
-        # Para obtener agentes, podemos buscar en todos los espacios existentes
-        # Por ahora, devolvemos una lista simulada basada en búsquedas de experiencias
-        # En una implementación real, esto buscaría espacios que representen agentes
-        search_result = await acontext_client.search_space(
-            space_id=ACONTEXT_SPACE_ID or "default-space",
-            query="agent",
-            mode="fast"
-        )
+        # Para obtener agentes, usamos el proxy para acceder directamente a los espacios en Acontext
+        # Acontext no tiene un endpoint para listar todos los espacios, así que simularemos
+        # recuperando los espacios existentes a través de búsquedas o usando el proxy directo
+        # Por ahora, haremos una búsqueda general para encontrar espacios que puedan ser agentes
 
-        agents = search_result.get("cited_blocks", [])
+        # Hacemos una solicitud directa a Acontext para obtener información sobre espacios
+        # como el endpoint para listar espacios no está disponible en el API actual
+        # Vamos a usar el proxy para acceder a la funcionalidad
+        async with httpx.AsyncClient() as client:
+            # Intentar obtener información sobre espacios existentes
+            # Por ahora consultamos un espacio por defecto para ver si hay información útil
+            if ACONTEXT_SPACE_ID:
+                try:
+                    search_result = await acontext_client.search_space(
+                        space_id=ACONTEXT_SPACE_ID,
+                        query="agent or bot or assistant",
+                        mode="fast"
+                    )
 
-        # También podemos devolver agentes guardados como espacios
-        # En el mock actual, devolveremos una lista vacía o datos simulados
-        simulated_agents = [
-            {
-                "id": "agent_1",
-                "name": "Agente de Soporte Técnico",
-                "description": "Especializado en resolver problemas técnicos",
-                "type": "support",
-                "created_at": "2025-12-02T10:00:00Z"
-            },
-            {
-                "id": "agent_2",
-                "name": "Agente de Investigación",
-                "description": "Ayuda con búsquedas y análisis de información",
-                "type": "research",
-                "created_at": "2025-12-02T11:00:00Z"
-            }
-        ]
+                    agents = []
+                    for block in search_result.get("cited_blocks", []):
+                        agents.append({
+                            "id": block.get("block_id", "unknown"),
+                            "name": block.get("title", "Unknown Agent"),
+                            "description": block.get("props", {}).get("description", "No description available"),
+                            "type": block.get("type", "general"),
+                            "created_at": datetime.now().isoformat()
+                        })
 
-        return {"agents": simulated_agents}
+                    # Si encontramos agentes en la búsqueda, los devolvemos
+                    if agents:
+                        return {"agents": agents}
+                except Exception as search_error:
+                    logger.warning(f"Search in default space failed, proceeding with space listing: {search_error}")
+
+            # Si no hay resultados de búsqueda, intentamos listar todos los espacios usando un enfoque simulado
+            # En una implementación real con API completa de Acontext, usaríamos un endpoint para listar espacios
+            # Por ahora, simulamos la funcionalidad basándonos en la información que tenemos
+            # del mock server de Acontext que mantiene espacios en memoria
+            # Hacemos una solicitud directa al mock server para listar espacios si es posible
+            acontext_base_url = os.getenv("ACONTEXT_BASE_URL", "http://localhost:8029/api/v1")
+
+            # Intentar recuperar información de espacios directamente del mock server
+            # como el mock server no tiene un endpoint para listar espacios, usamos la información
+            # de los agentes almacenados temporalmente en memoria simulada a través de la integración
+            # En el mock actual, podemos simular recuperando los espacios ya creados
+            response = await client.get(f"{acontext_base_url}/health")
+            if response.status_code == 200:
+                # Si podemos conectar, asumimos que podemos crear nuevos agentes
+                # como no tenemos endpoint de listado, devolvemos al menos el historial de creación
+                # como mejor aproximación con la infraestructura actual
+                pass
+
+            # En lugar de usar datos simulados fijos, mejoramos con información de los espacios reales
+            # Si no hay una API real para listar espacios, usamos la información de acontext_client
+            # que mantiene referencias a los espacios recientemente creados
+
+            # Por ahora, en lugar de datos simulados fijos, devolvemos una lista basada en los
+            # espacios que sabemos que existen en el sistema (como el recién creado)
+            # Recuperamos la lista de espacios desde el mock server si es posible
+            try:
+                # En lugar de buscar, simplemente devolvemos la lista de espacios conocidos
+                # en una implementación real, esto usaría un endpoint para listar espacios
+                # pero dado que el mock server no tiene este endpoint, creamos una solución
+                # que recupere la información de manera más dinámica
+                all_spaces = list(acontext_integration.acontext_client.spaces.values()) if hasattr(acontext_integration.acontext_client, 'spaces') else []
+
+                # Si no hay atributo spaces, intentamos usar el proxy para listar (si la API real lo soporta)
+                # Para el mock server, creamos una lista dinámica de agentes basada en la creación reciente
+                # En el mock server, los espacios se almacenan en memoria, pero no hay endpoint para listar
+                # Por ahora, mejoramos esta implementación para devolver al menos el último agente creado
+                # cuando la funcionalidad de búsqueda falla
+                recent_agents = []
+
+                # Convertimos los espacios a formato de agentes
+                for space in all_spaces:
+                    recent_agents.append({
+                        "id": space["id"],
+                        "name": space["name"],
+                        "description": f"Espacio Acontext para {space['name']}",
+                        "type": "acontext-space",
+                        "created_at": space.get("created_at", datetime.now().isoformat())
+                    })
+
+                return {"agents": recent_agents}
+            except Exception as proxy_error:
+                logger.warning(f"Direct space listing failed: {proxy_error}")
+                # En caso de fallo, devolvemos al menos un agente de ejemplo
+                return {
+                    "agents": [
+                        {
+                            "id": "demo_agent_1",
+                            "name": "Agente Demo",
+                            "description": "Agente de ejemplo para probar funcionalidad",
+                            "type": "demo",
+                            "created_at": datetime.now().isoformat()
+                        }
+                    ]
+                }
     except Exception as e:
         logger.error(f"Error getting agents: {e}")
-        # En caso de error, devolver agentes simulados
+        # En caso de error general, devolver agentes por defecto
         return {
             "agents": [
                 {
@@ -848,7 +926,7 @@ async def get_agents():
                     "name": "Agente Demo",
                     "description": "Agente de ejemplo para probar funcionalidad",
                     "type": "demo",
-                    "created_at": "2025-12-02T12:00:00Z"
+                    "created_at": datetime.now().isoformat()
                 }
             ]
         }
@@ -881,6 +959,91 @@ async def create_agent(agent_data: dict):
     except Exception as e:
         logger.error(f"Error creating agent: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to create agent: {str(e)}")
+
+@app.post("/api/agents/{agent_id}/search")
+async def search_agent_space(agent_id: str, search_data: dict):
+    """Busca en el espacio de un agente específico para experiencias relevantes"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    try:
+        query = search_data.get("query", "")
+        mode = search_data.get("mode", "fast")
+        limit = search_data.get("limit", 10)
+
+        if not query:
+            raise HTTPException(status_code=400, detail="Query parameter is required")
+
+        # Buscar en el espacio específico del agente
+        search_result = await acontext_client.search_space(
+            space_id=agent_id,
+            query=query,
+            mode=mode,
+            limit=limit
+        )
+
+        # Preparar resultados mejorados con contexto adicional
+        enhanced_results = {
+            "agent_id": agent_id,
+            "query": query,
+            "results": search_result.get("cited_blocks", []),
+            "metadata": search_result.get("search_metadata", {}),
+            "summary": {
+                "total_found": len(search_result.get("cited_blocks", [])),
+                "search_mode": mode,
+                "limit": limit,
+                "search_performed_at": datetime.now().isoformat()
+            }
+        }
+
+        # Si hay resultados relevantes, añadir información adicional
+        if search_result.get("cited_blocks"):
+            logger.info(f"🔍 Found {len(search_result['cited_blocks'])} relevant experiences for agent {agent_id} with query: '{query[:50]}...'")
+        else:
+            logger.info(f"🔍 No relevant experiences found for agent {agent_id} with query: '{query[:50]}...'")
+
+        return enhanced_results
+
+    except Exception as e:
+        logger.error(f"Error searching agent space {agent_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to search agent space: {str(e)}")
+
+@app.get("/api/agents/{agent_id}/experiences")
+async def get_agent_experiences(agent_id: str, limit: int = 20, offset: int = 0):
+    """Obtiene las experiencias registradas para un agente específico"""
+    if not ACONTEXT_ENABLED:
+        raise HTTPException(status_code=503, detail="Acontext integration not enabled")
+
+    try:
+        # Para esta implementación, usaremos una búsqueda genérica para recuperar
+        # experiencias asociadas con el agente (en una implementación real,
+        # esto podría ser un endpoint diferente en Acontext)
+        # Por ahora simulamos obteniendo experiencias que mencionen al agente
+
+        # Realizar una búsqueda amplia en el espacio del agente
+        search_result = await acontext_client.search_space(
+            space_id=agent_id,
+            query="experience or learning or interaction or conversation",
+            mode="fast",
+            limit=limit
+        )
+
+        experiences = search_result.get("cited_blocks", [])
+
+        return {
+            "agent_id": agent_id,
+            "experiences": experiences,
+            "pagination": {
+                "limit": limit,
+                "offset": offset,
+                "total": len(experiences),
+                "has_more": len(experiences) >= limit
+            },
+            "metadata": search_result.get("search_metadata", {})
+        }
+    except Exception as e:
+        logger.error(f"Error retrieving experiences for agent {agent_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve agent experiences: {str(e)}")
 
 # ============================================
 # STARTUP/SHUTDOWN
