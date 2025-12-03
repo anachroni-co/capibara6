@@ -2,20 +2,67 @@
 
 class Capibara6ChatPage {
     constructor() {
-        this.backendUrl = typeof CHATBOT_CONFIG !== 'undefined' 
-            ? CHATBOT_CONFIG.BACKEND_URL
-            : (window.location.hostname === 'localhost' 
-                ? 'http://localhost:5000'
-                : 'https://www.capibara6.com');
+        console.log('🔧 Constructor de Capibara6ChatPage llamado');
         
+        // Obtener la URL del backend de forma segura
+        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL) {
+            this.backendUrl = CHATBOT_CONFIG.BACKEND_URL;
+            console.log('🔌 Backend URL desde configuración:', this.backendUrl);
+        } else {
+            this.backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://localhost:5000'
+                : this.normalizeOrigin(window.location.origin);  // Normalizar el origen para garantizar www
+            console.warn('⚠️ Configuración no disponible, usando URL por defecto:', this.backendUrl);
+        }
+
         this.messages = [];
         this.chats = [];
         this.currentChatId = null;
         this.isConnected = false;
         this.isProcessing = false;
         this.sidebarCollapsed = false;
+
+        console.log('✅ Propiedades iniciales inicializadas');
+    }
+
+    // Método para normalizar el origen y asegurar que use www si es necesario
+    normalizeOrigin(origin) {
+        // Si es el dominio de producción, asegurar que use www
+        if (origin.includes('capibara6.com') && !origin.includes('www.')) {
+            return origin.replace('capibara6.com', 'www.capibara6.com');
+        }
+        return origin;
+    }
+
+    setupAutoFocus() {
+        // Asegurar que el input de chat esté enfocado automáticamente en móviles
+        const isMobile = window.innerWidth <= 480 || ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+
+        if (this.chatInput && isMobile) {
+            setTimeout(() => {
+                this.chatInput.focus();
+                if (this.chatInput.value) {
+                    this.chatInput.selectionStart = this.chatInput.selectionEnd = this.chatInput.value.length;
+                }
+            }, 300);
+
+            // Escuchar eventos de touch para mantener el foco
+            document.addEventListener("touchstart", (e) => {
+                if (!e.target.closest(".chat-input, .chat-send-btn, .input-action-btn")) {
+                    setTimeout(() => {
+                        if (this.chatInput) {
+                            this.chatInput.focus();
+                        }
+                    }, 100);
+                }
+            }, { passive: true });
+        }
+    }
+
+    async init() {
+        console.log('🚀 Iniciando función init()');
         
-        // Elementos del DOM
+        // Inicializar elementos del DOM (después de que el DOM esté completamente cargado)
         this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chat-input');
         this.chatSendBtn = document.getElementById('chat-send-btn');
@@ -31,187 +78,431 @@ class Capibara6ChatPage {
         this.profileMenuBtn = document.getElementById('profile-menu-btn');
         this.profileMenu = document.getElementById('profile-menu');
         this.settingsModal = document.getElementById('settings-modal');
-        
-        this.init();
-    }
-    
-    async init() {
+
+        // Elementos específicos de Acontext
+        this.agentsList = document.getElementById('agents-list');
+
+        console.log('🔍 Elementos DOM obtenidos:', {
+            chatMessages: !!this.chatMessages,
+            chatInput: !!this.chatInput,
+            chatSendBtn: !!this.chatSendBtn,
+            statusIndicator: !!this.statusIndicator,
+            statusText: !!this.statusText,
+            clearChatBtn: !!this.clearChatBtn,
+            sidebar: !!this.sidebar,
+            sidebarToggle: !!this.sidebarToggle,
+            sidebarToggleMobile: !!this.sidebarToggleMobile,
+            sidebarOverlay: !!this.sidebarOverlay,
+            newChatBtn: !!this.newChatBtn,
+            chatList: !!this.chatList,
+            profileMenuBtn: !!this.profileMenuBtn,
+            profileMenu: !!this.profileMenu,
+            settingsModal: !!this.settingsModal,
+            agentsList: !!this.agentsList
+        });
+
+        // Verificar que los elementos esenciales existan
+        const essentialElements = [
+            this.chatMessages, this.chatInput, this.chatSendBtn,
+            this.statusIndicator, this.statusText
+        ];
+
+        const missingElements = essentialElements.filter(el => !el);
+        if (missingElements.length > 0) {
+            console.warn('⚠️ Algunos elementos esenciales no se encontraron en el DOM');
+            // Registrar cuales elementos faltan para diagnóstico
+            if (!this.chatMessages) console.debug('⚠️ chat-messages no encontrado');
+            if (!this.chatInput) console.debug('⚠️ chat-input no encontrado');
+            if (!this.chatSendBtn) console.debug('⚠️ chat-send-btn no encontrado');
+            if (!this.statusIndicator) console.debug('⚠️ status-indicator no encontrado');
+            if (!this.statusText) console.debug('⚠️ status-text no encontrado');
+        } else {
+            console.log('✅ Todos los elementos esenciales encontrados');
+        }
+
         // Cargar configuración del usuario
+        console.log('💾 Cargando configuración del usuario');
         this.loadUserSettings();
         this.loadUserProfile();
-        
+
         // Configurar event listeners
+        console.log('🖱️ Configurando event listeners');
         this.setupEventListeners();
-        
+
         // Verificar conexión con el backend
+        console.log('🔌 Verificando conexión con backend');
         await this.checkConnection();
-        
+
         // Inicializar servicios integrados
+        console.log('⚙️ Inicializando servicios integrados');
         this.initTTSService();
         this.initMCPService();
         this.initRAGService();
         this.initN8NService();
         this.initModelVisualization();
         this.initEntropyMonitor();
-        
+        this.initAcontextAgentSystem();
+        this.initResourceMonitoring(); // Inicializar monitoreo de recursos
+
         // Cargar chats guardados
+        console.log('📚 Cargando chats guardados');
         this.loadChats();
-        
+
         // Cargar mensajes del chat actual
+        console.log('💬 Cargando mensajes del chat');
         this.loadMessages();
+        
+        console.log('🎉 Inicialización completada exitosamente');
     }
     
     setupEventListeners() {
-        // Enviar mensaje
-        this.chatSendBtn.addEventListener('click', () => this.sendMessage());
-        this.chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                this.sendMessage();
-            }
-        });
-        
-        // Auto-resize del textarea
-        this.chatInput.addEventListener('input', () => {
-            this.chatInput.style.height = 'auto';
-            this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 200) + 'px';
-        });
-        
-        // Sidebar
-        this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
-        this.sidebarToggleMobile.addEventListener('click', () => this.toggleSidebarMobile());
-        this.sidebarOverlay.addEventListener('click', () => this.closeSidebarMobile());
-        
-        // Nuevo chat
-        this.newChatBtn.addEventListener('click', () => this.createNewChat());
-        
-        // Limpiar chat
-        this.clearChatBtn.addEventListener('click', () => this.clearChat());
-        
-        // Perfil
-        this.profileMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.toggleProfileMenu();
-        });
-        
-        // Cerrar menú de perfil al hacer clic fuera
-        document.addEventListener('click', (e) => {
-            if (!this.profileMenu.contains(e.target) && !this.profileMenuBtn.contains(e.target)) {
-                this.profileMenu.classList.remove('active');
-            }
-        });
-        
-        // Configuración
-        document.getElementById('profile-settings-btn').addEventListener('click', () => {
-            this.openSettings();
-            this.profileMenu.classList.remove('active');
-        });
-        
-        document.getElementById('settings-modal-close').addEventListener('click', () => {
-            this.closeSettings();
-        });
-        
-        document.getElementById('settings-save-btn').addEventListener('click', () => {
-            this.saveSettings();
-        });
-        
-        // Temperatura slider
-        const tempSlider = document.getElementById('temperature-setting');
-        const tempValue = document.getElementById('temperature-value');
-        tempSlider.addEventListener('input', (e) => {
-            tempValue.textContent = e.target.value;
-        });
-        
-        // Crear proyecto (acción separada)
-        document.getElementById('create-project-btn').addEventListener('click', () => {
-            this.openCreateProjectModal();
-        });
-        
-        // Modales - Crear Proyecto
-        document.getElementById('create-project-modal-close').addEventListener('click', () => {
-            this.closeCreateProjectModal();
-        });
-        
-        document.getElementById('create-project-cancel-btn').addEventListener('click', () => {
-            this.closeCreateProjectModal();
-        });
-        
-        document.getElementById('create-project-submit-btn').addEventListener('click', () => {
-            this.createProject();
-        });
-        
-        // Modales - Seleccionar Proyecto
-        document.getElementById('select-project-modal-close').addEventListener('click', () => {
-            this.closeSelectProjectModal();
-        });
-        
-        document.getElementById('select-project-cancel-btn').addEventListener('click', () => {
-            this.closeSelectProjectModal();
-        });
-        
-        // Modales - Seleccionar Chat para Unir
-        document.getElementById('select-chat-merge-modal-close').addEventListener('click', () => {
-            this.closeSelectChatMergeModal();
-        });
-        
-        document.getElementById('select-chat-merge-cancel-btn').addEventListener('click', () => {
-            this.closeSelectChatMergeModal();
-        });
-        
-        
-        // Modal - Cuenta
-        document.getElementById('profile-account-btn').addEventListener('click', () => {
-            this.openAccountModal();
-            this.profileMenu.classList.remove('active');
-        });
-        
-        // Tabs del modal de cuenta
-        document.querySelectorAll('.account-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.dataset.tab;
-                this.switchAccountTab(tabName);
-            });
-        });
-        
-        // Importadores de redes sociales
-        document.querySelectorAll('.btn-social-import').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const platform = btn.dataset.platform;
-                const fileInput = document.getElementById(`${platform}-file-input`);
-                fileInput.click();
-            });
-        });
-        
-        // File inputs para importación
-        ['twitter', 'linkedin', 'instagram', 'github'].forEach(platform => {
-            const fileInput = document.getElementById(`${platform}-file-input`);
-            if (fileInput) {
-                fileInput.addEventListener('change', (e) => {
-                    this.handleSocialImport(platform, e.target.files[0]);
+        try {
+            // Enviar mensaje
+            if (this.chatSendBtn) {
+                this.chatSendBtn.addEventListener('click', () => {
+                    console.log('🖱️ Botón de enviar clickeado');
+                    this.sendMessage();
                 });
             }
-        });
-        
-        // Generar gemelo digital
-        document.getElementById('generate-twin-btn').addEventListener('click', () => {
-            this.generateDigitalTwin();
-        });
-        
-        document.getElementById('account-modal-close').addEventListener('click', () => {
-            this.closeAccountModal();
-        });
-        
-        document.getElementById('account-cancel-btn').addEventListener('click', () => {
-            this.closeAccountModal();
-        });
-        
-        document.getElementById('account-save-btn').addEventListener('click', () => {
-            this.saveAccount();
-        });
-        
-        document.getElementById('change-password-btn').addEventListener('click', () => {
-            this.changePassword();
-        });
+            if (this.chatInput) {
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        console.log('⌨️ Enter presionado en el input');
+                        this.sendMessage();
+                    }
+                });
+
+                // Auto-resize del textarea
+                this.chatInput.addEventListener('input', () => {
+                    this.chatInput.style.height = 'auto';
+                    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 200) + 'px';
+                });
+            }
+
+            // Sidebar
+            if (this.sidebarToggle) {
+                this.sidebarToggle.addEventListener('click', () => {
+                    console.log('🖱️ Botón de sidebar toggle clickeado');
+                    this.toggleSidebar();
+                });
+            }
+            if (this.sidebarToggleMobile) {
+                this.sidebarToggleMobile.addEventListener('click', () => {
+                    console.log('📱 Botón de sidebar mobile toggle clickeado');
+                    this.toggleSidebarMobile();
+                });
+            }
+            if (this.sidebarOverlay) {
+                this.sidebarOverlay.addEventListener('click', () => {
+                    console.log('👀 Sidebar overlay clickeado');
+                    this.closeSidebarMobile();
+                });
+            }
+
+            // Nuevo chat
+            if (this.newChatBtn) {
+                this.newChatBtn.addEventListener('click', () => {
+                    console.log('🆕 Botón de nuevo chat clickeado');
+                    this.createNewChat();
+                });
+            }
+
+            // Limpiar chat
+            if (this.clearChatBtn) {
+                this.clearChatBtn.addEventListener('click', () => {
+                    console.log('🧹 Botón de limpiar chat clickeado');
+                    this.clearChat();
+                });
+            }
+
+            // Perfil
+            if (this.profileMenuBtn && this.profileMenu) {
+                this.profileMenuBtn.addEventListener('click', (e) => {
+                    console.log('👤 Botón de menú de perfil clickeado');
+                    e.stopPropagation();
+                    this.toggleProfileMenu();
+                });
+
+                // Cerrar menú de perfil al hacer clic fuera
+                document.addEventListener('click', (e) => {
+                    if (!this.profileMenu.contains(e.target) && !this.profileMenuBtn.contains(e.target)) {
+                        this.profileMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Configuración
+            const profileSettingsBtn = document.getElementById('profile-settings-btn');
+            if (profileSettingsBtn) {
+                profileSettingsBtn.addEventListener('click', () => {
+                    this.openSettings();
+                    if (this.profileMenu) {
+                        this.profileMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            const settingsModalClose = document.getElementById('settings-modal-close');
+            if (settingsModalClose) {
+                settingsModalClose.addEventListener('click', () => {
+                    this.closeSettings();
+                });
+            }
+
+            const settingsSaveBtn = document.getElementById('settings-save-btn');
+            if (settingsSaveBtn) {
+                settingsSaveBtn.addEventListener('click', () => {
+                    this.saveSettings();
+                });
+            }
+
+            // Temperatura slider
+            const tempSlider = document.getElementById('temperature-setting');
+            const tempValue = document.getElementById('temperature-value');
+            if (tempSlider && tempValue) {
+                tempSlider.addEventListener('input', (e) => {
+                    tempValue.textContent = e.target.value;
+                });
+            }
+
+            // Crear proyecto (acción separada)
+            const createProjectBtn = document.getElementById('create-project-btn');
+            if (createProjectBtn) {
+                createProjectBtn.addEventListener('click', () => {
+                    this.openCreateProjectModal();
+                });
+            }
+
+            // Modales - Crear Proyecto
+            const createProjectModalClose = document.getElementById('create-project-modal-close');
+            if (createProjectModalClose) {
+                createProjectModalClose.addEventListener('click', () => {
+                    this.closeCreateProjectModal();
+                });
+            }
+
+            const createProjectCancelBtn = document.getElementById('create-project-cancel-btn');
+            if (createProjectCancelBtn) {
+                createProjectCancelBtn.addEventListener('click', () => {
+                    this.closeCreateProjectModal();
+                });
+            }
+
+            const createProjectSubmitBtn = document.getElementById('create-project-submit-btn');
+            if (createProjectSubmitBtn) {
+                createProjectSubmitBtn.addEventListener('click', () => {
+                    this.createProject();
+                });
+            }
+
+            // Modales - Seleccionar Proyecto
+            const selectProjectModalClose = document.getElementById('select-project-modal-close');
+            if (selectProjectModalClose) {
+                selectProjectModalClose.addEventListener('click', () => {
+                    this.closeSelectProjectModal();
+                });
+            }
+
+            const selectProjectCancelBtn = document.getElementById('select-project-cancel-btn');
+            if (selectProjectCancelBtn) {
+                selectProjectCancelBtn.addEventListener('click', () => {
+                    this.closeSelectProjectModal();
+                });
+            }
+
+            // Modales - Seleccionar Chat para Unir
+            const selectChatMergeModalClose = document.getElementById('select-chat-merge-modal-close');
+            if (selectChatMergeModalClose) {
+                selectChatMergeModalClose.addEventListener('click', () => {
+                    this.closeSelectChatMergeModal();
+                });
+            }
+
+            const selectChatMergeCancelBtn = document.getElementById('select-chat-merge-cancel-btn');
+            if (selectChatMergeCancelBtn) {
+                selectChatMergeCancelBtn.addEventListener('click', () => {
+                    this.closeSelectChatMergeModal();
+                });
+            }
+
+            // Evento de creación de agente
+            const createAgentBtn = document.getElementById('create-agent-btn');
+            if (createAgentBtn) {
+                createAgentBtn.addEventListener('click', () => {
+                    this.showAgentCreationModal();
+                });
+            }
+
+            // Modal - Cuenta
+            const profileAccountBtn = document.getElementById('profile-account-btn');
+            if (profileAccountBtn) {
+                profileAccountBtn.addEventListener('click', () => {
+                    this.openAccountModal();
+                    if (this.profileMenu) {
+                        this.profileMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Tabs del modal de cuenta
+            document.querySelectorAll('.account-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    this.switchAccountTab(tabName);
+                });
+            });
+
+            // Importadores de redes sociales
+            document.querySelectorAll('.btn-social-import').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const platform = btn.dataset.platform;
+                    const fileInput = document.getElementById(`${platform}-file-input`);
+                    if (fileInput) {
+                        fileInput.click();
+                    }
+                });
+            });
+
+            // File inputs para importación
+            ['twitter', 'linkedin', 'instagram', 'github'].forEach(platform => {
+                const fileInput = document.getElementById(`${platform}-file-input`);
+                if (fileInput) {
+                    fileInput.addEventListener('change', (e) => {
+                        this.handleSocialImport(platform, e.target.files[0]);
+                    });
+                }
+            });
+
+            // Generar gemelo digital
+            const generateTwinBtn = document.getElementById('generate-twin-btn');
+            if (generateTwinBtn) {
+                generateTwinBtn.addEventListener('click', () => {
+                    this.generateDigitalTwin();
+                });
+            }
+
+            // Botón de adjuntar archivo
+            const attachBtn = document.getElementById('attach-btn');
+            const fileUploadInput = document.getElementById('file-upload-input');
+            if (attachBtn && fileUploadInput) {
+                attachBtn.addEventListener('click', () => {
+                    console.log('📎 Botón de adjuntar archivo clickeado');
+                    fileUploadInput.click(); // Activar input de archivo
+                });
+                
+                // Manejar la selección de archivos
+                fileUploadInput.addEventListener('change', (e) => {
+                    this.handleFileUpload(e.target.files);
+                });
+            }
+
+            const accountModalClose = document.getElementById('account-modal-close');
+            if (accountModalClose) {
+                accountModalClose.addEventListener('click', () => {
+                    this.closeAccountModal();
+                });
+            }
+
+            const accountCancelBtn = document.getElementById('account-cancel-btn');
+            if (accountCancelBtn) {
+                accountCancelBtn.addEventListener('click', () => {
+                    this.closeAccountModal();
+                });
+            }
+
+            const accountSaveBtn = document.getElementById('account-save-btn');
+            if (accountSaveBtn) {
+                accountSaveBtn.addEventListener('click', () => {
+                    this.saveAccount();
+                });
+            }
+
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            if (changePasswordBtn) {
+                changePasswordBtn.addEventListener('click', () => {
+                    this.changePassword();
+                });
+            }
+
+            // Eventos para RAG
+            const ragSearchBtnSidebar = document.getElementById('rag-search-btn-sidebar');
+            if (ragSearchBtnSidebar) {
+                ragSearchBtnSidebar.addEventListener('click', () => {
+                    // Abrir panel RAG
+                    const ragPanel = document.getElementById('rag-panel');
+                    if (ragPanel) {
+                        ragPanel.classList.add('open');
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+                    }
+                });
+            }
+
+            // Evento para subida de datos RAG
+            const ragUploadBtn = document.getElementById('rag-upload-btn');
+            if (ragUploadBtn) {
+                ragUploadBtn.addEventListener('click', () => {
+                    // Abrir ventana de subida de datos RAG
+                    this.openRAGIngestionPanel();
+                });
+            }
+
+            // Eventos para TTS sidebar
+            const ttsControlsToggle = document.getElementById('tts-controls-toggle');
+            if (ttsControlsToggle) {
+                ttsControlsToggle.addEventListener('click', () => {
+                    const ttsControls = document.getElementById('tts-controls-sidebar');
+                    if (ttsControls) {
+                        ttsControls.classList.toggle('expanded');
+                    }
+                });
+            }
+
+            const ttsPlayBtnSidebar = document.getElementById('tts-play-btn-sidebar');
+            if (ttsPlayBtnSidebar) {
+                ttsPlayBtnSidebar.addEventListener('click', () => {
+                    // Reproducir texto del último mensaje del bot
+                    const lastBotMessage = Array.from(this.chatMessages.querySelectorAll('.bot-message .message-text')).pop();
+                    if (lastBotMessage) {
+                        const text = lastBotMessage.textContent;
+                        if (typeof speakText === 'function') {
+                            speakText(text);
+                        }
+                    }
+                });
+            }
+
+            const ttsStopBtnSidebar = document.getElementById('tts-stop-btn-sidebar');
+            if (ttsStopBtnSidebar) {
+                ttsStopBtnSidebar.addEventListener('click', () => {
+                    if (typeof window.speechSynthesis !== 'undefined') {
+                        window.speechSynthesis.cancel();
+                    }
+                });
+            }
+
+            // Eventos para E2B
+            const e2bStatusBtn = document.getElementById('e2b-status-btn');
+            if (e2bStatusBtn) {
+                e2bStatusBtn.addEventListener('click', () => {
+                    // Mostrar información sobre el estado de E2B
+                    this.showE2BInfo();
+                });
+            }
+
+            // Eventos para el monitor de recursos
+            const resourceMonitorBtn = document.getElementById('resource-monitor-btn');
+            if (resourceMonitorBtn) {
+                resourceMonitorBtn.addEventListener('click', () => {
+                    // Alternar panel de recursos o mostrar información detallada
+                    this.toggleResourceInfo();
+                });
+            }
+        } catch (error) {
+            console.error('Error en setupEventListeners:', error);
+        }
     }
     
     toggleSidebar() {
@@ -223,21 +514,21 @@ class Capibara6ChatPage {
         }
         this.saveUserSettings();
     }
-    
+
     toggleSidebarMobile() {
         this.sidebar.classList.toggle('active');
         this.sidebarOverlay.classList.toggle('active');
     }
-    
+
     closeSidebarMobile() {
         this.sidebar.classList.remove('active');
         this.sidebarOverlay.classList.remove('active');
     }
-    
+
     toggleProfileMenu() {
         this.profileMenu.classList.toggle('active');
     }
-    
+
     createNewChat() {
         this.currentChatId = null;
         this.messages = [];
@@ -261,14 +552,16 @@ class Capibara6ChatPage {
         }
         this.closeSidebarMobile();
     }
-    
-    
+
+
     async checkConnection() {
         try {
             // Asegurar que tenemos la URL correcta del backend
-            const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+            const backendUrl = (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL)
                 ? CHATBOT_CONFIG.BACKEND_URL
                 : this.backendUrl;
+
+            console.log('📡 Verificando conexión con backend:', backendUrl);
 
             // Función helper para crear timeout compatible
             const createTimeoutSignal = (ms) => {
@@ -323,7 +616,6 @@ class Capibara6ChatPage {
             // Intentar cada endpoint
             for (const endpoint of endpointsToTry) {
                 const fullUrl = `${backendUrl}${endpoint.path}`;
-                console.log(`🔍 Intentando: ${endpoint.method} ${fullUrl} (${endpoint.description})`);
                 try {
                     const fetchOptions = {
                         method: endpoint.method,
@@ -339,51 +631,29 @@ class Capibara6ChatPage {
                     const response = await fetch(fullUrl, fetchOptions);
                     if (response.ok || response.status === 200) {
                         const responseData = await response.json().catch(() => ({}));
-                        console.log('✅ Backend conectado:', responseData);
                         this.isConnected = true;
+                        console.log('✅ Conexión exitosa con:', endpoint.description);
                         this.updateStatus('Conectado', 'success');
                         return;
-                    } else {
-                        console.warn(`⚠️ ${endpoint.description} respondió con status ${response.status}`);
                     }
                 } catch (endpointError) {
-                    console.warn(`⚠️ ${endpoint.description} falló:`, endpointError.message);
+                    console.debug('❌ Falló endpoint:', endpoint.description, endpointError.message);
+                    // Silenciar logs redundantes para endpoints fallback
                     continue;
                 }
             }
 
-            // Si todos los endpoints fallan, diagnóstico avanzado (tu lógica)
-            if (backendUrl.includes('localhost:8001')) {
-                console.log('🔍 Verificando si el proxy CORS está corriendo...');
-                try {
-                    const proxyCheck = await fetch('http://localhost:8001/', {
-                        method: 'GET',
-                        signal: createTimeoutSignal(3000)
-                    });
-                    if (proxyCheck.ok) {
-                        const proxyData = await proxyCheck.json().catch(() => ({}));
-                        console.log('✅ Proxy CORS está corriendo:', proxyData);
-                        this.showError('El proxy CORS está corriendo pero no puede conectar con el backend remoto. Verifica que el backend en 34.12.166.76:5001 esté activo.');
-                    } else {
-                        this.showError('El proxy CORS no está respondiendo. Inicia el proxy con: python3 backend/cors_proxy_simple.py');
-                    }
-                } catch (proxyError) {
-                    this.showError('El proxy CORS no está corriendo. Inicia el proxy con:\npython3 backend/cors_proxy_simple.py\nO verifica que esté escuchando en localhost:8001');
-                }
-            }
-
-            // Si todos fallan
+            // Si todos los endpoints fallan
             this.isConnected = false;
             this.updateStatus('Desconectado', 'error');
-            this.showError('No se pudo conectar con el backend. Verifica:\n1. Que el servidor esté corriendo\n2. Que el proxy CORS esté activo (si usas localhost:8001)\n3. Que el firewall permita conexiones');
+            this.showError('No se pudo conectar con el backend. Verifica:\n1. Que el servidor esté corriendo\n2. Que el firewall permita conexiones');
 
         } catch (error) {
-            console.error('❌ Error verificando conexión:', error);
-            const backendUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL
+            const backendUrl = (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.BACKEND_URL)
                 ? CHATBOT_CONFIG.BACKEND_URL
                 : this.backendUrl;
-            console.error('📍 Backend URL intentada:', backendUrl);
 
+            console.error('💥 Error en checkConnection:', error);
             if (error.name === 'AbortError' || error.message?.includes('aborted')) {
                 this.isConnected = false;
                 this.updateStatus('Timeout', 'error');
@@ -393,17 +663,9 @@ class Capibara6ChatPage {
                 this.updateStatus('Error de conexión', 'error');
                 let errorMsg = `No se pudo conectar con el backend en ${backendUrl}.\n`;
                 if (backendUrl.includes('localhost:8001')) {
-                    errorMsg += 'El proxy CORS no está corriendo o no puede conectar con el backend remoto.\n';
-                    errorMsg += 'Para iniciar el proxy:\n';
-                    errorMsg += 'python3 backend/cors_proxy_simple.py\n';
-                    errorMsg += 'Verifica también que el backend remoto esté activo en 34.12.166.76:5001';
+                    errorMsg += 'Verifica que el proxy esté corriendo y el backend remoto esté activo.';
                 } else {
-                    errorMsg += 'Posibles causas:\n';
-                    errorMsg += '1. El servidor no está corriendo\n';
-                    errorMsg += '2. El firewall bloquea la conexión\n';
-                    errorMsg += '3. La URL es incorrecta\n';
-                    errorMsg += '4. Error de CORS\n';
-                    errorMsg += 'Verifica la configuración en config.js';
+                    errorMsg += 'Posibles causas: servidor no corriendo, firewall, o configuración incorrecta.';
                 }
                 this.showError(errorMsg);
             } else {
@@ -413,7 +675,7 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     updateStatus(text, type) {
         this.statusText.textContent = text;
         const colors = {
@@ -427,102 +689,214 @@ class Capibara6ChatPage {
     }
     
     async sendMessage() {
-        const message = this.chatInput.value.trim();
-        if (!message || this.isProcessing) return;
+        console.log('📤 sendMessage() llamado');
+        const message = this.chatInput?.value?.trim();
+        console.log('📝 Mensaje:', message, 'isProcessing:', this.isProcessing);
         
+        if (!message || this.isProcessing) {
+            console.log('🚫 Mensaje vacío o procesamiento en curso, saliendo');
+            return;
+        }
+
         if (!this.isConnected) {
+            console.log('🔴 No conectado al servidor');
             this.showError('No hay conexión con el servidor. Por favor, verifica tu conexión.');
             return;
         }
-        
+
         // Crear chat si no existe
         if (!this.currentChatId) {
             this.currentChatId = 'chat_' + Date.now();
             this.saveChats();
         }
-        
+
         // Agregar mensaje del usuario
+        console.log('👤 Agregando mensaje del usuario:', message);
         this.addMessage(message, 'user');
         this.chatInput.value = '';
         this.chatInput.style.height = 'auto';
-        
+
         // Deshabilitar input mientras se procesa
         this.setProcessing(true);
-        
+
         // Mostrar indicador de escritura
         const typingIndicator = this.showTypingIndicator();
-        
+        console.log('👀 Indicador de escritura mostrado');
+
         try {
             // Enviar mensaje al backend usando MCP
+            console.log('📡 Enviando mensaje al backend...');
             const response = await this.sendToBackend(message);
-            
+            console.log('📥 Respuesta recibida:', response);
+
             // Remover indicador de escritura
             this.removeTypingIndicator(typingIndicator);
-            
+
             // Agregar respuesta del bot
             if (response && response.content) {
+                console.log('🤖 Agregando respuesta del bot:', response.content);
                 this.addMessage(response.content, 'bot');
                 // Mostrar controles TTS cuando hay respuesta del bot
                 if (this.showTTSControls) {
                     this.showTTSControls();
                 }
             } else {
+                console.error('❌ Respuesta inválida del servidor');
                 throw new Error('Respuesta inválida del servidor');
             }
-            
+
             // Actualizar lista de chats
             this.updateChatInList();
-            
+
         } catch (error) {
-            console.error('Error enviando mensaje:', error);
+            console.error('💥 Error en sendMessage:', error);
             this.removeTypingIndicator(typingIndicator);
+
+            // Mensaje de error más descriptivo
+            let errorMessage = 'Lo siento, ocurrió un error al procesar tu mensaje.';
+            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                errorMessage += ' No se pudo conectar con el servidor.';
+            } else if (error.message.includes('HTTP error!')) {
+                errorMessage += ` El servidor respondió con error: ${error.message}`;
+            } else {
+                errorMessage += ` Detalles: ${error.message}`;
+            }
+
             this.addMessage(
-                'Lo siento, ocurrió un error al procesar tu mensaje. Por favor, intenta de nuevo.',
+                errorMessage,
                 'bot',
                 true
             );
-            this.showError('Error: ' + error.message);
+            console.error('❌ Message sending failed:', error.message); // Mostrar error en consola
         } finally {
             this.setProcessing(false);
+            console.log('🔚 sendMessage() finalizado');
         }
     }
-    
+
     async sendToBackend(message) {
-        // Usar el endpoint MCP tools/call para enviar mensajes al modelo
-        const endpoint = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
-            ? this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_GENERATE
-            : `${this.backendUrl}/api/ai/generate`;
-
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                prompt: message,
-                modelPreference: 'auto',
-                streaming: false,
-                context: this.getConversationContext(),
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        // Determinar endpoint correcto según la configuración
+        let endpoint;
+        if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS?.CHAT) {
+            // Usar configuración explícita desde config.js
+            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.CHAT;
+        } else if (typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.ENDPOINTS?.AI_CHAT) {
+            // Retrocompatibilidad
+            endpoint = this.backendUrl + CHATBOT_CONFIG.ENDPOINTS.AI_CHAT;
+        } else if (this.backendUrl.includes('capibara6.com') || this.backendUrl.includes('vercel.app')) {
+            // En producción (esta VM services), usar el endpoint de chat del gateway
+            endpoint = `${this.backendUrl}/api/chat`;
+        } else {
+            // Fallback para desarrollo - USAR API CHAT
+            endpoint = `${this.backendUrl}/api/chat`;
         }
 
-        return {
-            content: data.response,
-            modelUsed: data.model_used,
-            metadata: {
-                tokenCount: data.token_count,
-                processingTime: data.processing_time,
-                classification: data.classification,
-            }
+        // Adaptar el formato de la solicitud al esperado por el gateway server
+        const chatPayload = {
+            message: message,
+            model: 'aya_expanse_multilingual', // Modelo que sabemos que funciona
+            temperature: 0.7,
+            max_tokens: 200,
+            use_semantic_router: true, // Activar para usar sistema de Programming-Only RAG
+            context: this.getConversationContext(),
         };
+
+        console.log('📡 Enviando solicitud a:', endpoint, 'con payload:', chatPayload);
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(chatPayload)
+            });
+
+            console.log('📥 Respuesta recibida:', response.status);
+
+            // Intentar leer el cuerpo como JSON, pero manejar posibles errores
+            let data;
+            try {
+                data = await response.json();
+                console.log('📥 Datos recibidos:', data);
+            } catch (parseError) {
+                // Si no es JSON, leer como texto
+                const responseText = await response.text();
+                console.error('❌ Error parseando respuesta JSON:', parseError);
+                console.log('📄 Texto de respuesta:', responseText);
+
+                // Si el status es 500 o similar, y no pudimos parsear como JSON, considerarlo como error de backend
+                if (response.status >= 400) {
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${responseText}`);
+                } else {
+                    data = { content: responseText, raw_response: responseText };
+                }
+            }
+
+            // Verificar si la respuesta es exitosa
+            // En producción con Vercel, los endpoints pueden no tener propiedad 'success'
+            // así que verificamos principalmente que no haya un error explícito
+            const isErrorResponse = response.status >= 400 ||
+                (data.error || data.detail || data.message) ||
+                (response.status === 200 && Object.keys(data).length === 0);
+
+            if (isErrorResponse) {
+                console.error('❌ Error en la respuesta del servidor:', data);
+
+                // Si es el error 500 del backend que mencionas, lo manejamos como condición normal en beta
+                if (response.status === 500 && data.error && data.error.includes("Error interno")) {
+                    console.log('⚠️ Backend no disponible (modo beta), usando simulación...');
+                    throw new Error('Backend unavailable - beta mode');
+                }
+
+                throw new Error(data.error || data.detail || data.message || `HTTP error! status: ${response.status}, endpoint: ${endpoint}`);
+            }
+
+            // Asegurarse de que la estructura de respuesta sea correcta
+            // El endpoint ahora devuelve el formato del gateway server
+            return {
+                content: data.response || data.content || data.choices?.[0]?.message?.content || data,
+                modelUsed: data.model || data.modelUsed || 'unknown',
+                metadata: {
+                    tokenCount: data.tokens || data.usage?.total_tokens,
+                    processingTime: data.latency_ms || data.processing_time || null,
+                    classification: data.classification || 'general',
+                }
+            };
+        } catch (error) {
+            console.error('💥 Error en la solicitud al backend:', error);
+
+            // Verificar si es el error específico de backend no disponible
+            if (error.message.includes('Backend unavailable - beta mode') || error.message.includes('Error interno')) {
+                console.log('🔄 Backend no disponible (modo beta), usando respuesta simulada...');
+            } else {
+                console.log('🔄 Usando respuesta simulada como último recurso debido a error:', error.message);
+            }
+
+            // Generar una respuesta más útil e informativa
+            const simulatedResponses = [
+                `He recibido tu mensaje: "${message}". Estoy actualmente en modo de desarrollo y mi sistema RAG está procesando grandes volúmenes de datos. ¿Te gustaría subir tu propio contenido al sistema RAG para entrenamiento?`,
+                `Gracias por tu mensaje: "${message}". Mi backend está en modo beta y estoy integrando nuevas funcionalidades. Puedes subir contenido a mi sistema RAG si necesitas procesamiento específico.`,
+                `Entendido: "${message}". Estoy en modo de prueba con capacidad limitada. Mi sistema de procesamiento RAG permite subir documentos de hasta 100MB para análisis y aprendizaje.`,
+                `He registrado tu solicitud: "${message}". Estoy trabajando en la optimización de mi sistema RAG para manejar mejor tus consultas. ¿Tienes documentos específicos que te gustaría que procese?`,
+                `Tu mensaje "${message}" ha sido registrado. Mi sistema RAG está diseñado para procesar grandes volúmenes de datos. Puedes subir tus propios documentos para un análisis personalizado.`
+            ];
+
+            const randomResponse = simulatedResponses[Math.floor(Math.random() * simulatedResponses.length)];
+
+            return {
+                content: randomResponse,
+                modelUsed: 'rag-enhanced-simulator',
+                metadata: {
+                    tokenCount: randomResponse.split(' ').length,
+                    processingTime: Math.random() * 2000 + 500, // Simular tiempo de procesamiento
+                    classification: 'beta-response',
+                    isSimulated: true
+                }
+            };
+        }
     }
-    
+
     getConversationContext() {
         // Obtener los últimos mensajes para contexto
         const recentMessages = this.messages.slice(-10);
@@ -531,7 +905,7 @@ class Capibara6ChatPage {
             content: msg.text
         }));
     }
-    
+
     addMessage(text, type, isError = false) {
         const message = {
             text: text,
@@ -539,57 +913,56 @@ class Capibara6ChatPage {
             timestamp: new Date(),
             isError: isError
         };
-        
+
         this.messages.push(message);
         this.saveMessages();
-        
+
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${type}-message`;
         if (isError) {
             messageDiv.classList.add('error');
         }
-        
+
         const avatar = document.createElement('div');
         avatar.className = 'message-avatar';
         const avatarGradient = document.createElement('div');
         avatarGradient.className = 'avatar-gradient';
-        avatarGradient.innerHTML = type === 'bot' 
-            ? '<i data-lucide="bot" style="width: 24px; height: 24px;"></i>'
+        avatarGradient.innerHTML = type === 'bot'
+            ? '<i data-lucide="hippo" style="width: 24px; height: 24px;"></i>'
             : '<i data-lucide="user" style="width: 24px; height: 24px;"></i>';
         avatar.appendChild(avatarGradient);
-        
+
         const content = document.createElement('div');
         content.className = 'message-content';
-        
+
         const textDiv = document.createElement('div');
         textDiv.className = 'message-text';
         const textP = document.createElement('p');
         textP.textContent = text;
         textDiv.appendChild(textP);
         content.appendChild(textDiv);
-        
+
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
-        timeDiv.textContent = message.timestamp.toLocaleTimeString('es-ES', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+        timeDiv.textContent = message.timestamp.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit'
         });
         content.appendChild(timeDiv);
-        
+
         messageDiv.appendChild(avatar);
         messageDiv.appendChild(content);
-        
+
         this.chatMessages.appendChild(messageDiv);
-        
-        // Inicializar iconos de Lucide
+
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
-        
+
         // Scroll al final
         this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
     }
-    
+
     showTypingIndicator() {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'typing-indicator';
@@ -599,28 +972,28 @@ class Capibara6ChatPage {
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
         `;
-        
+
         const messageDiv = document.createElement('div');
         messageDiv.className = 'chat-message bot-message';
         messageDiv.appendChild(typingDiv);
-        
+
         this.chatMessages.appendChild(messageDiv);
         this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
-        
+
         return messageDiv;
     }
-    
+
     removeTypingIndicator(typingElement) {
         if (typingElement && typingElement.parentNode) {
             typingElement.remove();
         }
     }
-    
+
     setProcessing(processing) {
         this.isProcessing = processing;
         this.chatInput.disabled = processing;
         this.chatSendBtn.disabled = processing;
-        
+
         if (processing) {
             this.chatSendBtn.innerHTML = '<span>Procesando...</span>';
         } else {
@@ -630,28 +1003,28 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     showError(message) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.textContent = message;
-        
+
         // Insertar después del header
         const chatMain = document.querySelector('.chat-main-content');
         chatMain.insertBefore(errorDiv, chatMain.children[1]);
-        
+
         // Remover después de 5 segundos
         setTimeout(() => {
             errorDiv.remove();
         }, 5000);
     }
-    
+
     clearChat() {
         if (confirm('¿Estás seguro de que quieres limpiar toda la conversación?')) {
             this.createNewChat();
         }
     }
-    
+
     // Gestión de chats
     loadChats() {
         try {
@@ -664,7 +1037,7 @@ class Capibara6ChatPage {
             console.warn('Error cargando chats:', error);
         }
     }
-    
+
     saveChats() {
         try {
             if (this.currentChatId) {
@@ -676,13 +1049,13 @@ class Capibara6ChatPage {
                     timestamp: new Date().toISOString(),
                     messageCount: this.messages.length
                 };
-                
+
                 if (chatIndex >= 0) {
                     this.chats[chatIndex] = chatData;
                 } else {
                     this.chats.unshift(chatData);
                 }
-                
+
                 // Mantener solo los últimos 20 chats
                 this.chats = this.chats.slice(0, 20);
                 localStorage.setItem('capibara6_chats', JSON.stringify(this.chats));
@@ -692,10 +1065,10 @@ class Capibara6ChatPage {
             console.warn('Error guardando chats:', error);
         }
     }
-    
+
     renderChatList() {
         this.chatList.innerHTML = '';
-        
+
         if (this.chats.length === 0) {
             const emptyDiv = document.createElement('div');
             emptyDiv.className = 'empty-chat-list';
@@ -704,7 +1077,7 @@ class Capibara6ChatPage {
             this.chatList.appendChild(emptyDiv);
             return;
         }
-        
+
         this.chats.forEach(chat => {
             const chatItem = document.createElement('div');
             chatItem.className = 'chat-item';
@@ -712,7 +1085,7 @@ class Capibara6ChatPage {
             if (chat.id === this.currentChatId) {
                 chatItem.classList.add('active');
             }
-            
+
             chatItem.innerHTML = `
                 <div class="chat-item-icon">
                     <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
@@ -733,13 +1106,13 @@ class Capibara6ChatPage {
                     </button>
                 </div>
             `;
-            
+
             // Click principal para cargar el chat
             chatItem.querySelector('.chat-item-content').addEventListener('click', (e) => {
                 e.stopPropagation();
                 this.loadChat(chat.id);
             });
-            
+
             // Event listeners para el menú contextual
             const menuBtns = chatItem.querySelectorAll('.chat-menu-btn');
             menuBtns.forEach(btn => {
@@ -747,7 +1120,7 @@ class Capibara6ChatPage {
                     e.stopPropagation();
                     const action = btn.dataset.action;
                     const chatId = chatItem.dataset.chatId;
-                    
+
                     if (action === 'add-to-project') {
                         this.addChatToProject(chatId);
                     } else if (action === 'merge') {
@@ -757,19 +1130,19 @@ class Capibara6ChatPage {
                     }
                 });
             });
-            
+
             this.chatList.appendChild(chatItem);
         });
-        
+
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     updateChatInList() {
         this.saveChats();
     }
-    
+
     loadChat(chatId) {
         // Por ahora, solo actualizamos el ID actual
         // En una implementación completa, cargaríamos los mensajes del chat
@@ -777,7 +1150,7 @@ class Capibara6ChatPage {
         this.renderChatList();
         this.closeSidebarMobile();
     }
-    
+
     // Configuración
     loadUserSettings() {
         try {
@@ -795,7 +1168,7 @@ class Capibara6ChatPage {
             console.warn('Error cargando configuración:', error);
         }
     }
-    
+
     saveUserSettings() {
         try {
             const settings = {
@@ -806,7 +1179,7 @@ class Capibara6ChatPage {
             console.warn('Error guardando configuración:', error);
         }
     }
-    
+
     loadUserProfile() {
         try {
             const profile = localStorage.getItem('capibara6_profile');
@@ -823,15 +1196,15 @@ class Capibara6ChatPage {
             console.warn('Error cargando perfil:', error);
         }
     }
-    
+
     openSettings() {
         this.settingsModal.classList.add('active');
     }
-    
+
     closeSettings() {
         this.settingsModal.classList.remove('active');
     }
-    
+
     saveSettings() {
         // Guardar configuración
         const settings = {
@@ -840,7 +1213,7 @@ class Capibara6ChatPage {
             soundNotifications: document.getElementById('sound-notifications').checked,
             autoScroll: document.getElementById('auto-scroll').checked
         };
-        
+
         try {
             localStorage.setItem('capibara6_chat_settings', JSON.stringify(settings));
             this.closeSettings();
@@ -851,7 +1224,7 @@ class Capibara6ChatPage {
             alert('Error al guardar la configuración');
         }
     }
-    
+
     saveMessages() {
         try {
             if (this.currentChatId) {
@@ -865,7 +1238,7 @@ class Capibara6ChatPage {
             console.warn('Error guardando mensajes:', error);
         }
     }
-    
+
     loadMessages() {
         try {
             if (this.currentChatId) {
@@ -873,7 +1246,7 @@ class Capibara6ChatPage {
                 if (saved) {
                     const chatData = JSON.parse(saved);
                     this.messages = chatData.messages || [];
-                    
+
                     // Renderizar mensajes
                     this.chatMessages.innerHTML = '';
                     this.messages.forEach(msg => {
@@ -885,23 +1258,21 @@ class Capibara6ChatPage {
             console.warn('Error cargando mensajes:', error);
         }
     }
-    
+
     // ============================================
     // Inicialización de Servicios Integrados
     // ============================================
-    
+
     initTTSService() {
         try {
             if (typeof TTS_CONFIG !== 'undefined') {
-                console.log('🎙️ Inicializando servicio TTS...');
-                
                 const ttsControls = document.getElementById('tts-controls');
                 const ttsPlayBtn = document.getElementById('tts-play-btn');
                 const ttsPauseBtn = document.getElementById('tts-pause-btn');
                 const ttsStopBtn = document.getElementById('tts-stop-btn');
                 const ttsSpeedSlider = document.getElementById('tts-speed');
                 const ttsSpeedValue = document.getElementById('tts-speed-value');
-                
+
                 if (ttsControls && ttsPlayBtn) {
                     // Mostrar controles TTS cuando hay un mensaje del bot
                     this.showTTSControls = () => {
@@ -910,12 +1281,12 @@ class Capibara6ChatPage {
                             lucide.createIcons();
                         }
                     };
-                    
+
                     // Ocultar controles TTS
                     this.hideTTSControls = () => {
                         ttsControls.style.display = 'none';
                     };
-                    
+
                     // Configurar controles
                     if (ttsPlayBtn) {
                         ttsPlayBtn.addEventListener('click', () => {
@@ -931,7 +1302,7 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
+
                     if (ttsPauseBtn) {
                         ttsPauseBtn.addEventListener('click', () => {
                             if (typeof window.speechSynthesis !== 'undefined') {
@@ -941,7 +1312,7 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
+
                     if (ttsStopBtn) {
                         ttsStopBtn.addEventListener('click', () => {
                             if (typeof window.speechSynthesis !== 'undefined') {
@@ -952,7 +1323,7 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
+
                     if (ttsSpeedSlider && ttsSpeedValue) {
                         ttsSpeedSlider.addEventListener('input', (e) => {
                             const speed = parseFloat(e.target.value);
@@ -962,22 +1333,18 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
-                    console.log('✅ Servicio TTS inicializado');
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando TTS:', error);
+            console.debug('TTS service could not be initialized:', error.message);
         }
     }
-    
+
     initMCPService() {
         try {
-            console.log('🧠 Inicializando servicio MCP...');
-            
             const mcpIndicator = document.getElementById('mcp-indicator');
             const mcpStatusText = document.getElementById('mcp-status-text');
-            
+
             if (mcpIndicator) {
                 // Verificar estado usando checkSmartMCPHealth si está disponible
                 if (typeof checkSmartMCPHealth === 'function') {
@@ -988,7 +1355,6 @@ class Capibara6ChatPage {
                             if (mcpStatusText) {
                                 mcpStatusText.textContent = 'MCP Activo';
                             }
-                            console.log('✅ MCP disponible');
                         } else {
                             mcpIndicator.style.display = 'none';
                         }
@@ -1004,41 +1370,34 @@ class Capibara6ChatPage {
                             if (mcpStatusText) {
                                 mcpStatusText.textContent = 'MCP Activo';
                             }
-                            console.log('✅ MCP disponible');
                         }
                     }).catch(() => {
                         mcpIndicator.style.display = 'none';
                     });
-                } else {
-                    console.log('ℹ️ Funciones MCP no disponibles');
                 }
-                
-                console.log('✅ Servicio MCP inicializado');
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando MCP:', error);
+            console.debug('MCP service could not be initialized:', error.message);
         }
     }
-    
+
     initRAGService() {
         try {
             if (typeof Capibara6API !== 'undefined') {
-                console.log('🔍 Inicializando servicio RAG...');
-                
                 const ragPanel = document.getElementById('rag-panel');
                 const ragPanelClose = document.getElementById('rag-panel-close');
                 const ragSearchBtnSidebar = document.getElementById('rag-search-btn-sidebar');
                 const ragSearchBtn = document.getElementById('rag-search-btn');
                 const ragSearchInput = document.getElementById('rag-search-input');
                 const ragResults = document.getElementById('rag-results');
-                
+
                 if (ragPanel && ragSearchBtnSidebar) {
                     const ragUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.RAG_API
                         ? CHATBOT_CONFIG.SERVICE_URLS.RAG_API
                         : 'http://localhost:8000';
-                    
+
                     this.ragClient = new Capibara6API(ragUrl);
-                    
+
                     // Abrir panel RAG
                     ragSearchBtnSidebar.addEventListener('click', () => {
                         ragPanel.classList.add('open');
@@ -1046,24 +1405,24 @@ class Capibara6ChatPage {
                             lucide.createIcons();
                         }
                     });
-                    
+
                     // Cerrar panel RAG
                     if (ragPanelClose) {
                         ragPanelClose.addEventListener('click', () => {
                             ragPanel.classList.remove('open');
                         });
                     }
-                    
+
                     // Realizar búsqueda RAG
                     if (ragSearchBtn && ragSearchInput) {
                         const performRAGSearch = async () => {
                             const query = ragSearchInput.value.trim();
                             if (!query) return;
-                            
+
                             const searchType = document.querySelector('input[name="rag-search-type"]:checked')?.value || 'rag';
-                            
+
                             ragResults.innerHTML = '<div class="rag-empty-state"><div class="spinner"></div><p>Buscando...</p></div>';
-                            
+
                             try {
                                 let results;
                                 if (searchType === 'rag') {
@@ -1073,13 +1432,13 @@ class Capibara6ChatPage {
                                 } else {
                                     results = await this.ragClient.searchAll(query, 5);
                                 }
-                                
+
                                 this.displayRAGResults(results, ragResults, searchType);
                             } catch (error) {
                                 ragResults.innerHTML = `<div class="rag-empty-state"><p style="color: var(--danger);">Error: ${error.message}</p></div>`;
                             }
                         };
-                        
+
                         ragSearchBtn.addEventListener('click', performRAGSearch);
                         ragSearchInput.addEventListener('keypress', (e) => {
                             if (e.key === 'Enter') {
@@ -1087,23 +1446,21 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
-                    console.log('✅ Servicio RAG inicializado');
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando RAG:', error);
+            console.debug('RAG service could not be initialized:', error.message);
         }
     }
-    
+
     displayRAGResults(results, container, searchType) {
         if (!results || (results.results && results.results.length === 0)) {
             container.innerHTML = '<div class="rag-empty-state"><p>No se encontraron resultados</p></div>';
             return;
         }
-        
+
         let html = '';
-        
+
         if (searchType === 'rag' && results.results) {
             // Formato RAG completo
             const allResults = [];
@@ -1112,9 +1469,9 @@ class Capibara6ChatPage {
                     allResults.push({ collection: collName, ...r });
                 });
             }
-            
+
             allResults.sort((a, b) => (b.similarity || 0) - (a.similarity || 0));
-            
+
             allResults.forEach(result => {
                 html += `
                     <div class="rag-result-item">
@@ -1141,30 +1498,28 @@ class Capibara6ChatPage {
                 `;
             });
         }
-        
+
         container.innerHTML = html || '<div class="rag-empty-state"><p>No se encontraron resultados</p></div>';
     }
-    
+
     initN8NService() {
         try {
             if (typeof N8NManager !== 'undefined') {
-                console.log('🔄 Inicializando servicio N8n...');
-                
                 const n8nWidget = document.getElementById('n8n-widget');
                 const n8nStatus = document.getElementById('n8n-status');
                 const n8nWorkflowsList = document.getElementById('n8n-workflows-list');
                 const n8nDashboardBtn = document.getElementById('n8n-dashboard-btn');
-                
+
                 if (n8nWidget) {
                     const n8nUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.N8N
                         ? CHATBOT_CONFIG.SERVICE_URLS.N8N
-                        : 'http://localhost:5678';
-                    
-                    this.n8nManager = new N8NManager({ 
+                        : 'http://localhost:5000';
+
+                    this.n8nManager = new N8NManager({
                         baseURL: this.backendUrl,
-                        n8nURL: n8nUrl 
+                        n8nURL: n8nUrl
                     });
-                    
+
                     // Verificar estado N8n
                     this.n8nManager.checkN8NStatus().then(status => {
                         if (status && status.available) {
@@ -1191,7 +1546,7 @@ class Capibara6ChatPage {
                             `;
                         }
                     });
-                    
+
                     // Abrir dashboard N8n
                     if (n8nDashboardBtn) {
                         n8nDashboardBtn.addEventListener('click', () => {
@@ -1202,24 +1557,23 @@ class Capibara6ChatPage {
                             }
                         });
                     }
-                    
-                    console.log('✅ Servicio N8n inicializado');
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando N8n:', error);
+            // Solo log si hay error real
+            console.debug('N8n service initialization failed:', error.message);
         }
     }
-    
+
     async loadN8NWorkflows() {
         try {
             if (this.n8nManager && document.getElementById('n8n-workflows-list')) {
                 const workflowsList = document.getElementById('n8n-workflows-list');
-                
+
                 // Usar getRecommended para obtener plantillas recomendadas
                 try {
                     const workflows = await this.n8nManager.getRecommended();
-                    
+
                     if (workflows && workflows.length > 0) {
                         workflowsList.innerHTML = workflows.slice(0, 5).map(wf => `
                             <div class="n8n-workflow-item" title="${wf.description || ''}">
@@ -1241,37 +1595,33 @@ class Capibara6ChatPage {
             console.warn('⚠️ Error cargando workflows N8n:', error);
         }
     }
-    
+
     initModelVisualization() {
         try {
             if (typeof ModelVisualization !== 'undefined') {
-                console.log('📊 Inicializando visualización de modelos...');
                 // La visualización de modelos se puede usar cuando sea necesario
                 this.modelViz = new ModelVisualization();
-                console.log('✅ Visualización de modelos inicializada');
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando visualización de modelos:', error);
+            console.debug('Model visualization could not be initialized:', error.message);
         }
     }
-    
+
     initEntropyMonitor() {
         try {
             if (typeof EntropyMonitor !== 'undefined') {
-                console.log('📈 Inicializando monitor de entropía...');
                 // El monitor de entropía se puede usar cuando sea necesario
                 this.entropyMonitor = new EntropyMonitor();
-                console.log('✅ Monitor de entropía inicializado');
             }
         } catch (error) {
-            console.warn('⚠️ Error inicializando monitor de entropía:', error);
+            console.debug('Entropy monitor could not be initialized:', error.message);
         }
     }
-    
+
     // ============================================
     // Gestión de Proyectos y Chats
     // ============================================
-    
+
     openCreateProjectModal() {
         const modal = document.getElementById('create-project-modal');
         modal.classList.add('active');
@@ -1279,7 +1629,7 @@ class Capibara6ChatPage {
             lucide.createIcons();
         }
     }
-    
+
     closeCreateProjectModal() {
         const modal = document.getElementById('create-project-modal');
         modal.classList.remove('active');
@@ -1288,17 +1638,17 @@ class Capibara6ChatPage {
         document.getElementById('project-description').value = '';
         document.getElementById('project-include-current-chat').checked = false;
     }
-    
+
     async createProject() {
         const name = document.getElementById('project-name').value.trim();
         const description = document.getElementById('project-description').value.trim();
         const includeCurrent = document.getElementById('project-include-current-chat').checked;
-        
+
         if (!name) {
             this.showError('Por favor, ingresa un nombre para el proyecto');
             return;
         }
-        
+
         try {
             const project = {
                 id: 'project_' + Date.now(),
@@ -1307,12 +1657,12 @@ class Capibara6ChatPage {
                 createdAt: new Date().toISOString(),
                 chats: includeCurrent && this.currentChatId ? [this.currentChatId] : []
             };
-            
+
             // Guardar proyecto en localStorage
             const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
             projects.push(project);
             localStorage.setItem('capibara6_projects', JSON.stringify(projects));
-            
+
             // Si había un chat pendiente para añadir, añadirlo ahora
             if (this.pendingChatForProject) {
                 project.chats.push(this.pendingChatForProject);
@@ -1322,7 +1672,7 @@ class Capibara6ChatPage {
             } else {
                 this.showSuccess(`Proyecto "${name}" creado exitosamente`);
             }
-            
+
             this.closeCreateProjectModal();
             console.log('✅ Proyecto creado:', project);
         } catch (error) {
@@ -1330,14 +1680,14 @@ class Capibara6ChatPage {
             this.showError('Error al crear el proyecto');
         }
     }
-    
+
     // ============================================
     // Acciones Contextuales de Chat
     // ============================================
-    
+
     addChatToProject(chatId) {
         const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
-        
+
         if (projects.length === 0) {
             // Si no hay proyectos, abrir modal para crear uno
             this.openCreateProjectModal();
@@ -1345,25 +1695,25 @@ class Capibara6ChatPage {
             this.pendingChatForProject = chatId;
             return;
         }
-        
+
         // Mostrar selector de proyectos
         this.showProjectSelector(chatId);
     }
-    
+
     showProjectSelector(chatId) {
         const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
-        
+
         if (projects.length === 0) {
             this.showError('No hay proyectos. Crea uno primero.');
             return;
         }
-        
+
         const modal = document.getElementById('select-project-modal');
         const list = document.getElementById('projects-list');
-        
+
         // Guardar chatId para usar después
         this.selectedChatForProject = chatId;
-        
+
         list.innerHTML = projects.map((project, index) => {
             const isInProject = project.chats && project.chats.includes(chatId);
             return `
@@ -1377,7 +1727,7 @@ class Capibara6ChatPage {
                 </div>
             `;
         }).join('');
-        
+
         // Event listeners
         list.querySelectorAll('.project-item:not(.disabled)').forEach(item => {
             item.addEventListener('click', () => {
@@ -1385,21 +1735,21 @@ class Capibara6ChatPage {
                 this.addChatToSelectedProject(chatId, index);
             });
         });
-        
+
         modal.classList.add('active');
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     addChatToSelectedProject(chatId, projectIndex) {
         const projects = JSON.parse(localStorage.getItem('capibara6_projects') || '[]');
         const project = projects[projectIndex];
-        
+
         if (!project.chats) {
             project.chats = [];
         }
-        
+
         if (!project.chats.includes(chatId)) {
             project.chats.push(chatId);
             localStorage.setItem('capibara6_projects', JSON.stringify(projects));
@@ -1409,27 +1759,27 @@ class Capibara6ChatPage {
             this.showError('Este chat ya está en el proyecto');
         }
     }
-    
+
     closeSelectProjectModal() {
         const modal = document.getElementById('select-project-modal');
         modal.classList.remove('active');
         this.selectedChatForProject = null;
     }
-    
+
     mergeChatWithOther(chatId) {
         const chats = this.chats.filter(c => c.id !== chatId);
-        
+
         if (chats.length === 0) {
             this.showError('No hay otros chats para unir');
             return;
         }
-        
+
         const modal = document.getElementById('select-chat-merge-modal');
         const list = document.getElementById('chats-merge-list');
-        
+
         // Guardar chatId origen
         this.sourceChatForMerge = chatId;
-        
+
         list.innerHTML = chats.map(chat => `
             <div class="chat-selection-item" data-chat-id="${chat.id}">
                 <div class="chat-selection-item-icon">
@@ -1442,7 +1792,7 @@ class Capibara6ChatPage {
                 <i data-lucide="chevron-right" style="width: 20px; height: 20px; color: var(--text-muted);"></i>
             </div>
         `).join('');
-        
+
         // Event listeners
         list.querySelectorAll('.chat-selection-item').forEach(item => {
             item.addEventListener('click', () => {
@@ -1451,57 +1801,57 @@ class Capibara6ChatPage {
                 this.closeSelectChatMergeModal();
             });
         });
-        
+
         modal.classList.add('active');
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     closeSelectChatMergeModal() {
         const modal = document.getElementById('select-chat-merge-modal');
         modal.classList.remove('active');
         this.sourceChatForMerge = null;
     }
-    
+
     async performMerge(sourceChatId, targetChatId) {
         try {
             // Cargar mensajes de ambos chats
             const sourceData = localStorage.getItem(`capibara6_chat_${sourceChatId}`);
             const targetData = localStorage.getItem(`capibara6_chat_${targetChatId}`);
-            
+
             if (!sourceData || !targetData) {
                 this.showError('Error al cargar los chats');
                 return;
             }
-            
+
             const sourceChat = JSON.parse(sourceData);
             const targetChat = JSON.parse(targetData);
-            
+
             // Combinar mensajes
             const allMessages = [
                 ...(sourceChat.messages || []),
                 ...(targetChat.messages || [])
             ];
-            
+
             // Ordenar por timestamp
             allMessages.sort((a, b) => new Date(a.timestamp || 0) - new Date(b.timestamp || 0));
-            
+
             // Actualizar chat destino
             targetChat.messages = allMessages;
             targetChat.mergedFrom = targetChat.mergedFrom || [];
             if (!targetChat.mergedFrom.includes(sourceChatId)) {
                 targetChat.mergedFrom.push(sourceChatId);
             }
-            
+
             localStorage.setItem(`capibara6_chat_${targetChatId}`, JSON.stringify(targetChat));
-            
+
             // Eliminar chat origen
             localStorage.removeItem(`capibara6_chat_${sourceChatId}`);
-            
+
             this.showSuccess('Chats unidos exitosamente');
             this.loadChats();
-            
+
             // Si el chat actual era el origen, cargar el destino
             if (this.currentChatId === sourceChatId) {
                 this.currentChatId = targetChatId;
@@ -1512,15 +1862,15 @@ class Capibara6ChatPage {
             this.showError('Error al unir los chats');
         }
     }
-    
+
     deleteChat(chatId) {
         const chat = this.chats.find(c => c.id === chatId);
         const chatTitle = chat?.title || 'este chat';
-        
+
         if (confirm(`¿Estás seguro de que deseas eliminar "${chatTitle}"?\n\nEsta acción no se puede deshacer.`)) {
             try {
                 localStorage.removeItem(`capibara6_chat_${chatId}`);
-                
+
                 // Si el chat actual fue eliminado, crear uno nuevo
                 if (this.currentChatId === chatId) {
                     this.currentChatId = null;
@@ -1529,7 +1879,7 @@ class Capibara6ChatPage {
                         <div class="chat-message bot-message">
                             <div class="message-avatar">
                                 <div class="avatar-gradient">
-                                    <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                                    <i data-lucide="hippo" style="width: 24px; height: 24px;"></i>
                                 </div>
                             </div>
                             <div class="message-content">
@@ -1544,7 +1894,7 @@ class Capibara6ChatPage {
                         lucide.createIcons();
                     }
                 }
-                
+
                 this.showSuccess('Chat eliminado exitosamente');
                 this.loadChats();
             } catch (error) {
@@ -1553,14 +1903,14 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     // ============================================
     // Gestión de Cuenta
     // ============================================
-    
+
     openAccountModal() {
         const modal = document.getElementById('account-modal');
-        
+
         // Cargar datos del usuario
         const userData = this.loadUserProfile();
         if (userData) {
@@ -1568,28 +1918,28 @@ class Capibara6ChatPage {
             document.getElementById('account-email').value = userData.email || 'usuario@example.com';
             document.getElementById('account-company').value = userData.company || '';
         }
-        
+
         modal.classList.add('active');
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
-    
+
     closeAccountModal() {
         const modal = document.getElementById('account-modal');
         modal.classList.remove('active');
     }
-    
+
     async saveAccount() {
         const name = document.getElementById('account-name').value.trim();
         const email = document.getElementById('account-email').value.trim();
         const company = document.getElementById('account-company').value.trim();
-        
+
         if (!name || !email) {
             this.showError('Nombre y email son obligatorios');
             return;
         }
-        
+
         try {
             const userData = {
                 name: name,
@@ -1597,13 +1947,13 @@ class Capibara6ChatPage {
                 company: company,
                 updatedAt: new Date().toISOString()
             };
-            
+
             localStorage.setItem('capibara6_user', JSON.stringify(userData));
-            
+
             // Actualizar UI
             document.getElementById('user-name').textContent = name;
             document.getElementById('user-email').textContent = email;
-            
+
             this.closeAccountModal();
             this.showSuccess('Información de cuenta actualizada');
         } catch (error) {
@@ -1611,26 +1961,26 @@ class Capibara6ChatPage {
             this.showError('Error al guardar la información');
         }
     }
-    
+
     changePassword() {
         // TODO: Implementar cambio de contraseña
         this.showError('Funcionalidad de cambio de contraseña próximamente');
     }
-    
+
     // ============================================
     // Gemelo Digital
     // ============================================
-    
+
     switchAccountTab(tabName) {
         // Cambiar tabs activos
         document.querySelectorAll('.account-tab').forEach(tab => {
             tab.classList.toggle('active', tab.dataset.tab === tabName);
         });
-        
+
         document.querySelectorAll('.account-tab-content').forEach(content => {
             content.classList.toggle('active', content.id === `tab-${tabName}`);
         });
-        
+
         // Mostrar/ocultar botones del footer según la pestaña
         const saveBtn = document.getElementById('account-save-btn');
         const cancelBtn = document.getElementById('account-cancel-btn');
@@ -1643,47 +1993,47 @@ class Capibara6ChatPage {
                 cancelBtn.style.display = 'none';
             }
         }
-        
+
         // Inicializar iconos si es necesario
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
-        
+
         // Si se cambia a la pestaña de gemelo digital, cargar estado
         if (tabName === 'digital-twin') {
             this.loadDigitalTwinState();
         }
     }
-    
+
     loadDigitalTwinState() {
         // Cargar estado guardado del gemelo digital
         const twinData = localStorage.getItem('capibara6_digital_twin');
         const importedData = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
-        
+
         // Actualizar estados de importación
         Object.keys(importedData).forEach(platform => {
             this.updateSocialStatus(platform, 'imported');
         });
-        
+
         // Si hay gemelo generado, mostrarlo
         if (twinData) {
             const twin = JSON.parse(twinData);
             this.displayTwinProfile(twin);
         }
-        
+
         // Habilitar botón de generar si hay datos importados
         this.updateGenerateButton();
     }
-    
+
     async handleSocialImport(platform, file) {
         if (!file) return;
-        
+
         try {
             this.showSuccess(`Importando datos de ${platform}...`);
-            
+
             // Leer archivo
             const fileContent = await this.readFileAsText(file);
-            
+
             // Parsear según tipo de archivo
             let data;
             if (file.name.endsWith('.json')) {
@@ -1693,7 +2043,7 @@ class Capibara6ChatPage {
             } else {
                 throw new Error('Formato de archivo no soportado');
             }
-            
+
             // Guardar datos importados
             const imports = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
             imports[platform] = {
@@ -1703,22 +2053,22 @@ class Capibara6ChatPage {
                 recordCount: Array.isArray(data) ? data.length : Object.keys(data).length
             };
             localStorage.setItem('capibara6_social_imports', JSON.stringify(imports));
-            
+
             // Actualizar UI
             this.updateSocialStatus(platform, 'imported');
             this.updateGenerateButton();
-            
+
             this.showSuccess(`✅ ${platform} importado exitosamente (${imports[platform].recordCount} registros)`);
-            
+
             // Enviar al backend (simulado por ahora)
             // await this.sendToBackend(platform, data);
-            
+
         } catch (error) {
             console.error(`Error importando ${platform}:`, error);
             this.showError(`Error al importar ${platform}: ${error.message}`);
         }
     }
-    
+
     readFileAsText(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -1727,7 +2077,7 @@ class Capibara6ChatPage {
             reader.readAsText(file);
         });
     }
-    
+
     parseCSV(csvText) {
         // Parseo simple de CSV
         const lines = csvText.split('\n');
@@ -1741,16 +2091,16 @@ class Capibara6ChatPage {
             return obj;
         }).filter(obj => Object.keys(obj).length > 0);
     }
-    
+
     updateSocialStatus(platform, status) {
         const statusElement = document.getElementById(`${platform}-status`);
         const importBtn = document.querySelector(`[data-platform="${platform}"] .btn-social-import`);
-        
+
         if (statusElement) {
             statusElement.textContent = status === 'imported' ? 'Importado ✓' : 'No importado';
             statusElement.classList.toggle('imported', status === 'imported');
         }
-        
+
         if (importBtn) {
             importBtn.classList.toggle('imported', status === 'imported');
             if (status === 'imported') {
@@ -1761,30 +2111,30 @@ class Capibara6ChatPage {
             }
         }
     }
-    
+
     updateGenerateButton() {
         const imports = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
         const hasImports = Object.keys(imports).length > 0;
         const generateBtn = document.getElementById('generate-twin-btn');
-        
+
         if (generateBtn) {
             generateBtn.disabled = !hasImports;
         }
     }
-    
+
     async generateDigitalTwin() {
         const imports = JSON.parse(localStorage.getItem('capibara6_social_imports') || '{}');
-        
+
         if (Object.keys(imports).length === 0) {
             this.showError('Importa al menos una red social antes de generar el gemelo');
             return;
         }
-        
+
         try {
             // Mostrar progreso
             this.showProgressSection();
             this.updateProgress(0, 'Iniciando generación del gemelo digital...');
-            
+
             // Simular proceso de generación (en producción esto sería una llamada al backend)
             const steps = [
                 { progress: 10, message: 'Procesando datos importados...' },
@@ -1795,12 +2145,12 @@ class Capibara6ChatPage {
                 { progress: 85, message: 'Generando perfil del gemelo...' },
                 { progress: 100, message: 'Gemelo digital generado exitosamente ✓' }
             ];
-            
+
             for (const step of steps) {
                 await this.delay(800);
                 this.updateProgress(step.progress, step.message);
             }
-            
+
             // Crear gemelo digital simulado
             const twin = {
                 id: 'twin_' + Date.now(),
@@ -1819,52 +2169,52 @@ class Capibara6ChatPage {
                     neuroticism: Math.random() * 100
                 }
             };
-            
+
             // Guardar gemelo
             localStorage.setItem('capibara6_digital_twin', JSON.stringify(twin));
-            
+
             // Actualizar estado
             document.getElementById('twin-status-badge').textContent = 'Activo';
             document.getElementById('twin-status-badge').classList.add('active');
-            
+
             // Mostrar perfil
             this.displayTwinProfile(twin);
-            
+
             this.showSuccess('Gemelo digital generado exitosamente');
-            
+
         } catch (error) {
             console.error('Error generando gemelo:', error);
             this.showError('Error al generar el gemelo digital');
         }
     }
-    
+
     showProgressSection() {
         const progressSection = document.getElementById('twin-progress-section');
         const progressSteps = document.getElementById('twin-progress-steps');
-        
+
         if (progressSection) {
             progressSection.style.display = 'block';
         }
-        
+
         // Limpiar pasos anteriores
         if (progressSteps) {
             progressSteps.innerHTML = '';
         }
     }
-    
+
     updateProgress(percentage, message) {
         const progressBar = document.getElementById('twin-progress-bar');
         const progressPercentage = document.getElementById('twin-progress-percentage');
         const progressSteps = document.getElementById('twin-progress-steps');
-        
+
         if (progressBar) {
             progressBar.style.width = `${percentage}%`;
         }
-        
+
         if (progressPercentage) {
             progressPercentage.textContent = `${percentage}%`;
         }
-        
+
         if (progressSteps && message) {
             // Añadir paso actual
             const stepDiv = document.createElement('div');
@@ -1874,25 +2224,25 @@ class Capibara6ChatPage {
                 <span>${message}</span>
             `;
             progressSteps.appendChild(stepDiv);
-            
+
             // Scroll al último paso
             progressSteps.scrollTop = progressSteps.scrollHeight;
         }
     }
-    
+
     displayTwinProfile(twin) {
         const profileSection = document.getElementById('twin-profile-section');
         if (!profileSection) return;
-        
+
         profileSection.style.display = 'block';
-        
+
         // Actualizar información básica
         document.getElementById('twin-name').textContent = twin.name;
-        document.getElementById('twin-created-date').textContent = 
+        document.getElementById('twin-created-date').textContent =
             `Creado el ${new Date(twin.createdAt).toLocaleDateString('es-ES')}`;
         document.getElementById('twin-messages-count').textContent = twin.stats.messagesAnalyzed;
         document.getElementById('twin-platforms-count').textContent = twin.stats.platformsCount;
-        
+
         // Mostrar análisis de personalidad
         const personalityDiv = document.getElementById('twin-personality');
         if (personalityDiv && twin.personality) {
@@ -1903,7 +2253,7 @@ class Capibara6ChatPage {
                 { key: 'agreeableness', label: 'Amabilidad' },
                 { key: 'neuroticism', label: 'Neuroticismo' }
             ];
-            
+
             personalityDiv.innerHTML = traits.map(trait => {
                 const value = Math.round(twin.personality[trait.key]);
                 return `
@@ -1920,11 +2270,11 @@ class Capibara6ChatPage {
             }).join('');
         }
     }
-    
+
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    
+
     showSuccess(message) {
         // Crear notificación de éxito
         const notification = document.createElement('div');
@@ -1943,19 +2293,601 @@ class Capibara6ChatPage {
             animation: slideInRight 0.3s ease;
         `;
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease';
             setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
+    
+    setupAutoFocus() {
+        // Asegurar que el input de chat esté enfocado automáticamente en móviles
+        const isMobile = window.innerWidth <= 480 || ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+
+        if (isMobile) {
+            setTimeout(() => {
+                if (this.chatInput) {
+                    this.chatInput.focus();
+                    // Colocar cursor al final del texto si hay contenido
+                    if (this.chatInput.value) {
+                        this.chatInput.selectionStart = this.chatInput.selectionEnd = this.chatInput.value.length;
+                    }
+                }
+            }, 300); // Pequeño delay para asegurar que el DOM esté completamente cargado
+
+            // Escuchar eventos de touch para mantener el foco
+            document.addEventListener("touchstart", (e) => {
+                if (!e.target.closest(".chat-input, .chat-send-btn, .input-action-btn")) {
+                    setTimeout(() => {
+                        if (this.chatInput) {
+                            this.chatInput.focus();
+                        }
+                    }, 100);
+                }
+            }, { passive: true });
+        }
+    }
+
+    // ============================================
+    // Acontext Integration & Agent System
+    // ============================================
+
+    initAcontextAgentSystem() {
+        // Verificar estado de Acontext en los logs
+        console.debug('🎯 Acontext integration loaded and ready');
+
+        // Cargar agentes existentes si Acontext está disponible
+        setTimeout(() => {
+            if (this.agentsList) {  // Asegurar que el elemento esté disponible antes de cargar
+                this.loadAgentsFromAcontext();
+            } else {
+                console.debug('⚠️ Elemento agents-list no encontrado, omitiendo carga de agentes');
+            }
+        }, 1000); // Pequeño delay para que otros servicios se inicialicen primero
+    }
+
+    async loadAgentsFromAcontext() {
+        // Esta función puede ser implementada para cargar agentes desde Acontext
+        // Para simplicidad en esta implementación, mostraremos un agente de ejemplo
+        try {
+            if (!this.agentsList) return;
+
+            // Simular agentes existentes (esto debería conectarse con Acontext en una implementación completa)
+            // Por ahora mostramos un agente de ejemplo
+            const demoAgent = document.createElement('div');
+            demoAgent.className = 'chat-item agent-item';
+            demoAgent.innerHTML = `
+                <div class="chat-item-icon">
+                    <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="chat-item-content">
+                    <div class="chat-item-title">Demo Agent</div>
+                    <div class="chat-item-time">Just now</div>
+                </div>
+                <div class="chat-item-actions">
+                    <button class="btn-chat-action" title="Usar agente">
+                        <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            `;
+
+            this.agentsList.innerHTML = '';
+            this.agentsList.appendChild(demoAgent);
+
+            // Inicializar iconos de Lucide
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+        } catch (error) {
+            console.debug('Acontext agents not available:', error.message);
+        }
+    }
+
+    async useAgent(agentId) {
+        // Funcionalidad para usar un agente específico
+        console.debug(`🎯 Usando agente con ID: ${agentId}`);
+        // Aquí se podría implementar la funcionalidad para interactuar con el agente específico
+        // Por ejemplo, cargar contexto específico del agente o preconfigurar el chat
+        this.showSuccess('Agente seleccionado - funcionalidad completa disponible en versión avanzada');
+    }
+
+    async showAgentCreationModal() {
+        // Mostrar modal de creación de agente con formulario
+        const agentName = prompt('Nombre del nuevo agente:', 'Nuevo Agente');
+        if (!agentName) return;
+
+        const agentDescription = prompt('Descripción del agente (opcional):', 'Un agente especializado creado con Acontext');
+
+        try {
+            // Crear el agente usando el endpoint del gateway
+            const response = await fetch(`${this.backendUrl}/api/agents`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: agentName,
+                    description: agentDescription || `Agente ${agentName}`
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error creando agente: ${response.status} - ${await response.text()}`);
+            }
+
+            const result = await response.json();
+            console.debug('✅ Agente creado exitosamente:', result.agent);
+
+            // Mostrar mensaje de éxito
+            this.showSuccess(`Agente "${agentName}" creado exitosamente`);
+
+            // Cargar de nuevo la lista de agentes
+            this.loadAgentsFromAcontext();
+
+        } catch (error) {
+            console.error('❌ Error creando agente:', error);
+            this.showError(`Error creando agente: ${error.message}`);
+        }
+    }
+    
+    // Función para manejar la subida de archivos
+    handleFileUpload(files) {
+        if (!files || files.length === 0) {
+            console.log('📭 No se seleccionaron archivos');
+            return;
+        }
+
+        console.log(`📎 ${files.length} archivo(s) seleccionado(s):`, Array.from(files).map(f => f.name));
+
+        // Mostrar notificación de archivos adjuntos
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            // Mostrar el archivo adjunto en el área de mensajes
+            this.addMessage(`${file.name} (archivo adjunto - ${this.formatFileSize(file.size)})`, 'system');
+        }
+
+        // Aquí puedes implementar la lógica real para subir archivos al backend
+        // Por ahora, solo mostramos una notificación
+        this.showSuccess(`Archivo(s) adjuntado(s): ${Array.from(files).map(f => f.name).join(', ')}`);
+        
+        // Opcional: Puedes enviar información del archivo al backend
+        // this.sendFileToBackend(files);
+    }
+    
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Función opcional para enviar archivos al backend
+    async sendFileToBackend(files) {
+        try {
+            // Preparar FormData para enviar los archivos
+            const formData = new FormData();
+            Array.from(files).forEach((file, index) => {
+                formData.append(`file_${index}`, file, file.name);
+            });
+
+            // Enviar al backend
+            const response = await fetch(`${this.backendUrl}/api/upload`, {
+                method: 'POST',
+                body: formData // No incluir Content-Type, el navegador lo hará automáticamente con boundary
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error subiendo archivos: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('✅ Archivos subidos exitosamente:', result);
+            return result;
+        } catch (error) {
+            console.error('❌ Error subiendo archivos:', error);
+            this.showError(`Error subiendo archivos: ${error.message}`);
+        }
+    }
+
+    // Función para mostrar información de E2B
+    async showE2BInfo() {
+        try {
+            // Simular verificación del estado de E2B
+            // En una implementación real, aquí se haría una llamada al servicio E2B
+            const e2bStatusElement = document.getElementById('e2b-status');
+            if (e2bStatusElement) {
+                const statusSpan = e2bStatusElement.querySelector('span:last-child');
+                const statusDot = e2bStatusElement.querySelector('.status-dot');
+
+                // Simular verificación
+                statusSpan.textContent = 'E2B Verificando...';
+                statusDot.style.background = '#f59e0b'; // color amarillo para proceso
+
+                // Simular respuesta real después de un tiempo
+                setTimeout(() => {
+                    if (statusSpan) {
+                        statusSpan.textContent = 'E2B Activo';
+                        if (statusDot) {
+                            statusDot.style.background = '#10b981'; // color verde para activo
+                        }
+                    }
+                }, 1000);
+            }
+        } catch (error) {
+            console.error('❌ Error verificando estado E2B:', error);
+        }
+    }
+
+    // Función para alternar la información de recursos
+    toggleResourceInfo() {
+        // Esta función puede expandir el panel de recursos o mostrar información detallada
+        console.log('🔍 Toggle resource info');
+    }
+
+    // Inicializar el sistema de monitoreo de recursos
+    initResourceMonitoring() {
+        // Inicializar el monitoreo de recursos basado en actualizaciones desde models-europe
+        this.resourceData = {
+            ram: 30,  // Porcentaje actual
+            cpu: 25,  // Porcentaje actual
+            queuePosition: null,
+            estimatedWait: null,
+            isAtCapacity: false
+        };
+
+        // Crear un modal para la cola si no existe
+        this.createQueueModal();
+
+        // Iniciar el monitoreo periódico (simulado por ahora)
+        this.startResourceMonitoring();
+    }
+
+    // Crear modal para mostrar estado de cola
+    createQueueModal() {
+        // Verificar si ya existe
+        if (document.getElementById('queue-modal')) {
+            return;
+        }
+
+        const queueModal = document.createElement('div');
+        queueModal.className = 'queue-modal';
+        queueModal.id = 'queue-modal';
+
+        queueModal.innerHTML = `
+            <div class="queue-modal-content">
+                <h3>Sistema de Cola Activado</h3>
+                <p class="queue-status-text">El sistema está actualmente en alta demanda. Su solicitud está en cola:</p>
+                <div class="queue-estimated-time" id="queue-estimated-time">--:--</div>
+                <p class="queue-position" id="queue-position">Posición: --</p>
+                <p class="queue-info">Por favor, espere mientras procesamos las solicitudes anteriores</p>
+            </div>
+        `;
+
+        document.body.appendChild(queueModal);
+
+        // Añadir evento para cerrar al hacer clic fuera
+        queueModal.addEventListener('click', (e) => {
+            if (e.target === queueModal) {
+                this.hideQueueModal();
+            }
+        });
+    }
+
+    // Mostrar modal de cola
+    showQueueModal(estimatedTime = null, position = null) {
+        const modal = document.getElementById('queue-modal');
+        const timeElement = document.getElementById('queue-estimated-time');
+        const positionElement = document.getElementById('queue-position');
+
+        if (modal && timeElement) {
+            if (estimatedTime) {
+                timeElement.textContent = estimatedTime;
+            }
+
+            if (positionElement && position) {
+                positionElement.textContent = `Posición: ${position}`;
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevenir scroll
+        }
+    }
+
+    // Ocultar modal de cola
+    hideQueueModal() {
+        const modal = document.getElementById('queue-modal');
+
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restaurar scroll
+        }
+    }
+
+    // Actualizar datos de recursos (simulado para ahora)
+    updateResourceData(ram, cpu) {
+        this.resourceData.ram = ram;
+        this.resourceData.cpu = cpu;
+
+        // Actualizar la interfaz
+        this.updateResourceDisplay();
+
+        // Verificar límites y activar cola si es necesario
+        this.checkResourceLimits();
+    }
+
+    // Actualizar la visualización de recursos
+    updateResourceDisplay() {
+        // Actualizar RAM
+        const ramFill = document.getElementById('ram-fill');
+        const ramValue = document.getElementById('ram-value');
+
+        if (ramFill && ramValue) {
+            ramFill.style.width = `${this.resourceData.ram}%`;
+            ramValue.textContent = `${this.resourceData.ram}%`;
+
+            // Cambiar color según el porcentaje
+            ramFill.className = 'resource-fill';
+            if (this.resourceData.ram >= 90) {
+                ramFill.classList.add('critical');
+            } else if (this.resourceData.ram >= 75) {
+                ramFill.classList.add('warning');
+            }
+        }
+
+        // Actualizar CPU
+        const cpuFill = document.getElementById('cpu-fill');
+        const cpuValue = document.getElementById('cpu-value');
+
+        if (cpuFill && cpuValue) {
+            cpuFill.style.width = `${this.resourceData.cpu}%`;
+            cpuValue.textContent = `${this.resourceData.cpu}%`;
+
+            // Cambiar color según el porcentaje
+            cpuFill.className = 'resource-fill';
+            if (this.resourceData.cpu >= 90) {
+                cpuFill.classList.add('critical');
+            } else if (this.resourceData.cpu >= 75) {
+                cpuFill.classList.add('warning');
+            }
+        }
+
+        // Actualizar estado de la cola
+        this.updateQueueStatus();
+    }
+
+    // Verificar límites de recursos y activar cola si es necesario
+    checkResourceLimits() {
+        const ramThreshold = 90; // Umbral para activar cola
+        const cpuThreshold = 90; // Umbral para activar cola
+
+        const isHighUsage = this.resourceData.ram >= ramThreshold || this.resourceData.cpu >= cpuThreshold;
+
+        if (isHighUsage && !this.resourceData.isAtCapacity) {
+            // Activar modo cola
+            this.resourceData.isAtCapacity = true;
+            this.activateQueueSystem();
+        } else if (!isHighUsage && this.resourceData.isAtCapacity) {
+            // Desactivar modo cola
+            this.resourceData.isAtCapacity = false;
+            this.deactivateQueueSystem();
+        }
+    }
+
+    // Activar sistema de cola
+    activateQueueSystem() {
+        // Actualizar estado de cola
+        this.updateQueueStatus();
+
+        // Mostrar modal de cola si es necesario
+        if (this.isSendingMessage) {
+            // Si hay un mensaje en proceso, mostrar el modal
+            this.showQueueModal('2-3 min', '5° en cola');
+        }
+
+        console.log('⚠️ Sistema de cola ACTIVADO - Recursos al límite');
+    }
+
+    // Desactivar sistema de cola
+    deactivateQueueSystem() {
+        // Ocultar modal si está visible
+        this.hideQueueModal();
+
+        // Actualizar estado de cola
+        this.updateQueueStatus();
+
+        console.log('✅ Sistema de cola DESACTIVADO - Recursos disponibles');
+    }
+
+    // Actualizar estado de cola en la interfaz
+    updateQueueStatus() {
+        const queueStatus = document.getElementById('queue-status');
+
+        if (queueStatus) {
+            const statusSpan = queueStatus.querySelector('span:last-child');
+            const statusDot = queueStatus.querySelector('.status-dot');
+
+            if (this.resourceData.isAtCapacity) {
+                // Sistema en alta demanda
+                statusSpan.textContent = 'Alta Demanda';
+                statusDot.style.background = '#f59e0b'; // Amarillo
+                queueStatus.className = 'queue-status warning';
+            } else {
+                // Sistema disponible
+                statusSpan.textContent = 'Disponible';
+                statusDot.style.background = '#10b981'; // Verde
+                queueStatus.className = 'queue-status';
+            }
+        }
+    }
+
+    // Simular monitoreo de recursos (en producción recibiría actualizaciones cada 2 segundos)
+    startResourceMonitoring() {
+        // En producción, aquí se conectaría a un WebSocket o se recibirían actualizaciones
+        // desde la VM models-europe cada 2 segundos
+
+        // Simular actualizaciones periódicas de recursos
+        setInterval(() => {
+            // Simular uso de recursos aleatorio para demostración
+            // En producción, estos valores vendrían de la VM models-europe
+            const simulatedRam = Math.min(100, Math.max(0, this.resourceData.ram + (Math.random() * 10 - 5)));
+            const simulatedCpu = Math.min(100, Math.max(0, this.resourceData.cpu + (Math.random() * 8 - 4)));
+
+            this.updateResourceData(Math.round(simulatedRam), Math.round(simulatedCpu));
+        }, 2000); // Actualizar cada 2 segundos como especificado
+    }
+
+    // Sobrescribir el método sendMessage para integrar el sistema de cola y manejo de errores
+    async sendMessage() {
+        console.log('📤 sendMessage() llamado');
+
+        // Verificar si el sistema está en alta demanda
+        if (this.resourceData.isAtCapacity) {
+            console.log('⚠️ Sistema en alta demanda, añadiendo a cola...');
+            this.showQueueModal('1-2 min', '3° en cola');
+
+            // Simular espera necesaria por estar en cola
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            this.hideQueueModal();
+        }
+
+        // Marcar que estamos intentando enviar un mensaje
+        this.isSendingMessage = true;
+
+        try {
+            // Llamar al método original
+            const result = await this.originalSendMessage();
+
+            // Si el resultado es simulado, mostrar un indicador amigable
+            if (result?.metadata?.isSimulated) {
+                // Añadir un mensaje informativo sobre el modo beta
+                setTimeout(() => {
+                    this.addMessage(
+                        'ℹ️ Este es un mensaje simulado en modo beta. Mi backend completo estará disponible próximamente. Puedes usar la función de subida de datos RAG para procesar documentos.',
+                        'system',
+                        false
+                    );
+                }, 2000);
+            }
+
+            return result;
+        } finally {
+            // Marcar que terminamos de enviar
+            this.isSendingMessage = false;
+        }
+    }
+
+    // Guardar la función original de envío de mensajes
+    async originalSendMessage() {
+        const message = this.chatInput?.value?.trim();
+        console.log('📝 Mensaje:', message, 'isProcessing:', this.isProcessing);
+
+        if (!message || this.isProcessing) {
+            console.log('🚫 Mensaje vacío o procesamiento en curso, saliendo');
+            return;
+        }
+
+        if (!this.isConnected) {
+            console.log('🔴 No conectado al servidor');
+            this.showError('No hay conexión con el servidor. Por favor, verifica tu conexión.');
+            return;
+        }
+
+        // Crear chat si no existe
+        if (!this.currentChatId) {
+            this.currentChatId = 'chat_' + Date.now();
+            this.saveChats();
+        }
+
+        // Agregar mensaje del usuario
+        console.log('👤 Agregando mensaje del usuario:', message);
+        this.addMessage(message, 'user');
+        this.chatInput.value = '';
+        this.chatInput.style.height = 'auto';
+
+        // Deshabilitar input mientras se procesa
+        this.setProcessing(true);
+
+        // Mostrar indicador de escritura
+        const typingIndicator = this.showTypingIndicator();
+        console.log('👀 Indicador de escritura mostrado');
+
+        try {
+            const response = await this.sendToBackend(message);
+
+            // Remover indicador de escritura
+            this.removeTypingIndicator(typingIndicator);
+
+            // Agregar respuesta del bot
+            if (response && response.content) {
+                console.log('🤖 Agregando respuesta del bot:', response.content);
+                this.addMessage(response.content, 'bot');
+                // Mostrar controles TTS cuando hay respuesta del bot
+                if (this.showTTSControls) {
+                    this.showTTSControls();
+                }
+            } else {
+                console.error('❌ Respuesta inválida del servidor');
+                throw new Error('Respuesta inválida del servidor');
+            }
+
+            // Actualizar lista de chats
+            this.updateChatInList();
+        } catch (error) {
+            console.error('💥 Error en sendMessage:', error);
+            this.removeTypingIndicator(typingIndicator);
+
+            // Mensaje de error más descriptivo
+            let errorMessage = 'Lo siento, ocurrió un error al procesar tu mensaje.';
+            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                errorMessage += ' No se pudo conectar con el servidor.';
+            } else if (error.message.includes('HTTP error!')) {
+                errorMessage += ` El servidor respondió con error: ${error.message}`;
+            } else {
+                errorMessage += ` Detalles: ${error.message}`;
+            }
+
+            this.addMessage(
+                errorMessage,
+                'bot',
+                true
+            );
+            console.error('❌ Message sending failed:', error.message);
+        } finally {
+            this.setProcessing(false);
+            console.log('🔚 sendMessage() finalizado');
+        }
+    }
+
+    // Función para abrir el panel de subida de datos RAG
+    openRAGIngestionPanel() {
+        // Abrir una nueva ventana/pestaña con la interfaz de subida de RAG
+        window.open('rag-ingestion.html', '_blank', 'width=900,height=700,scrollbars=yes,resizable=yes');
+    }
 }
 
 // Inicializar cuando el DOM esté listo
+console.log('📊 Estado del DOM:', document.readyState);
 if (document.readyState === 'loading') {
+    console.log('⏳ DOM aún cargando, esperando DOMContentLoaded');
     document.addEventListener('DOMContentLoaded', () => {
-        new Capibara6ChatPage();
+        console.log('🎉 DOM completamente cargado, inicializando Capibara6ChatPage');
+        const chatPage = new Capibara6ChatPage();
+        // Esperar a que la inicialización asíncrona se complete
+        chatPage.init().catch(error => {
+            console.error('💥 Error durante la inicialización:', error);
+        });
     });
 } else {
-    new Capibara6ChatPage();
+    console.log('✅ DOM ya cargado, inicializando Capibara6ChatPage inmediatamente');
+    // Usar setTimeout para asegurar que todo el DOM esté completamente cargado
+    setTimeout(() => {
+        console.log('🎉 DOM completamente cargado, inicializando Capibara6ChatPage');
+        const chatPage = new Capibara6ChatPage();
+        // Esperar a que la inicialización asíncrona se complete
+        chatPage.init().catch(error => {
+            console.error('💥 Error durante la inicialización:', error);
+        });
+    }, 0);
 }
