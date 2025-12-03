@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
   try {
     // URLs de servicios (usar gateway server en VM services - IP externa)
-    const CHAT_URL = process.env.CHAT_URL || 'http://34.175.48.1:8080/api/chat';
+    const CHAT_URL = process.env.CHAT_URL || 'http://34.175.255.139:8080/api/chat';
 
     // Extraer parámetros
     const prompt = req.body.prompt || req.body.message || (req.body.messages && req.body.messages[req.body.messages.length - 1]?.content);

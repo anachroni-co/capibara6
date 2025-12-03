@@ -1,127 +1,103 @@
 /**
- * Vercel Serverless Function - AI Classify
- * Clasifica el tipo de petición del usuario usando IA
- *
- * Usado por el frontend para determinar el mejor modelo o servicio
- *
- * Actualizado: 2025-12-01
+ * Vercel Serverless Function - AI Classification
+ * Endpoint para clasificar prompts de IA usando el sistema de routing semántico
  */
 
 export default async function handler(req, res) {
+  console.log('📡 Entrando en AI Classify handler:', req.method, req.url);
+  
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle preflight
   if (req.method === 'OPTIONS') {
+    console.log('🔄 Manejando preflight OPTIONS para classify');
     return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    console.log('❌ Método no permitido para classify:', req.method);
+    return res.status(405).json({ error: 'Método no permitido para classify' });
   }
 
   try {
-    const { text, message, query } = req.body;
-    const userInput = text || message || query || '';
+    const { prompt, context, model } = req.body;
 
-    if (!userInput) {
-      return res.status(400).json({ error: 'Text, message or query is required' });
+    console.log('📥 Datos recibidos para clasificación:', { 
+      prompt_exists: !!prompt, 
+      prompt_len: prompt ? prompt.length : 0,
+      model: model || 'default',
+      has_context: !!context
+    });
+
+    if (!prompt) {
+      return res.status(400).json({ error: 'Prompt es requerido' });
     }
 
-    // Clasificación simple basada en keywords
-    // En producción esto debería usar un modelo de clasificación
-    const classification = classifyInput(userInput);
-
-    console.log(`📊 Clasificación: ${classification.category} (confidence: ${classification.confidence})`);
-
-    return res.status(200).json({
-      category: classification.category,
-      subcategory: classification.subcategory,
-      confidence: classification.confidence,
-      suggested_model: classification.suggested_model,
-      needs_context: classification.needs_context,
-      needs_rag: classification.needs_rag
+    // Enviar al gateway server para clasificación inteligente
+    const classifyResponse = await fetch('http://34.175.255.139:8080/api/classify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        prompt: prompt,
+        context: context,
+        model: model || 'aya_expanse_multilingual',
+        use_semantic_router: true
+      }),
+      signal: AbortSignal.timeout(30000) // 30 segundos timeout
     });
+
+    console.log('📥 Respuesta del gateway classify:', classifyResponse.status);
+
+    if (classifyResponse.ok) {
+      const data = await classifyResponse.json();
+      console.log('✅ Clasificación exitosa');
+      return res.status(200).json(data);
+    } else {
+      // Si el gateway no devuelve 200, usar respuesta de fallback
+      console.log('🔄 Usando clasificación de fallback');
+      const classificationResult = {
+        query: prompt,
+        classification: {
+          category: 'general',
+          confidence: 0.8,
+          domain: 'general',
+          requires_context_extension: prompt.length < 100,
+          model_preference: 'context_aware',
+          next_step: 'process_query',
+          complexity: prompt.length > 100 ? 'high' : prompt.length > 50 ? 'medium' : 'low'
+        },
+        status: 'classified',
+        model_used: model || 'aya_expanse_multilingual',
+        processing_time: Date.now()
+      };
+
+      return res.status(200).json(classificationResult);
+    }
 
   } catch (error) {
-    console.error('❌ Error en AI Classify:', error);
-
-    // Fallback: clasificación genérica
+    console.error('❌ Error en AI classify:', error.message);
+    
+    // En caso de error, devolver clasificación de fallback con información útil
     return res.status(200).json({
-      category: 'general',
-      subcategory: 'conversation',
-      confidence: 0.5,
-      suggested_model: 'phi4_fast',
-      needs_context: false,
-      needs_rag: false,
-      fallback: true
+      query: req.body?.prompt || 'unknown',
+      classification: {
+        category: 'general',
+        confidence: 0.5,
+        domain: 'unknown',
+        requires_context_extension: true,
+        model_preference: 'default',
+        next_step: 'process_query',
+        complexity: 'medium',
+        error: error.message
+      },
+      status: 'fallback_classification',
+      fallback_mode: true,
+      model_used: 'fallback_system',
+      processing_time: Date.now()
     });
   }
-}
-
-/**
- * Clasificación simple basada en keywords
- */
-function classifyInput(text) {
-  const lowerText = text.toLowerCase();
-
-  // Programación / Código
-  if (/\b(código|code|programar|función|class|def|import|script|python|javascript|java)\b/i.test(text)) {
-    return {
-      category: 'coding',
-      subcategory: 'programming',
-      confidence: 0.9,
-      suggested_model: 'qwen_coder',
-      needs_context: false,
-      needs_rag: false
-    };
-  }
-
-  // Análisis técnico / complejo
-  if (/\b(analizar|análisis|explicar|detallado|complejo|arquitectura|diseño)\b/i.test(text)) {
-    return {
-      category: 'technical',
-      subcategory: 'analysis',
-      confidence: 0.85,
-      suggested_model: 'gemma3_multimodal',
-      needs_context: true,
-      needs_rag: false
-    };
-  }
-
-  // Multilingüe / Traducción
-  if (/\b(traducir|translate|inglés|english|francés|alemán)\b/i.test(text)) {
-    return {
-      category: 'multilingual',
-      subcategory: 'translation',
-      confidence: 0.9,
-      suggested_model: 'aya_expanse_multilingual',
-      needs_context: false,
-      needs_rag: false
-    };
-  }
-
-  // Preguntas sobre Capibara6 / Empresa
-  if (/\b(capibara|anachroni|empresa|producto|quién eres|qué eres)\b/i.test(text)) {
-    return {
-      category: 'company',
-      subcategory: 'information',
-      confidence: 0.95,
-      suggested_model: 'phi4_fast',
-      needs_context: true,
-      needs_rag: false
-    };
-  }
-
-  // Conversación general (por defecto)
-  return {
-    category: 'general',
-    subcategory: 'conversation',
-    confidence: 0.7,
-    suggested_model: 'phi4_fast',
-    needs_context: false,
-    needs_rag: false
-  };
 }

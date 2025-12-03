@@ -13,14 +13,22 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+  console.log('📡 Entrando en MCP status handler:', req.method, req.url);
+
   if (req.method === 'OPTIONS') {
+    console.log('🔄 Manejando preflight OPTIONS para MCP');
     return res.status(200).end();
+  }
+
+  if (req.method !== 'GET') {
+    console.log('❌ Método no permitido para MCP status:', req.method);
+    return res.status(405).json({ error: 'Método no permitido para MCP status' });
   }
 
   try {
     // Intentar puerto 5003 primero (MCP API principal)
-    const MCP_PRIMARY_URL = process.env.MCP_HEALTH_URL || 'http://34.175.48.1:5003/api/mcp/health';
-    const MCP_FALLBACK_URL = process.env.MCP_FALLBACK_URL || 'http://34.175.48.1:5010/health';
+    const MCP_PRIMARY_URL = process.env.MCP_HEALTH_URL || 'http://34.175.255.139:5003/api/mcp/health';
+    const MCP_FALLBACK_URL = process.env.MCP_FALLBACK_URL || 'http://34.175.255.139:5010/health';
 
     console.log(`🔍 MCP Status check puerto 5003: ${MCP_PRIMARY_URL}`);
 
@@ -30,8 +38,10 @@ export default async function handler(req, res) {
         headers: {
           'Accept': 'application/json'
         },
-        signal: AbortSignal.timeout(3000)
+        signal: AbortSignal.timeout(5000) // 5 segundos timeout
       });
+
+      console.log('📥 Respuesta del puerto 5003:', response.status);
 
       if (response.ok) {
         const data = await response.json();
@@ -43,34 +53,46 @@ export default async function handler(req, res) {
           vm: 'services',
           port: 5003
         });
+      } else {
+        console.log('⚠️ Puerto 5003 respondió pero con error:', response.status);
       }
     } catch (primaryError) {
-      console.log('⚠️ Puerto 5003 no responde, intentando puerto 5010...');
+      console.log('⚠️ Puerto 5003 no responde:', primaryError.message);
     }
 
     // Fallback: Intentar puerto 5010
     console.log(`🔍 Intentando MCP puerto 5010: ${MCP_FALLBACK_URL}`);
-    const fallbackResponse = await fetch(MCP_FALLBACK_URL, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      },
-      signal: AbortSignal.timeout(3000)
-    });
-
-    if (fallbackResponse.ok) {
-      const data = await fallbackResponse.json();
-      console.log('✅ MCP disponible en puerto 5010 (fallback)');
-
-      return res.status(200).json({
-        ...data,
-        available: true,
-        vm: 'services',
-        port: 5010,
-        note: 'Using fallback port'
+    try {
+      const fallbackResponse = await fetch(MCP_FALLBACK_URL, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        },
+        signal: AbortSignal.timeout(5000)
       });
+
+      console.log('📥 Respuesta del puerto 5010:', fallbackResponse.status);
+
+      if (fallbackResponse.ok) {
+        const data = await fallbackResponse.json();
+        console.log('✅ MCP disponible en puerto 5010 (fallback)');
+
+        return res.status(200).json({
+          ...data,
+          available: true,
+          vm: 'services',
+          port: 5010,
+          note: 'Using fallback port'
+        });
+      } else {
+        console.log('⚠️ Puerto 5010 respondió pero con error:', fallbackResponse.status);
+      }
+    } catch (fallbackError) {
+      console.log('⚠️ Puerto 5010 tampoco responde:', fallbackError.message);
     }
 
+    // Si ambos fallan
+    console.log('❌ Ambos puertos MCP fallaron');
     throw new Error('Ambos puertos MCP no responden');
 
   } catch (error) {

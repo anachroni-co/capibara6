@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     try {
         // URL base de N8N en la VM services
-        const N8N_BASE_URL = process.env.N8N_URL || 'http://34.175.48.1:5678';
+        const N8N_BASE_URL = process.env.N8N_URL || 'http://34.175.255.139:5678';
         
         // Obtener el path de la solicitud y construir URL completa
         const { path = '' } = req.query;

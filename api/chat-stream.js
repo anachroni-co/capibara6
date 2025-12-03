@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     };
 
     // Conectar al gateway server en VM services (IP externa)
-    const gatewayResponse = await fetch('http://34.175.48.1:8080/api/chat', {
+    const gatewayResponse = await fetch('http://34.175.255.139:8080/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

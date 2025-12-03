@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
     try {
         // URL del Smart MCP en la VM services - IP externa
-        const MCP_URL = process.env.SMART_MCP_URL || 'http://34.175.48.1:5010/analyze';
+        const MCP_URL = process.env.SMART_MCP_URL || 'http://34.175.255.139:5010/analyze';
         
         // Reenviar la petición a la VM
         const response = await fetch(MCP_URL, {

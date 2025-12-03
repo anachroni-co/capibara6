@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     // Obtener URL base sin el /analyze
     const SMART_MCP_BASE_URL = process.env.SMART_MCP_URL
       ? process.env.SMART_MCP_URL.replace('/analyze', '')
-      : 'http://34.175.48.1:5010';
+      : 'http://34.175.255.139:5010';
     
     const MCP_URL = `${SMART_MCP_BASE_URL}/health`;
 
