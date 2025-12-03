@@ -928,7 +928,7 @@ class Capibara6ChatPage {
         const avatarGradient = document.createElement('div');
         avatarGradient.className = 'avatar-gradient';
         avatarGradient.innerHTML = type === 'bot'
-            ? '<i data-lucide="bot" style="width: 24px; height: 24px;"></i>'
+            ? '<i data-lucide="hippo" style="width: 24px; height: 24px;"></i>'
             : '<i data-lucide="user" style="width: 24px; height: 24px;"></i>';
         avatar.appendChild(avatarGradient);
 
@@ -1879,7 +1879,7 @@ class Capibara6ChatPage {
                         <div class="chat-message bot-message">
                             <div class="message-avatar">
                                 <div class="avatar-gradient">
-                                    <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+                                    <i data-lucide="hippo" style="width: 24px; height: 24px;"></i>
                                 </div>
                             </div>
                             <div class="message-content">
