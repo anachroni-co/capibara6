@@ -8,7 +8,7 @@ const RAG_CONFIG = {
     BASE_URL: 'http://10.204.0.10:8000/api/v1',
     
     // Límites
-    MAX_FILE_SIZE: 209715200, // 200MB en bytes
+    MAX_FILE_SIZE: 104857600, // 100MB en bytes (versión beta/demo)
     MAX_BATCH_SIZE: 10,       // Máximo archivos por batch
     TIMEOUT_MS: 300000,       // Timeout de 5 minutos por archivo
     

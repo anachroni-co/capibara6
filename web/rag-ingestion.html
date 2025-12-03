@@ -212,9 +212,9 @@
             }
             
             async uploadFile(file) {
-                // Validar tamaño del archivo (200MB = 209715200 bytes)
-                if (file.size > 209715200) {
-                    this.showError(`Archivo ${file.name} excede el límite de 200MB`);
+                // Validar tamaño del archivo (100MB = 104857600 bytes para versión beta/demo)
+                if (file.size > 104857600) {
+                    this.showError(`Archivo ${file.name} excede el límite de 100MB (versión beta)`);
                     return;
                 }
 

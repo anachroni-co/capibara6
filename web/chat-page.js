@@ -857,23 +857,25 @@ class Capibara6ChatPage {
             // como último recurso para mantener la funcionalidad de la interfaz
             console.log('🔄 Usando respuesta simulada como último recurso');
 
-            // Generar una respuesta simulada con información de contexto actual
+            // Generar una respuesta más útil e informativa
             const simulatedResponses = [
-                `He recibido tu mensaje: "${message}". Estoy trabajando en la implementación de mi sistema de backend y pronto podré procesar tus solicitudes de forma completa.`,
-                `Gracias por tu mensaje: "${message}". Mi sistema de backend está en proceso de integración y mejoraré mi capacidad de respuesta pronto.`,
-                `Entendido: "${message}". Estoy en modo de prueba actualmente, pero sigo aprendiendo y mejorando continuamente.`,
-                `He registrado tu solicitud: "${message}". Gracias por tu paciencia mientras mejoro mis conexiones backend.`
+                `He recibido tu mensaje: "${message}". Estoy actualmente en modo de desarrollo y mi sistema RAG está procesando grandes volúmenes de datos. ¿Te gustaría subir tu propio contenido al sistema RAG para entrenamiento?`,
+                `Gracias por tu mensaje: "${message}". Mi backend está en modo beta y estoy integrando nuevas funcionalidades. Puedes subir contenido a mi sistema RAG si necesitas procesamiento específico.`,
+                `Entendido: "${message}". Estoy en modo de prueba con capacidad limitada. Mi sistema de procesamiento RAG permite subir documentos de hasta 100MB para análisis y aprendizaje.`,
+                `He registrado tu solicitud: "${message}". Estoy trabajando en la optimización de mi sistema RAG para manejar mejor tus consultas. ¿Tienes documentos específicos que te gustaría que procese?`,
+                `Tu mensaje "${message}" ha sido registrado. Mi sistema RAG está diseñado para procesar grandes volúmenes de datos. Puedes subir tus propios documentos para un análisis personalizado.`
             ];
 
             const randomResponse = simulatedResponses[Math.floor(Math.random() * simulatedResponses.length)];
 
             return {
                 content: randomResponse,
-                modelUsed: 'simulated-backend',
+                modelUsed: 'rag-enhanced-simulator',
                 metadata: {
                     tokenCount: randomResponse.split(' ').length,
                     processingTime: Math.random() * 2000 + 500, // Simular tiempo de procesamiento
-                    classification: 'simulated-response',
+                    classification: 'beta-response',
+                    isSimulated: true
                 }
             };
         }
@@ -2720,7 +2722,7 @@ class Capibara6ChatPage {
         }, 2000); // Actualizar cada 2 segundos como especificado
     }
 
-    // Sobrescribir el método sendMessage para integrar el sistema de cola
+    // Sobrescribir el método sendMessage para integrar el sistema de cola y manejo de errores
     async sendMessage() {
         console.log('📤 sendMessage() llamado');
 
@@ -2739,7 +2741,21 @@ class Capibara6ChatPage {
 
         try {
             // Llamar al método original
-            return await this.originalSendMessage();
+            const result = await this.originalSendMessage();
+
+            // Si el resultado es simulado, mostrar un indicador amigable
+            if (result?.metadata?.isSimulated) {
+                // Añadir un mensaje informativo sobre el modo beta
+                setTimeout(() => {
+                    this.addMessage(
+                        'ℹ️ Este es un mensaje simulado en modo beta. Mi backend completo estará disponible próximamente. Puedes usar la función de subida de datos RAG para procesar documentos.',
+                        'system',
+                        false
+                    );
+                }, 2000);
+            }
+
+            return result;
         } finally {
             // Marcar que terminamos de enviar
             this.isSendingMessage = false;
@@ -2747,7 +2763,7 @@ class Capibara6ChatPage {
     }
 
     // Guardar la función original de envío de mensajes
-    originalSendMessage() {
+    async originalSendMessage() {
         const message = this.chatInput?.value?.trim();
         console.log('📝 Mensaje:', message, 'isProcessing:', this.isProcessing);
 
@@ -2781,52 +2797,51 @@ class Capibara6ChatPage {
         const typingIndicator = this.showTypingIndicator();
         console.log('👀 Indicador de escritura mostrado');
 
-        return this.sendToBackend(message)
-            .then(response => {
-                // Remover indicador de escritura
-                this.removeTypingIndicator(typingIndicator);
+        try {
+            const response = await this.sendToBackend(message);
 
-                // Agregar respuesta del bot
-                if (response && response.content) {
-                    console.log('🤖 Agregando respuesta del bot:', response.content);
-                    this.addMessage(response.content, 'bot');
-                    // Mostrar controles TTS cuando hay respuesta del bot
-                    if (this.showTTSControls) {
-                        this.showTTSControls();
-                    }
-                } else {
-                    console.error('❌ Respuesta inválida del servidor');
-                    throw new Error('Respuesta inválida del servidor');
+            // Remover indicador de escritura
+            this.removeTypingIndicator(typingIndicator);
+
+            // Agregar respuesta del bot
+            if (response && response.content) {
+                console.log('🤖 Agregando respuesta del bot:', response.content);
+                this.addMessage(response.content, 'bot');
+                // Mostrar controles TTS cuando hay respuesta del bot
+                if (this.showTTSControls) {
+                    this.showTTSControls();
                 }
+            } else {
+                console.error('❌ Respuesta inválida del servidor');
+                throw new Error('Respuesta inválida del servidor');
+            }
 
-                // Actualizar lista de chats
-                this.updateChatInList();
-            })
-            .catch(error => {
-                console.error('💥 Error en sendMessage:', error);
-                this.removeTypingIndicator(typingIndicator);
+            // Actualizar lista de chats
+            this.updateChatInList();
+        } catch (error) {
+            console.error('💥 Error en sendMessage:', error);
+            this.removeTypingIndicator(typingIndicator);
 
-                // Mensaje de error más descriptivo
-                let errorMessage = 'Lo siento, ocurrió un error al procesar tu mensaje.';
-                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                    errorMessage += ' No se pudo conectar con el servidor.';
-                } else if (error.message.includes('HTTP error!')) {
-                    errorMessage += ` El servidor respondió con error: ${error.message}`;
-                } else {
-                    errorMessage += ` Detalles: ${error.message}`;
-                }
+            // Mensaje de error más descriptivo
+            let errorMessage = 'Lo siento, ocurrió un error al procesar tu mensaje.';
+            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                errorMessage += ' No se pudo conectar con el servidor.';
+            } else if (error.message.includes('HTTP error!')) {
+                errorMessage += ` El servidor respondió con error: ${error.message}`;
+            } else {
+                errorMessage += ` Detalles: ${error.message}`;
+            }
 
-                this.addMessage(
-                    errorMessage,
-                    'bot',
-                    true
-                );
-                console.error('❌ Message sending failed:', error.message);
-            })
-            .finally(() => {
-                this.setProcessing(false);
-                console.log('🔚 sendMessage() finalizado');
-            });
+            this.addMessage(
+                errorMessage,
+                'bot',
+                true
+            );
+            console.error('❌ Message sending failed:', error.message);
+        } finally {
+            this.setProcessing(false);
+            console.log('🔚 sendMessage() finalizado');
+        }
     }
 
     // Función para abrir el panel de subida de datos RAG
