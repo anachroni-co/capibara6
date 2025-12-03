@@ -762,6 +762,80 @@ async def create_acontext_space(name: str):
         raise HTTPException(status_code=500, detail=f"Failed to create Acontext space: {str(e)}")
 
 # ============================================
+# MCP PROXY ENDPOINTS
+# ============================================
+
+# URL del servicio MCP
+MCP_BASE_URL = os.getenv("MCP_BASE_URL", "http://10.204.0.5:5003")
+
+@app.api_route("/api/mcp/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
+async def mcp_proxy(request: Request, path: str):
+    """Proxy para todos los endpoints de MCP (Model Context Protocol)"""
+    # Construir la URL completa de MCP
+    mcp_base_url = os.getenv("MCP_BASE_URL", "http://10.204.0.5:5003")
+
+    # Obtener el cuerpo de la solicitud
+    body = await request.body() if request.method in ["POST", "PUT", "PATCH"] else None
+
+    # Hacer la solicitud al servidor de MCP
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        try:
+            # Construir la URL completa
+            url = f"{mcp_base_url}/api/mcp/{path}"
+
+            # Incluir los parámetros de consulta si existen
+            params = dict(request.query_params)
+
+            # Hacer la solicitud al servidor MCP
+            response = await client.request(
+                method=request.method,
+                url=url,
+                params=params,
+                content=body,
+                headers={key: value for key, value in request.headers.items()
+                        if key.lower() not in ['host', 'content-length']},
+                timeout=30.0
+            )
+
+            # Devolver la respuesta
+            return JSONResponse(
+                status_code=response.status_code,
+                content=response.json() if response.content else None,
+                headers=dict(response.headers)
+            )
+        except httpx.RequestError as e:
+            logger.error(f"Error en proxy MCP: {e}")
+            # MCP es opcional, devolver respuesta simulada si no está disponible
+            logger.info("🔄 MCP service unavailable, returning simulated response")
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "status": "simulated",
+                    "service": "mcp",
+                    "path": path,
+                    "timestamp": datetime.now().isoformat(),
+                    "fallback_mode": True
+                },
+                headers={"x-mcp-mode": "simulated"}
+            )
+        except Exception as e:
+            logger.error(f"Error inesperado en proxy MCP: {e}")
+            # MCP es opcional, devolver respuesta simulada si no está disponible
+            logger.info("🔄 MCP service unavailable, returning simulated response")
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "status": "simulated",
+                    "service": "mcp",
+                    "path": path,
+                    "timestamp": datetime.now().isoformat(),
+                    "fallback_mode": True,
+                    "error": str(e)
+                },
+                headers={"x-mcp-mode": "simulated"}
+            )
+
+# ============================================
 # ACONTEXT PROXY ENDPOINTS
 # ============================================
 
