@@ -115,7 +115,7 @@ class SemanticRouter:
         """Selecciona el modelo óptimo para la query"""
         if not self.enabled or not self.router:
             return {
-                'model_id': 'phi4_fast',  # Default
+                'model_id': 'aya_expanse_multilingual',  # Default - working model
                 'route_name': 'default',
                 'confidence': 0.5,
                 'reasoning': 'Semantic router no disponible',
@@ -127,7 +127,7 @@ class SemanticRouter:
         except Exception as e:
             logger.error(f"❌ Error en semantic router: {e}")
             return {
-                'model_id': 'phi4_fast',
+                'model_id': 'aya_expanse_multilingual',
                 'route_name': 'error',
                 'confidence': 0.0,
                 'reasoning': f'Error: {str(e)}',
@@ -427,7 +427,7 @@ async def chat(request: ChatRequest):
         selected_model = routing_info['model_id']
     else:
         routing_info = None
-        selected_model = request.model or 'phi4_fast'
+        selected_model = request.model or 'aya_expanse_multilingual'
 
     logger.info(f"🎯 Modelo seleccionado: {selected_model}")
 
