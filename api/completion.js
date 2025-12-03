@@ -21,8 +21,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        // URL del gateway server en VM services
-        const CHAT_URL = 'http://10.204.0.9:8080/api/chat';
+        // URL del gateway server en VM services - IP externa
+        const CHAT_URL = 'http://34.175.48.1:8080/api/chat';
         
         // Preparar el payload para el gateway server
         const payload = {

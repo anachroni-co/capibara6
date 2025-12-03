@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const TTS_URL = process.env.KYUTAI_TTS_URL || 'http://10.204.0.9:5001/tts';
+    const TTS_URL = process.env.KYUTAI_TTS_URL || 'http://34.175.48.1:5001/tts';
     const BASE_URL = TTS_URL.replace('/tts', '');
     const CLONE_URL = `${BASE_URL}/clone`;
 

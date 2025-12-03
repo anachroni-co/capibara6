@@ -5,8 +5,9 @@
 
 class N8NManager {
     constructor(config = {}) {
-        this.baseURL = config.baseURL || 'http://localhost:5000';
-        this.n8nURL = config.n8nURL || 'http://localhost:5678';
+        // Usar URLs de la VM services para producción
+        this.baseURL = config.baseURL || 'http://10.204.0.9:5000';  // Puede ser el gateway o un proxy
+        this.n8nURL = config.n8nURL || 'http://10.204.0.9:5678';    // Puerto de n8n en VM services
         this.cache = {
             templates: null,
             recommended: null,
@@ -35,7 +36,10 @@ class N8NManager {
 
             throw new Error(data.error || 'Error obteniendo catálogo');
         } catch (error) {
-            console.error('Error getCatalog:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N getCatalog fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -60,7 +64,10 @@ class N8NManager {
 
             throw new Error(data.error || 'Error obteniendo recomendadas');
         } catch (error) {
-            console.error('Error getRecommended:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N getRecommended fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -81,7 +88,10 @@ class N8NManager {
 
             throw new Error(data.error || 'Error en búsqueda');
         } catch (error) {
-            console.error('Error searchTemplates:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N searchTemplates fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -100,7 +110,10 @@ class N8NManager {
 
             throw new Error(data.error || 'Plantilla no encontrada');
         } catch (error) {
-            console.error('Error getTemplateDetails:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N getTemplateDetails fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -119,7 +132,10 @@ class N8NManager {
 
             throw new Error(data.error || 'Error descargando plantilla');
         } catch (error) {
-            console.error('Error downloadTemplate:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N downloadTemplate fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -149,7 +165,10 @@ class N8NManager {
 
             throw new Error(data.error || 'Error importando plantilla');
         } catch (error) {
-            console.error('Error importTemplate:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N importTemplate fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -172,7 +191,10 @@ class N8NManager {
             }
             return result;
         } catch (error) {
-            console.error('Error openTemplateInN8N:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N openTemplateInN8N fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -182,13 +204,27 @@ class N8NManager {
      */
     async checkN8NStatus() {
         try {
+            // Usar fetch con timeout para evitar bloqueos
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 segundos timeout
+
             const response = await fetch(`${this.n8nURL}/healthz`, {
                 method: 'GET',
-                mode: 'no-cors' // Para evitar CORS en health check
+                signal: controller.signal
             });
-            return { available: true, url: this.n8nURL };
+
+            clearTimeout(timeoutId);
+            const data = await response.json();
+
+            return {
+                available: response.ok,
+                url: this.n8nURL,
+                status: response.status,
+                data: data
+            };
         } catch (error) {
-            return { available: false, error: error.message };
+            // No mostrar error si n8n no está disponible (es opcional)
+            return { available: false, error: error.message, url: this.n8nURL };
         }
     }
 
@@ -211,7 +247,10 @@ class N8NManager {
             URL.revokeObjectURL(url);
             return true;
         } catch (error) {
-            console.error('Error exportTemplateAsFile:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N exportTemplateAsFile fallido - opcional:', error.message);
+            }
             throw error;
         }
     }
@@ -228,7 +267,10 @@ class N8NManager {
                 recommended_templates: 0
             };
         } catch (error) {
-            console.error('Error getStatistics:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N getStatistics fallido - opcional:', error.message);
+            }
             return null;
         }
     }
@@ -242,7 +284,10 @@ class N8NManager {
             const category = catalog.categories?.find(cat => cat.id === categoryId);
             return category?.templates || [];
         } catch (error) {
-            console.error('Error getTemplatesByCategory:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N getTemplatesByCategory fallido - opcional:', error.message);
+            }
             return [];
         }
     }
@@ -257,7 +302,10 @@ class N8NManager {
                 t => t.capibara6_integration?.priority === priority
             );
         } catch (error) {
-            console.error('Error getTemplatesByPriority:', error);
+            // Solo logear si estamos en modo desarrollo
+            if (window.location.hostname === 'localhost' || window.DEBUG_MODE) {
+                console.debug('N8N getTemplatesByPriority fallido - opcional:', error.message);
+            }
             return [];
         }
     }
@@ -286,8 +334,8 @@ class N8NManager {
 
 // Instancia global
 const n8nManager = new N8NManager({
-    baseURL: window.API_BASE_URL || 'http://localhost:5000',
-    n8nURL: window.N8N_URL || 'http://localhost:5678'
+    baseURL: window.API_BASE_URL || 'http://10.204.0.9:5000',  // URL interna en VM services
+    n8nURL: window.N8N_URL || 'http://10.204.0.9:5678'        // Puerto de n8n en VM services
 });
 
 // Exportar para uso en otros módulos

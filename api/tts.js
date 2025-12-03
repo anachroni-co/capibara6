@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     const truncatedText = text.length > 3000 ? text.substring(0, 3000) : text;
 
     // URL del servidor Kyutai TTS en VM services (variable de entorno)
-    const TTS_URL = process.env.KYUTAI_TTS_URL || 'http://10.204.0.9:5001/tts';
+    const TTS_URL = process.env.KYUTAI_TTS_URL || 'http://34.175.48.1:5001/tts';
 
     console.log(`📝 Proxy TTS: ${truncatedText.length} chars -> ${TTS_URL}`);
 

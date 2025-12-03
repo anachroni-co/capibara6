@@ -1511,9 +1511,10 @@ class Capibara6ChatPage {
                 const n8nDashboardBtn = document.getElementById('n8n-dashboard-btn');
 
                 if (n8nWidget) {
+                    // Usar la URL de n8n desde CHATBOT_CONFIG o valor por defecto para producción
                     const n8nUrl = typeof CHATBOT_CONFIG !== 'undefined' && CHATBOT_CONFIG.SERVICE_URLS?.N8N
                         ? CHATBOT_CONFIG.SERVICE_URLS.N8N
-                        : 'http://localhost:5000';
+                        : 'http://10.204.0.9:5678';  // URL interna de n8n en la VM services
 
                     this.n8nManager = new N8NManager({
                         baseURL: this.backendUrl,

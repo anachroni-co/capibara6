@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         }
 
         // URL base del gateway en la VM services
-        const GATEWAY_BASE_URL = process.env.GATEWAY_URL || 'http://10.204.0.9:8080';
+        const GATEWAY_BASE_URL = process.env.GATEWAY_URL || 'http://34.175.48.1:8080';
         const GATEWAY_CHAT_URL = `${GATEWAY_BASE_URL}/api/chat`;
         
         console.log(`📡 Conectando al gateway: ${GATEWAY_CHAT_URL}`);

@@ -19,8 +19,8 @@ export default async function handler(req, res) {
 
   try {
     // Intentar puerto 5003 primero (MCP API principal)
-    const MCP_PRIMARY_URL = process.env.MCP_HEALTH_URL || 'http://10.204.0.9:5003/api/mcp/health';
-    const MCP_FALLBACK_URL = process.env.MCP_FALLBACK_URL || 'http://10.204.0.9:5010/health';
+    const MCP_PRIMARY_URL = process.env.MCP_HEALTH_URL || 'http://34.175.48.1:5003/api/mcp/health';
+    const MCP_FALLBACK_URL = process.env.MCP_FALLBACK_URL || 'http://34.175.48.1:5010/health';
 
     console.log(`🔍 MCP Status check puerto 5003: ${MCP_PRIMARY_URL}`);
 

@@ -42,8 +42,8 @@ export default async function handler(req, res) {
       });
     }
 
-    // URLs de servicios (usando gateway server en VM services)
-    const CHAT_URL = process.env.CHAT_URL || 'http://10.204.0.9:8080/api/chat';
+    // URLs de servicios (usando gateway server en VM services - IP externa)
+    const CHAT_URL = process.env.CHAT_URL || 'http://34.175.48.1:8080/api/chat';
 
     console.log(`📨 Mensaje recibido: ${userMessage.substring(0, 50)}...`);
     console.log(`🎯 Modelo solicitado: ${model || 'auto'}`);

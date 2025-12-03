@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     try {
         // URL base de MCP en la VM services
-        const MCP_BASE_URL = process.env.MCP_URL || 'http://10.204.0.9:5003';
+        const MCP_BASE_URL = process.env.MCP_URL || 'http://34.175.48.1:5003';
         
         // Obtener el path de la solicitud y construir URL completa
         const { path = '' } = req.query;
