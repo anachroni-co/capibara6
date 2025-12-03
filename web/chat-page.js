@@ -717,7 +717,7 @@ class Capibara6ChatPage {
         // Adaptar el formato de la solicitud al esperado por el gateway server
         const chatPayload = {
             message: message,
-            model: 'phi4_fast', // Especificar modelo para evitar problemas
+            model: 'aya_expanse_multilingual', // Modelo que sabemos que funciona
             temperature: 0.7,
             max_tokens: 200,
             use_semantic_router: false, // Desactivar temporalmente para estabilidad
