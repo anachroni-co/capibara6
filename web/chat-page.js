@@ -440,6 +440,15 @@ class Capibara6ChatPage {
                 });
             }
 
+            // Evento para subida de datos RAG
+            const ragUploadBtn = document.getElementById('rag-upload-btn');
+            if (ragUploadBtn) {
+                ragUploadBtn.addEventListener('click', () => {
+                    // Abrir ventana de subida de datos RAG
+                    this.openRAGIngestionPanel();
+                });
+            }
+
             // Eventos para TTS sidebar
             const ttsControlsToggle = document.getElementById('tts-controls-toggle');
             if (ttsControlsToggle) {
@@ -2818,6 +2827,12 @@ class Capibara6ChatPage {
                 this.setProcessing(false);
                 console.log('🔚 sendMessage() finalizado');
             });
+    }
+
+    // Función para abrir el panel de subida de datos RAG
+    openRAGIngestionPanel() {
+        // Abrir una nueva ventana/pestaña con la interfaz de subida de RAG
+        window.open('rag-ingestion.html', '_blank', 'width=900,height=700,scrollbars=yes,resizable=yes');
     }
 }
 
