@@ -36,6 +36,9 @@ export default async function handler(req, res) {
     }
 
     // Enviar al gateway server para clasificación inteligente
+    // Usar modelo más rápido para evitar timeouts
+    const targetModel = (model && model !== 'aya_expanse_multilingual') ? model : 'phi4_fast';
+
     const classifyResponse = await fetch('http://34.175.255.139:8080/api/classify', {
       method: 'POST',
       headers: {
@@ -44,10 +47,10 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         prompt: prompt,
         context: context,
-        model: model || 'aya_expanse_multilingual',
+        model: targetModel,  // Usar modelo más rápido
         use_semantic_router: true
       }),
-      signal: AbortSignal.timeout(30000) // 30 segundos timeout
+      signal: AbortSignal.timeout(60000) // Aumentar timeout a 60 segundos para respuestas completas
     });
 
     console.log('📥 Respuesta del gateway classify:', classifyResponse.status);
