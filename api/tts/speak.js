@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     
     try {
         // Reenviar la petición a la VM
-        const response = await fetch('http://34.175.215.109:5002/tts', {
+        const response = await fetch('http://10.204.0.9:5002/tts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

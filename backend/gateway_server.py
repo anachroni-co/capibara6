@@ -492,7 +492,7 @@ async def chat(request: ChatRequest):
     try:
         # Llamar a vLLM con circuit breaker
         async def call_vllm():
-            async with httpx.AsyncClient(timeout=120.0) as client:
+            async with httpx.AsyncClient(timeout=30.0) as client:  # Reducir timeout para evitar cuelgues
                 response = await client.post(
                     f"{VLLM_URL}/v1/chat/completions",
                     json=vllm_request
