@@ -39,42 +39,24 @@ export default async function handler(req, res) {
             timeout: 30000 // 30 segundos de timeout
         });
 
-        if (!response.ok) {
-            // Si la respuesta no es exitosa, devolver una respuesta simulada
-            const simulatedResponse = {
-                choices: [{
-                    message: {
-                        role: "assistant",
-                        content: `Simulación de respuesta para: '${message || 'mensaje predeterminado'}'. [Sistema RAG activo solo para consultas de programación. Consultas generales no usan RAG para mayor velocidad.]`
-                    }
-                }],
-                model: model || 'aya_expanse_multilingual',
-                status: "simulated_response_due_to_error",
-                info: "Sistema de Programming-Only RAG ya está completamente implementado. Solo activa RAG para consultas de programación. Consultas generales no usan RAG (más rápidas)."
-            };
+        const data = await response.json();
 
-            return res.status(200).json(simulatedResponse);
+        // Verificar si el backend ya devolvió una respuesta simulada
+        if (data.status && (data.status.includes('simulated') || data.status.includes('fallback'))) {
+            // El backend ya manejó el fallback, devolver la respuesta tal cual
+            return res.status(200).json(data);
         }
 
-        const data = await response.json();
         return res.status(response.status).json(data);
 
     } catch (error) {
-        console.error('Error en proxy a VM models-europe:', error);
+        console.error('Error en proxy a VM services gateway:', error);
 
-        // Devolver respuesta simulada en caso de error
-        const simulatedResponse = {
-            choices: [{
-                message: {
-                    role: "assistant",
-                    content: `Simulación de respuesta para: '${req.body.message || 'mensaje predeterminado'}'. [Sistema RAG activo solo para consultas de programación. Consultas generales no usan RAG para mayor velocidad.]`
-                }
-            }],
-            model: req.body.model || 'aya_expanse_multilingual',
-            status: "simulated_response_due_to_connection_error",
-            info: "Sistema de Programming-Only RAG ya está completamente implementado. Solo activa RAG para consultas de programación. Consultas generales no usan RAG (más rápidas)."
-        };
-
-        return res.status(200).json(simulatedResponse);
+        // En lugar de devolver respuesta simulada, dejar que sea el gateway server quien la maneje
+        // Si llegamos aquí es porque no pudimos conectar al gateway server en absoluto
+        return res.status(503).json({
+            error: 'Service unavailable',
+            message: 'No se puede conectar al gateway server'
+        });
     }
 }
