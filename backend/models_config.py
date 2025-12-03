@@ -19,7 +19,7 @@ MODELS_CONFIG = {
     'gptoss_complex': {
         'name': 'GPT-OSS-20B (ARM-Axion)',
         'base_model': 'GPT-OSS-20B',
-        'server_url': 'http://localhost:8080/v1',
+        'server_url': 'http://localhost:8082/v1',
         'type': 'vllm',
         'hardware': 'ARM-Axion',
         'status': 'active',
@@ -41,7 +41,7 @@ MODELS_CONFIG = {
     'phi4_fast': {
         'name': 'Phi-4 Mini (ARM-Axion)',
         'base_model': 'Microsoft Phi-4 Mini (14B)',
-        'server_url': 'http://localhost:8080/v1',
+        'server_url': 'http://localhost:8082/v1',
         'type': 'vllm',
         'hardware': 'ARM-Axion',
         'status': 'active',
@@ -63,7 +63,7 @@ MODELS_CONFIG = {
     'qwen_coder': {
         'name': 'Qwen2.5-Coder 1.5B (ARM-Axion)',
         'base_model': 'Qwen/Qwen2.5-Coder-1.5B-Instruct',
-        'server_url': 'http://localhost:8080/v1',
+        'server_url': 'http://localhost:8082/v1',
         'type': 'vllm',
         'hardware': 'ARM-Axion',
         'status': 'active',
@@ -85,7 +85,7 @@ MODELS_CONFIG = {
     'mistral_balanced': {
         'name': 'Mistral 7B (ARM-Axion)',
         'base_model': 'Mistral-7B-Instruct-v0.2',
-        'server_url': 'http://localhost:8080/v1',
+        'server_url': 'http://localhost:8082/v1',
         'type': 'vllm',
         'hardware': 'ARM-Axion',
         'status': 'active',
@@ -107,7 +107,7 @@ MODELS_CONFIG = {
     'gemma3_multimodal': {
         'name': 'Gemma3-27B (ARM-Axion)',
         'base_model': 'Gemma-3-27B-it-awq',
-        'server_url': 'http://localhost:8080/v1',
+        'server_url': 'http://localhost:8082/v1',
         'type': 'vllm',
         'hardware': 'ARM-Axion',
         'status': 'active',

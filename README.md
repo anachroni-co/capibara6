@@ -1,158 +1,325 @@
-# Capibara6 - Sistema de IA con vLLM
+# Capibara6 - Sistema Multimodelo ARM-Axion con vLLM
 
 ## Descripción General
 
-Capibara6 es una plataforma de Inteligencia Artificial conversacional que utiliza múltiples modelos de lenguaje para proporcionar respuestas inteligentes a través de un sistema de enrutamiento semántico y consenso. El sistema ha sido migrado de Ollama a vLLM con endpoints compatibles con OpenAI.
+Capibara6 es una plataforma de IA conversacional de código abierto que utiliza 5 modelos de lenguaje especializados con router semántico inteligente, optimizada para arquitectura ARM-Axion de Google Cloud. El sistema utiliza vLLM con optimizaciones NEON para máximo rendimiento en CPU.
 
-## Arquitectura del Sistema
+## ⚠️ Importante para Agentes - Arquitectura Distribuida
 
-### Componentes Principales
+**VM models-europe (esta VM)** - Solo servicios de IA:
+- ✅ `multi_model_server.py` en puerto 8082 (servidor de modelos con router semántico)
+- ✅ 5 modelos de IA con optimizaciones ARM-Axion
+- ❌ NO iniciar: MCP, TTS, servidores backend (corren en la VM `services`)
 
-1. **Backend Principal (vm-bounty2)**
-   - Sistema de múltiples modelos con enrutamiento inteligente
-   - Sistema de consenso con votación ponderada
-   - Integración con RAG y E2B
-   
-2. **Sistema RAG (vm-rag3)**
-   - Milvus (vector database)
-   - Nebula Graph (knowledge graph)
-   - PostgreSQL (metadata relacional)
-   
-3. **Servicios Especializados (vm-services)**
-   - MCP (Smart Model Controller Protocol)
-   - Kyutai TTS (síntesis de voz)
-   - Coqui XTTS v2 (mejora de calidad de voz)
+**VM services** - Servicios de backend y coordinación:
+- ✅ `capibara6_integrated_server.py` (backend principal)
+- ✅ `mcp_server.py` (Model Context Protocol en puerto 5003)
+- ✅ `kyutai_tts_server.py` (Text-to-Speech en puerto 5002)
+- ✅ `smart_mcp_server.py` (alternativa en puerto 5010)
+- ❌ NO iniciar: Servidor de modelos vLLM (corre en models-europe)
 
-### Modelos Activos
+## Estado Actual del Sistema
 
-1. **phi4:mini** - Modelo rápido para tareas simples (14B params)
-2. **qwen2.5-coder:1.5b** - Experto en programación y tareas técnicas
-3. **gpt-oss-20b** - Modelo complejo para análisis profundos
-4. **mixtral** - Modelo general para tareas creativas
+**Actualizado**: 2025-12-02
 
-## Migración a vLLM
+- **VM**: models-europe (ARM Axion C4A-standard-32)
+- **vCPUs**: 32 cores ARM Axion
+- **RAM**: 125 GB
+- **Ubicación**: europe-southwest1-b
+- **Servidor activo**: Puerto 8082
+- **Modelos cargados**: 5 modelos especializados
 
-### Cambios Importantes
+## Modelos Disponibles
 
-- **Ollama API** → **vLLM OpenAI-Compatible API**
-  - Endpoints: `/api/generate` → `/v1/chat/completions`
-  - Formato: `prompt`-based → `messages`-based (`{"role": "user", "content": "texto"}`)
-  - Autenticación: Opcional con "Bearer EMPTY"
+El sistema está configurado con **5 modelos de IA especializados**:
 
-- **Actualización de Modelos**
-  - `phi3:mini` → `phi4:mini` (de 3.8B a 14B parámetros)
-  - `mistral` → `qwen2.5-coder:1.5b` (modelo experto en código)
+1. **phi4_fast** (general) - Modelo rápido para consultas simples
+   - Path: `/home/elect/models/phi-4-mini`
+   - Dominio: General
+   - Prioridad: 5 (alta)
 
-### Configuración de Endpoints
+2. **mistral_balanced** (technical) - Modelo equilibrado para tareas técnicas
+   - Path: `/home/elect/models/mistral-7b-instruct-v0.2`
+   - Dominio: Technical
+   - Prioridad: 4
 
-- **vLLM Endpoint Principal**: `http://34.12.166.76:8000/v1`
-- **phi4 Endpoint**: `http://34.12.166.76:8001/v1`
-- **qwen2.5-coder Endpoint**: `http://34.12.166.76:8002/v1`
-- **RAG3 Endpoint**: `http://10.154.0.2:8000/` (interno)
+3. **qwen_coder** (coding) - Especializado en programación
+   - Path: `/home/elect/models/qwen2.5-coder-1.5b`
+   - Dominio: Coding
+   - Prioridad: 3
 
-## Sistema de Consenso
+4. **gemma3_multimodal** (multimodal_expert) - Análisis complejo y multimodal
+   - Path: `/home/elect/models/gemma-3-27b-it`
+   - Dominio: Multimodal Expert
+   - Prioridad: 2
+   - Características: 27B params, soporte para imágenes, contexto largo (24K tokens)
 
-### Configuración
+5. **aya_expanse_multilingual** (multilingual_expert) - Experto multilingüe
+   - Path: `/home/elect/models/aya-expanse-8b`
+   - Dominio: Multilingual Expert
+   - Prioridad: 2
+   - Características: 8B params, 23 idiomas, razonamiento complejo
 
-- **Método**: Votación ponderada ('weighted')
-- **Pesos**: phi4 (0.7), qwen2.5-coder (0.8), gpt-oss-20b (0.9), mixtral (0.6)
-- **Min/Max modelos**: 2/3 para consenso
-- **Fallback**: phi4 como modelo de respaldo
+## Iniciar el Sistema
 
-## Integración RAG-E2B-TOON
+### Inicio Rápido
 
-### Sistema RAG
-- **MiniRAG**: Búsqueda rápida y ligera
-- **FullRAG**: Búsqueda profunda con expansión de queries
-- **Vector Store**: Basado en Milvus (VM RAG3)
-
-### Sistema E2B
-- **Integración automática**: Detecta cuándo se necesita ejecución de código
-- **Ejecución segura**: En entornos sandbox para código propuesto
-
-### Sistema TOON
-- **Optimización de tokens**: Reducción de 30-60% en contexto RAG
-- **Formateo eficiente**: Mejora la comprensión por LLMs
-
-## Comandos Esenciales
-
-### Iniciar vLLM
 ```bash
-# phi4-mini
-vllm serve microsoft/Phi-4-mini --host 0.0.0.0 --port 8001 --api-key EMPTY
-
-# qwen2.5-coder-1.5b  
-vllm serve Qwen/Qwen2.5-Coder-1.5B-Instruct --host 0.0.0.0 --port 8002 --api-key EMPTY
-
-# gpt-oss-20b
-vllm serve /home/elect/models/gpt-oss-20b --host 0.0.0.0 --port 8000 --api-key EMPTY
+cd /home/elect/capibara6/arm-axion-optimizations/vllm_integration
+python3 multi_model_server.py --host 0.0.0.0 --port 8082 --config config.json
 ```
 
-### Verificar Sistema
-```bash
-# Verificar conexión con vLLM
-curl http://34.12.166.76:8000/v1/models
+### Verificar Estado
 
-# Test simple
-curl -X POST "http://34.12.166.76:8000/v1/chat/completions" \
+```bash
+# Verificar salud del servidor
+curl http://localhost:8082/health
+
+# Listar modelos disponibles
+curl http://localhost:8082/v1/models
+
+# Ver estadísticas
+curl http://localhost:8082/stats
+```
+
+## Endpoints API
+
+El servidor expone una API compatible con OpenAI:
+
+### Chat Completions
+
+```bash
+curl -X POST http://localhost:8082/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer EMPTY" \
   -d '{
-    "model": "phi4:mini",
-    "messages": [{"role": "user", "content": "Hola"}],
-    "max_tokens": 50
+    "model": "aya_expanse_multilingual",
+    "messages": [{"role": "user", "content": "Hola, ¿cómo estás?"}],
+    "temperature": 0.7,
+    "max_tokens": 100
   }'
 ```
 
-## Carpetas y Archivos Clave
+### Routing Automático
 
-### Directorios Principales
-- `/home/elect/capibara6/` - Directorio principal
-- `/home/elect/capibara6/vm-bounty2/` - Backend con modelos
-- `/home/elect/capibara6/vm-rag3/` - Sistema RAG
-- `/home/elect/models/` - Modelos físicos instalados
+Si no especificas un modelo, el router semántico selecciona automáticamente el más apropiado:
 
-### Archivos de Configuración 
-- `model_config.json` - Configuración principal de modelos
-- `server.js` - API principal Node.js  
-- `vm-bounty2/servers/consensus_server.py` - Servidor de consenso
-- `backend/ollama_rag_integration.py` - Integración RAG (renombrado a vLLM)
+```bash
+curl -X POST http://localhost:8082/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [{"role": "user", "content": "Escribe una función en Python para ordenar una lista"}],
+    "temperature": 0.7,
+    "max_tokens": 200
+  }'
+```
 
-## Seguridad y Monitoreo
+## Router Semántico
 
-### Firewall
-- Puertos 8000-8003 abiertos para vLLM
-- IP interna RAG3 (10.154.0.2) autorizada para comunicaciones internas
-- IP externa 34.12.166.76 para endpoints de servicios
+El sistema incluye un router semántico inteligente que:
+- Analiza la consulta del usuario
+- Determina el dominio (general, técnico, código, multimodal, multilingüe)
+- Selecciona el modelo más apropiado automáticamente
+- Usa optimizaciones NEON para análisis rápido
 
-### Monitoreo
-- **Grafana**: http://10.154.0.2:3000 (métricas del sistema)
-- **Prometheus**: http://10.154.0.2:9090 (recolección de métricas)
+## Arquitectura
 
-## Estado Actual del Sistema ARM Axion
+### Componentes Clave
 
-- ✅ Migración Ollama → vLLM completada
-- ✅ Modelos phi3 → phi4 y mistral → qwen2.5-coder actualizados
-- ✅ Sistema de consenso con votación ponderada operativo
-- ✅ Integración RAG con E2B y TOON completamente funcional
-- ✅ Backend principal con enrutamiento semántico operativo
-- ✅ Frontend con chat responsive y plantillas integrado
-- ✅ Servicios MCP, TTS y otros completamente operativos
+```
+┌─────────────────────────────────────────────────┐
+│     Servidor Multi-Modelo (Puerto 8082)         │
+│  ┌────────────────────────────────────────────┐ │
+│  │        Router Semántico (NEON)             │ │
+│  └────────────────────────────────────────────┘ │
+│                      │                          │
+│      ┌───────────────┼───────────────┐          │
+│      │               │               │          │
+│  ┌───▼───┐     ┌────▼────┐    ┌────▼────┐     │
+│  │ phi4  │     │mistral  │    │  qwen   │     │
+│  │ fast  │     │balanced │    │  coder  │     │
+│  └───────┘     └─────────┘    └─────────┘     │
+│                                                 │
+│  ┌─────────────┐     ┌─────────────────┐      │
+│  │   gemma3    │     │   aya_expanse   │      │
+│  │ multimodal  │     │  multilingual   │      │
+│  └─────────────┘     └─────────────────┘      │
+│                                                 │
+│  Lazy Loading: Modelos se cargan bajo demanda  │
+└─────────────────────────────────────────────────┘
+```
 
-## 🚀 Integración ARM Axion Reciente
+### Lazy Loading
 
-**Nueva configuración de 4 modelos incluyendo Gemma3:**
+Los modelos usan **lazy loading**:
+- No se cargan todos al inicio (ahorro de memoria)
+- Se cargan automáticamente cuando se solicitan por primera vez
+- Primera carga: ~20-60 segundos (según tamaño del modelo)
+- Cargas posteriores: Instantáneas (si el modelo sigue en memoria)
+- Descarga automática: Si no se usa por 5 minutos (configurable)
 
-- ✅ **phi4_fast**: Modelo rápido para tareas simples (AWQ)
-- ✅ **mistral_balanced**: Modelo equilibrado para tareas técnicas (AWQ)
-- ✅ **qwen_coder**: Especializado en código y programación (AWQ)
-- ✅ **gemma3_multimodal**: Modelo de alta capacidad (bfloat16, 27B params)
-- ✅ **Optimizaciones ARM**: NEON/ACL activas y proporcionando beneficios
-- ✅ **Configuración completa**: En `/home/elect/capibara6/arm-axion-optimizations/vllm_integration/`
-- ❌ GPT-OSS-20B incompatible debido a arquitectura MoE personalizada
+## Optimizaciones ARM-Axion
 
-### Características de la integración ARM Axion:
-- **Puerto API**: 8080 (OpenAI-compatible)
-- **Rendimiento Gemma3**: ~2.2 tokens/segundo en CPU
-- **Memoria ajustada**: Parámetros optimizados para manejar KV cache
-- **Estabilidad**: Sistema operativo con 4 modelos concurrentes
+El sistema incluye múltiples optimizaciones específicas para ARM:
+
+- **Kernels NEON**: Aceleración vectorial para operaciones matriciales
+- **ARM Compute Library (ACL)**: Optimización de GEMM
+- **Flash Attention**: Para secuencias largas (>512 tokens)
+- **RMSNorm optimizado**: 5x más rápido con vectorización
+- **SwiGLU fusionado**: 1.5x mejora en activaciones
+- **RoPE vectorizado**: 1.4x más rápido
+
+Mejora global: **1.7-2.0x** (60-80% más rápido que versión sin optimizaciones)
+
+## Configuración
+
+### Archivo Principal
+
+`/home/elect/capibara6/arm-axion-optimizations/vllm_integration/config.json`
+
+Este es un enlace simbólico que apunta a:
+`config.five_models_all_working.json`
+
+### Configuraciones Disponibles
+
+```bash
+cd /home/elect/capibara6/arm-axion-optimizations/vllm_integration
+
+# Configuración actual (5 modelos)
+config.five_models_all_working.json
+
+# Otras configuraciones disponibles
+config.five_models_optimized_with_aya.json
+config.low_latency_batching.json
+config.optimized_kv_cache.json
+```
+
+Para cambiar configuración:
+
+```bash
+cd /home/elect/capibara6/arm-axion-optimizations/vllm_integration
+ln -sf <nuevo_config.json> config.json
+# Reiniciar el servidor
+```
+
+## Documentación Adicional
+
+- **Arquitectura de Producción**: Ver `PRODUCTION_ARCHITECTURE.md`
+- **Setup de Modelos**: Ver `README_MODELS_SETUP.md`
+- **Confirmación Aya Expanse**: Ver `AYA_EXPANSE_MODEL_CONFIRMATION.md`
+- **Docs deprecadas**: Ver `docs/deprecated/` (documentos históricos)
+
+## Integración RAG
+
+El sistema incluye soporte para RAG (Retrieval Augmented Generation):
+
+```python
+from backend.rag_client import RAGClient
+
+# Inicializar cliente
+rag = RAGClient(
+    base_url="http://localhost:8001",  # Bridge RAG
+    enable_toon=True  # Optimización de tokens
+)
+
+# Búsqueda semántica
+results = rag.search_semantic(
+    query="¿Cómo funciona el sistema?",
+    n_results=5
+)
+```
+
+**Nota**: El bridge RAG puede estar en otra VM según la arquitectura de producción.
+
+## Monitoreo
+
+### Logs del Servidor
+
+```bash
+# Logs en tiempo real
+tail -f /tmp/multi_model_server.log
+
+# Logs recientes
+tail -100 /tmp/multi_model_server.log
+```
+
+### Verificar Procesos
+
+```bash
+# Ver proceso del servidor
+ps aux | grep multi_model_server
+
+# Ver puertos escuchando
+ss -tlnp | grep 8082
+```
+
+### Verificar Recursos
+
+```bash
+# Memoria disponible
+free -h
+
+# CPU usage
+top -u elect
+```
+
+## Resolución de Problemas
+
+### Servidor no inicia
+
+1. Verificar que el puerto 8082 no esté ocupado:
+   ```bash
+   ss -tlnp | grep 8082
+   ```
+
+2. Verificar logs:
+   ```bash
+   tail -50 /tmp/multi_model_server.log
+   ```
+
+3. Verificar configuración:
+   ```bash
+   cd /home/elect/capibara6/arm-axion-optimizations/vllm_integration
+   cat config.json | jq '.experts | length'
+   # Debe devolver 5
+   ```
+
+### Modelo tarda en responder
+
+- **Primera vez**: Es normal, el modelo se está cargando (lazy loading)
+- **Espera**: 20-60 segundos según tamaño del modelo
+- **Siguientes veces**: Respuesta inmediata
+
+### Error de memoria
+
+1. Verificar memoria disponible:
+   ```bash
+   free -h
+   ```
+
+2. Ajustar configuración de lazy loading en `config.json`:
+   ```json
+   "lazy_loading": {
+     "max_loaded_experts": 3,  // Reducir de 5 a 3
+     "auto_unload_after_s": 180  // Descargar más rápido
+   }
+   ```
+
+## Recursos
+
+- **vLLM Modificado**: `/home/elect/capibara6/vllm-source-modified`
+- **Modelos**: `/home/elect/models/`
+- **Configuración**: `/home/elect/capibara6/arm-axion-optimizations/vllm_integration/`
+- **Backend**: `/home/elect/capibara6/backend/`
+
+## Contacto y Soporte
+
+Para issues y soporte, revisar:
+- Logs del sistema
+- Documentación en `docs/`
+- Configuraciones en `arm-axion-optimizations/vllm_integration/`
+
+---
+
+**Última actualización**: 2025-12-02
+**Versión**: 1.0.0 (ARM Axion Optimized)
+**Estado**: Producción - Operativo

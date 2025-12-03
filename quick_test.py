@@ -9,7 +9,7 @@ import time
 
 def test_models():
     """Test if the vLLM server is running and models are available"""
-    base_url = "http://34.12.166.76:8000"  # Main vLLM endpoint
+    base_url = "http://localhost:8082"  # Main vLLM endpoint for models-europe VM
     
     print("Testing vLLM server connectivity...")
     

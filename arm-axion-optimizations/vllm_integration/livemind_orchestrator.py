@@ -186,7 +186,7 @@ class LiveMindOrchestrator:
     def __init__(
         self,
         expert_system: AxionMultiExpertVLLM,
-        enable_consensus: bool = False,
+        enable_consensus: bool = True,
         consensus_model: Optional[str] = None,
         chunk_size: int = 64,
         routing_threshold: float = 0.7,
@@ -719,7 +719,7 @@ if __name__ == '__main__':
         # Create orchestrator
         orchestrator = LiveMindOrchestrator(
             expert_system=expert_system,
-            enable_consensus=False,
+            enable_consensus=True,
             chunk_size=64,
             routing_threshold=0.7
         )

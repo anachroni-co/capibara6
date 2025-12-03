@@ -9,6 +9,10 @@ from models_config import MODELS_CONFIG, DEFAULT_MODEL, TIMEOUT
 from toon_utils.format_manager_ultra_optimized import FormatManagerUltraOptimized
 import logging
 
+# Cargar variables de entorno
+from dotenv import load_dotenv
+load_dotenv()
+
 import sys
 import os
 # Asegurar que el path incluya el directorio backend
@@ -17,7 +21,20 @@ sys.path.insert(0, os.path.dirname(__file__))
 # Importar la integración de e2b
 try:
     from capibara6_e2b_integration import init_e2b_integration
-    from utils import analyze_context, understand_query, determine_action, calculate_relevance
+    import importlib.util
+    import sys
+
+    # Importar directamente desde utils.py para evitar conflicto con directorio utils/
+    utils_spec = importlib.util.spec_from_file_location("utils", "/home/elect/capibara6/backend/utils.py")
+    utils_module = importlib.util.module_from_spec(utils_spec)
+    sys.modules["utils"] = utils_module
+    utils_spec.loader.exec_module(utils_module)
+
+    analyze_context = utils_module.analyze_context
+    understand_query = utils_module.understand_query
+    determine_action = utils_module.determine_action
+    calculate_relevance = utils_module.calculate_relevance
+
     E2B_AVAILABLE = True
     print("Integración e2b disponible")
 except ImportError as e:
@@ -84,28 +101,34 @@ def proxy_gpt_oss_20b():
         # Determinar formato de entrada
         content_type = request.headers.get('Content-Type', 'application/json').lower()
         preferred_output_format = request.headers.get('Accept', 'application/json').lower()
-        
+
         if 'application/toon' in content_type or 'text/plain' in content_type:
             input_data = FormatManagerUltraOptimized.decode(request.get_data(as_text=True), 'toon')
         else:
             input_data = request.get_json()
-        
-        model_config = MODELS_CONFIG.get('gptoss_complex')
-        
+
+        # Obtener el modelo solicitado de la solicitud o usar gptoss_complex por defecto
+        requested_model = input_data.get('model', 'gptoss_complex') if input_data else 'gptoss_complex'
+        model_config = MODELS_CONFIG.get(requested_model)
+
         if not model_config:
-            error_response = {'error': 'Modelo GPT-OSS-20B no configurado'}
-            
+            error_response = {'error': f'Modelo {requested_model} no configurado o no disponible'}
+
             if 'toon' in preferred_output_format or 'text/plain' in preferred_output_format:
                 content, format_type = FormatManagerUltraOptimized.encode(error_response, 'toon')
                 return Response(content, mimetype='text/plain', status=404)
             else:
                 return jsonify(error_response), 404
-        
-        # Reenviar la solicitud al servidor remoto
+
+        # Reenviar la solicitud al servidor remoto - construir endpoint a partir de server_url
+        server_url = model_config.get('server_url', 'http://localhost:8080/v1')
+        endpoint = f"{server_url.rstrip('/')}/chat/completions"
+
         response = requests.post(
-            model_config['endpoint'],
+            endpoint,
             json=input_data,
-            timeout=TIMEOUT/1000  # Convertir de ms a segundos
+            timeout=TIMEOUT/1000,  # Convertir de ms a segundos
+            headers={'Content-Type': 'application/json'}
         )
         
         # Determinar el formato de la respuesta del modelo

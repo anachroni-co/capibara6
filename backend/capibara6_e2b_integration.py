@@ -1,18 +1,42 @@
 """
 Ejemplo de integración de e2b con el sistema Capibara6.
-Este archivo demuestra cómo usar e2b para crear VMs rápidas en respuesta 
+Este archivo demuestra cómo usar e2b para crear VMs rápidas en respuesta
 a diferentes tipos de tareas clasificadas por el sistema CTM.
 """
 
 import asyncio
 import json
+import sys
+import os
 from typing import Dict, Any
+
+# Agregar el directorio backend al path para importar correctamente
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from e2b_manager import E2BManager, create_e2b_manager
-from utils import analyze_context, understand_query, determine_action, calculate_relevance
 from models_config import MODELS_CONFIG
 
 # Usar la clave API proporcionada
 E2B_API_TOKEN = "e2b_d8df23b5de5214b7bfb4ebe227a308b61a2ae172"
+
+# Importar funciones desde el archivo utils.py principal en el directorio backend
+def _import_utils():
+    """Función para importar utils de forma diferida"""
+    import importlib.util
+    import sys
+
+    # Obtener la ruta del archivo utils.py
+    utils_spec = importlib.util.spec_from_file_location("utils", "/home/elect/capibara6/backend/utils.py")
+    utils_module = importlib.util.module_from_spec(utils_spec)
+    sys.modules["utils"] = utils_module
+    utils_spec.loader.exec_module(utils_module)
+
+    return (
+        utils_module.analyze_context,
+        utils_module.understand_query,
+        utils_module.determine_action,
+        utils_module.calculate_relevance
+    )
 
 class Capibara6E2BIntegration:
     """
@@ -22,21 +46,23 @@ class Capibara6E2BIntegration:
     
     def __init__(self):
         self.e2b_manager = create_e2b_manager(E2B_API_TOKEN)
-        
+        # Importar funciones en la inicialización
+        self.analyze_context, self.understand_query, self.determine_action, self.calculate_relevance = _import_utils()
+
     async def handle_complex_task_with_e2b(self, prompt: str, context: str = "") -> Dict[str, Any]:
         """
         Maneja tareas complejas usando e2b para crear entornos aislados.
-        
+
         :param prompt: Prompt original del usuario
         :param context: Contexto adicional
         :return: Resultado de la operación
         """
         print(f"Procesando tarea compleja con e2b: {prompt[:50]}...")
-        
+
         # Determinar qué tipo de tarea es y qué recursos necesita
-        query_analysis = understand_query(prompt)
-        context_analysis = analyze_context(context)
-        action_recommendation = determine_action(context, prompt)
+        query_analysis = self.understand_query(prompt)
+        context_analysis = self.analyze_context(context)
+        action_recommendation = self.determine_action(context, prompt)
         
         # Basado en el análisis, elegir la plantilla más adecuada
         template = self._select_template_based_on_analysis(query_analysis, context_analysis, action_recommendation)
@@ -289,26 +315,30 @@ if __name__ == "__main__":
     def estimate_task_resources(self, prompt: str) -> Dict[str, Any]:
         """
         Estima los recursos necesarios para una tarea.
-        
+
         :param prompt: Prompt a analizar
         :return: Estimación de recursos
         """
-        query_analysis = understand_query(prompt)
-        
+        # Importar funciones si no se han importado aún
+        if not hasattr(self, 'understand_query'):
+            self.analyze_context, self.understand_query, self.determine_action, self.calculate_relevance = _import_utils()
+
+        query_analysis = self.understand_query(prompt)
+
         # Determinar la complejidad y tipo de recursos necesarios
         if query_analysis.get('complexity') == 'high':
             complexity_level = 'high'
             estimated_runtime = 180  # 3 minutos
             recommended_template = 'python3'
         elif query_analysis.get('is_question') and query_analysis.get('complexity') == 'medium':
-            complexity_level = 'medium' 
+            complexity_level = 'medium'
             estimated_runtime = 90   # 1.5 minutos
             recommended_template = 'python3'
         else:
             complexity_level = 'low'
             estimated_runtime = 30   # 30 segundos
             recommended_template = 'python3'
-        
+
         return {
             "complexity_level": complexity_level,
             "estimated_runtime": estimated_runtime,
