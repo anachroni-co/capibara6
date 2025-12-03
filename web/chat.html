@@ -150,6 +150,36 @@
                 </div>
             </div>
 
+            <!-- Sistema de Colas y Recursos -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span class="section-title">Recursos</span>
+                    <button class="icon-btn-sm" id="resource-monitor-btn" title="Monitor de Recursos">
+                        <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+                <div class="resource-monitor" id="resource-monitor">
+                    <div class="resource-item">
+                        <span class="resource-label">RAM</span>
+                        <div class="resource-bar">
+                            <div class="resource-fill" id="ram-fill" style="width: 30%"></div>
+                        </div>
+                        <span class="resource-value" id="ram-value">30%</span>
+                    </div>
+                    <div class="resource-item">
+                        <span class="resource-label">CPU</span>
+                        <div class="resource-bar">
+                            <div class="resource-fill" id="cpu-fill" style="width: 25%"></div>
+                        </div>
+                        <span class="resource-value" id="cpu-value">25%</span>
+                    </div>
+                    <div class="queue-status" id="queue-status">
+                        <span class="status-dot" style="background: #10b981;"></span>
+                        <span>Disponible</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- User Profile -->
             <div class="sidebar-footer">
                 <div class="user-profile" id="user-profile">

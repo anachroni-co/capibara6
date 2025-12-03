@@ -142,6 +142,7 @@ class Capibara6ChatPage {
         this.initModelVisualization();
         this.initEntropyMonitor();
         this.initAcontextAgentSystem();
+        this.initResourceMonitoring(); // Inicializar monitoreo de recursos
 
         // Cargar chats guardados
         console.log('📚 Cargando chats guardados');
@@ -479,6 +480,15 @@ class Capibara6ChatPage {
                 e2bStatusBtn.addEventListener('click', () => {
                     // Mostrar información sobre el estado de E2B
                     this.showE2BInfo();
+                });
+            }
+
+            // Eventos para el monitor de recursos
+            const resourceMonitorBtn = document.getElementById('resource-monitor-btn');
+            if (resourceMonitorBtn) {
+                resourceMonitorBtn.addEventListener('click', () => {
+                    // Alternar panel de recursos o mostrar información detallada
+                    this.toggleResourceInfo();
                 });
             }
         } catch (error) {
@@ -2497,6 +2507,333 @@ class Capibara6ChatPage {
         } catch (error) {
             console.error('❌ Error verificando estado E2B:', error);
         }
+    }
+
+    // Función para alternar la información de recursos
+    toggleResourceInfo() {
+        // Esta función puede expandir el panel de recursos o mostrar información detallada
+        console.log('🔍 Toggle resource info');
+    }
+
+    // Inicializar el sistema de monitoreo de recursos
+    initResourceMonitoring() {
+        // Inicializar el monitoreo de recursos basado en actualizaciones desde models-europe
+        this.resourceData = {
+            ram: 30,  // Porcentaje actual
+            cpu: 25,  // Porcentaje actual
+            queuePosition: null,
+            estimatedWait: null,
+            isAtCapacity: false
+        };
+
+        // Crear un modal para la cola si no existe
+        this.createQueueModal();
+
+        // Iniciar el monitoreo periódico (simulado por ahora)
+        this.startResourceMonitoring();
+    }
+
+    // Crear modal para mostrar estado de cola
+    createQueueModal() {
+        // Verificar si ya existe
+        if (document.getElementById('queue-modal')) {
+            return;
+        }
+
+        const queueModal = document.createElement('div');
+        queueModal.className = 'queue-modal';
+        queueModal.id = 'queue-modal';
+
+        queueModal.innerHTML = `
+            <div class="queue-modal-content">
+                <h3>Sistema de Cola Activado</h3>
+                <p class="queue-status-text">El sistema está actualmente en alta demanda. Su solicitud está en cola:</p>
+                <div class="queue-estimated-time" id="queue-estimated-time">--:--</div>
+                <p class="queue-position" id="queue-position">Posición: --</p>
+                <p class="queue-info">Por favor, espere mientras procesamos las solicitudes anteriores</p>
+            </div>
+        `;
+
+        document.body.appendChild(queueModal);
+
+        // Añadir evento para cerrar al hacer clic fuera
+        queueModal.addEventListener('click', (e) => {
+            if (e.target === queueModal) {
+                this.hideQueueModal();
+            }
+        });
+    }
+
+    // Mostrar modal de cola
+    showQueueModal(estimatedTime = null, position = null) {
+        const modal = document.getElementById('queue-modal');
+        const timeElement = document.getElementById('queue-estimated-time');
+        const positionElement = document.getElementById('queue-position');
+
+        if (modal && timeElement) {
+            if (estimatedTime) {
+                timeElement.textContent = estimatedTime;
+            }
+
+            if (positionElement && position) {
+                positionElement.textContent = `Posición: ${position}`;
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevenir scroll
+        }
+    }
+
+    // Ocultar modal de cola
+    hideQueueModal() {
+        const modal = document.getElementById('queue-modal');
+
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restaurar scroll
+        }
+    }
+
+    // Actualizar datos de recursos (simulado para ahora)
+    updateResourceData(ram, cpu) {
+        this.resourceData.ram = ram;
+        this.resourceData.cpu = cpu;
+
+        // Actualizar la interfaz
+        this.updateResourceDisplay();
+
+        // Verificar límites y activar cola si es necesario
+        this.checkResourceLimits();
+    }
+
+    // Actualizar la visualización de recursos
+    updateResourceDisplay() {
+        // Actualizar RAM
+        const ramFill = document.getElementById('ram-fill');
+        const ramValue = document.getElementById('ram-value');
+
+        if (ramFill && ramValue) {
+            ramFill.style.width = `${this.resourceData.ram}%`;
+            ramValue.textContent = `${this.resourceData.ram}%`;
+
+            // Cambiar color según el porcentaje
+            ramFill.className = 'resource-fill';
+            if (this.resourceData.ram >= 90) {
+                ramFill.classList.add('critical');
+            } else if (this.resourceData.ram >= 75) {
+                ramFill.classList.add('warning');
+            }
+        }
+
+        // Actualizar CPU
+        const cpuFill = document.getElementById('cpu-fill');
+        const cpuValue = document.getElementById('cpu-value');
+
+        if (cpuFill && cpuValue) {
+            cpuFill.style.width = `${this.resourceData.cpu}%`;
+            cpuValue.textContent = `${this.resourceData.cpu}%`;
+
+            // Cambiar color según el porcentaje
+            cpuFill.className = 'resource-fill';
+            if (this.resourceData.cpu >= 90) {
+                cpuFill.classList.add('critical');
+            } else if (this.resourceData.cpu >= 75) {
+                cpuFill.classList.add('warning');
+            }
+        }
+
+        // Actualizar estado de la cola
+        this.updateQueueStatus();
+    }
+
+    // Verificar límites de recursos y activar cola si es necesario
+    checkResourceLimits() {
+        const ramThreshold = 90; // Umbral para activar cola
+        const cpuThreshold = 90; // Umbral para activar cola
+
+        const isHighUsage = this.resourceData.ram >= ramThreshold || this.resourceData.cpu >= cpuThreshold;
+
+        if (isHighUsage && !this.resourceData.isAtCapacity) {
+            // Activar modo cola
+            this.resourceData.isAtCapacity = true;
+            this.activateQueueSystem();
+        } else if (!isHighUsage && this.resourceData.isAtCapacity) {
+            // Desactivar modo cola
+            this.resourceData.isAtCapacity = false;
+            this.deactivateQueueSystem();
+        }
+    }
+
+    // Activar sistema de cola
+    activateQueueSystem() {
+        // Actualizar estado de cola
+        this.updateQueueStatus();
+
+        // Mostrar modal de cola si es necesario
+        if (this.isSendingMessage) {
+            // Si hay un mensaje en proceso, mostrar el modal
+            this.showQueueModal('2-3 min', '5° en cola');
+        }
+
+        console.log('⚠️ Sistema de cola ACTIVADO - Recursos al límite');
+    }
+
+    // Desactivar sistema de cola
+    deactivateQueueSystem() {
+        // Ocultar modal si está visible
+        this.hideQueueModal();
+
+        // Actualizar estado de cola
+        this.updateQueueStatus();
+
+        console.log('✅ Sistema de cola DESACTIVADO - Recursos disponibles');
+    }
+
+    // Actualizar estado de cola en la interfaz
+    updateQueueStatus() {
+        const queueStatus = document.getElementById('queue-status');
+
+        if (queueStatus) {
+            const statusSpan = queueStatus.querySelector('span:last-child');
+            const statusDot = queueStatus.querySelector('.status-dot');
+
+            if (this.resourceData.isAtCapacity) {
+                // Sistema en alta demanda
+                statusSpan.textContent = 'Alta Demanda';
+                statusDot.style.background = '#f59e0b'; // Amarillo
+                queueStatus.className = 'queue-status warning';
+            } else {
+                // Sistema disponible
+                statusSpan.textContent = 'Disponible';
+                statusDot.style.background = '#10b981'; // Verde
+                queueStatus.className = 'queue-status';
+            }
+        }
+    }
+
+    // Simular monitoreo de recursos (en producción recibiría actualizaciones cada 2 segundos)
+    startResourceMonitoring() {
+        // En producción, aquí se conectaría a un WebSocket o se recibirían actualizaciones
+        // desde la VM models-europe cada 2 segundos
+
+        // Simular actualizaciones periódicas de recursos
+        setInterval(() => {
+            // Simular uso de recursos aleatorio para demostración
+            // En producción, estos valores vendrían de la VM models-europe
+            const simulatedRam = Math.min(100, Math.max(0, this.resourceData.ram + (Math.random() * 10 - 5)));
+            const simulatedCpu = Math.min(100, Math.max(0, this.resourceData.cpu + (Math.random() * 8 - 4)));
+
+            this.updateResourceData(Math.round(simulatedRam), Math.round(simulatedCpu));
+        }, 2000); // Actualizar cada 2 segundos como especificado
+    }
+
+    // Sobrescribir el método sendMessage para integrar el sistema de cola
+    async sendMessage() {
+        console.log('📤 sendMessage() llamado');
+
+        // Verificar si el sistema está en alta demanda
+        if (this.resourceData.isAtCapacity) {
+            console.log('⚠️ Sistema en alta demanda, añadiendo a cola...');
+            this.showQueueModal('1-2 min', '3° en cola');
+
+            // Simular espera necesaria por estar en cola
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            this.hideQueueModal();
+        }
+
+        // Marcar que estamos intentando enviar un mensaje
+        this.isSendingMessage = true;
+
+        try {
+            // Llamar al método original
+            return await this.originalSendMessage();
+        } finally {
+            // Marcar que terminamos de enviar
+            this.isSendingMessage = false;
+        }
+    }
+
+    // Guardar la función original de envío de mensajes
+    originalSendMessage() {
+        const message = this.chatInput?.value?.trim();
+        console.log('📝 Mensaje:', message, 'isProcessing:', this.isProcessing);
+
+        if (!message || this.isProcessing) {
+            console.log('🚫 Mensaje vacío o procesamiento en curso, saliendo');
+            return;
+        }
+
+        if (!this.isConnected) {
+            console.log('🔴 No conectado al servidor');
+            this.showError('No hay conexión con el servidor. Por favor, verifica tu conexión.');
+            return;
+        }
+
+        // Crear chat si no existe
+        if (!this.currentChatId) {
+            this.currentChatId = 'chat_' + Date.now();
+            this.saveChats();
+        }
+
+        // Agregar mensaje del usuario
+        console.log('👤 Agregando mensaje del usuario:', message);
+        this.addMessage(message, 'user');
+        this.chatInput.value = '';
+        this.chatInput.style.height = 'auto';
+
+        // Deshabilitar input mientras se procesa
+        this.setProcessing(true);
+
+        // Mostrar indicador de escritura
+        const typingIndicator = this.showTypingIndicator();
+        console.log('👀 Indicador de escritura mostrado');
+
+        return this.sendToBackend(message)
+            .then(response => {
+                // Remover indicador de escritura
+                this.removeTypingIndicator(typingIndicator);
+
+                // Agregar respuesta del bot
+                if (response && response.content) {
+                    console.log('🤖 Agregando respuesta del bot:', response.content);
+                    this.addMessage(response.content, 'bot');
+                    // Mostrar controles TTS cuando hay respuesta del bot
+                    if (this.showTTSControls) {
+                        this.showTTSControls();
+                    }
+                } else {
+                    console.error('❌ Respuesta inválida del servidor');
+                    throw new Error('Respuesta inválida del servidor');
+                }
+
+                // Actualizar lista de chats
+                this.updateChatInList();
+            })
+            .catch(error => {
+                console.error('💥 Error en sendMessage:', error);
+                this.removeTypingIndicator(typingIndicator);
+
+                // Mensaje de error más descriptivo
+                let errorMessage = 'Lo siento, ocurrió un error al procesar tu mensaje.';
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    errorMessage += ' No se pudo conectar con el servidor.';
+                } else if (error.message.includes('HTTP error!')) {
+                    errorMessage += ` El servidor respondió con error: ${error.message}`;
+                } else {
+                    errorMessage += ` Detalles: ${error.message}`;
+                }
+
+                this.addMessage(
+                    errorMessage,
+                    'bot',
+                    true
+                );
+                console.error('❌ Message sending failed:', error.message);
+            })
+            .finally(() => {
+                this.setProcessing(false);
+                console.log('🔚 sendMessage() finalizado');
+            });
     }
 }
 

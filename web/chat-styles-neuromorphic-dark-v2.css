@@ -3238,6 +3238,131 @@ input {
     transform: translateY(0);
 }
 
+/* Estilos para el monitor de recursos */
+.resource-monitor {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+.resource-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.resource-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    width: 35px;
+}
+
+.resource-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.resource-fill {
+    height: 100%;
+    background: var(--success);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    min-width: 0%;
+}
+
+.resource-fill.warning {
+    background: var(--warning);
+}
+
+.resource-fill.critical {
+    background: var(--error);
+}
+
+.resource-value {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    min-width: 30px;
+    text-align: right;
+}
+
+.queue-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-top: 5px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 5px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.queue-status.warning {
+    color: var(--warning);
+}
+
+.queue-status.critical {
+    color: var(--error);
+}
+
+/* Estilos para el modal de cola de trabajo */
+.queue-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.queue-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.queue-modal-content {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.queue-modal.active .queue-modal-content {
+    transform: translateY(0);
+}
+
+.queue-estimated-time {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin: 20px 0;
+}
+
+.queue-status-text {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
 /* En dispositivos móviles, asegurar que el input esté focalizado cuando sea relevante */
 @media (max-width: 480px) {
     .chat-input-container:focus-within .chat-input {
