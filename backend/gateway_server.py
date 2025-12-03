@@ -320,17 +320,37 @@ async def root():
         "service": "Capibara6 API Gateway",
         "version": "1.0.0",
         "status": "operational",
+        "architecture": {
+            "internal_ip": "10.204.0.5",  # services VM internal IP
+            "external_ip": "34.175.48.1",  # services VM external IP
+            "port": 8080
+        },
         "features": [
             "Semantic Router",
             "Circuit Breaker",
             "Rate Limiting",
             "API Keys",
-            "Multi-model Support"
+            "Multi-model Support",
+            "Acontext Integration",
+            "RAG System",
+            "MCP Protocol Support"
         ],
         "endpoints": {
             "chat": "/api/chat",
             "health": "/api/health",
-            "router_info": "/api/router/info"
+            "router_info": "/api/router/info",
+            "agents": "/api/agents",
+            "acontext": "/api/acontext/{path}",
+            "rag": "/api/rag/search",
+            "classify": "/api/classify",
+            "mcp": "/api/mcp/{path}"
+        },
+        "upstream_services": {
+            "vllm_url": VLLM_URL,
+            "ollama_url": OLLAMA_URL,
+            "bridge_api_url": BRIDGE_API_URL,
+            "acontext_url": os.getenv("ACONTEXT_BASE_URL", "http://localhost:8029/api/v1"),
+            "mcp_url": os.getenv("MCP_BASE_URL", "http://10.204.0.5:5003")
         }
     }
 
